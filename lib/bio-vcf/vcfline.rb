@@ -1,8 +1,10 @@
 module BioVcf
   module VcfLine
-    def VcfLine.parse line,expect_size
+
+    # Split a line into fields and check size
+    def VcfLine.parse line,expected_size=nil
       fields = line.strip.split(/\t/)
-      raise "Expected #{expect_size} fields but got #{fields.size} in "+fields.to_s if fields.size != expect_size
+      raise "Expected #{expected_size} fields but got #{fields.size} in "+fields.to_s if expected_size and fields.size != expected_size
       fields
     end
   end

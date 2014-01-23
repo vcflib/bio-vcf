@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 #
-# BioRuby vcf Plugin Biovcf
+# BioRuby vcf plugin 
 # Author:: Pjotr Prins
-# Copyright:: 2013
 #
 # Copyright (C) 2014 Pjotr Prins <pjotr.prins@thebird.nl>
 
@@ -13,9 +12,6 @@ $: << File.join(gempath,'lib')
 
 VERSION_FILENAME=File.join(gempath,'VERSION')
 version = File.new(VERSION_FILENAME).read.chomp
-
-# print banner
-$stderr.print "vcf #{version} (biogem Ruby #{RUBY_VERSION}) by Pjotr Prins 2014\n"
 
 require 'bio-vcf'
 require 'optparse'
@@ -31,7 +27,11 @@ options = { show_help: false}
 opts = OptionParser.new do |o|
   o.banner = "Usage: #{File.basename($0)} [options] filename\ne.g.  #{File.basename($0)} --rdf < test/data/input/somaticsniper.vcf"
 
-  o.on_tail('-e cmd', '--eval cmd',String, 'Evaluate command on each header section') do |cmd|
+  o.on_tail('-e cmd', '--eval cmd',String, 'Evaluate command on each record') do |cmd|
+    options[:eval] = cmd
+  end
+  o.on_tail('--eval-once cmd',String, 'Evaluate command once') do |cmd|
+    options[:eval_once] = true
     options[:eval] = cmd
   end
   o.on("--rdf", "Generate RDF") do |b|
@@ -72,6 +72,9 @@ include BioVcf
 begin
   opts.parse!(ARGV)
 
+  $stderr.print "vcf #{version} (biogem Ruby #{RUBY_VERSION}) by Pjotr Prins 2014\n" if !options[:quiet]
+
+
   if options[:show_help] 
     print opts 
     print USAGE
@@ -80,23 +83,29 @@ begin
 
   $stderr.print "Options: ",options if !options[:quiet]
 
-  STDIN.each do | line |
+  header = VcfHeader.new
+
+  STDIN.each_line do | line |
     if line =~ /^##fileformat=/
       # ---- We have a new file header
       header = VcfHeader.new
       header.add(line)
-      STDIN.each do | headerline |
+      STDIN.each_line do | headerline |
         if headerline !~ /^#/
           line = headerline
-          print eval(options[:eval]) if options[:eval] 
           break # end of header
         end
         header.add(headerline)
       end
-      # ---- Parse VCF record line
-      fields = VcfLine.parse(line,header.columns)
-      p fields
     end
+    # ---- Parse VCF record line
+    # fields = VcfLine.parse(line,header.columns)
+    fields = VcfLine.parse(line)
+    if options[:eval] 
+      print eval(options[:eval]) 
+      exit(1) if options[:eval_once]
+    end
+    p fields
   end
 
 end

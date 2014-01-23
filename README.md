@@ -26,14 +26,14 @@ gem install bio-vcf
 Get the version of the VCF file
 
 ```ruby
-  bio-vcf -e header.version < file.vcf
+  bio-vcf -q --eval-once header.version < file.vcf
   4.1
 ```
 
 Get the column headers
 
 ```ruby
-  ./bin/bio-vcf -q -e 'header.column_names.join(",")' < test/data/input/somaticsniper.vcf 
+  ./bin/bio-vcf -q -eval-once 'header.column_names.join(",")' < test/data/input/somaticsniper.vcf 
   POS,ID,REF,ALT,QUAL,FILTER,INFO,FORMAT,NORMAL,TUMOR
 ```
 
