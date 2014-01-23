@@ -11,4 +11,5 @@
 require 'bio-vcf/vcf'
 require 'bio-vcf/vcfheader'
 require 'bio-vcf/vcfline'
+require 'bio-vcf/vcfgenotypefield'
 require 'bio-vcf/vcfrecord'

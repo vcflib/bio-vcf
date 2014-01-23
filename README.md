@@ -50,13 +50,34 @@ Add a filter to display the fields on chromosome 12
   bio-vcf --filter 'fields[0]=="12"' --eval 'fields[0..4].join("\t")' < file.vcf 
 ```
 
-It gets better when we start using processed data. Position is a
-value, so we can filter a range
+It gets better when we start using processed data, represented by an
+object named 'rec'. Position is a value, so we can filter a range
 
 ```ruby
   bio-vcf --filter 'rec.chrom=="12" and rec.pos>96_641_270 and rec.pos<96_641_276' < file.vcf 
 ```
 
+With subfields defined by rec.format
+
+```ruby
+  bio-vcf --filter 'rec.tumor.ss != 2' < file.vcf 
+```
+
+Output
+
+```ruby
+  bio-vcf --filter 'rec.tumor.gq>30' --eval '[rec.ref,rec.alt,rec.tumor.bcount,rec.tumor.gq,rec.normal.gq].join("\t")' < file.vcf
+```
+
+Show the count of the bases that were scored as somatic
+
+```ruby
+  bio-vcf --eval 'rec.alt+"\t"+rec.tumor.bcount.split(",")[["A","C","G","T"].index(rec.alt)]+"\t"+rec.tumor.gq.to_s' < file.vcf
+```
+
+Filter on the somatic results that were scored at least 4 times
+ 
+bio-vcf --filter 'rec.alt.size==1 and rec.tumor.bcount.split(",")[["A","C","G","T"].index(rec.alt)].to_i>4' < test.vcf 
 
 
 ## Project home page
