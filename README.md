@@ -11,7 +11,9 @@ file in VcfHeader, which contains the VCF file header. Individual
 lines (variant calls) first go through a raw parser returning an array
 of fields. Further (lazy) parsing is handled through VcfRecord.
 
-Health warning: Early days, your mileage may vary!
+Health warning: Early days, your mileage may vary because I add
+features as I go along! If something is not working, check out the
+code. It is easy to add features.
 
 ## Installation
 
@@ -75,9 +77,23 @@ Show the count of the bases that were scored as somatic
   bio-vcf --eval 'rec.alt+"\t"+rec.tumor.bcount.split(",")[["A","C","G","T"].index(rec.alt)]+"\t"+rec.tumor.gq.to_s' < file.vcf
 ```
 
+Actually, we have a convenience implementation for bcount, so this is the same
+
+```ruby
+  bio-vcf --eval 'rec.alt+"\t"+rec.tumor.bcount[rec.alt].to_s+"\t"+rec.tumor.gq.to_s' < file.vcf
+```
+
 Filter on the somatic results that were scored at least 4 times
  
-bio-vcf --filter 'rec.alt.size==1 and rec.tumor.bcount.split(",")[["A","C","G","T"].index(rec.alt)].to_i>4' < test.vcf 
+```ruby
+  bio-vcf --filter 'rec.alt.size==1 and rec.tumor.bcount[rec.alt]>4' < test.vcf 
+```
+
+Similar for base quality scores
+
+```ruby
+  bio-vcf --filter 'rec.alt.size==1 and rec.tumor.amq[rec.alt]>30' < test.vcf 
+```
 
 
 ## Project home page
