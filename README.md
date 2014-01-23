@@ -2,6 +2,16 @@
 
 [![Build Status](https://secure.travis-ci.org/pjotrp/bioruby-vcf.png)](http://travis-ci.org/pjotrp/bioruby-vcf) 
 
+Yet another VCF parser. This one may give better performance and
+useful command line filtering.
+
+The VCF format is commonly used for variant calling between NGS
+samples. The fast parser needs to carry some state, recorded for each
+file in VcfHeader, which contains the VCF file header. Individual
+lines (variant calls) first go through a raw parser returning an array
+of fields. Further (lazy) parsing is handled through VcfRecord.
+
+Health warning: Early days, your mileage may vary!
 
 ## Installation
 
@@ -19,10 +29,6 @@ Information on the source tree, documentation, examples, issues and
 how to contribute, see
 
   http://github.com/pjotrp/bioruby-vcf
-
-## TODO
-
-* Fix doi to make full URI
 
 ## Cite
 
