@@ -23,6 +23,20 @@ gem install bio-vcf
 
 ## Command line interface (CLI)
 
+Get the version of the VCF file
+
+```ruby
+  bio-vcf -e header.version < file.vcf
+  4.1
+```
+
+Get the column headers
+
+```ruby
+  ./bin/bio-vcf -q -e 'header.column_names.join(",")' < test/data/input/somaticsniper.vcf 
+  POS,ID,REF,ALT,QUAL,FILTER,INFO,FORMAT,NORMAL,TUMOR
+```
+
 ## Project home page
 
 Information on the source tree, documentation, examples, issues and

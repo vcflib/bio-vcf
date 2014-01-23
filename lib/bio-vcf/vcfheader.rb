@@ -2,10 +2,12 @@
 module BioVcf
 
   module VcfHeaderParser
-    def VcfHeaderParser.get_column_headers(header)
-      header.each do | line |
+    def VcfHeaderParser.get_column_names(lines)
+      lines.each do | line |
         if line =~ /^#[^#]/
-          return line.split[1..-1]
+          names = line.split
+          names[0].sub!(/^#/,'')
+          return names
         end
       end
       nil
@@ -24,9 +26,16 @@ module BioVcf
       @lines << line.strip
     end
 
-    # Return array of column headers
-    def column_header
-      @column_header ||= VcfHeaderParser::get_column_headers(@lines)
+    def version
+      @version ||= lines[0].scan(/##fileformat=VCFv(\d+\.\d+)/)[0][0]
+    end
+
+    def column_names
+      @column_names ||= VcfHeaderParser::get_column_names(@lines)
+    end
+
+    def columns
+      @column ||= column_names.size
     end
   end
 

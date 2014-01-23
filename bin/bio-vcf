@@ -31,6 +31,9 @@ options = { show_help: false}
 opts = OptionParser.new do |o|
   o.banner = "Usage: #{File.basename($0)} [options] filename\ne.g.  #{File.basename($0)} --rdf < test/data/input/somaticsniper.vcf"
 
+  o.on_tail('-e cmd', '--eval cmd',String, 'Evaluate command on each header section') do |cmd|
+    options[:eval] = cmd
+  end
   o.on("--rdf", "Generate RDF") do |b|
     options[:rdf] = true
   end
@@ -45,9 +48,10 @@ opts = OptionParser.new do |o|
   #   Bio::Log::CLI.trace(s)
   # end
   # 
-  # o.on("-q", "--quiet", "Run quietly") do |q|
-  #   Bio::Log::CLI.trace('error')
-  # end
+  o.on("-q", "--quiet", "Run quietly") do |q|
+    # Bio::Log::CLI.trace('error')
+    options[:quiet] = true
+  end
   # 
   # o.on("-v", "--verbose", "Run verbosely") do |v|
   #   Bio::Log::CLI.trace('info')
@@ -74,23 +78,26 @@ begin
     exit 1
   end
 
-  $stderr.print "Options: ",options
+  $stderr.print "Options: ",options if !options[:quiet]
 
   STDIN.each do | line |
     if line =~ /^##fileformat=/
       # ---- We have a new file header
       header = VcfHeader.new
+      header.add(line)
       STDIN.each do | headerline |
         if headerline !~ /^#/
           line = headerline
+          print eval(options[:eval]) if options[:eval] 
           break # end of header
         end
         header.add(headerline)
       end
+      # ---- Parse VCF record line
+      fields = VcfLine.parse(line,header.columns)
+      p fields
     end
-    print line
-    print header.column_header
-    exit 1
   end
+
 end
 
