@@ -1,0 +1,114 @@
+#!/usr/bin/env ruby
+#
+# BioRuby vcf Plugin Biovcf
+# Author:: Pjotr Prins
+# Copyright:: 2013
+#
+# Copyright (C) 2014 Pjotr Prins <pjotr.prins@thebird.nl>
+
+USAGE = "Vcf parser"
+
+gempath = File.dirname(File.dirname(__FILE__))
+$: << File.join(gempath,'lib')
+
+VERSION_FILENAME=File.join(gempath,'VERSION')
+version = File.new(VERSION_FILENAME).read.chomp
+
+# print banner
+$stderr.print "vcf #{version} (biogem Ruby #{RUBY_VERSION}) by Pjotr Prins 2014\n"
+
+if ARGV.size == 0
+  print USAGE
+end
+
+require 'bio-vcf'
+require 'optparse'
+
+# Uncomment when using the bio-logger 
+# require 'bio-logger'
+# log = Bio::Log::LoggerPlus.new 'vcf'
+# log.outputters = Bio::Log::Outputter.stderr 
+# Bio::Log::CLI.logger('stderr')
+# Bio::Log::CLI.trace('info')
+
+options = { show_help: false, symbols: []}
+opts = OptionParser.new do |o|
+  o.banner = "Usage: #{File.basename($0)} [options] filename\ne.g.  #{File.basename($0)} -s ncbi_symbols.tab --rdf < test.txt"
+
+  o.on("--rdf", "Generate RDF") do |b|
+    options[:rdf] = true
+  end
+  o.on("--name name", 'Set name of result set') do |name|
+    options[:name] = name
+  end
+  o.on("-s","--symbols fn", 'Symbol file') do |fn|
+    options[:symbols] += [fn]
+  end
+  o.on("--hugo [fn]", 'Hugo symbol file') do |fn|
+    if fn
+      options[:hugo] = fn
+    else
+      options[:hugo] = gempath + '/test/data/input/hugo_symbols'
+    end
+  end
+  o.on("-i","--ignore fn", 'Ignore symbols in fn (NYI)') do |fn|
+    options[:ignore] = fn
+  end
+  o.on("--context [TYPE]",[:off,:line], 'Context parser mode (off,line)') do |context|
+    options[:context] = context
+  end
+  o.on("--doi doi", 'DOI') do |doi|
+    options[:doi] = doi
+  end
+  o.on("--tag string", 'Tag string') do |tag|
+    tags = {}
+    ts = tag.split(/\s?;\s?/)
+    ts.each do |field|
+      key,value = field.strip.split(/\s?=\s?/)
+      tags[key.to_sym] = value
+    end
+    options[:tags] = tags
+  end
+  
+  # Uncomment the following when using the bio-logger 
+  # o.separator ""
+  # o.on("--logger filename",String,"Log to file (default stderr)") do | name |
+  #   Bio::Log::CLI.logger(name)
+  # end
+  #
+  # o.on("--trace options",String,"Set log level (default INFO, see bio-logger)") do | s |
+  #   Bio::Log::CLI.trace(s)
+  # end
+  # 
+  # o.on("-q", "--quiet", "Run quietly") do |q|
+  #   Bio::Log::CLI.trace('error')
+  # end
+  # 
+  # o.on("-v", "--verbose", "Run verbosely") do |v|
+  #   Bio::Log::CLI.trace('info')
+  # end
+  # 
+  # o.on("--debug", "Show debug messages") do |v|
+  #   Bio::Log::CLI.trace('debug')
+  # end
+
+  o.separator ""
+  o.on_tail('-h', '--help', 'display this help and exit') do
+    options[:show_help] = true
+  end
+end
+
+include Biovcf
+
+begin
+  opts.parse!(ARGV)
+
+  if options[:show_help]
+    print opts 
+    exit 1
+  end
+
+  $stderr.print options
+
+end
+
