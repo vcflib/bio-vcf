@@ -7,6 +7,9 @@ module BioVcf
       @header = header
     end
 
+    def bcount
+    end
+
     def method_missing(m, *args, &block)  
       v = @values[@format[m.to_s.upcase]]
       v = v.to_i if v =~ /^\d+$/
