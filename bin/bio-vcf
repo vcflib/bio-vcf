@@ -27,6 +27,9 @@ options = { show_help: false}
 opts = OptionParser.new do |o|
   o.banner = "Usage: #{File.basename($0)} [options] filename\ne.g.  #{File.basename($0)} --rdf < test/data/input/somaticsniper.vcf"
 
+  o.on_tail('--filter cmd',String, 'Evaluate filter on each record') do |cmd|
+    options[:filter] = cmd
+  end
   o.on_tail('-e cmd', '--eval cmd',String, 'Evaluate command on each record') do |cmd|
     options[:eval] = cmd
   end
@@ -81,7 +84,7 @@ begin
     exit 1
   end
 
-  $stderr.print "Options: ",options if !options[:quiet]
+  $stderr.print "Options: ",options,"\n" if !options[:quiet]
 
   header = VcfHeader.new
 
@@ -101,11 +104,17 @@ begin
     # ---- Parse VCF record line
     # fields = VcfLine.parse(line,header.columns)
     fields = VcfLine.parse(line)
-    if options[:eval] 
-      print eval(options[:eval]) 
-      exit(1) if options[:eval_once]
+    rec = VcfRecord.new(fields,header)
+    if !options[:filter] or (options[:filter] and eval(options[:filter]))
+      if options[:eval] 
+        print eval(options[:eval]) 
+        exit(1) if options[:eval_once]
+      else
+        # Default behaviour
+        print fields.join("\t")
+      end
+      print "\n"
     end
-    p fields
   end
 
 end

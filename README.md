@@ -33,9 +33,31 @@ Get the version of the VCF file
 Get the column headers
 
 ```ruby
-  ./bin/bio-vcf -q -eval-once 'header.column_names.join(",")' < test/data/input/somaticsniper.vcf 
-  POS,ID,REF,ALT,QUAL,FILTER,INFO,FORMAT,NORMAL,TUMOR
+  bio-vcf -q -eval-once 'header.column_names.join(",")' < file.vcf
+  CHROM,POS,ID,REF,ALT,QUAL,FILTER,INFO,FORMAT,NORMAL,TUMOR
 ```
+
+The 'fields' array contains unprocessed data (strings).  Print first
+five raw fields
+
+```ruby
+  bio-vcf --eval 'fields[0..4].join("\t")' < file.vcf 
+```
+
+Add a filter to display the fields on chromosome 12
+
+```ruby
+  bio-vcf --filter 'fields[0]=="12"' --eval 'fields[0..4].join("\t")' < file.vcf 
+```
+
+It gets better when we start using processed data. Position is a
+value, so we can filter a range
+
+```ruby
+  bio-vcf --filter 'rec.chrom=="12" and rec.pos>96_641_270 and rec.pos<96_641_276' < file.vcf 
+```
+
+
 
 ## Project home page
 
