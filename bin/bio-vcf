@@ -33,7 +33,7 @@ opts = OptionParser.new do |o|
   o.on_tail('-e cmd', '--eval cmd',String, 'Evaluate command on each record') do |cmd|
     options[:eval] = cmd
   end
-  o.on_tail('--eval-once cmd',String, 'Evaluate command once') do |cmd|
+  o.on_tail('--eval-once cmd',String, 'Evaluate command once (usually for header info)') do |cmd|
     options[:eval_once] = true
     options[:eval] = cmd
   end
@@ -76,7 +76,6 @@ begin
   opts.parse!(ARGV)
 
   $stderr.print "vcf #{version} (biogem Ruby #{RUBY_VERSION}) by Pjotr Prins 2014\n" if !options[:quiet]
-
 
   if options[:show_help] 
     print opts 

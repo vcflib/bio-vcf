@@ -68,19 +68,23 @@ With subfields defined by rec.format
 Output
 
 ```ruby
-  bio-vcf --filter 'rec.tumor.gq>30' --eval '[rec.ref,rec.alt,rec.tumor.bcount,rec.tumor.gq,rec.normal.gq].join("\t")' < file.vcf
+  bio-vcf --filter 'rec.tumor.gq>30' 
+    --eval '[rec.ref,rec.alt,rec.tumor.bcount,rec.tumor.gq,rec.normal.gq].join("\t")' 
+    < file.vcf
 ```
 
 Show the count of the bases that were scored as somatic
 
 ```ruby
-  bio-vcf --eval 'rec.alt+"\t"+rec.tumor.bcount.split(",")[["A","C","G","T"].index(rec.alt)]+"\t"+rec.tumor.gq.to_s' < file.vcf
+  bio-vcf --eval 'rec.alt+"\t"+rec.tumor.bcount.split(",")[["A","C","G","T"].index(rec.alt)]+
+    "\t"+rec.tumor.gq.to_s' < file.vcf
 ```
 
 Actually, we have a convenience implementation for bcount, so this is the same
 
 ```ruby
-  bio-vcf --eval 'rec.alt+"\t"+rec.tumor.bcount[rec.alt].to_s+"\t"+rec.tumor.gq.to_s' < file.vcf
+  bio-vcf --eval 'rec.alt+"\t"+rec.tumor.bcount[rec.alt].to_s+"\t"+rec.tumor.gq.to_s' 
+    < file.vcf
 ```
 
 Filter on the somatic results that were scored at least 4 times
