@@ -77,6 +77,15 @@ Then(/^I expect rec\.tumor\.bq\[(\d+)\] to be (\d+)$/) do |arg1, arg2|
   expect(@rec.tumor.bq[arg1.to_i]).to eq arg2.to_i
 end
 
+Then(/^I expect rec\.tumor\.bq\.min to be (\d+)$/) do |arg1|
+  expect(@rec.tumor.bq.min).to eq arg1.to_i
+end
+
+Then(/^I expect rec\.tumor\.bq\.max to be (\d+)$/) do |arg1|
+  expect(@rec.tumor.bq.max).to eq arg1.to_i
+end
+
+
 Then(/^I expect rec\.tumor\.amq.to_ary to be \[(\d+),(\d+)\]$/) do |arg1, arg2|
   expect(@rec.tumor.amq.to_ary).to eq [arg1.to_i,arg2.to_i]
 end

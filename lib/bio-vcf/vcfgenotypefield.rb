@@ -1,5 +1,7 @@
 module BioVcf
 
+  MAXINT=100_000
+
   # Helper class for a list of (variant) values, such as A,G. 
   # The [] function does the hard work (see ./features for examples)
   class VcfNucleotides 
@@ -34,7 +36,7 @@ module BioVcf
 
     def min list = @alt
       values = self[list]
-      values.reduce(0){ |memo,v| (v<memo ? v : memo) }
+      values.reduce(MAXINT){ |memo,v| (v<memo ? v : memo) }
     end
 
     def sum list = @alt
@@ -71,21 +73,16 @@ module BioVcf
 
     # Return the max value on the nucleotides in the list (typically rec.alt)
     def max list = @alt
-      values = self[list]
-      values.reduce(0){ |memo,v| (v>memo ? v : memo) }
+      @list.reduce(0){ |memo,v| (v>memo ? v : memo) }
     end
 
     def min list = @alt
-      values = self[list]
-      values.reduce(0){ |memo,v| (v<memo ? v : memo) }
+      @list.reduce(MAXINT){ |memo,v| (v<memo ? v : memo) }
     end
 
     def sum list = @alt
-      values = self[list]
-      values.reduce(0){ |memo,v| v+memo }
+      @list.reduce(0){ |memo,v| v+memo }
     end
-
-
 
   end
 
