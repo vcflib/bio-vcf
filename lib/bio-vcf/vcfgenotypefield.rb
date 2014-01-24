@@ -29,9 +29,14 @@ module BioVcf
     # Return the max value on the nucleotides in the list (typically rec.alt)
     def max list = @alt
       values = self[list]
-      values.reduce(0){ |memo,v| (v>memo ? v : memo) 
-      }
+      values.reduce(0){ |memo,v| (v>memo ? v : memo) }
     end
+
+    def sum list = @alt
+      values = self[list]
+      values.reduce(0){ |memo,v| v+memo }
+    end
+
 
   end
 

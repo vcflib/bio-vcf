@@ -35,6 +35,8 @@ Feature: VCF for Somatic Sniper
     And I expect rec.tumor.bcount["G"] to be 0 
     And I expect rec.tumor.bcount[1] to be 2
     And I expect rec.tumor.bcount[3] to be 0
+    And I expect rec.tumor.bcount.sum to be 2
+    And I expect rec.tumor.bcount.max to be 2
     And I expect rec.tumor.bq.to_ary to be [20,51]
     And I expect rec.tumor.bq["G"] to be 51
     And I expect rec.tumor.bq[1] to be 51
@@ -59,6 +61,8 @@ Feature: VCF for Somatic Sniper
     And I expect rec.tumor.bcount["T"] to be 3
     And I expect rec.tumor.bcount[1] to be 0
     And I expect rec.tumor.bcount[3] to be 3
+    And I expect rec.tumor.bcount.sum to be 3
+    And I expect rec.tumor.bcount.max to be 3
     And I expect rec.tumor.bq.to_ary to be [34,55]
     And I expect rec.tumor.bq["T"] to be 34
     And I expect rec.tumor.bq[1] to be 55

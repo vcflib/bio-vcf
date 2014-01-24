@@ -56,6 +56,15 @@ Then(/^I expect rec\.tumor\.bcount\[(\d+)\] to be (\d+)$/) do |arg1, arg2|
   expect(@rec.tumor.bcount[arg1.to_i]).to eq arg2.to_i
 end
 
+Then(/^I expect rec\.tumor\.bcount\.sum to be (\d+)$/) do |arg1|
+  expect(@rec.tumor.bcount.sum).to eq arg1.to_i
+end
+
+Then(/^I expect rec\.tumor\.bcount\.max to be (\d+)$/) do |arg1|
+  expect(@rec.tumor.bcount.max).to eq arg1.to_i
+end
+
+
 Then(/^I expect rec\.tumor\.bq\.to_ary to be \[(\d+),(\d+)\]$/) do |arg1, arg2|
   expect(@rec.tumor.bq.to_ary).to eq [arg1.to_i,arg2.to_i]
 end
