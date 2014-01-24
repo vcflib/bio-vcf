@@ -3,7 +3,8 @@ module BioVcf
   # Helper class for a list of (variant) values, such as A,G. 
   # The [] function does the hard work (see ./features for examples)
   class VcfNucleotides 
-    def initialize list
+    def initialize alt,list
+      @alt = alt
       @list = list.map{|i| i.to_i}
     end
   
@@ -23,6 +24,13 @@ module BioVcf
 
     def to_ary
       @list
+    end
+
+    # Return the max value on the nucleotides in the list (typically rec.alt)
+    def max list = @alt
+      values = self[list]
+      values.reduce(0){ |memo,v| (v>memo ? v : memo) 
+      }
     end
 
   end
@@ -67,7 +75,7 @@ module BioVcf
     end
 
     def bcount
-      VcfNucleotides.new(@values[@format['BCOUNT']].split(','))
+      VcfNucleotides.new(@alt,@values[@format['BCOUNT']].split(','))
     end
 
     def bq
