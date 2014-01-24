@@ -1,6 +1,7 @@
 module BioVcf
 
   module VcfRecordParser
+    # Parse the format field into a Hash
     def VcfRecordParser.get_format s
       h = {}
       s.split(/:/).each_with_index { |v,i| h[v] = i }
@@ -36,7 +37,7 @@ module BioVcf
     end
 
     def alt
-      @alt ||= @fields[4]
+      @alt ||= @fields[4].split(/,/)
     end
 
     def format
@@ -44,11 +45,11 @@ module BioVcf
     end
 
     def normal
-      @normal ||= VcfGenotypeField.new(@fields[9],format,@header)
+      @normal ||= VcfGenotypeField.new(@fields[9],format,@header,alt)
     end
 
     def tumor
-      @tumor ||= VcfGenotypeField.new(@fields[10],format,@header)
+      @tumor ||= VcfGenotypeField.new(@fields[10],format,@header,alt)
     end
 
   end

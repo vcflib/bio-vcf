@@ -1,22 +1,69 @@
 module BioVcf
 
+  # Helper class for a list of (variant) values, such as A,G. 
+  # The [] function does the hard work (see ./features for examples)
   class VcfNucleotides 
     def initialize list
-      @list = list
+      @list = list.map{|i| i.to_i}
     end
   
     def [] idx
-      idx = ["A","C","G","T"].index(idx) if idx.kind_of?(String)
-      return 0 if idx == nil
-      @list[idx].to_i
+      if idx.kind_of?(Integer)
+        @list[idx].to_i
+      elsif idx.kind_of?(String)
+        @list[["A","C","G","T"].index(idx)].to_i
+      else idx.kind_of?(Array)
+        idx.map { |nuc|
+          idx2 = ["A","C","G","T"].index(nuc)
+          # p [idx,nuc,idx2,@list]
+          @list[idx2].to_i
+        }
+      end
     end
+
+    def to_ary
+      @list
+    end
+
   end
 
+  class VcfAltInfo
+    def initialize alt,list
+      @alt = alt
+      @list = list.map{|i| i.to_i}
+    end
+  
+    def [] idx
+      if idx.kind_of?(Integer)
+        @list[idx].to_i
+      elsif idx.kind_of?(String)
+        @list[@alt.index(idx)].to_i
+      else idx.kind_of?(Array)
+        idx.map { |nuc|
+          idx2 = @alt.index(nuc)
+          # p [idx,nuc,idx2,@list]
+          @list[idx2].to_i
+        }
+      end
+    end
+
+    def to_ary
+      @list
+    end
+
+  end
+
+
   class VcfGenotypeField
-    def initialize s, format, header
+    def initialize s, format, header, alt
       @values = s.split(/:/)
       @format = format
       @header = header
+      @alt = alt
+    end
+
+    def dp4
+      @values[@format['DP4']].split(',').map{|i| i.to_i}
     end
 
     def bcount
@@ -24,13 +71,12 @@ module BioVcf
     end
 
     def bq
-      VcfNucleotides.new(@values[@format['BQ']].split(','))
+      VcfAltInfo.new(@alt,@values[@format['BQ']].split(','))
     end
 
     def amq
-      VcfNucleotides.new(@values[@format['AMQ']].split(','))
+      VcfAltInfo.new(@alt,@values[@format['AMQ']].split(','))
     end
-
 
     def method_missing(m, *args, &block)  
       v = @values[@format[m.to_s.upcase]]

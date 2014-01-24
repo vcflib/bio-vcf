@@ -13,3 +13,5 @@ $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'bio-vcf'
 
 require 'rspec/expectations'
+
+include BioVcf
