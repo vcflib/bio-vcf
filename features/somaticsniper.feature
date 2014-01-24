@@ -37,3 +37,28 @@ Feature: VCF for Somatic Sniper
     And I expect rec.tumor.amq.to_ary to be [37,37]
     And I expect rec.tumor.mq to be 37
     And I expect rec.tumor.ss to be 2
+
+    Given the somatic sniper vcf line
+    """
+1 27686841  . A T . . . GT:IGT:DP:DP4:BCOUNT:GQ:JGQ:VAQ:BQ:MQ:AMQ:SS:SSC  0/0:0/0:15:3,12,0,0:15,0,0,0:66:37:0:25:37:37:0:. 0/1:0/1:16:2,11,0,3:13,0,0,3:30:37:30:34,55:37:37,37:2:37
+    """
+    When I parse the record
+    Then I expect rec.chrom to contain "1"
+    Then I expect rec.pos to contain 27691244
+    Then I expect rec.ref to contain "A"
+    And I expect rec.alt to contain ["C","G"]
+    And I expect rec.tumor.dp to be 10
+    And I expect rec.tumor.dp4 to be [0,8,0,2]
+    And I expect rec.tumor.bcount.to_ary to be [8,2,0,0]
+    And I expect rec.tumor.bcount[rec.alt] to be [2,0]
+    And I expect rec.tumor.bcount["G"] to be 0 
+    And I expect rec.tumor.bcount[1] to be 2
+    And I expect rec.tumor.bcount[3] to be 0
+    And I expect rec.tumor.bq.to_ary to be [20,51]
+    And I expect rec.tumor.bq["G"] to be 51
+    And I expect rec.tumor.bq[1] to be 51
+    And I expect rec.tumor.amq.to_ary to be [37,37]
+    And I expect rec.tumor.mq to be 37
+    And I expect rec.tumor.ss to be 2
+
+    
