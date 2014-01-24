@@ -36,16 +36,16 @@ Jeweler::RubygemsDotOrgTasks.new
 #   spec.rcov = true
 # end
 
-require 'rake/testtask'
+# require 'rake/testtask'
 
-Rake::TestTask.new do |t|
-  t.pattern = "spec/*_spec.rb"
-end
+# Rake::TestTask.new do |t|
+#   t.pattern = "spec/*_spec.rb"
+# end
 
 require 'cucumber/rake/task'
 Cucumber::Rake::Task.new(:features)
 
-task :default => :spec
+task :default => :features
 
 require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
