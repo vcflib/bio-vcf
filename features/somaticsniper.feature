@@ -5,13 +5,17 @@ Feature: VCF for Somatic Sniper
   At this position the reference contains: AAAGAAAAGAAAAA  (12A,2G)
   At this position the tumor contains:     AAAAACACAA      (8A,2C)
 
-  rec.alt contains variants C,G.  rec.bcount appears to reflect the contents of
-  the tumor (8A,2C) so rec.bcount[rec.alt] reflects the number of variants in the
-  tumor. 
+  rec.alt contains variants C,G.  rec.tumor.bcount reflects the contents of the
+  tumor (8A,2C) so rec.tumor.bcount[rec.alt] reflects the actual number of
+  variants in the tumor. 
 
   The mapping quality in the BAM file is 37/37 and base quality is 55/60 in normal
   and tumor respectively.
 
+  For the second scenario:
+
+  At this position the reference contains: (15A)
+  At this position the tumor contains:     AAAAAAAAATATTA (11A, 3T)
 
   Scenario: When parsing a record
 
@@ -44,19 +48,20 @@ Feature: VCF for Somatic Sniper
     """
     When I parse the record
     Then I expect rec.chrom to contain "1"
-    Then I expect rec.pos to contain 27691244
+    Then I expect rec.pos to contain 27686841
     Then I expect rec.ref to contain "A"
-    And I expect rec.alt to contain ["C","G"]
-    And I expect rec.tumor.dp to be 10
-    And I expect rec.tumor.dp4 to be [0,8,0,2]
-    And I expect rec.tumor.bcount.to_ary to be [8,2,0,0]
-    And I expect rec.tumor.bcount[rec.alt] to be [2,0]
+    And I expect rec.alt to contain one ["T"]
+    And I expect rec.tumor.dp to be 16
+    And I expect rec.tumor.dp4 to be [2,11,0,3]
+    And I expect rec.tumor.bcount.to_ary to be [13,0,0,3]
+    And I expect rec.tumor.bcount[rec.alt] to be one [3]
     And I expect rec.tumor.bcount["G"] to be 0 
-    And I expect rec.tumor.bcount[1] to be 2
-    And I expect rec.tumor.bcount[3] to be 0
-    And I expect rec.tumor.bq.to_ary to be [20,51]
-    And I expect rec.tumor.bq["G"] to be 51
-    And I expect rec.tumor.bq[1] to be 51
+    And I expect rec.tumor.bcount["T"] to be 3
+    And I expect rec.tumor.bcount[1] to be 0
+    And I expect rec.tumor.bcount[3] to be 3
+    And I expect rec.tumor.bq.to_ary to be [34,55]
+    And I expect rec.tumor.bq["T"] to be 34
+    And I expect rec.tumor.bq[1] to be 55
     And I expect rec.tumor.amq.to_ary to be [37,37]
     And I expect rec.tumor.mq to be 37
     And I expect rec.tumor.ss to be 2

@@ -23,6 +23,10 @@ Then(/^I expect rec\.alt to contain \["(.*?)","(.*?)"\]$/) do |arg1, arg2|
   expect(@rec.alt).to eq [arg1,arg2]
 end
 
+Then(/^I expect rec\.alt to contain one \["(.*?)"\]$/) do |arg1|
+  expect(@rec.alt).to eq [arg1]
+end
+
 Then(/^I expect rec\.tumor\.dp to be (\d+)$/) do |arg1|
   expect(@rec.tumor.dp).to eq arg1.to_i
 end
@@ -31,12 +35,17 @@ Then(/^I expect rec\.tumor\.dp(\d+) to be \[(\d+),(\d+),(\d+),(\d+)\]$/) do |arg
   expect(@rec.tumor.dp4).to eq [arg2.to_i,arg3.to_i,arg4.to_i,arg5.to_i]
 end
 
+
 Then(/^I expect rec\.tumor\.bcount.to_ary to be \[(\d+),(\d+),(\d+),(\d+)\]$/) do |arg1, arg2, arg3, arg4|
   expect(@rec.tumor.bcount.to_ary).to eq [arg1.to_i,arg2.to_i,arg3.to_i,arg4.to_i]
 end
 
 Then(/^I expect rec\.tumor\.bcount\[rec\.alt\] to be \[(\d+),(\d+)\]$/) do |arg1, arg2|
   expect(@rec.tumor.bcount[@rec.alt]).to eq [arg1.to_i,arg2.to_i]
+end
+
+Then(/^I expect rec\.tumor\.bcount\[rec\.alt\] to be one \[(\d+)\]$/) do |arg1|
+  expect(@rec.tumor.bcount[@rec.alt]).to eq [arg1.to_i]
 end
 
 Then(/^I expect rec\.tumor\.bcount\["(.*?)"\] to be (\d+)$/) do |arg1, arg2|
