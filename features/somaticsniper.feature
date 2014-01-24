@@ -40,6 +40,8 @@ Feature: VCF for Somatic Sniper
     And I expect rec.tumor.bq.to_ary to be [20,51]
     And I expect rec.tumor.bq["G"] to be 51
     And I expect rec.tumor.bq[1] to be 51
+    And I expect rec.tumor.bq.min to be 20
+    And I expect rec.tumor.bq.max to be 51
     And I expect rec.tumor.amq.to_ary to be [37,37]
     And I expect rec.tumor.mq to be 37
     And I expect rec.tumor.ss to be 2
@@ -66,6 +68,8 @@ Feature: VCF for Somatic Sniper
     And I expect rec.tumor.bq.to_ary to be [34,55]
     And I expect rec.tumor.bq["T"] to be 34
     And I expect rec.tumor.bq[1] to be 55
+    And I expect rec.tumor.bq.min to be 34
+    And I expect rec.tumor.bq.max to be 55
     And I expect rec.tumor.amq.to_ary to be [37,37]
     And I expect rec.tumor.mq to be 37
     And I expect rec.tumor.ss to be 2

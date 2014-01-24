@@ -32,6 +32,11 @@ module BioVcf
       values.reduce(0){ |memo,v| (v>memo ? v : memo) }
     end
 
+    def min list = @alt
+      values = self[list]
+      values.reduce(0){ |memo,v| (v<memo ? v : memo) }
+    end
+
     def sum list = @alt
       values = self[list]
       values.reduce(0){ |memo,v| v+memo }
@@ -63,6 +68,24 @@ module BioVcf
     def to_ary
       @list
     end
+
+    # Return the max value on the nucleotides in the list (typically rec.alt)
+    def max list = @alt
+      values = self[list]
+      values.reduce(0){ |memo,v| (v>memo ? v : memo) }
+    end
+
+    def min list = @alt
+      values = self[list]
+      values.reduce(0){ |memo,v| (v<memo ? v : memo) }
+    end
+
+    def sum list = @alt
+      values = self[list]
+      values.reduce(0){ |memo,v| v+memo }
+    end
+
+
 
   end
 
