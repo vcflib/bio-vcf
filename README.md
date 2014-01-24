@@ -105,6 +105,8 @@ Similar for base quality scores
   bio-vcf --filter 'rec.alt.size==1 and rec.tumor.amq[rec.alt]>30' < test.vcf 
 ```
 
+For more examples see the feature [section](https://github.com/pjotrp/bioruby-vcf/tree/master/features).
+
 ## API
 
 BioVcf can also be used as an API. The following code is basically
