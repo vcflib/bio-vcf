@@ -3,13 +3,19 @@
 [![Build Status](https://secure.travis-ci.org/pjotrp/bioruby-vcf.png)](http://travis-ci.org/pjotrp/bioruby-vcf) 
 
 Yet another VCF parser. This one may give better performance and
-useful command line filtering.
+useful (fancy) command line filtering. For example, to filter somatic
+data 
+
+```ruby
+  bio-vcf --filter 'rec.alt.size==1 and rec.tumor.bq[rec.alt]>30 and rec.tumor.mq>20' < file.vcf
+```
+
 
 The VCF format is commonly used for variant calling between NGS
 samples. The fast parser needs to carry some state, recorded for each
 file in VcfHeader, which contains the VCF file header. Individual
 lines (variant calls) first go through a raw parser returning an array
-of fields. Further (lazy) parsing is handled through VcfRecord.
+of fields. Further (lazy) parsing is handled through VcfRecord. 
 
 Health warning: Early days, your mileage may vary because I add
 features as I go along! If something is not working, check out the
@@ -99,6 +105,34 @@ Similar for base quality scores
   bio-vcf --filter 'rec.alt.size==1 and rec.tumor.amq[rec.alt]>30' < test.vcf 
 ```
 
+## API
+
+BioVcf can also be used as an API. The following code is basically
+what the command line interface uses (see ./bin/bio-vcf)
+
+```ruby
+  FILE.each_line do | line |
+    if line =~ /^##fileformat=/
+      # ---- We have a new file header
+      header = VcfHeader.new
+      header.add(line)
+      STDIN.each_line do | headerline |
+        if headerline !~ /^#/
+          line = headerline
+          break # end of header
+        end
+        header.add(headerline)
+      end
+    end
+    # ---- Parse VCF record line
+    # fields = VcfLine.parse(line,header.columns)
+    fields = VcfLine.parse(line)
+    rec = VcfRecord.new(fields,header)
+    #
+    # Do something with rec
+    #
+  end
+```
 
 ## Project home page
 
