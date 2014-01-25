@@ -15,7 +15,7 @@ Feature: VCF for Somatic Sniper
   For the second scenario:
 
   At this position the reference contains: (15A)
-  At this position the tumor contains:     AAAAAAAAATATTA (11A, 3T)
+  At this position the tumor contains:     AAAAAAAAATATTA (13A, 3T)
 
   Scenario: When parsing a record
 
