@@ -21,12 +21,10 @@ Feature: Variant calling (filters) - diffing nucleotide counts
     Given normal and tumor counts [0,25,0,1] and [0,40,0,12]
     When I look for the difference
     Then I expect the diff to be [0,15,0,11]
-    And the relative diff to be [0,0.38,0,0.85]
-    And I expect the defining tumor nucluotide to be "T"
+    And the relative diff to be [0,0.23,0,0.85]
+    And I expect the defining tumor nucleotide to be "T"
     And I expect the tumor count to be 12
     When I set an inclusion threshold for the reference
     Then I expect the diff for threshold 2 to be [0,0,0,11]
     And the relative diff to be [0,0,0,0.85]
-    And I expect the defining tumor nucluotide to be "T"
-    And I expect the tumor count to be 12
    
