@@ -9,7 +9,35 @@ module BioVcf
     end
   end
 
+  module VcfRecordCall
+    def call_diff
+      Variant.diff(normal.bcount.to_ary,tumor.bcount.to_ary)
+    end
+
+    def call_nuc
+      ['A','C','G','T'][index()]
+    end
+
+    def call_tumor_count
+      tumor.bcount.to_ary[index()]
+    end
+
+    def call_tumor_relative_count
+      Variant.relative_diff(normal.bcount.to_ary,tumor.bcount.to_ary)[index()]
+    end
+
+    def call_normal_count
+      normal.bcount.to_ary[index()]
+    end
+
+    def index
+      Variant.index(self.normal.bcount.to_ary,self.tumor.bcount.to_ary)
+    end
+  end
+
   class VcfRecord
+
+    include VcfRecordCall
 
     def initialize fields, header
       @header = header

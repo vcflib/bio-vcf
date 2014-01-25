@@ -1,3 +1,4 @@
+@sniper
 Feature: VCF for Somatic Sniper
 
   Here we take a VCF line and parse the information given by Somatic Sniper. 
