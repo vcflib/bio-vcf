@@ -99,3 +99,24 @@ Then(/^I expect rec\.tumor\.ss to be (\d+)$/) do |arg1|
 end
 
 
+Then(/^I expect rec\.tumor\.call_diff to be \[\-(\d+),(\d+),\-(\d+),(\d+)\]$/) do |arg1, arg2, arg3, arg4|
+  pending # express the regexp above with the code you wish you had
+end
+
+Then(/^I expect rec\.tumor\.call_nuc to be "(.*?)"$/) do |arg1|
+  pending # express the regexp above with the code you wish you had
+end
+
+Then(/^I expect rec\.tumor\.call_tumor_count to be (\d+)$/) do |arg1|
+  pending # express the regexp above with the code you wish you had
+end
+
+Then(/^I expect rec\.tumor\.call_normal_count to be (\d+)$/) do |arg1|
+  pending # express the regexp above with the code you wish you had
+end
+
+Then(/^I expect rec\.tumor\.call_tumor_relative_count to be (\d+)\.(\d+)$/) do |arg1, arg2|
+  pending # express the regexp above with the code you wish you had
+end
+
+
