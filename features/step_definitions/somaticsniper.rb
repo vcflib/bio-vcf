@@ -99,24 +99,24 @@ Then(/^I expect rec\.tumor\.ss to be (\d+)$/) do |arg1|
 end
 
 
-Then(/^I expect rec\.tumor\.call_diff to be \[\-(\d+),(\d+),\-(\d+),(\d+)\]$/) do |arg1, arg2, arg3, arg4|
-  pending # express the regexp above with the code you wish you had
+Then(/^I expect rec.call_diff to be \[\-(\d+),(\d+),\-(\d+),(\d+)\]$/) do |arg1, arg2, arg3, arg4|
+  expect(@rec.tumor.call_diff).to eq [arg1.to_i,arg2.to_i,arg3.to_i,arg4.to_i]
 end
 
-Then(/^I expect rec\.tumor\.call_nuc to be "(.*?)"$/) do |arg1|
-  pending # express the regexp above with the code you wish you had
+Then(/^I expect rec.call_nuc to be "(.*?)"$/) do |arg1|
+  expect(@rec.call_nuc).to eq arg1
 end
 
-Then(/^I expect rec\.tumor\.call_tumor_count to be (\d+)$/) do |arg1|
-  pending # express the regexp above with the code you wish you had
+Then(/^I expect rec.call_tumor_count to be (\d+)$/) do |arg1|
+  expect(@rec.call_tumor_count).to eq arg1.to_i
 end
 
-Then(/^I expect rec\.tumor\.call_normal_count to be (\d+)$/) do |arg1|
-  pending # express the regexp above with the code you wish you had
+Then(/^I expect rec.call_normal_count to be (\d+)$/) do |arg1|
+  expect(@rec.call_normal_count).to eq arg1.to_i
 end
 
-Then(/^I expect rec\.tumor\.call_tumor_relative_count to be (\d+)\.(\d+)$/) do |arg1, arg2|
-  pending # express the regexp above with the code you wish you had
+Then(/^I expect rec.call_tumor_relative_count to be (\d+)\.(\d+)$/) do |arg1, arg2|
+  expect(@rec.call_tumor_relative_count).to eq (arg1+'.'+arg2).to_f
 end
 
 

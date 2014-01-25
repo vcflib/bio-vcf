@@ -46,11 +46,11 @@ Feature: VCF for Somatic Sniper
     And I expect rec.tumor.mq to be 37
     And I expect rec.tumor.ss to be 2
     # The following are additional functions
-    And I expect rec.tumor.call_diff to be [-4,2,-2,0]
-    And I expect rec.tumor.call_nuc to be "C"
-    And I expect rec.tumor.call_tumor_count to be 2
-    And I expect rec.tumor.call_normal_count to be 0
-    And I expect rec.tumor.call_tumor_relative_count to be 1.0
+    And I expect rec.call_diff to be [-4,2,-2,0]
+    And I expect rec.call_nuc to be "C"
+    And I expect rec.call_tumor_count to be 2
+    And I expect rec.call_normal_count to be 0
+    And I expect rec.call_tumor_relative_count to be 1.0
 
     Given the somatic sniper vcf line
     """
