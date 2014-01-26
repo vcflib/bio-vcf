@@ -25,7 +25,7 @@ require 'optparse'
 
 options = { show_help: false}
 opts = OptionParser.new do |o|
-  o.banner = "Usage: #{File.basename($0)} [options] filename\ne.g.  #{File.basename($0)} --rdf < test/data/input/somaticsniper.vcf"
+  o.banner = "Usage: #{File.basename($0)} [options] filename\ne.g.  #{File.basename($0)} < test/data/input/somaticsniper.vcf"
 
   o.on_tail('--filter cmd',String, 'Evaluate filter on each record') do |cmd|
     options[:filter] = cmd
@@ -37,7 +37,8 @@ opts = OptionParser.new do |o|
     options[:eval_once] = true
     options[:eval] = cmd
   end
-  o.on("--rdf", "Generate RDF") do |b|
+  o.on("--rdf", "Generate Turtle RDF") do |b|
+    require 'bio-vcf/vcfrdf'
     options[:rdf] = true
   end
  
@@ -86,6 +87,7 @@ begin
   $stderr.print "Options: ",options,"\n" if !options[:quiet]
 
   header = VcfHeader.new
+  header_out = false
 
   STDIN.each_line do | line |
     if line =~ /^##fileformat=/
@@ -109,8 +111,16 @@ begin
         print eval(options[:eval]) 
         exit(1) if options[:eval_once]
       else
-        # Default behaviour
-        print fields.join("\t")
+        if options[:rdf]
+          # Output Turtle RDF
+          if not header_out
+            VcfRdf::header
+            header_out = true
+          end
+        else
+          # Default behaviour prints VCF line
+          print fields.join("\t")
+        end
       end
       print "\n"
     end

@@ -2,14 +2,13 @@
 
 [![Build Status](https://secure.travis-ci.org/pjotrp/bioruby-vcf.png)](http://travis-ci.org/pjotrp/bioruby-vcf) 
 
-Yet another VCF parser. This one may give better performance and
-useful (fancy) command line filtering. For example, to filter somatic
-data 
+Yet another VCF parser. This one may give better performance because
+of lazy parsing and useful combinations of (fancy) command line
+filtering. For example, to filter somatic data 
 
 ```ruby
   bio-vcf --filter 'rec.alt.size==1 and rec.tumor.bq[rec.alt]>30 and rec.tumor.mq>20' < file.vcf
 ```
-
 
 The VCF format is commonly used for variant calling between NGS
 samples. The fast parser needs to carry some state, recorded for each
@@ -18,8 +17,9 @@ lines (variant calls) first go through a raw parser returning an array
 of fields. Further (lazy) parsing is handled through VcfRecord. 
 
 Health warning: Early days, your mileage may vary because I add
-features as I go along! If something is not working, check out the
-code. It is easy to add features.
+features as I go along! At this point the filter is geared towards
+the somatic sniper. If something is not working, check out the
+source code. It is not hard to add features.
 
 ## Installation
 
