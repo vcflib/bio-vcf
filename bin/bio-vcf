@@ -27,13 +27,13 @@ options = { show_help: false}
 opts = OptionParser.new do |o|
   o.banner = "Usage: #{File.basename($0)} [options] filename\ne.g.  #{File.basename($0)} < test/data/input/somaticsniper.vcf"
 
-  o.on_tail('--filter cmd',String, 'Evaluate filter on each record') do |cmd|
+  o.on('--filter cmd',String, 'Evaluate filter on each record') do |cmd|
     options[:filter] = cmd
   end
-  o.on_tail('-e cmd', '--eval cmd',String, 'Evaluate command on each record') do |cmd|
+  o.on('-e cmd', '--eval cmd',String, 'Evaluate command on each record') do |cmd|
     options[:eval] = cmd
   end
-  o.on_tail('--eval-once cmd',String, 'Evaluate command once (usually for header info)') do |cmd|
+  o.on('--eval-once cmd',String, 'Evaluate command once (usually for header info)') do |cmd|
     options[:eval_once] = true
     options[:eval] = cmd
   end
@@ -41,6 +41,14 @@ opts = OptionParser.new do |o|
     require 'bio-vcf/vcfrdf'
     options[:rdf] = true
   end
+  o.on_tail("--id name", String, "Identifier") do |s|
+    options[:id] = s
+  end
+  o.on_tail("--tags list", String, "Add tags") do |s|
+    options[:tags] = eval(s)
+  end
+ 
+ 
  
   # Uncomment the following when using the bio-logger 
   # o.separator ""
@@ -117,6 +125,7 @@ begin
             VcfRdf::header
             header_out = true
           end
+          VcfRdf::record(options[:id],rec,options[:tags])
         else
           # Default behaviour prints VCF line
           print fields.join("\t")
