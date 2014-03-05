@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "bio-vcf"
-  s.version = "0.0.1"
+  s.version = "0.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Pjotr Prins"]
@@ -32,6 +32,7 @@ Gem::Specification.new do |s|
     "features/somaticsniper.feature",
     "features/step_definitions/bio-vcf_steps.rb",
     "features/step_definitions/diff_count.rb",
+    "features/step_definitions/multisample.rb",
     "features/step_definitions/somaticsniper.rb",
     "features/support/env.rb",
     "lib/bio-vcf.rb",
