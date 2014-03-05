@@ -24,7 +24,7 @@ Feature: Multi-sample VCF
     And I expect rec.info.ac to be 5
     And I expect rec.info.af to be 0.357
     And I expect rec.info.dp to be 1537
-    And I expect rec.info.readposranksup to be 0.815
+    And I expect rec.info.readposranksum to be 0.815
     And I expect rec.sample['BIOPSY17513D'].gt to be "0/1"
     And I expect rec.sample['BIOPSY17513D'].ad to be [189,25]
     And I expect rec.sample['BIOPSY17513D'].gt to be [0,1]

@@ -3,9 +3,16 @@ module BioVcf
   class VcfRecordInfo
     def initialize s
       h = {}
-      s.split(/;/).each { |f| k,v=f.split(/=/) ; h[k] = v }
+      s.split(/;/).each { |f| k,v=f.split(/=/) ; h[k.upcase] = v }
       @h = h
     end
+    def method_missing(m, *args, &block)  
+      v = @h[m.to_s.upcase]
+      v = v.to_i if v =~ /^\d+$/
+      v = v.to_f if v =~ /^\d+\.\d+$/
+      v
+    end  
+
   end
 
   module VcfRecordParser
