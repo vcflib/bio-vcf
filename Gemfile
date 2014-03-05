@@ -9,7 +9,7 @@ group :development do
   # gem "minitest"
   gem "rspec"
   gem "cucumber"
-  gem "jeweler", "~> 1.8.4", :git => "https://github.com/technicalpickles/jeweler.git"
+  gem "jeweler" # , "~> 1.8.4", :git => "https://github.com/technicalpickles/jeweler.git"
   # gem "bundler", ">= 1.0.21"
   # gem "bio", ">= 1.4.2"
   # gem "rdoc", "~> 3.12"

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Pjotr Prins"]
-  s.date = "2014-01-24"
+  s.date = "2014-03-05"
   s.description = "Smart parser for VCF format"
   s.email = "pjotr.public01@thebird.nl"
   s.executables = ["bio-vcf"]
@@ -27,15 +27,22 @@ Gem::Specification.new do |s|
     "VERSION",
     "bin/bio-vcf",
     "bio-vcf.gemspec",
+    "features/diff_count.feature",
+    "features/multisample.feature",
     "features/somaticsniper.feature",
     "features/step_definitions/bio-vcf_steps.rb",
+    "features/step_definitions/diff_count.rb",
+    "features/step_definitions/somaticsniper.rb",
     "features/support/env.rb",
     "lib/bio-vcf.rb",
+    "lib/bio-vcf/variant.rb",
     "lib/bio-vcf/vcf.rb",
     "lib/bio-vcf/vcfgenotypefield.rb",
     "lib/bio-vcf/vcfheader.rb",
     "lib/bio-vcf/vcfline.rb",
+    "lib/bio-vcf/vcfrdf.rb",
     "lib/bio-vcf/vcfrecord.rb",
+    "test/data/input/multisample.vcf",
     "test/data/input/somaticsniper.vcf"
   ]
   s.homepage = "http://github.com/pjotrp/bioruby-vcf"
@@ -48,15 +55,18 @@ Gem::Specification.new do |s|
     s.specification_version = 4
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+      s.add_development_dependency(%q<rspec>, [">= 0"])
       s.add_development_dependency(%q<cucumber>, [">= 0"])
-      s.add_development_dependency(%q<jeweler>, ["~> 1.8.4"])
+      s.add_development_dependency(%q<jeweler>, [">= 0"])
     else
+      s.add_dependency(%q<rspec>, [">= 0"])
       s.add_dependency(%q<cucumber>, [">= 0"])
-      s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
+      s.add_dependency(%q<jeweler>, [">= 0"])
     end
   else
+    s.add_dependency(%q<rspec>, [">= 0"])
     s.add_dependency(%q<cucumber>, [">= 0"])
-    s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
+    s.add_dependency(%q<jeweler>, [">= 0"])
   end
 end
 

@@ -1,4 +1,4 @@
-@sniper
+@multi
 Feature: Multi-sample VCF
 
   Here we take a VCF line and parse the information for multiple named 
@@ -19,7 +19,7 @@ Feature: Multi-sample VCF
     Then I expect rec.chrom to contain "1"
     Then I expect rec.pos to contain 10321
     Then I expect rec.ref to contain "C"
-    And I expect rec.alt to contain ["T"]
+    And I expect multisample rec.alt to contain ["T"]
     And I expect rec.qual to be 106.30
     And I expect rec.info.ac to be 5
     And I expect rec.info.af to be 0.357
@@ -32,4 +32,7 @@ Feature: Multi-sample VCF
     And I expect rec.sample['subclone46'].dp to be 196 
     And I expect rec.sample['subclone46'].gq to be 20
     And I expect rec.sample['subclone46'].pl to be [20,0,522]
+    # And the nicer self resolving
+    And I expect rec.biopsy17513d.gt to be [0,1]
+    And I expect rec.subclone46.pl to be [20,0,522]
    
