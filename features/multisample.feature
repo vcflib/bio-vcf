@@ -32,6 +32,6 @@ Feature: Multi-sample VCF
     And I expect rec.sample['subclone46'].gq to be 20
     And I expect rec.sample['subclone46'].pl to be [20,0,522]
     # And the nicer self resolving
-    And I expect rec.biopsy17513d.gt to be [0,1]
-    And I expect rec.subclone46.pl to be [20,0,522]
+    And I expect rec.sample.biopsy17513d.gt to be [0,1]
+    And I expect rec.sample.subclone46.pl to be [20,0,522]
    

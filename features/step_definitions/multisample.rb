@@ -62,11 +62,11 @@ Then(/^I expect rec\.sample\['subclone(\d+)'\]\.pl to be \[(\d+),(\d+),(\d+)\]$/
   expect(@rec1.sample['subclone46'].pl).to eq [20,0,522]
 end
 
-Then(/^I expect rec\.biopsy(\d+)d\.gt to be \[(\d+),(\d+)\]$/) do |arg1, arg2, arg3|
+Then(/^I expect rec\.sample\.biopsy(\d+)d\.gt to be \[(\d+),(\d+)\]$/) do |arg1, arg2, arg3|
   expect(@rec1.sample.biopsy17513d.gt).to eq "0/1"
 end
 
-Then(/^I expect rec\.subclone(\d+)\.pl to be \[(\d+),(\d+),(\d+)\]$/) do |arg1, arg2, arg3, arg4|
+Then(/^I expect rec\.sample\.subclone(\d+)\.pl to be \[(\d+),(\d+),(\d+)\]$/) do |arg1, arg2, arg3, arg4|
   expect(@rec1.sample.subclone46.pl).to eq [20,0,522]
 end
 

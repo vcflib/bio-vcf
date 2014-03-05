@@ -16,10 +16,10 @@ file in VcfHeader, which contains the VCF file header. Individual
 lines (variant calls) first go through a raw parser returning an array
 of fields. Further (lazy) parsing is handled through VcfRecord. 
 
-Health warning: Early days, your mileage may vary because I add
-features as I go along! At this point the filter is geared towards
-the somatic sniper. If something is not working, check out the
-source code. It is not hard to add features.
+At this point the filter is pretty generic with multi-sample support.
+If something is not working, check out the feature descriptions and
+the source code. It is not hard to add features. Otherwise, send me a short
+example of a VCF statement you need to work on.
 
 ## Installation
 
@@ -72,6 +72,12 @@ object named 'rec'. Position is a value, so we can filter a range
   bio-vcf --filter 'rec.chrom=="12" and rec.pos>96_641_270 and rec.pos<96_641_276' < file.vcf 
 ```
 
+Info fields are referenced by
+
+```ruby
+  bio-vcf --filter 'rec.info.dp>100 and rec.info.readposranksum<=0.815' < file.vcf 
+```
+
 With subfields defined by rec.format
 
 ```ruby
@@ -110,6 +116,26 @@ Similar for base quality scores
 
 ```ruby
   bio-vcf --filter 'rec.alt.size==1 and rec.tumor.amq[rec.alt]>30' < test.vcf 
+```
+
+If your samples have other names you can fetch genotypes for that
+sample with
+
+```sh
+  bio-vcf --eval "rec.sample['BIOPSY17513D'].gt" < file.vcf
+```
+
+Or read depth for another
+
+```sh
+  bio-vcf --eval "rec.sample['subclone46'].dp" < file.vcf
+```
+
+Better even, you can access samples directly with
+
+```sh
+  bio-vcf --eval "rec.sample.biopsy17513d.gt" < file.vcf
+  bio-vcf --eval "rec.sample.subclone46.dp" < file.vcf
 ```
 
 For more examples see the feature [section](https://github.com/pjotrp/bioruby-vcf/tree/master/features).
