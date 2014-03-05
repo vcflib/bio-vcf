@@ -98,13 +98,19 @@ module BioVcf
       @format ||= VcfRecordParser.get_format(@fields[8])
     end
 
+    # Return the normal sample (used in two sample VCF)
     def normal
       @normal ||= VcfGenotypeField.new(@fields[9],format,@header,alt)
     end
 
+    # Return the tumor sample (used in two sample VCF)
     def tumor
       @tumor ||= VcfGenotypeField.new(@fields[10],format,@header,alt)
     end
-
+   
+    # Return the sample as a named hash 
+    def sample 
+      @sample ||= VcfGenotypeFields.new(@fields,format,@header,alt)
+    end
   end
 end

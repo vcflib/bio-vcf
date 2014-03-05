@@ -83,9 +83,7 @@ module BioVcf
     def sum 
       @list.reduce(0){ |memo,v| v+memo }
     end
-
   end
-
 
   class VcfGenotypeField
     def initialize s, format, header, alt
@@ -118,5 +116,24 @@ module BioVcf
       v
     end  
 
+  end
+
+  class VcfGenotypeFields
+    def initialize fields, format, header, alt
+      @fields = fields
+      @format = format
+      @header = header
+      @alt = alt
+      @samples = {}
+    end
+
+    def [] name
+      p @format
+      p @header.column_names
+      @samples[name] ||= VcfGenotypeField.new(@fields[10],@format,@header,@alt)
+    end
+
+    def to_ary
+    end
   end
 end

@@ -39,7 +39,8 @@ Then(/^I expect rec\.info\.readposranksum to be (\d+)\.(\d+)$/) do |arg1, arg2|
 end
 
 Then(/^I expect rec\.sample\['BIOPSY(\d+)D'\]\.gt to be "(.*?)"$/) do |arg1, arg2|
-  pending # express the regexp above with the code you wish you had
+  p @rec.sample['BIOPSY17513D']
+  expect(@rec.sample['BIOPSY17513D']).to eq "0/1"
 end
 
 Then(/^I expect rec\.sample\['BIOPSY(\d+)D'\]\.ad to be \[(\d+),(\d+)\]$/) do |arg1, arg2, arg3|
