@@ -142,5 +142,9 @@ module BioVcf
       @samples[name] ||= VcfGenotypeField.new(@fields[@index[name]],@format,@header,@alt)
     end
 
+    def method_missing(m, *args, &block) 
+      self[name]
+    end  
+
   end
 end
