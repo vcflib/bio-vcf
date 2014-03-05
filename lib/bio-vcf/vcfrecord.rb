@@ -1,5 +1,13 @@
 module BioVcf
 
+  class VcfRecordInfo
+    def initialize s
+      h = {}
+      s.split(/;/).each { |f| k,v=f.split(/=/) ; h[k] = v }
+      @h = h
+    end
+  end
+
   module VcfRecordParser
     # Parse the format field into a Hash
     def VcfRecordParser.get_format s
@@ -8,9 +16,7 @@ module BioVcf
       h
     end
     def VcfRecordParser.get_info s
-      h = {}
-      s.split(/;/).each { |f| k,v=f.split(/=/) ; h[k] = v.to_f }
-      h
+      VcfRecordInfo.new(s)
     end
   end
 
