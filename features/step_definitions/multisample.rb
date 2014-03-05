@@ -1,12 +1,18 @@
 Given(/^the multi sample header line$/) do |string|
-  pending # express the regexp above with the code you wish you had
+  @header = VcfHeader.new
+  @header.add(string)
 end
 
 When(/^I parse the header$/) do
-  pending # express the regexp above with the code you wish you had
+  expect(@header.column_names.size).to eq 16
+  expect(@header.samples.size).to eq 7
+  expect(@header.samples).to eq ["BIOPSY17513D", "clone10", "clone3", "clone4", "subclone105", "subclone33", "subclone46"]
 end
 
 Given(/^multisample vcf line$/) do |string|
+  @fields = VcfLine.parse(string.split(/\s+/).join("\t"))
+  @rec = VcfRecord.new(@fields,@header)
+  p @rec
   pending # express the regexp above with the code you wish you had
 end
 

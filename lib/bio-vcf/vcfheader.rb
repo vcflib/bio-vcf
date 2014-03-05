@@ -5,6 +5,7 @@ module BioVcf
     def VcfHeaderParser.get_column_names(lines)
       lines.each do | line |
         if line =~ /^#[^#]/
+          # the first line that starts with a single hash 
           names = line.split
           names[0].sub!(/^#/,'')
           return names
@@ -36,6 +37,10 @@ module BioVcf
 
     def columns
       @column ||= column_names.size
+    end
+
+    def samples
+      @samples ||= column_names[9..-1]
     end
   end
 

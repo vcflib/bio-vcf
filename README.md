@@ -41,8 +41,15 @@ Get the version of the VCF file
 Get the column headers
 
 ```ruby
-  bio-vcf -q -eval-once 'header.column_names.join(",")' < file.vcf
+  bio-vcf -q --eval-once 'header.column_names.join(",")' < file.vcf
   CHROM,POS,ID,REF,ALT,QUAL,FILTER,INFO,FORMAT,NORMAL,TUMOR
+```
+
+Get the sample names
+
+```ruby
+  bio-vcf -q --eval-once 'header.samples.join(",")' < file.vcf
+  NORMAL,TUMOR
 ```
 
 The 'fields' array contains unprocessed data (strings).  Print first
