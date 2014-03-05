@@ -16,7 +16,7 @@ EOB
     end
 
     def VcfRdf::record id,rec,hash = {}
-      id2 = [id,'chr'+rec.chrom,rec.pos].join('_')
+      id2 = [id,'ch'+rec.chrom,rec.pos].join('_')
       print <<OUT
 :#{id2} :chr \"#{rec.chrom}\" .
 :#{id2} :pos #{rec.pos} .
