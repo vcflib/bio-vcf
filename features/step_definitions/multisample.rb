@@ -39,7 +39,6 @@ end
 
 Then(/^I expect rec\.sample\['BIOPSY(\d+)D'\]\.gt to be "(.*?)"$/) do |arg1, arg2|
   # p @rec1.sample
-  p @rec1.sample['BIOPSY17513D']
   expect(@rec1.sample['BIOPSY17513D'].gt).to eq "0/1"
 end
 
@@ -64,11 +63,11 @@ Then(/^I expect rec\.sample\['subclone(\d+)'\]\.pl to be \[(\d+),(\d+),(\d+)\]$/
 end
 
 Then(/^I expect rec\.biopsy(\d+)d\.gt to be \[(\d+),(\d+)\]$/) do |arg1, arg2, arg3|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.sample.biopsy17513d.gt).to eq "0/1"
 end
 
 Then(/^I expect rec\.subclone(\d+)\.pl to be \[(\d+),(\d+),(\d+)\]$/) do |arg1, arg2, arg3, arg4|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.sample.subclone46.pl).to eq [20,0,522]
 end
 
 
