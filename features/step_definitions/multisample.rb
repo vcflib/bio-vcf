@@ -12,19 +12,18 @@ end
 Given(/^multisample vcf line$/) do |string|
   @fields = VcfLine.parse(string.split(/\s+/).join("\t"))
   @rec = VcfRecord.new(@fields,@header)
-  p @rec
-  pending # express the regexp above with the code you wish you had
 end
 
 Then(/^I expect multisample rec\.alt to contain \["(.*?)"\]$/) do |arg1|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec.alt).to eq ["T"]
 end
 
 Then(/^I expect rec\.qual to be (\d+)\.(\d+)$/) do |arg1, arg2|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec.qual).to eq 106.3
 end
 
 Then(/^I expect rec\.info\.ac to be (\d+)$/) do |arg1|
+  p @rec.info
   pending # express the regexp above with the code you wish you had
 end
 Then(/^I expect rec\.info\.af to be (\d+)\.(\d+)$/) do |arg1, arg2|

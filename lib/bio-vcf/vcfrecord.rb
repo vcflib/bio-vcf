@@ -7,6 +7,11 @@ module BioVcf
       s.split(/:/).each_with_index { |v,i| h[v] = i }
       h
     end
+    def VcfRecordParser.get_info s
+      h = {}
+      s.split(/;/).each { |f| k,v=f.split(/=/) ; h[k] = v.to_f }
+      h
+    end
   end
 
   module VcfRecordCall
@@ -66,6 +71,14 @@ module BioVcf
 
     def alt
       @alt ||= @fields[4].split(/,/)
+    end
+
+    def qual
+      @qual ||= @fields[5].to_f
+    end
+
+    def info
+      @info ||= VcfRecordParser.get_info(@fields[7])
     end
 
     def format
