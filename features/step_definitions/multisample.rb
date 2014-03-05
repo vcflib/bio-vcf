@@ -11,60 +11,56 @@ end
 
 Given(/^multisample vcf line$/) do |string|
   @fields = VcfLine.parse(string.split(/\s+/).join("\t"))
-  @rec = VcfRecord.new(@fields,@header)
+  @rec1 = VcfRecord.new(@fields,@header)
 end
 
 Then(/^I expect multisample rec\.alt to contain \["(.*?)"\]$/) do |arg1|
-  expect(@rec.alt).to eq ["T"]
+  expect(@rec1.alt).to eq ["T"]
 end
 
 Then(/^I expect rec\.qual to be (\d+)\.(\d+)$/) do |arg1, arg2|
-  expect(@rec.qual).to eq 106.3
+  expect(@rec1.qual).to eq 106.3
 end
 
 Then(/^I expect rec\.info\.ac to be (\d+)$/) do |arg1|
-  # p @rec.info
-  expect(@rec.info.ac).to eq arg1.to_i
+  expect(@rec1.info.ac).to eq arg1.to_i
 end
 Then(/^I expect rec\.info\.af to be (\d+)\.(\d+)$/) do |arg1, arg2|
-  expect(@rec.info.af).to eq 0.357
+  expect(@rec1.info.af).to eq 0.357
 end
 
 Then(/^I expect rec\.info\.dp to be (\d+)$/) do |arg1|
-  expect(@rec.info.dp).to eq 1537
+  expect(@rec1.info.dp).to eq 1537
 end
 
 Then(/^I expect rec\.info\.readposranksum to be (\d+)\.(\d+)$/) do |arg1, arg2|
-  expect(@rec.info.readposranksum).to eq 0.815
+  expect(@rec1.info.readposranksum).to eq 0.815
 end
 
 Then(/^I expect rec\.sample\['BIOPSY(\d+)D'\]\.gt to be "(.*?)"$/) do |arg1, arg2|
-  p @rec.sample['BIOPSY17513D']
-  expect(@rec.sample['BIOPSY17513D']).to eq "0/1"
+  # p @rec1.sample
+  p @rec1.sample['BIOPSY17513D']
+  expect(@rec1.sample['BIOPSY17513D'].gt).to eq "0/1"
 end
 
 Then(/^I expect rec\.sample\['BIOPSY(\d+)D'\]\.ad to be \[(\d+),(\d+)\]$/) do |arg1, arg2, arg3|
-  pending # express the regexp above with the code you wish you had
-end
-
-Then(/^I expect rec\.sample\['BIOPSY(\d+)D'\]\.gt to be \[(\d+),(\d+)\]$/) do |arg1, arg2, arg3|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.sample['BIOPSY17513D'].ad).to eq [189,25]
 end
 
 Then(/^I expect rec\.sample\['subclone(\d+)'\]\.ad to be \[(\d+),(\d+)\]$/) do |arg1, arg2, arg3|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.sample['subclone46'].ad).to eq [167,26]
 end
 
 Then(/^I expect rec\.sample\['subclone(\d+)'\]\.dp to be (\d+)$/) do |arg1, arg2|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.sample['subclone46'].dp).to eq 196
 end
 
 Then(/^I expect rec\.sample\['subclone(\d+)'\]\.gq to be (\d+)$/) do |arg1, arg2|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.sample['subclone46'].gq).to eq 20 
 end
 
 Then(/^I expect rec\.sample\['subclone(\d+)'\]\.pl to be \[(\d+),(\d+),(\d+)\]$/) do |arg1, arg2, arg3, arg4|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.sample['subclone46'].pl).to eq [20,0,522]
 end
 
 Then(/^I expect rec\.biopsy(\d+)d\.gt to be \[(\d+),(\d+)\]$/) do |arg1, arg2, arg3|

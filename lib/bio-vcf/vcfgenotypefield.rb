@@ -97,6 +97,14 @@ module BioVcf
       @values[@format['DP4']].split(',').map{|i| i.to_i}
     end
 
+    def ad
+      @values[@format['AD']].split(',').map{|i| i.to_i}
+    end
+
+    def pl
+      @values[@format['PL']].split(',').map{|i| i.to_i}
+    end
+
     def bcount
       VcfNucleotides.new(@alt,@values[@format['BCOUNT']].split(','))
     end
@@ -118,22 +126,21 @@ module BioVcf
 
   end
 
+  # Holds all samples
   class VcfGenotypeFields
     def initialize fields, format, header, alt
       @fields = fields
       @format = format
       @header = header
       @alt = alt
-      @samples = {}
+      @samples = {} # lazy cache
+      @index = {}
+      @header.samples.each_with_index { |k,i| @index[k] = i+9 }
     end
 
     def [] name
-      p @format
-      p @header.column_names
-      @samples[name] ||= VcfGenotypeField.new(@fields[10],@format,@header,@alt)
+      @samples[name] ||= VcfGenotypeField.new(@fields[@index[name]],@format,@header,@alt)
     end
 
-    def to_ary
-    end
   end
 end

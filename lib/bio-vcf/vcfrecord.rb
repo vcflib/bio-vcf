@@ -57,9 +57,11 @@ module BioVcf
 
     include VcfRecordCall
 
+    attr_reader :header
+
     def initialize fields, header
-      @header = header
       @fields = fields
+      @header = header
     end
      
     def chrom

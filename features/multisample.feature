@@ -27,7 +27,6 @@ Feature: Multi-sample VCF
     And I expect rec.info.readposranksum to be 0.815
     And I expect rec.sample['BIOPSY17513D'].gt to be "0/1"
     And I expect rec.sample['BIOPSY17513D'].ad to be [189,25]
-    And I expect rec.sample['BIOPSY17513D'].gt to be [0,1]
     And I expect rec.sample['subclone46'].ad to be [167,26]
     And I expect rec.sample['subclone46'].dp to be 196 
     And I expect rec.sample['subclone46'].gq to be 20
