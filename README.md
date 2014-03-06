@@ -145,6 +145,9 @@ And even better because of Ruby magic
   bio-vcf --eval "rec.subclone46.dp" < file.vcf
 ```
 
+Note that only valid method names in lower case get picked up this
+way. Also by convention normal is sample 1 and tumor is sample 2.
+
 For more examples see the feature [section](https://github.com/pjotrp/bioruby-vcf/tree/master/features).
 
 ## API
