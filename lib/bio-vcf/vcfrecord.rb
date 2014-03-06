@@ -101,14 +101,14 @@ module BioVcf
     end
 
     # Return the normal sample (used in two sample VCF)
-    def normal
-      @normal ||= VcfGenotypeField.new(@fields[9],format,@header,alt)
-    end
+    # def normal
+    #   @normal ||= VcfGenotypeField.new(@fields[9],format,@header,alt)
+    # end
 
     # Return the tumor sample (used in two sample VCF)
-    def tumor
-      @tumor ||= VcfGenotypeField.new(@fields[10],format,@header,alt)
-    end
+    # def tumor
+    #   @tumor ||= VcfGenotypeField.new(@fields[10],format,@header,alt)
+    # end
    
     # Return the sample as a named hash 
     def sample 
