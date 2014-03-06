@@ -138,6 +138,13 @@ Better even, you can access samples directly with
   bio-vcf --eval "rec.sample.subclone46.dp" < file.vcf
 ```
 
+And even better because of Ruby magic
+
+```sh
+  bio-vcf --eval "rec.biopsy17513d.gt" < file.vcf
+  bio-vcf --eval "rec.subclone46.dp" < file.vcf
+```
+
 For more examples see the feature [section](https://github.com/pjotrp/bioruby-vcf/tree/master/features).
 
 ## API

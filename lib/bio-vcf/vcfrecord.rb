@@ -114,5 +114,16 @@ module BioVcf
     def sample 
       @sample ||= VcfGenotypeFields.new(@fields,format,@header,alt)
     end
+
+    def sample_by_name name
+      sample[name]
+    end
+
+    # Return the sample
+    def method_missing(m, *args, &block)  
+      name = m.to_s
+      sample[name]
+    end  
+
   end
 end
