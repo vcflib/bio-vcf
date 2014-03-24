@@ -38,36 +38,35 @@ Then(/^I expect rec\.info\.readposranksum to be (\d+)\.(\d+)$/) do |arg1, arg2|
 end
 
 Then(/^I expect rec\.sample\['Original'\]\.gt to be "(.*?)"$/) do |arg1|
-  expect(@rec1.sample['BIOPSY17513D'].gt).to eq "0/1"
+  expect(@rec1.sample['Original'].gt).to eq "0/1"
 end
 
 Then(/^I expect rec\.sample\['Original'\]\.ad to be \[(\d+),(\d+)\]$/) do |arg1, arg2|
-  expect(@rec1.sample['BIOPSY17513D'].ad).to eq "0/1"
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.sample['Original'].ad).to eq [189,25]
 end
 
 Then(/^I expect rec\.sample\['Original'\]\.gt to be \[(\d+),(\d+)\]$/) do |arg1, arg2|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.sample['Original'].gt).to eq "0/1"
 end
 
 Then(/^I expect rec\.sample\['s(\d+)t(\d+)'\]\.ad to be \[(\d+),(\d+)\]$/) do |arg1, arg2, arg3, arg4|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.sample['s3t2'].ad).to eq [167,26]
 end
 
 Then(/^I expect rec\.sample\['s(\d+)t(\d+)'\]\.dp to be (\d+)$/) do |arg1, arg2, arg3|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.sample['s3t2'].dp).to eq 196
 end
 
 Then(/^I expect rec\.sample\['s(\d+)t(\d+)'\]\.gq to be (\d+)$/) do |arg1, arg2, arg3|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.sample['s3t2'].gq).to eq 20
 end
 
 Then(/^I expect rec\.sample\['s(\d+)t(\d+)'\]\.pl to be \[(\d+),(\d+),(\d+)\]$/) do |arg1, arg2, arg3, arg4, arg5|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.sample['s3t2'].pl).to eq [20,0,522]
 end
 
 Then(/^I expect rec\.sample\.original\.gt to be \[(\d+),(\d+)\]$/) do |arg1, arg2|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.sample.original.gt).to eq "0/1"
 end
 
 Then(/^I expect rec\.sample\.s(\d+)t(\d+)\.pl to be \[(\d+),(\d+),(\d+)\]$/) do |arg1, arg2, arg3, arg4, arg5|
