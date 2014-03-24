@@ -8,7 +8,7 @@ Feature: Multi-sample VCF
 
     Given the multi sample header line
     """
-#CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  BIOPSY17513D    clone10 clone3  clone4  subclone105     subclone33      subclone46
+#CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  Original	s1t1	s2t1	s3t1	s1t2	s2t2	s3t2
     """
     When I parse the header
     Given multisample vcf line
@@ -25,14 +25,14 @@ Feature: Multi-sample VCF
     And I expect rec.info.af to be 0.357
     And I expect rec.info.dp to be 1537
     And I expect rec.info.readposranksum to be 0.815
-    And I expect rec.sample['BIOPSY17513D'].gt to be "0/1"
-    And I expect rec.sample['BIOPSY17513D'].ad to be [189,25]
-    And I expect rec.sample['BIOPSY17513D'].gt to be [0,1]
-    And I expect rec.sample['subclone46'].ad to be [167,26]
-    And I expect rec.sample['subclone46'].dp to be 196 
-    And I expect rec.sample['subclone46'].gq to be 20
-    And I expect rec.sample['subclone46'].pl to be [20,0,522]
+    And I expect rec.sample['Original'].gt to be "0/1"
+    And I expect rec.sample['Original'].ad to be [189,25]
+    And I expect rec.sample['Original'].gt to be [0,1]
+    And I expect rec.sample['s3t2'].ad to be [167,26]
+    And I expect rec.sample['s3t2'].dp to be 196 
+    And I expect rec.sample['s3t2'].gq to be 20
+    And I expect rec.sample['s3t2'].pl to be [20,0,522]
     # And the nicer self resolving
-    And I expect rec.biopsy17513d.gt to be [0,1]
-    And I expect rec.subclone46.pl to be [20,0,522]
+    And I expect rec.Original.gt to be [0,1]
+    And I expect rec.s3t2.pl to be [20,0,522]
    
