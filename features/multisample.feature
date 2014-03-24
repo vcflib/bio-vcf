@@ -25,12 +25,6 @@ Feature: Multi-sample VCF
     And I expect rec.info.af to be 0.357
     And I expect rec.info.dp to be 1537
     And I expect rec.info.readposranksum to be 0.815
-    # And the nicer self resolving
-    And I expect rec.sample.biopsy17513d.gt to be [0,1]
-    And I expect rec.sample.subclone46.pl to be [20,0,522]
-    # And the even better
-    And I expect rec.biopsy17513d.gt to be [0,1]
-    And I expect rec.subclone46.pl to be [20,0,522]
     And I expect rec.sample['Original'].gt to be "0/1"
     And I expect rec.sample['Original'].ad to be [189,25]
     And I expect rec.sample['Original'].gt to be [0,1]
