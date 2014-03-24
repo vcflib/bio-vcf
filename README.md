@@ -122,27 +122,27 @@ If your samples have other names you can fetch genotypes for that
 sample with
 
 ```sh
-  bio-vcf --eval "rec.sample['BIOPSY17513D'].gt" < file.vcf
+  bio-vcf --eval "rec.sample['Original'].gt" < file.vcf
 ```
 
 Or read depth for another
 
 ```sh
-  bio-vcf --eval "rec.sample['subclone46'].dp" < file.vcf
+  bio-vcf --eval "rec.sample['s3t2'].dp" < file.vcf
 ```
 
 Better even, you can access samples directly with
 
 ```sh
-  bio-vcf --eval "rec.sample.biopsy17513d.gt" < file.vcf
-  bio-vcf --eval "rec.sample.subclone46.dp" < file.vcf
+  bio-vcf --eval "rec.sample.original.gt" < file.vcf
+  bio-vcf --eval "rec.sample.s3t2.dp" < file.vcf
 ```
 
 And even better because of Ruby magic
 
 ```sh
-  bio-vcf --eval "rec.biopsy17513d.gt" < file.vcf
-  bio-vcf --eval "rec.subclone46.dp" < file.vcf
+  bio-vcf --eval "rec.original.gt" < file.vcf
+  bio-vcf --eval "rec.s3t2.dp" < file.vcf
 ```
 
 Note that only valid method names in lower case get picked up this
