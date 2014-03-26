@@ -117,6 +117,7 @@ begin
         begin
           print eval(options[:eval])
         rescue 
+          $stderr.print "Line: ",line
           $stderr.print "ERROR evaluating --eval <"+options[:eval]+">\n"
           exit 1
         end
