@@ -132,6 +132,9 @@ module BioVcf
       if name =~ /\?$/
         # Query for empty sample name
         @sample_index ||= @header.sample_index
+        # p name.chop
+        # p @sample_index[name.chop]
+        # p @fields[@sample_index[name.chop]]
         return !VcfSample::empty?(@fields[@sample_index[name.chop]])
       else
         sample[name]

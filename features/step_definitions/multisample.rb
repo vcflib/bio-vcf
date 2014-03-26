@@ -102,18 +102,14 @@ Given(/^multisample vcf line with missing data$/) do |string|
 end
 
 Then(/^I expect rec\.original\? to be false$/) do
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.original?).to eq false
 end
 
 Then(/^I expect rec\.sample\.s(\d+)t(\d+)\? to be false$/) do |arg1, arg2|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.sample.s1t1?).to eq false
 end
 
 Then(/^I expect rec\.sample\.s(\d+)t(\d+)\? to be true$/) do |arg1, arg2|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.sample.s3t2?).to eq true
 end
-
-# Then(/^I expect rec\.missing_samples\? to be true$/) do
-#   expect(@rec1.missing_samples?).to be true
-# end
 
