@@ -70,15 +70,15 @@ Then(/^I expect rec\.sample\.original\.gt to be \[(\d+),(\d+)\]$/) do |arg1, arg
 end
 
 Then(/^I expect rec\.sample\.s(\d+)t(\d+)\.pl to be \[(\d+),(\d+),(\d+)\]$/) do |arg1, arg2, arg3, arg4, arg5|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.sample.s3t2.pl).to eq [20,0,522]
 end
 
 Then(/^I expect rec\.original\.gt to be \[(\d+),(\d+)\]$/) do |arg1, arg2|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.original.gt).to eq "0/1"
 end
 
 Then(/^I expect rec\.s(\d+)t(\d+)\.pl to be \[(\d+),(\d+),(\d+)\]$/) do |arg1, arg2, arg3, arg4, arg5|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.s3t2.pl).to eq [20,0,522]
 end
 
 Then(/^I expect rec\.missing_samples\? to be false$/) do
