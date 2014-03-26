@@ -63,10 +63,12 @@ module BioVcf
       @fields = fields
       @header = header
     end
-     
+
     def chrom
       @fields[0]
     end
+
+    alias :chr :chrom
 
     def pos
       @pos ||= @fields[1].to_i

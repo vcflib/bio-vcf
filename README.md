@@ -168,6 +168,31 @@ And even better because of Ruby magic
 Note that only valid method names in lower case get picked up this
 way. Also by convention normal is sample 1 and tumor is sample 2.
 
+## DbSNP
+
+One clinical variant DbSNP example 
+
+```sh
+    bio-vcf --eval '[rec.chr,rec.pos,rec.id,rec.alt,rec.info.sao,rec.info.CLNDBN].join("\t")' < clinvar_20140303.vcf
+```
+
+renders
+
+```
+  1       1916905 rs267598254     A       3       Malignant_melanoma
+  1       1916906 rs267598255     A       3       Malignant_melanoma
+  1       1959075 rs121434580     C       1       Generalized_epilepsy_with_febrile_seizures_plus_type_5
+  1       1959699 rs41307846      A       1       Generalized_epilepsy_with_febrile_seizures_plus_type_5|Epilepsy\x2c_juvenile_myoclonic_7|Epilepsy\x2c_idiopathic_generalized_10
+  1       1961453 rs142619552     T       3       Malignant_melanoma
+  1       2160299 rs387907304     G       0       Shprintzen-Goldberg_syndrome
+  1       2160305 rs387907306     A       T       0       Shprintzen-Goldberg_syndrome,Shprintzen-Goldberg_syndrome
+  1       2160306 rs387907305     A       T       0       Shprintzen-Goldberg_syndrome,Shprintzen-Goldberg_syndrome
+  1       2160308 rs397514590     T       0       Shprintzen-Goldberg_syndrome
+  1       2160309 rs397514589     A       0       Shprintzen-Goldberg_syndrome
+```
+
+## Other examples
+
 For more examples see the feature [section](https://github.com/pjotrp/bioruby-vcf/tree/master/features).
 
 ## API
