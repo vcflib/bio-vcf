@@ -118,6 +118,14 @@ Similar for base quality scores
   bio-vcf --filter 'rec.alt.size==1 and rec.tumor.amq[rec.alt]>30' < test.vcf 
 ```
 
+To filter missing on samples:
+
+  bio-vcf --filter "rec.s3t2?" < file.vcf
+
+or for all
+
+  bio-vcf --filter "rec.missing_samples?" < file.vcf
+
 If your samples have other names you can fetch genotypes for that
 sample with
 

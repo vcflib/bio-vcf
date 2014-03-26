@@ -50,5 +50,5 @@ Feature: Multi-sample VCF
     And I expect rec.original? to be false
     And I expect rec.sample.s1t1? to be false
     And I expect rec.sample.s1t3? to be true
-    And I expect rec.missing_data? to be true
+    And I expect rec.missing_samples? to be true
 
