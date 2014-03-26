@@ -134,17 +134,16 @@ module BioVcf
       @header = header
       @alt = alt
       @samples = {} # lazy cache
-      @index = {}
-      @header.samples.each_with_index { |k,i| @index[k] = i+9 ; @index[k.downcase] = i+9 }
+      @sample_index = @header.sample_index()
     end
 
     def [] name
-      @samples[name] ||= VcfGenotypeField.new(@fields[@index[name]],@format,@header,@alt)
+      @samples[name] ||= VcfGenotypeField.new(@fields[@sample_index[name]],@format,@header,@alt)
     end
 
     def method_missing(m, *args, &block) 
       name = m.to_s
-      @samples[name] ||= VcfGenotypeField.new(@fields[@index[name]],@format,@header,@alt)
+      @samples[name] ||= VcfGenotypeField.new(@fields[@sample_index[name]],@format,@header,@alt)
     end  
 
   end

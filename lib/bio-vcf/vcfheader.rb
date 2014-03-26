@@ -42,6 +42,12 @@ module BioVcf
     def samples
       @samples ||= column_names[9..-1]
     end
+
+    def sample_index
+      index = {}
+      @header.samples.each_with_index { |k,i| index[k] = i+9 ; index[k.downcase] = i+9 }
+      index
+    end
   end
 
 end
