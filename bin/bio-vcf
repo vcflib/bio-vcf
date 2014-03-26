@@ -114,7 +114,12 @@ begin
     rec = VcfRecord.new(fields,header)
     if !options[:filter] or (options[:filter] and eval(options[:filter]))
       if options[:eval] 
-        print eval(options[:eval]) 
+        begin
+          print eval(options[:eval])
+        rescue 
+          $stderr.print "ERROR evaluating --eval <"+options[:eval]+">\n"
+          exit 1
+        end
         exit(1) if options[:eval_once]
       else
         if options[:rdf]
