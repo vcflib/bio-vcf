@@ -120,15 +120,21 @@ Similar for base quality scores
 
 To filter missing on samples:
 
+```sh
   bio-vcf --filter "rec.s3t2?" < file.vcf
+```
 
 or for all
 
+```sh
   bio-vcf --filter "rec.missing_samples?" < file.vcf
+```
 
 Likewise you can check for record validity
 
+```sh
   bio-vcf --filter "not rec.valid?" < file.vcf
+```
 
 which, at this point, simply counts the number of fields.
 
