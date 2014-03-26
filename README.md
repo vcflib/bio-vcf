@@ -126,6 +126,12 @@ or for all
 
   bio-vcf --filter "rec.missing_samples?" < file.vcf
 
+Likewise you can check for record validity
+
+  bio-vcf --filter "not rec.valid?" < file.vcf
+
+which, at this point, simply counts the number of fields.
+
 If your samples have other names you can fetch genotypes for that
 sample with
 

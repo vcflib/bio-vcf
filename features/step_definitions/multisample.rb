@@ -113,3 +113,7 @@ Then(/^I expect rec\.sample\.s(\d+)t(\d+)\? to be true$/) do |arg1, arg2|
   expect(@rec1.sample.s3t2?).to eq true
 end
 
+Then(/^I expect rec\.valid\? to be true$/) do
+  expect(@rec1.valid?).to eq true
+end
+

@@ -126,15 +126,16 @@ module BioVcf
       false
     end
 
+    def valid?
+      @fields.size == @header.column_names.size
+    end
+
     # Return the sample
     def method_missing(m, *args, &block)  
       name = m.to_s
       if name =~ /\?$/
         # Query for empty sample name
         @sample_index ||= @header.sample_index
-        # p name.chop
-        # p @sample_index[name.chop]
-        # p @fields[@sample_index[name.chop]]
         return !VcfSample::empty?(@fields[@sample_index[name.chop]])
       else
         sample[name]
