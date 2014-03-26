@@ -119,6 +119,14 @@ module BioVcf
       sample[name]
     end
 
+    def missing_samples?
+      @fields[9..-1].each { |sample|
+        s = sample.strip
+        return true if s == './.' or s == ''
+      }
+      false
+    end
+
     # Return the sample
     def method_missing(m, *args, &block)  
       name = m.to_s
