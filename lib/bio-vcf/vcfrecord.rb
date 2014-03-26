@@ -56,7 +56,6 @@ module BioVcf
   class VcfRecord
 
     include VcfRecordCall
-    include VcfSample
 
     attr_reader :header
 
@@ -134,8 +133,9 @@ module BioVcf
         # Query for empty sample name
         @sample_index ||= @header.sample_index
         return VcfSample::empty?(@fields[@sample_index[name.chop]])
+      else
+        sample[name]
       end
-      sample[name]
     end  
 
   end

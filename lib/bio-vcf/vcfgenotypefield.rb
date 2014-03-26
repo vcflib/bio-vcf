@@ -153,7 +153,12 @@ module BioVcf
 
     def method_missing(m, *args, &block) 
       name = m.to_s
-      @samples[name] ||= VcfGenotypeField.new(@fields[@sample_index[name]],@format,@header,@alt)
+      if name =~ /\?$/
+        # test for valid sample
+        return VcfSample::empty?(@fields[@sample_index[name.chop]])
+      else
+        @samples[name] ||= VcfGenotypeField.new(@fields[@sample_index[name]],@format,@header,@alt)
+      end
     end  
 
   end
