@@ -18,8 +18,11 @@ of fields. Further (lazy) parsing is handled through VcfRecord.
 
 At this point the filter is pretty generic with multi-sample support.
 If something is not working, check out the feature descriptions and
-the source code. It is not hard to add features. Otherwise, send me a short
+the source code. It is not hard to add features. Otherwise, send a short
 example of a VCF statement you need to work on.
+
+bio-vcf is fast. Parsing a 55K line DbSNP file (22Mb) took 5 seconds on a
+Macbook PRO running 64-bits Linux (Ruby 2.1.0).
 
 ## Installation
 
