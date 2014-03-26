@@ -176,7 +176,7 @@ way. Also by convention normal is sample 1 and tumor is sample 2.
 One clinical variant DbSNP example 
 
 ```sh
-    bio-vcf --eval '[rec.chr,rec.pos,rec.id,rec.alt,rec.info.sao,rec.info.CLNDBN].join("\t")' < clinvar_20140303.vcf
+    bio-vcf --eval '[rec.id,rec.chr,rec.pos,rec.alt,rec.info.sao,rec.info.CLNDBN].join("\t")' < clinvar_20140303.vcf
 ```
 
 renders
