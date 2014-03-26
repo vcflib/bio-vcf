@@ -155,7 +155,7 @@ module BioVcf
       name = m.to_s
       if name =~ /\?$/
         # test for valid sample
-        return VcfSample::empty?(@fields[@sample_index[name.chop]])
+        return !VcfSample::empty?(@fields[@sample_index[name.chop]])
       else
         @samples[name] ||= VcfGenotypeField.new(@fields[@sample_index[name]],@format,@header,@alt)
       end

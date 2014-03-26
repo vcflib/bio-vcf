@@ -81,12 +81,20 @@ Then(/^I expect rec\.s(\d+)t(\d+)\.pl to be \[(\d+),(\d+),(\d+)\]$/) do |arg1, a
   expect(@rec1.s3t2.pl).to eq [20,0,522]
 end
 
-# Then(/^I expect rec\.missing_samples\? to be false$/) do
-#   expect(@rec1.missing_samples?).to be false
-# end
+Then(/^I expect test rec\.missing_samples\? to be false$/) do
+  expect(@rec1.missing_samples?).to be false
+end
 
-Then(/^I expect rec\.original\? to be (true|false)$/) do |bool|
-  expect(@rec1.original?).to be bool.to_bool
+Then(/^I expect test rec\.original\? to be true$/) do
+  expect(@rec1.original?).to be true
+end
+
+Then(/^I expect rec\.missing_samples\? to be true$/) do
+  expect(@rec1.missing_samples?).to be true
+end
+
+Then(/^I expect rec\.original\? to be true$/) do
+  expect(@rec1.original?).to be true
 end
 
 Given(/^multisample vcf line with missing data$/) do |string|
@@ -105,7 +113,7 @@ Then(/^I expect rec\.sample\.s(\d+)t(\d+)\? to be true$/) do |arg1, arg2|
   pending # express the regexp above with the code you wish you had
 end
 
-Then(/^I expect rec\.missing_samples\? to be true$/) do
-  expect(@rec1.missing_samples?).to be true
-end
+# Then(/^I expect rec\.missing_samples\? to be true$/) do
+#   expect(@rec1.missing_samples?).to be true
+# end
 
