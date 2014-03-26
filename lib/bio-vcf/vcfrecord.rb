@@ -128,13 +128,15 @@ module BioVcf
 
     # Return the sample
     def method_missing(m, *args, &block)  
-      p @header
+      # p @header
       name = m.to_s
       if name =~ /\?$/
         # Query for empty sample name
-        p name.chop
+        @sample_index ||= @header.sample_index
+        # p name.chop
+        # p @sample_index
         # p sample[name.chop]
-        return empty_sample?(sample[name.chop])
+        return empty_sample?(@fields[@sample_index[name.chop]])
       end
       sample[name]
     end  
