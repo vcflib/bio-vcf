@@ -56,6 +56,7 @@ module BioVcf
   class VcfRecord
 
     include VcfRecordCall
+    include VcfSample
 
     attr_reader :header
 
@@ -121,32 +122,21 @@ module BioVcf
 
     def missing_samples?
       @fields[9..-1].each { |sample|
-        return true if empty_sample?(sample)
+        return true if VcfSample::empty?(sample)
       }
       false
     end
 
     # Return the sample
     def method_missing(m, *args, &block)  
-      # p @header
       name = m.to_s
       if name =~ /\?$/
         # Query for empty sample name
         @sample_index ||= @header.sample_index
-        # p name.chop
-        # p @sample_index
-        # p sample[name.chop]
-        return empty_sample?(@fields[@sample_index[name.chop]])
+        return VcfSample::empty?(@fields[@sample_index[name.chop]])
       end
       sample[name]
     end  
-
-protected
-
-    def empty_sample? sample
-      s = sample.strip
-      s == './.' or s == ''
-    end
 
   end
 end

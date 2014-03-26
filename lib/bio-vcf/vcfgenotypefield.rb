@@ -85,6 +85,16 @@ module BioVcf
     end
   end
 
+  module VcfSample
+    # Helpers
+
+    # Check whether a sample is empty (on the raw string value)
+    def VcfSample::empty? raw_sample
+      s = raw_sample.strip
+      s == './.' or s == ''
+    end
+  end
+
   class VcfGenotypeField
     def initialize s, format, header, alt
       @values = s.split(/:/)
