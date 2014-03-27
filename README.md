@@ -17,7 +17,10 @@ use the --eval switch, e.g.,
   bio-vcf --eval 'rec.alt+"\t"+rec.tumor.bcount.split(",")[["A","C","G","T"].index(rec.alt)]+"\t"+rec.tumor.gq.to_s' < file.vcf
 ```
 
-Filter and eval commands can be used at the same time.
+Filter and eval commands can be used at the same time.  Also note you
+can use [bio-table](https://github.com/pjotrp/bioruby-table) to
+filter/transform data further and convert to other formats, such as
+RDF.
 
 The VCF format is commonly used for variant calling between NGS
 samples. The fast parser needs to carry some state, recorded for each
@@ -202,6 +205,10 @@ renders
   1       2160308 rs397514590     T       0       Shprintzen-Goldberg_syndrome
   1       2160309 rs397514589     A       0       Shprintzen-Goldberg_syndrome
 ```
+
+## RDF output
+
+Use [bio-table](https://github.com/pjotrp/bioruby-table) to convert tabular data to RDF.
 
 ## Other examples
 
