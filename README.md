@@ -10,6 +10,15 @@ filtering. For example, to filter somatic data
   bio-vcf --filter 'rec.alt.size==1 and rec.tumor.bq[rec.alt]>30 and rec.tumor.mq>20' < file.vcf
 ```
 
+To output specific fields in tabular (and HTML, XML or LaTeX) format
+use the --eval switch, e.g.,
+
+```ruby
+  bio-vcf --eval 'rec.alt+"\t"+rec.tumor.bcount.split(",")[["A","C","G","T"].index(rec.alt)]+"\t"+rec.tumor.gq.to_s' < file.vcf
+```
+
+Filter and eval commands can be used at the same time.
+
 The VCF format is commonly used for variant calling between NGS
 samples. The fast parser needs to carry some state, recorded for each
 file in VcfHeader, which contains the VCF file header. Individual
@@ -21,7 +30,7 @@ If something is not working, check out the feature descriptions and
 the source code. It is not hard to add features. Otherwise, send a short
 example of a VCF statement you need to work on.
 
-bio-vcf is fast. Parsing a 55K line DbSNP file (22Mb) took 5 seconds on a
+bio-vcf is fast. Parsing a 55K line DbSNP file (22Mb) takes 5 seconds on a
 Macbook PRO running 64-bits Linux (Ruby 2.1.0).
 
 ## Installation
