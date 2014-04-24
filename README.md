@@ -4,7 +4,10 @@
 
 Yet another VCF parser. This one may give better performance because
 of lazy parsing and useful combinations of (fancy) command line
-filtering. For example, to filter somatic data 
+filtering. Also few assumptions are made about the actual contents of
+the VCF file (field names are resolved on the fly).
+
+For example, to filter somatic data 
 
 ```ruby
   bio-vcf --filter 'rec.alt.size==1 and rec.tumor.bq[rec.alt]>30 and rec.tumor.mq>20' < file.vcf
