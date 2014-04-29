@@ -136,6 +136,12 @@ Similar for base quality scores
   bio-vcf --filter 'rec.alt.size==1 and rec.tumor.amq[rec.alt]>30' < test.vcf 
 ```
 
+Filter out on sample values
+
+```ruby
+  bio-vcf --sfilter 'dp>20' < test.vcf 
+```
+
 To filter missing on samples:
 
 ```sh
@@ -186,6 +192,37 @@ And even better because of Ruby magic
 Note that only valid method names in lower case get picked up this
 way. Also by convention normal is sample 1 and tumor is sample 2.
 
+Even shorter r is an alias for rec (nyi) 
+
+```sh
+  bio-vcf --eval "r.original.gt" < file.vcf
+  bio-vcf --eval "r.s3t2.dp" < file.vcf
+```
+
+## Special functions
+
+Sometime you want to use a special function in a filter. For 
+example percentage variant reads can be defined as [a,c,g,t] 
+with frequencies against sample read depth (dp) as 
+[0,0.03,0.47,0.50]. Filtering would with a special function, 
+which we named freq
+
+```sh
+  bio-vcf --sfilter "freq[2]>0.30" < file.vcf
+```
+
+which is equal to 
+
+```sh
+  bio-vcf --sfilter "freq.g>0.30" < file.vcf
+```
+
+To check for ref or variant frequencies use more sugar
+
+```sh
+  bio-vcf --sfilter "freq.var>0.30 and freq.ref<0.10" < file.vcf
+```
+
 ## DbSNP
 
 One clinical variant DbSNP example 
@@ -208,6 +245,43 @@ renders
   1       2160308 rs397514590     T       0       Shprintzen-Goldberg_syndrome
   1       2160309 rs397514589     A       0       Shprintzen-Goldberg_syndrome
 ```
+
+## Set analysis
+
+### Complement
+
+Filter specified samples that evaluate to true, all others should evaluate to
+false
+
+i=inc.
+e=excl.
+s=any. 
+
+```sh
+--set-union      default
+--set-complement include=true, exclude=false
+  bio-vcf --include /s3.+/ --sfilter 'dp>20'  --ifilter 'gt==s3t1.gt' --efilter 'gt!=s3t1.gt' 
+  bio-vcf --include /s3.+/ --sfilter 'dp>20'  --ifilter 'gt==s3t1.gt' --efilter 'gt!=s3t1.gt' 
+--set-intersect  include=true
+  bio-vcf --include /s3.+/ --sample /t2/ --sfilter 'dp>20'  --ifilter 'gt==s3t1.gt'  
+--set-catesian   one in include=true, rest=false
+  bio-vcf --unique-sample (any) --include /s3.+/ --sfilter 'dp>20' --ifilter 'gt!="0/0"'  
+```
+
+  bio-vcf --sfilter "freq.var>0.30 and freq.ref<0.10" < file.vcf
+
+For all includes var should be identical for set analysis except for
+catesian. So when --include is defined test for identical var and in
+the case of cartesian one unique var, when tested.
+
+ref should always be identical across samples.
+
+Unlike the --filter, the set filters --ifilter, --efilter and
+--sfilter ignore missing data. To test for missing data
+in set filters use --strict.
+
+With the --filter command you can use --ignore-missing-data to skip
+errors.
 
 ## RDF output
 
