@@ -115,7 +115,8 @@ begin
     if !options[:filter] or (options[:filter] and eval(options[:filter]))
       if options[:eval] 
         begin
-          print eval(options[:eval])
+          res = eval(options[:eval])
+          print res,"\n" if res
         rescue 
           $stderr.print "Line: ",line
           $stderr.print "ERROR evaluating --eval <"+options[:eval]+">\n"
@@ -132,10 +133,9 @@ begin
           VcfRdf::record(options[:id],rec,options[:tags])
         else
           # Default behaviour prints VCF line
-          print fields.join("\t")
+          print fields.join("\t"),"\n"
         end
       end
-      print "\n"
     end
   end
 
