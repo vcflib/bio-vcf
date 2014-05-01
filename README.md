@@ -4,8 +4,10 @@
 
 Yet another VCF parser. This one may give better performance because
 of lazy parsing and useful combinations of (fancy) command line
-filtering. Also few assumptions are made about the actual contents of
-the VCF file (field names are resolved on the fly).
+filtering. bio-vcf comes with a sensible parser definition language,
+as well as primitives for set analysis. Also few assumptions are made
+about the actual contents of the VCF file (field names are resolved on
+the fly).
 
 For example, to filter somatic data 
 
@@ -248,19 +250,29 @@ renders
 
 ## Set analysis
 
-### Complement
+bio-vcf allows for set analysis. With the complement filter, for
+example, samples are selected that evaluate to true, all others should
+evaluate to false. For this we create three filters, one for all 
+samples that are included (the --ifilter or -if), for all samples that
+are excluded (the --efilter or -ef) and for any sample (the --sfilter
+or -sf). So i=include, e=exclude and s=any sample. 
 
-Filter specified samples that evaluate to true, all others should evaluate to
-false
-
-i=inc.
-e=excl.
-s=any. 
+The equivalent of the union filter is by using the --sfilter, so
 
 ```sh
---set-union      default
---set-complement include=true, exclude=false
-  bio-vcf --include /s3.+/ --sfilter 'dp>20'  --ifilter 'gt==s3t1.gt' --efilter 'gt!=s3t1.gt' 
+  bio-vcf --sfilter 'dp>20' 
+```
+
+Filters DP on all samples.
+
+The equivalent of the complement filter is by specifying what samples
+to include, here with a regex and define filters on the included
+samples and the 
+
+```sh
+  bio-vcf --include /s3.+/ --sfilter 'dp>20'  --ifilter 'gt==s3t1.gt' --efilter 'gt!=s3t1.gt'
+```
+
   bio-vcf --include /s3.+/ --sfilter 'dp>20'  --ifilter 'gt==s3t1.gt' --efilter 'gt!=s3t1.gt' 
 --set-intersect  include=true
   bio-vcf --include /s3.+/ --sample /t2/ --sfilter 'dp>20'  --ifilter 'gt==s3t1.gt'  
