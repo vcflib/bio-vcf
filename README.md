@@ -9,10 +9,24 @@ as well as primitives for set analysis. Also few assumptions are made
 about the actual contents of the VCF file (field names are resolved on
 the fly).
 
+To fetch all samples with a depth larger than 20 use an sfilter
+
+```ruby
+  bio-vcf --sfilter 'dp>20' < file.vcf
+```
+
+To only filter on set included samples, use an ifilter
+
+```ruby
+  bio-vcf --include tumor --ifilter 'dp>20' < file.vcf
+```
+
+It is also possible to specify sample names, or info fields:
+
 For example, to filter somatic data 
 
 ```ruby
-  bio-vcf --filter 'rec.alt.size==1 and rec.tumor.bq[rec.alt]>30 and rec.tumor.mq>20' < file.vcf
+  bio-vcf --filter 'rec.info.dp>5 and rec.alt.size==1 and rec.tumor.bq[rec.alt]>30 and rec.tumor.mq>20' < file.vcf
 ```
 
 To output specific fields in tabular (and HTML, XML or LaTeX) format
@@ -22,8 +36,13 @@ use the --eval switch, e.g.,
   bio-vcf --eval 'rec.alt+"\t"+rec.tumor.bcount.split(",")[["A","C","G","T"].index(rec.alt)]+"\t"+rec.tumor.gq.to_s' < file.vcf
 ```
 
-Filter and eval commands can be used at the same time.  Also note you
-can use [bio-table](https://github.com/pjotrp/bioruby-table) to
+Filter and eval commands can be used at the same time. Special set
+commands exit for filtering and eval. When a set is defined, based on
+the sample name, you can apply filters on the samples inside the set,
+outside the set and over all samples. E.g.
+
+Also note you can use
+[bio-table](https://github.com/pjotrp/bioruby-table) to
 filter/transform data further and convert to other formats, such as
 RDF.
 
