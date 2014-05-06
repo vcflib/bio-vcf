@@ -117,7 +117,22 @@ begin
           break # end of header
         end
         header.add(headerline)
-        print headerline if not options[:skip_header]
+        if not options[:skip_header]
+          if headerline =~ /^#CHR/
+            selected = header.column_names
+            if samples
+              newfields = selected[0..8]
+              samples.each do |s|
+                newfields << selected[s+9] 
+              end
+              selected = newfields
+            end
+                  
+            print "#",selected.join("\t"),"\n"
+          else
+            print headerline
+          end
+        end
       end
     end
     next if line =~ /^##/ # empty file
