@@ -318,7 +318,11 @@ errors.
 
 Add or modify the sample file name in the INFO fields:
 
-  bio-vcf --rewrite 'rec.info.sample=mytest' < mytest.vcf
+  bio-vcf --rewrite 'rec.info["sample"]="mytest"' < mytest.vcf
+
+To remove/select 3 samples and create a new file:
+
+  bio-vcf --samples 0,1,3 < mytest.vcf
 
 ## RDF output
 

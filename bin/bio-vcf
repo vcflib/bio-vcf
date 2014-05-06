@@ -40,6 +40,9 @@ opts = OptionParser.new do |o|
   o.on("--rewrite eval", "Rewrite INFO") do |s|
     options[:rewrite] = s
   end
+  o.on("--samples list", Array, "Write selected samples") do |l|
+    options[:samples] = l
+  end
   o.on("--rdf", "Generate Turtle RDF") do |b|
     require 'bio-vcf/vcfrdf'
     options[:rdf] = true
@@ -96,6 +99,9 @@ begin
 
   $stderr.print "Options: ",options,"\n" if !options[:quiet]
 
+  if options[:samples]
+    samples = options[:samples].map { |s| s.to_i }
+  end
   header = VcfHeader.new
   header_out = false
 
@@ -114,11 +120,20 @@ begin
         print headerline if not options[:skip_header]
       end
     end
+    next if line =~ /^##/ # empty file
     # ---- Parse VCF record line
     # fields = VcfLine.parse(line,header.columns)
     fields = VcfLine.parse(line)
     rec = VcfRecord.new(fields,header)
     if !options[:filter] or (options[:filter] and eval(options[:filter]))
+      if samples
+        # Select certain samples for output
+        newfields = fields[0..8]
+        samples.each do |s|
+          newfields << fields[s+9] 
+        end
+        fields = newfields
+      end
       if options[:eval] 
         begin
           res = eval(options[:eval])
