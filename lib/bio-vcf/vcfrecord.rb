@@ -8,7 +8,7 @@ module BioVcf
     end
 
     def to_s
-      @h.map { |k,v| @original_key[k] + '=' + v  }.join(';')
+      @h.map { |k,v| (v ? @original_key[k] + '=' + v : @original_key[k])  }.join(';')
     end
 
     def []= k, v
