@@ -43,6 +43,7 @@ opts = OptionParser.new do |o|
   o.on("--rdf", "Generate Turtle RDF") do |b|
     require 'bio-vcf/vcfrdf'
     options[:rdf] = true
+    options[:skip_header] = true
   end
   o.on_tail("--id name", String, "Identifier") do |s|
     options[:id] = s
@@ -103,14 +104,14 @@ begin
       # ---- We have a new file header
       header = VcfHeader.new
       header.add(line)
-      print line
+      print line if not options[:skip_header]
       STDIN.each_line do | headerline |
         if headerline !~ /^#/
           line = headerline
           break # end of header
         end
         header.add(headerline)
-        print headerline
+        print headerline if not options[:skip_header]
       end
     end
     # ---- Parse VCF record line
