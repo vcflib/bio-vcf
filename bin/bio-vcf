@@ -103,12 +103,14 @@ begin
       # ---- We have a new file header
       header = VcfHeader.new
       header.add(line)
+      print line
       STDIN.each_line do | headerline |
         if headerline !~ /^#/
           line = headerline
           break # end of header
         end
         header.add(headerline)
+        print headerline
       end
     end
     # ---- Parse VCF record line
