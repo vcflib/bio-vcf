@@ -136,8 +136,6 @@ begin
           VcfRdf::record(options[:id],rec,options[:tags])
         elsif options[:rewrite]
           # Default behaviour prints VCF line, but rewrite info
-          p rec
-          p rec.info
           eval(options[:rewrite]) 
           print (fields[0..6]+[rec.info.to_s]+fields[8..-1]).join("\t"),"\n"
         else
