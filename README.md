@@ -290,7 +290,6 @@ samples and the
 
 ```sh
   bio-vcf --include /s3.+/ --sfilter 'dp>20'  --ifilter 'gt==s3t1.gt' --efilter 'gt!=s3t1.gt'
-```
 
   bio-vcf --include /s3.+/ --sfilter 'dp>20'  --ifilter 'gt==s3t1.gt' --efilter 'gt!=s3t1.gt' 
 --set-intersect  include=true
@@ -299,7 +298,9 @@ samples and the
   bio-vcf --unique-sample (any) --include /s3.+/ --sfilter 'dp>20' --ifilter 'gt!="0/0"'  
 ```
 
+```sh
   bio-vcf --sfilter "freq.var>0.30 and freq.ref<0.10" < file.vcf
+```
 
 For all includes var should be identical for set analysis except for
 catesian. So when --include is defined test for identical var and in
@@ -318,11 +319,15 @@ errors.
 
 Add or modify the sample file name in the INFO fields:
 
+```sh
   bio-vcf --rewrite 'rec.info["sample"]="mytest"' < mytest.vcf
+```
 
 To remove/select 3 samples and create a new file:
 
+```sh
   bio-vcf --samples 0,1,3 < mytest.vcf
+```
 
 ## RDF output
 
