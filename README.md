@@ -314,6 +314,12 @@ in set filters use --strict.
 With the --filter command you can use --ignore-missing-data to skip
 errors.
 
+## Modify VCF files
+
+Add or modify the sample file name in the INFO fields:
+
+  bio-vcf --rewrite 'rec.info.sample=mytest' < mytest.vcf
+
 ## RDF output
 
 Use [bio-table](https://github.com/pjotrp/bioruby-table) to convert tabular data to RDF.

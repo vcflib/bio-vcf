@@ -3,10 +3,14 @@ module BioVcf
   class VcfRecordInfo
     def initialize s
       h = {}
-      s.split(/;/).each { |f| k,v=f.split(/=/) ; h[k.upcase] = v }
+      @original_key = {}
+      s.split(/;/).each { |f| k,v=f.split(/=/) ; kupper = k.upcase ; h[kupper] = v ; @original_key[kupper] = k }
       @h = h
     end
-    def method_missing(m, *args, &block)  
+    def to_s
+      @h.map { |k,v| @original_key[k] + '=' + v  }.join(';')
+    end
+    def method_missing(m, *args, &block) 
       v = @h[m.to_s.upcase]
       v = v.to_i if v =~ /^\d+$/
       v = v.to_f if v =~ /^\d+\.\d+$/

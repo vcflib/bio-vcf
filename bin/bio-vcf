@@ -37,6 +37,9 @@ opts = OptionParser.new do |o|
     options[:eval_once] = true
     options[:eval] = cmd
   end
+  o.on("--rewrite eval", "Rewrite INFO") do |s|
+    options[:rewrite] = s
+  end
   o.on("--rdf", "Generate Turtle RDF") do |b|
     require 'bio-vcf/vcfrdf'
     options[:rdf] = true
@@ -131,6 +134,12 @@ begin
             header_out = true
           end
           VcfRdf::record(options[:id],rec,options[:tags])
+        elsif options[:rewrite]
+          # Default behaviour prints VCF line, but rewrite info
+          p rec
+          p rec.info
+          eval(options[:rewrite]) 
+          print (fields[0..6]+[rec.info.to_s]+fields[8..-1]).join("\t"),"\n"
         else
           # Default behaviour prints VCF line
           print fields.join("\t"),"\n"
