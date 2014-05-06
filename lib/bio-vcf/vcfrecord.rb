@@ -23,7 +23,11 @@ module BioVcf
       v = v.to_f if v =~ /^\d+\.\d+$/
       v
     end  
+  end
 
+  class VcfSampleRecord
+    def initialize sample
+    end
   end
 
   module VcfRecordParser
@@ -130,6 +134,10 @@ module BioVcf
 
     def sample_by_name name
       sample[name]
+    end
+
+    def each_sample
+      @header.column_names[9..-1].each { |name| yield VcfSampleRecord.new(sample[name]) }
     end
 
     def missing_samples?

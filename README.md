@@ -9,7 +9,7 @@ as well as primitives for set analysis. Also few assumptions are made
 about the actual contents of the VCF file (field names are resolved on
 the fly).
 
-To fetch all samples with a depth larger than 20 use an sfilter
+To fetch all entries where all samples have depth larger than 20 use an sfilter
 
 ```ruby
   bio-vcf --sfilter 'dp>20' < file.vcf

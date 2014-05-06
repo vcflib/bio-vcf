@@ -30,6 +30,9 @@ opts = OptionParser.new do |o|
   o.on('--filter cmd',String, 'Evaluate filter on each record') do |cmd|
     options[:filter] = cmd
   end
+  o.on('--sfilter cmd',String, 'Evaluate filter on each sample') do |cmd|
+    options[:sfilter] = cmd
+  end
   o.on('-e cmd', '--eval cmd',String, 'Evaluate command on each record') do |cmd|
     options[:eval] = cmd
   end
@@ -141,6 +144,15 @@ begin
     fields = VcfLine.parse(line)
     rec = VcfRecord.new(fields,header)
     if !options[:filter] or (options[:filter] and eval(options[:filter]))
+      # -----------------------------
+      # Filtering and set analysis
+      if options[:sfilter]
+        rec.each_sample do | sample |
+          next if not sample.eval(options[:sfilter])
+        end
+      end
+      # -----------------------------
+      # From here on decide on output
       if samples
         # Select certain samples for output
         newfields = fields[0..8]
