@@ -27,6 +27,9 @@ options = { show_help: false}
 opts = OptionParser.new do |o|
   o.banner = "Usage: #{File.basename($0)} [options] filename\ne.g.  #{File.basename($0)} < test/data/input/somaticsniper.vcf"
 
+  o.on('-i','--ignore-missing', 'Ignore missing data') do 
+    options[:ignore_missing] = true
+  end
   o.on('--filter cmd',String, 'Evaluate filter on each record') do |cmd|
     options[:filter] = cmd
   end
@@ -149,7 +152,7 @@ begin
       # Filtering and set analysis
       if options[:sfilter]
         rec.each_sample do | sample |
-          next if not sample.eval(options[:sfilter])
+          next if not sample.eval(options[:sfilter],options[:ignore_missing])
         end
       end
       # -----------------------------
