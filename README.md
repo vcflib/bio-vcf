@@ -12,14 +12,16 @@ the fly).
 To fetch all entries where all samples have depth larger than 20 use an sfilter
 
 ```ruby
-  bio-vcf --sfilter 'dp>20' < file.vcf
+  bio-vcf --sfilter 'sample.dp>20' < file.vcf
 ```
 
 To only filter on set included samples, use an ifilter
 
 ```ruby
-  bio-vcf --include tumor --ifilter 'dp>20' < file.vcf
+  bio-vcf --include tumor --ifilter 's.dp>20' < file.vcf
 ```
+
+Where 's.dp' is the shorter name for 'sample.dp'.
 
 It is also possible to specify sample names, or info fields:
 
@@ -111,6 +113,13 @@ object named 'rec'. Position is a value, so we can filter a range
   bio-vcf --filter 'rec.chrom=="12" and rec.pos>96_641_270 and rec.pos<96_641_276' < file.vcf 
 ```
 
+The shorter name for 'rec.chrom' is 'r.chrom', so you may write
+
+```ruby
+  bio-vcf --filter 'r.chrom=="12" and r.pos>96_641_270 and r.pos<96_641_276' < file.vcf 
+```
+
+
 Info fields are referenced by
 
 ```ruby
@@ -160,7 +169,7 @@ Similar for base quality scores
 Filter out on sample values
 
 ```ruby
-  bio-vcf --sfilter 'dp>20' < test.vcf 
+  bio-vcf --sfilter 's.dp>20' < test.vcf 
 ```
 
 To filter missing on samples:
@@ -229,19 +238,19 @@ with frequencies against sample read depth (dp) as
 which we named freq
 
 ```sh
-  bio-vcf --sfilter "freq[2]>0.30" < file.vcf
+  bio-vcf --sfilter "s.freq[2]>0.30" < file.vcf
 ```
 
 which is equal to 
 
 ```sh
-  bio-vcf --sfilter "freq.g>0.30" < file.vcf
+  bio-vcf --sfilter "s.freq.g>0.30" < file.vcf
 ```
 
 To check for ref or variant frequencies use more sugar
 
 ```sh
-  bio-vcf --sfilter "freq.var>0.30 and freq.ref<0.10" < file.vcf
+  bio-vcf --sfilter "s.freq.var>0.30 and s.freq.ref<0.10" < file.vcf
 ```
 
 ## DbSNP
@@ -279,7 +288,7 @@ or -sf). So i=include, e=exclude and s=any sample.
 The equivalent of the union filter is by using the --sfilter, so
 
 ```sh
-  bio-vcf --sfilter 'dp>20' 
+  bio-vcf --sfilter 's.dp>20' 
 ```
 
 Filters DP on all samples.
@@ -299,7 +308,7 @@ samples and the
 ```
 
 ```sh
-  bio-vcf --sfilter "freq.var>0.30 and freq.ref<0.10" < file.vcf
+  bio-vcf --sfilter "s.freq.var>0.30 and s.freq.ref<0.10" < file.vcf
 ```
 
 For all includes var should be identical for set analysis except for

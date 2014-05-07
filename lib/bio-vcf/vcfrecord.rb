@@ -25,11 +25,6 @@ module BioVcf
     end  
   end
 
-  class VcfSampleRecord
-    def initialize sample
-    end
-  end
-
   module VcfRecordParser
     # Parse the format field into a Hash
     def VcfRecordParser.get_format s
@@ -137,7 +132,7 @@ module BioVcf
     end
 
     def each_sample
-      @header.column_names[9..-1].each { |name| yield VcfSampleRecord.new(sample[name]) }
+      @header.column_names[9..-1].each { |name| yield VcfSample::Record.new(sample[name]) }
     end
 
     def missing_samples?

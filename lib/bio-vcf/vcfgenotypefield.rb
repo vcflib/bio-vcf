@@ -85,17 +85,10 @@ module BioVcf
     end
   end
 
-  module VcfSample
-    # Helpers
-
-    # Check whether a sample is empty (on the raw string value)
-    def VcfSample::empty? raw_sample
-      s = raw_sample.strip
-      s == './.' or s == ''
-    end
-  end
-
   class VcfGenotypeField
+
+    attr_reader :format, :values, :header
+
     def initialize s, format, header, alt
       @values = s.split(/:/)
       @format = format
@@ -127,7 +120,7 @@ module BioVcf
       VcfAltInfo.new(@alt,@values[@format['AMQ']].split(','))
     end
 
-    def method_missing(m, *args, &block)  
+    def method_missing(m, *args, &block)
       v = @values[@format[m.to_s.upcase]]
       v = v.to_i if v =~ /^\d+$/
       v = v.to_f if v =~ /^\d+\.\d+$/

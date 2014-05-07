@@ -9,6 +9,7 @@
 # In this file only require other files. Avoid other source code.
 
 require 'bio-vcf/vcf'
+require 'bio-vcf/vcfsample'
 require 'bio-vcf/vcfheader'
 require 'bio-vcf/vcfline'
 require 'bio-vcf/vcfgenotypefield'
