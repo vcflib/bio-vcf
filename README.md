@@ -119,6 +119,12 @@ The shorter name for 'rec.chrom' is 'r.chrom', so you may write
   bio-vcf --filter 'r.chrom=="12" and r.pos>96_641_270 and r.pos<96_641_276' < file.vcf 
 ```
 
+To ignore and continue parsing on missing data use the
+--ignore-missing (-i) and or --quiet (-q) switches
+
+```ruby
+  bio-vcf -i --filter 'r.chrom=="12" and r.pos>96_641_270 and r.pos<96_641_276' < file.vcf 
+```
 
 Info fields are referenced by
 
