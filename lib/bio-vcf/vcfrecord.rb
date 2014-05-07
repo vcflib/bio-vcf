@@ -165,8 +165,6 @@ module BioVcf
       end
     end
 
-
-
     # Return the sample
     def method_missing(m, *args, &block)  
       name = m.to_s

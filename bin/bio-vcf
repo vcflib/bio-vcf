@@ -168,7 +168,7 @@ begin
       end
       if options[:eval] 
         begin
-          res = eval(options[:eval])
+          res = rec.eval(options[:eval],options[:ignore_missing],options[:quiet])
           print res,"\n" if res
         rescue 
           $stderr.print "Line: ",line
