@@ -62,6 +62,8 @@ example of a VCF statement you need to work on.
 bio-vcf is fast. Parsing a 55K line DbSNP file (22Mb) takes 5 seconds on a
 Macbook PRO running 64-bits Linux (Ruby 2.1.0).
 
+This is a test for the course.
+
 ## Installation
 
 ```sh
