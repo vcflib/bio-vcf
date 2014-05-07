@@ -15,10 +15,10 @@ To fetch all entries where all samples have depth larger than 20 use an sfilter
   bio-vcf --sfilter 'sample.dp>20' < file.vcf
 ```
 
-To only filter on set included samples, use an ifilter
+To only filter on some samples number 0 and 3:
 
 ```ruby
-  bio-vcf --include tumor --ifilter 's.dp>20' < file.vcf
+  bio-vcf --sfilter-samples 0,3 --sfilter 's.dp>20' < file.vcf
 ```
 
 Where 's.dp' is the shorter name for 'sample.dp'.
@@ -35,7 +35,7 @@ To output specific fields in tabular (and HTML, XML or LaTeX) format
 use the --eval switch, e.g.,
 
 ```ruby
-  bio-vcf --eval 'rec.alt+"\t"+rec.tumor.bcount.split(",")[["A","C","G","T"].index(rec.alt)]+"\t"+rec.tumor.gq.to_s' < file.vcf
+  bio-vcf --eval 'rec.alt+"\t"+rec.info.dp+"\t"+rec.tumor.gq.to_s' < file.vcf
 ```
 
 Filter and eval commands can be used at the same time. Special set
