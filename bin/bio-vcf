@@ -147,12 +147,13 @@ begin
     fields = VcfLine.parse(line)
     rec = VcfRecord.new(fields,header)
     r = rec # alias
-    if !options[:filter] or (options[:filter] and rec.eval(options[:filter],options[:ignore_missing]))
+    if !options[:filter] or (options[:filter] and rec.eval(options[:filter],options[:ignore_missing],options[:quiet]))
       # -----------------------------
       # Filtering and set analysis
       if options[:sfilter]
         rec.each_sample do | sample |
-          next if not sample.eval(options[:sfilter],options[:ignore_missing])
+          next if not
+          sample.eval(options[:sfilter],options[:ignore_missing],options[:quiet])
         end
       end
       # -----------------------------

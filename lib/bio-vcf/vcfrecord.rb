@@ -146,6 +146,27 @@ module BioVcf
       @fields.size == @header.column_names.size
     end
 
+
+    def eval expr, ignore_missing_data, quiet
+      begin
+        r = rec = self
+        Kernel::eval(expr)
+      rescue Exception => e
+        if not quiet
+          $stderr.print [@fields],"\n"
+          $stderr.print expr,"\n"
+          $stderr.print e.message
+        end
+        if ignore_missing_data
+          return false
+        else
+          exit 1 
+        end
+      end
+    end
+
+
+
     # Return the sample
     def method_missing(m, *args, &block)  
       name = m.to_s

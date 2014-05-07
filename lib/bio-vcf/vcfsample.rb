@@ -15,14 +15,16 @@ module BioVcf
       @values = @rec.values
     end
 
-    def eval expr, ignore_missing_data
+    def eval expr, ignore_missing_data, quiet
       begin
         s = sample = self
         Kernel::eval(expr)
       rescue Exception => e
-        $stderr.print [@format,@values],"\n"
-        $stderr.print expr,"\n"
-        $stderr.print e.message
+        if not quiet
+          $stderr.print [@format,@values],"\n"
+          $stderr.print expr,"\n"
+          $stderr.print e.message
+        end
         if ignore_missing_data
           return false
         else
