@@ -237,6 +237,8 @@ Even shorter r is an alias for rec (nyi)
 
 ## Special functions
 
+Note: special functions are not yet implemented!
+
 Sometime you want to use a special function in a filter. For 
 example percentage variant reads can be defined as [a,c,g,t] 
 with frequencies against sample read depth (dp) as 
@@ -244,7 +246,7 @@ with frequencies against sample read depth (dp) as
 which we named freq
 
 ```sh
-  bio-vcf --sfilter "s.freq[2]>0.30" < file.vcf
+  bio-vcf --sfilter "s.freq(2)>0.30" < file.vcf
 ```
 
 which is equal to 
@@ -284,6 +286,9 @@ renders
 
 ## Set analysis
 
+Note: ifilters and special functions have not yet been implemented!
+Use --sfilter-sample and --sfilter for now.
+
 bio-vcf allows for set analysis. With the complement filter, for
 example, samples are selected that evaluate to true, all others should
 evaluate to false. For this we create three filters, one for all 
@@ -297,7 +302,13 @@ The equivalent of the union filter is by using the --sfilter, so
   bio-vcf --sfilter 's.dp>20' 
 ```
 
-Filters DP on all samples.
+Filters DP on all samples. To filter on a subset you can add a
+selector add a regex (here select all samples where the name starts
+with s3)
+
+```sh
+  bio-vcf --sample-regex '/^s3/' --sfilter 's.dp>20' 
+```
 
 The equivalent of the complement filter is by specifying what samples
 to include, here with a regex and define filters on the included
@@ -308,10 +319,12 @@ samples and the
 
   bio-vcf --include /s3.+/ --sfilter 'dp>20'  --ifilter 'gt==s3t1.gt' --efilter 'gt!=s3t1.gt' 
 --set-intersect  include=true
-  bio-vcf --include /s3.+/ --sample /t2/ --sfilter 'dp>20'  --ifilter 'gt==s3t1.gt'  
+  bio-vcf --include /s3.+/ --sample-regex /^t2/ --sfilter 'dp>20'  --ifilter 'gt==s3t1.gt'  
 --set-catesian   one in include=true, rest=false
   bio-vcf --unique-sample (any) --include /s3.+/ --sfilter 'dp>20' --ifilter 'gt!="0/0"'  
 ```
+
+Sample filters can be combined with special functions
 
 ```sh
   bio-vcf --sfilter "s.freq.var>0.30 and s.freq.ref<0.10" < file.vcf

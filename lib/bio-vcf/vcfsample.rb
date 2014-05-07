@@ -21,14 +21,15 @@ module BioVcf
         Kernel::eval(expr)
       rescue Exception => e
         if not quiet
+          $stderr.print "ERROR!\n"
           $stderr.print [@format,@values],"\n"
           $stderr.print expr,"\n"
-          $stderr.print e.message
         end
         if ignore_missing_data
+          $stderr.print e.message
           return false
         else
-          exit 1 
+          raise
         end
       end
     end

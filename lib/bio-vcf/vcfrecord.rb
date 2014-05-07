@@ -131,8 +131,12 @@ module BioVcf
       sample[name]
     end
 
-    def each_sample
-      @header.column_names[9..-1].each { |name| yield VcfSample::Record.new(sample[name]) }
+    def each_sample(list = nil)
+      @header.column_names[9..-1].each_with_index { |name,i|
+        # p [i,list]
+        next if list and not list.index(i.to_s)
+        yield VcfSample::Record.new(sample[name]) 
+      }
     end
 
     def missing_samples?
@@ -153,14 +157,15 @@ module BioVcf
         Kernel::eval(expr)
       rescue Exception => e
         if not quiet
+          $stderr.print "ERROR!\n"
           $stderr.print [@fields],"\n"
           $stderr.print expr,"\n"
-          $stderr.print e.message
         end
         if ignore_missing_data
+          $stderr.print e.message
           return false
         else
-          exit 1 
+          raise
         end
       end
     end

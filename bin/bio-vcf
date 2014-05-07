@@ -36,6 +36,9 @@ opts = OptionParser.new do |o|
   o.on('--sfilter cmd',String, 'Evaluate filter on each sample') do |cmd|
     options[:sfilter] = cmd
   end
+  o.on("--sfilter-samples list", Array, "Filter on selected samples") do |l|
+    options[:sfilter_samples] = l
+  end
   o.on('-e cmd', '--eval cmd',String, 'Evaluate command on each record') do |cmd|
     options[:eval] = cmd
   end
@@ -46,7 +49,7 @@ opts = OptionParser.new do |o|
   o.on("--rewrite eval", "Rewrite INFO") do |s|
     options[:rewrite] = s
   end
-  o.on("--samples list", Array, "Write selected samples") do |l|
+  o.on("--samples list", Array, "Output selected samples") do |l|
     options[:samples] = l
   end
   o.on("--rdf", "Generate Turtle RDF") do |b|
@@ -92,26 +95,26 @@ end
 
 include BioVcf
 
-begin
-  opts.parse!(ARGV)
+opts.parse!(ARGV)
 
-  $stderr.print "vcf #{version} (biogem Ruby #{RUBY_VERSION}) by Pjotr Prins 2014\n" if !options[:quiet]
+$stderr.print "vcf #{version} (biogem Ruby #{RUBY_VERSION}) by Pjotr Prins 2014\n" if !options[:quiet]
 
-  if options[:show_help] 
-    print opts 
-    print USAGE
-    exit 1
-  end
+if options[:show_help] 
+  print opts 
+  print USAGE
+  exit 1
+end
 
-  $stderr.print "Options: ",options,"\n" if !options[:quiet]
+$stderr.print "Options: ",options,"\n" if !options[:quiet]
 
-  if options[:samples]
-    samples = options[:samples].map { |s| s.to_i }
-  end
-  header = VcfHeader.new
-  header_out = false
+if options[:samples]
+  samples = options[:samples].map { |s| s.to_i }
+end
+header = VcfHeader.new
+header_out = false
 
-  STDIN.each_line do | line |
+STDIN.each_line do | line |
+  begin
     if line =~ /^##fileformat=/
       # ---- We have a new file header
       header = VcfHeader.new
@@ -151,7 +154,7 @@ begin
       # -----------------------------
       # Filtering and set analysis
       if options[:sfilter]
-        rec.each_sample do | sample |
+        rec.each_sample(options[:sfilter_samples]) do | sample |
           next if not
           sample.eval(options[:sfilter],options[:ignore_missing],options[:quiet])
         end
@@ -194,7 +197,10 @@ begin
         end
       end
     end
+  rescue Exception => e
+    $stderr.print line
+    $stderr.print e.message
+    exit 1
   end
-
 end
 
