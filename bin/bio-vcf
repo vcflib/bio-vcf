@@ -112,8 +112,11 @@ if options[:samples]
 end
 header = VcfHeader.new
 header_out = false
+line_number=0
 
 STDIN.each_line do | line |
+  line_number += 1
+  $stderr.print '.' if line_number%100_000 == 0
   begin
     if line =~ /^##fileformat=/
       # ---- We have a new file header
