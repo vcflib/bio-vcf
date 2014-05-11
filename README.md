@@ -68,8 +68,6 @@ Macbook PRO running 64-bits Linux (Ruby 2.1.0).
 gem install bio-vcf
 ```
 
-## Quick start
-
 ## Command line interface (CLI)
 
 Get the version of the VCF file
