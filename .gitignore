@@ -2,4 +2,5 @@ file.vcf
 notes.txt
 .bundle
 pkg/
+scripts/timings.sh
 TAGS
