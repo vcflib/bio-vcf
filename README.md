@@ -274,6 +274,12 @@ To check for ref or variant frequencies use more sugar
   bio-vcf --sfilter "s.freq.var>0.30 and s.freq.ref<0.10" < file.vcf
 ```
 
+For all includes var should be identical for set analysis except for
+cartesian. So when --include is defined test for identical var and in
+the case of cartesian one unique var, when tested.
+
+ref should always be identical across samples.
+
 ## DbSNP
 
 One clinical variant DbSNP example 
@@ -378,22 +384,6 @@ select all samples where the name starts with s3)
 
 With the filter commands you can use --ignore-missing to skip errors.
 
-
-## Special functions
-
-Note: special functions have not yet been implemented!
-
-Sample filters can be combined with special functions (NYI)
-
-```sh
-  bio-vcf --sfilter "s.freq.var>0.30 and s.freq.ref<0.10" < file.vcf
-```
-
-For all includes var should be identical for set analysis except for
-cartesian. So when --include is defined test for identical var and in
-the case of cartesian one unique var, when tested.
-
-ref should always be identical across samples.
 
 ## Modify VCF files
 
