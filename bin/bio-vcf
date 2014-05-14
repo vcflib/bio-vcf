@@ -133,6 +133,11 @@ def parse_line line,header,options,samples
     end
   end
 
+  if options[:efilter]
+    rec.each_sample(options[:efilter_samples]) do | sample |
+      return if not sample.eval(options[:efilter],options[:ignore_missing],options[:quiet])
+    end
+  end
 
   # -----------------------------
   # From here on decide on output

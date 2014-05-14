@@ -351,6 +351,14 @@ To print out the GT's add --seval
     1       16103   0/1     0/1     0/1     0/1     0/1     0/1     0/1
 ```
 
+To set an additional filter on the excluded samples:
+
+```sh
+  bio-vcf -i --ifilter-samples 0,1,4 --ifilter 's.gt==rec.s1t1.gt and s.gq>10' --seval s.gq --efilter 's.gq==99' 
+```
+
+Etc. etc. Any combination of sfilter, ifilter and efilter is possible.
+
 The following are not yet implemented:
 
 In the near future it is also possible to select samples on a regex (here
