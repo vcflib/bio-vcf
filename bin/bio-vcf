@@ -46,6 +46,9 @@ opts = OptionParser.new do |o|
     options[:eval_once] = true
     options[:eval] = cmd
   end
+  o.on('--seval cmd',String, 'Evaluate command on each sample') do |cmd|
+    options[:seval] = cmd
+  end
   o.on("--rewrite eval", "Rewrite INFO") do |s|
     options[:rewrite] = s
   end
@@ -104,8 +107,7 @@ def parse_line line,header,options,samples
       # Filtering and set analysis
       if options[:sfilter]
         rec.each_sample(options[:sfilter_samples]) do | sample |
-          next if not
-          sample.eval(options[:sfilter],options[:ignore_missing],options[:quiet])
+          return if not sample.eval(options[:sfilter],options[:ignore_missing],options[:quiet])
         end
       end
       # -----------------------------
