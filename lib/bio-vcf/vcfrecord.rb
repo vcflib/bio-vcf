@@ -150,11 +150,11 @@ module BioVcf
       @fields.size == @header.column_names.size
     end
 
-
     def eval expr, ignore_missing_data, quiet
       begin
         r = rec = self
-        Kernel::eval(expr)
+        p r.s3t2.pl
+        Kernel::eval(expr) 
       rescue NoMethodError => e
         if not quiet
           $stderr.print "RECORD ERROR!\n"

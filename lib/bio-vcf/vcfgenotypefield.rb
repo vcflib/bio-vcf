@@ -90,22 +90,29 @@ module BioVcf
     attr_reader :format, :values, :header
 
     def initialize s, format, header, alt
+      @is_empty = (s == '' or s == nil or s == './.')
       @values = s.split(/:/)
       @format = format
       @header = header
       @alt = alt
     end
 
-    def dp4
-      @values[@format['DP4']].split(',').map{|i| i.to_i}
+    def empty?
+      @is_empty
     end
 
-    def ad
-      @values[@format['AD']].split(',').map{|i| i.to_i}
+    def valid?
+      !@is_empty
     end
 
-    def pl
-      @values[@format['PL']].split(',').map{|i| i.to_i}
+    def dp4 
+      fetch('DP4') 
+    end
+    def ad 
+      fetch('AD') 
+    end
+    def pl 
+      fetch('PL') 
     end
 
     def bcount
@@ -121,11 +128,26 @@ module BioVcf
     end
 
     def method_missing(m, *args, &block)
-      v = @values[@format[m.to_s.upcase]]
-      v = v.to_i if v =~ /^\d+$/
-      v = v.to_f if v =~ /^\d+\.\d+$/
-      v
+      return nil if @is_empty
+      if m =~ /\?$/
+        v = @values[@format[m.to_s.upcase.chop]]
+        v != nil
+      else
+        v = @values[@format[m.to_s.upcase]]
+        v = v.to_i if v =~ /^\d+$/
+        v = v.to_f if v =~ /^\d+\.\d+$/
+        v
+      end
     end  
+
+  private
+
+    def fetch name
+      v = @values[@format[name]]
+      return nil if not v
+      v.split(',').map{|i| i.to_i} 
+    end
+
 
   end
 
