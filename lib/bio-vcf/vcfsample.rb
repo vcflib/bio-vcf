@@ -19,14 +19,14 @@ module BioVcf
       begin
         s = sample = self
         Kernel::eval(expr)
-      rescue Exception => e
+      rescue NoMethodError => e
         if not quiet
-          $stderr.print "ERROR!\n"
+          $stderr.print "\nSAMPLE ERROR!\n"
           $stderr.print [@format,@values],"\n"
           $stderr.print expr,"\n"
         end
-        if ignore_missing_data and not quiet
-          $stderr.print e.message
+        if ignore_missing_data
+          $stderr.print e.message if not quiet
           return false
         else
           raise

@@ -155,14 +155,14 @@ module BioVcf
       begin
         r = rec = self
         Kernel::eval(expr)
-      rescue Exception => e
+      rescue NoMethodError => e
         if not quiet
-          $stderr.print "ERROR!\n"
+          $stderr.print "RECORD ERROR!\n"
           $stderr.print [@fields],"\n"
           $stderr.print expr,"\n"
         end
         if ignore_missing_data
-          $stderr.print e.message
+          $stderr.print e.message if not quiet
           return false
         else
           raise
