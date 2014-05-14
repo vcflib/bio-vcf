@@ -299,8 +299,7 @@ renders
 
 ## Set analysis
 
-Note: ifilters and special functions have not yet been implemented!
-Use --sfilter-sample and --sfilter for now.
+Note: special functions have not yet been implemented!
 
 bio-vcf allows for set analysis. With the complement filter, for
 example, samples are selected that evaluate to true, all others should

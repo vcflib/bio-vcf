@@ -33,12 +33,28 @@ opts = OptionParser.new do |o|
   o.on('--filter cmd',String, 'Evaluate filter on each record') do |cmd|
     options[:filter] = cmd
   end
+
   o.on('--sfilter cmd',String, 'Evaluate filter on each sample') do |cmd|
     options[:sfilter] = cmd
   end
   o.on("--sfilter-samples list", Array, "Filter on selected samples") do |l|
     options[:sfilter_samples] = l
   end
+
+  o.on('--ifilter cmd','--if cmd',String, 'Include filter') do |cmd|
+    options[:ifilter] = cmd
+  end
+  o.on("--ifilter-samples list", Array, "Include set") do |l|
+    options[:ifilter_samples] = l
+  end
+
+  o.on('--efilter cmd','--ef cmd',String, 'Exclude filter') do |cmd|
+    options[:efilter] = cmd
+  end
+  o.on("--efilter-samples list", Array, "Exclude set") do |l|
+    options[:efilter_samples] = l
+  end
+
   o.on('-e cmd', '--eval cmd',String, 'Evaluate command on each record') do |cmd|
     options[:eval] = cmd
   end
