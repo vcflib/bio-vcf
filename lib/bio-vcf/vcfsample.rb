@@ -25,7 +25,7 @@ module BioVcf
           $stderr.print [@format,@values],"\n"
           $stderr.print expr,"\n"
         end
-        if ignore_missing_data
+        if ignore_missing_data and not quiet
           $stderr.print e.message
           return false
         else
