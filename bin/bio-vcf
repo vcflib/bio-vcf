@@ -48,6 +48,7 @@ opts = OptionParser.new do |o|
   end
   o.on('--seval cmd',String, 'Evaluate command on each sample') do |cmd|
     options[:seval] = cmd
+    options[:skip_header] = true
   end
   o.on("--rewrite eval", "Rewrite INFO") do |s|
     options[:rewrite] = s
@@ -131,6 +132,12 @@ def parse_line line,header,options,samples
           exit 1
         end
         exit(1) if options[:eval_once]
+      elsif options[:seval]
+        list = [rec.chr,rec.pos]
+        rec.each_sample(options[:sfilter_samples]) do | sample |
+          list << sample.eval(options[:seval],options[:ignore_missing],options[:quiet])
+        end
+        print list.join("\t"),"\n"
       else
         if options[:rdf]
           # Output Turtle RDF

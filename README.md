@@ -38,7 +38,22 @@ use the --eval switch, e.g.,
   bio-vcf --eval 'rec.alt+"\t"+rec.info.dp+"\t"+rec.tumor.gq.to_s' < file.vcf
 ```
 
-Filter and eval commands can be used at the same time. Special set
+To output the DP values of every sample that has a depth larger than
+100:
+
+```ruby
+bio-vcf -i --sfilter 's.dp>100' --seval 's.dp' < filevcf
+
+  1       10257   159     242     249     249     186     212     218
+  1       10291   165     249     249     247     161     163     189
+  1       10297   182     246     250     246     165     158     183
+  1       10303   198     247     248     248     172     157     182
+  (etc.)
+```
+
+Where -i ignores missing samples.
+
+Most filter and eval commands can be used at the same time. Special set
 commands exit for filtering and eval. When a set is defined, based on
 the sample name, you can apply filters on the samples inside the set,
 outside the set and over all samples. E.g.
