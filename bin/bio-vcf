@@ -236,6 +236,7 @@ STDIN.each_line do | line |
     end
     next if line =~ /^##/ # empty file
     if not options[:ifilter_samples] and options[:efilter_samples]
+      # Create exclude set as a complement of include set
       options[:efilter_samples] = header.column_names[9..-1].fill{|i|i.to_s}-options[:ifilter_samples]
     end
     # ---- Parse VCF record line

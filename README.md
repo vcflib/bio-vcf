@@ -322,13 +322,13 @@ selector
 For set analysis there are the additional ifilter (include) and efilter (exclude). To filter
 on samples 0,1,4 and output the gq values
 
-bio-vcf -i -q --ifilter-samples 0,1,4 --ifilter 's.gq<10 or s.gq==99' --seval s.gq
-
-In the near future it is also possible to select samples on a regex (here
-select all samples where the name starts with s3)
-
 ```sh
-  bio-vcf --isample-regex '/^s3/' --ifilter 's.dp>20' 
+  bio-vcf -i --ifilter-samples 0,1,4 --ifilter 's.gq<10 or s.gq==99' --seval s.gq
+    1       14907   99      99      99      99      99      99      99
+    1       14930   99      99      99      99      99      99      99
+    1       14933   1       99      99      39      99      99      99
+    1       15190   99      99      91      99      99      99      99
+    1       15211   99      99      99      99      99      99      99
 ```
 
 The equivalent of the complement filter is by specifying what samples
@@ -336,10 +336,29 @@ to include, here with a regex and define filters on the included
  and excluded samples (the ones not in ifilter-samples) and the 
 
 ```sh
-  bio-vcf --sfilter 'dp>20' --ifilter-samples 0,1,4 --ifilter 's.gt==s3t1.gt' --efilter 's.gt!=s3t1.gt'
+  ./bin/bio-vcf -i --sfilter 's.dp>20' --ifilter-samples 2,4 --ifilter 's.gt==r.s1t1.gt'
+```
+
+To print out the GT's add --seval
+
+```sh
+  bio-vcf -i --sfilter 's.dp>20' --ifilter-samples 2,4 --ifilter 's.gt==r.s1t1.gt' --seval 's.gt'
+    1       14673   0/1     0/1     0/1     0/1     0/1     0/1     0/1
+    1       14907   0/1     0/1     0/1     0/1     0/1     0/1     0/1
+    1       14930   0/1     0/1     0/1     0/1     0/1     0/1     0/1
+    1       15211   0/1     0/1     0/1     0/1     0/1     0/1     0/1
+    1       15274   1/2     1/2     1/2     1/2     1/2     1/2     1/2
+    1       16103   0/1     0/1     0/1     0/1     0/1     0/1     0/1
 ```
 
 The following are not yet implemented:
+
+In the near future it is also possible to select samples on a regex (here
+select all samples where the name starts with s3)
+
+```sh
+  bio-vcf --isample-regex '/^s3/' --ifilter 's.dp>20' 
+```
 
 ```sh
   bio-vcf --include /s3.+/ --sfilter 'dp>20'  --ifilter 'gt==s3t1.gt' --efilter 'gt!=s3t1.gt' 

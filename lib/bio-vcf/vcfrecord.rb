@@ -135,7 +135,7 @@ module BioVcf
       @header.column_names[9..-1].each_with_index { |name,i|
         # p [i,list]
         next if list and not list.index(i.to_s)
-        yield VcfSample::Record.new(sample[name]) 
+        yield VcfSample::Sample.new(self,sample[name]) 
       }
     end
 

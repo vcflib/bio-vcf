@@ -7,16 +7,19 @@ module BioVcf
     s == './.' or s == ''
   end
 
-  class Record
+  class Sample
     # #<BioVcf::VcfGenotypeField:0x00000001a0c188 @values=["0/0", "151,8", "159", "99", "0,195,2282"], @format={"GT"=>0, "AD"=>1, "DP"=>2, "GQ"=>3, "PL"=>4}, 
-    def initialize sample
-      @rec = sample
-      @format = @rec.format
-      @values = @rec.values
+    def initialize rec,sample
+      @rec = rec
+      @sample = sample
+      @format = @sample.format
+      @values = @sample.values
     end
 
     def eval expr, ignore_missing_data, quiet
       begin
+        rec = @rec.dup
+        r = rec
         s = sample = self
         Kernel::eval(expr)
       rescue NoMethodError => e
