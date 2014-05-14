@@ -299,8 +299,6 @@ renders
 
 ## Set analysis
 
-Note: special functions have not yet been implemented!
-
 bio-vcf allows for set analysis. With the complement filter, for
 example, samples are selected that evaluate to true, all others should
 evaluate to false. For this we create three filters, one for all 
@@ -315,20 +313,35 @@ The equivalent of the union filter is by using the --sfilter, so
 ```
 
 Filters DP on all samples. To filter on a subset you can add a
-selector add a regex (here select all samples where the name starts
-with s3)
+selector
 
 ```sh
-  bio-vcf --sample-regex '/^s3/' --sfilter 's.dp>20' 
+  bio-vcf --sfilter-samples 0,1,4 --sfilter 's.dp>20' 
+```
+
+For set analysis there are the additional ifilter (include) and efilter (exclude). To filter
+on samples 0,1,4 and output the gq values
+
+bio-vcf -i -q --ifilter-samples 0,1,4 --ifilter 's.gq<10 or s.gq==99' --seval s.gq
+
+In the near future it is also possible to select samples on a regex (here
+select all samples where the name starts with s3)
+
+```sh
+  bio-vcf --isample-regex '/^s3/' --ifilter 's.dp>20' 
 ```
 
 The equivalent of the complement filter is by specifying what samples
 to include, here with a regex and define filters on the included
-samples and the 
+ and excluded samples (the ones not in ifilter-samples) and the 
 
 ```sh
-  bio-vcf --include /s3.+/ --sfilter 'dp>20'  --ifilter 'gt==s3t1.gt' --efilter 'gt!=s3t1.gt'
+  bio-vcf --sfilter 'dp>20' --ifilter-samples 0,1,4 --ifilter 's.gt==s3t1.gt' --efilter 's.gt!=s3t1.gt'
+```
 
+The following are not yet implemented:
+
+```sh
   bio-vcf --include /s3.+/ --sfilter 'dp>20'  --ifilter 'gt==s3t1.gt' --efilter 'gt!=s3t1.gt' 
 --set-intersect  include=true
   bio-vcf --include /s3.+/ --sample-regex /^t2/ --sfilter 'dp>20'  --ifilter 'gt==s3t1.gt'  
@@ -336,24 +349,24 @@ samples and the
   bio-vcf --unique-sample (any) --include /s3.+/ --sfilter 'dp>20' --ifilter 'gt!="0/0"'  
 ```
 
-Sample filters can be combined with special functions
+With the filter commands you can use --ignore-missing to skip errors.
+
+
+## Special functions
+
+Note: special functions have not yet been implemented!
+
+Sample filters can be combined with special functions (NYI)
 
 ```sh
   bio-vcf --sfilter "s.freq.var>0.30 and s.freq.ref<0.10" < file.vcf
 ```
 
 For all includes var should be identical for set analysis except for
-catesian. So when --include is defined test for identical var and in
+cartesian. So when --include is defined test for identical var and in
 the case of cartesian one unique var, when tested.
 
 ref should always be identical across samples.
-
-Unlike the --filter, the set filters --ifilter, --efilter and
---sfilter ignore missing data. To test for missing data
-in set filters use --strict.
-
-With the --filter command you can use --ignore-missing-data to skip
-errors.
 
 ## Modify VCF files
 

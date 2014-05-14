@@ -44,15 +44,12 @@ opts = OptionParser.new do |o|
   o.on('--ifilter cmd','--if cmd',String, 'Include filter') do |cmd|
     options[:ifilter] = cmd
   end
-  o.on("--ifilter-samples list", Array, "Include set") do |l|
+  o.on("--ifilter-samples list", Array, "Include set - implicitely defines exclude set") do |l|
     options[:ifilter_samples] = l
   end
 
   o.on('--efilter cmd','--ef cmd',String, 'Exclude filter') do |cmd|
     options[:efilter] = cmd
-  end
-  o.on("--efilter-samples list", Array, "Exclude set") do |l|
-    options[:efilter_samples] = l
   end
 
   o.on('-e cmd', '--eval cmd',String, 'Evaluate command on each record') do |cmd|
@@ -115,63 +112,72 @@ end
 
 
 def parse_line line,header,options,samples
-    # fields = VcfLine.parse(line,header.columns)
-    fields = VcfLine.parse(line)
-    rec = VcfRecord.new(fields,header)
-    r = rec # alias
-    if !options[:filter] or (options[:filter] and rec.eval(options[:filter],options[:ignore_missing],options[:quiet]))
-      # -----------------------------
-      # Filtering and set analysis
-      if options[:sfilter]
-        rec.each_sample(options[:sfilter_samples]) do | sample |
-          return if not sample.eval(options[:sfilter],options[:ignore_missing],options[:quiet])
-        end
-      end
-      # -----------------------------
-      # From here on decide on output
-      if samples
-        # Select certain samples for output
-        newfields = fields[0..8]
-        samples.each do |s|
-          newfields << fields[s+9] 
-        end
-        fields = newfields
-      end
-      if options[:eval] 
-        begin
-          res = rec.eval(options[:eval],options[:ignore_missing],options[:quiet])
-          print res,"\n" if res
-        rescue 
-          $stderr.print "Line: ",line
-          $stderr.print "ERROR evaluating --eval <"+options[:eval]+">\n"
-          raise if options[:verbose]
-          exit 1
-        end
-        exit(1) if options[:eval_once]
-      elsif options[:seval]
-        list = [rec.chr,rec.pos]
-        rec.each_sample(options[:sfilter_samples]) do | sample |
-          list << sample.eval(options[:seval],options[:ignore_missing],options[:quiet])
-        end
-        print list.join("\t"),"\n"
-      else
-        if options[:rdf]
-          # Output Turtle RDF
-          if not header_out
-            VcfRdf::header
-            header_out = true
-          end
-          VcfRdf::record(options[:id],rec,options[:tags])
-        elsif options[:rewrite]
-          # Default behaviour prints VCF line, but rewrite info
-          eval(options[:rewrite]) 
-          print (fields[0..6]+[rec.info.to_s]+fields[8..-1]).join("\t"),"\n"
-        else
-          # Default behaviour prints VCF line
-          print fields.join("\t"),"\n"
-        end
-      end
+  # fields = VcfLine.parse(line,header.columns)
+  fields = VcfLine.parse(line)
+  rec = VcfRecord.new(fields,header)
+  r = rec # alias
+
+  # --------------------------
+  # Filtering and set analysis
+  return if options[:filter] and rec.eval(options[:filter],options[:ignore_missing],options[:quiet])
+  
+  if options[:sfilter]
+    rec.each_sample(options[:sfilter_samples]) do | sample |
+      return if not sample.eval(options[:sfilter],options[:ignore_missing],options[:quiet])
     end
+  end
+
+  if options[:ifilter]
+    rec.each_sample(options[:ifilter_samples]) do | sample |
+      return if not sample.eval(options[:ifilter],options[:ignore_missing],options[:quiet])
+    end
+  end
+
+
+  # -----------------------------
+  # From here on decide on output
+  if samples
+    # Select certain samples for output
+    newfields = fields[0..8]
+    samples.each do |s|
+      newfields << fields[s+9] 
+    end
+    fields = newfields
+  end
+  if options[:eval] 
+    begin
+      res = rec.eval(options[:eval],options[:ignore_missing],options[:quiet])
+      print res,"\n" if res
+    rescue 
+      $stderr.print "Line: ",line
+      $stderr.print "ERROR evaluating --eval <"+options[:eval]+">\n"
+      raise if options[:verbose]
+      exit 1
+    end
+    exit(1) if options[:eval_once]
+  elsif options[:seval]
+    list = [rec.chr,rec.pos]
+    rec.each_sample(options[:sfilter_samples]) do | sample |
+      list << sample.eval(options[:seval],options[:ignore_missing],options[:quiet])
+    end
+    print list.join("\t"),"\n"
+  else
+    if options[:rdf]
+      # Output Turtle RDF
+      if not header_out
+        VcfRdf::header
+        header_out = true
+      end
+      VcfRdf::record(options[:id],rec,options[:tags])
+    elsif options[:rewrite]
+      # Default behaviour prints VCF line, but rewrite info
+      eval(options[:rewrite]) 
+      print (fields[0..6]+[rec.info.to_s]+fields[8..-1]).join("\t"),"\n"
+    else
+      # Default behaviour prints VCF line
+      print fields.join("\t"),"\n"
+    end
+  end
 end
 
 include BioVcf
@@ -229,6 +235,9 @@ STDIN.each_line do | line |
       end
     end
     next if line =~ /^##/ # empty file
+    if not options[:ifilter_samples] and options[:efilter_samples]
+      options[:efilter_samples] = header.column_names[9..-1].fill{|i|i.to_s}-options[:ifilter_samples]
+    end
     # ---- Parse VCF record line
     parse_line line,header,options,samples
   rescue Exception => e
