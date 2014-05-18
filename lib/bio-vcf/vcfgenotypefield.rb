@@ -163,8 +163,6 @@ module BioVcf
     end
 
     def [] name
-      p name
-      p @samples
       @samples[name] ||= VcfGenotypeField.new(@fields[@sample_index[name]],@format,@header,@alt)
     end
 

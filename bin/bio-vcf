@@ -149,23 +149,28 @@ def parse_line line,header,options,samples
     end
     fields = newfields
   end
-  if options[:eval] 
+  if options[:eval] or options[:seval]
     begin
-      res = rec.eval(options[:eval],options[:ignore_missing],options[:quiet])
-      print res,"\n" if res
+      results = nil # result string
+      if options[:eval] 
+        res = rec.eval(options[:eval],options[:ignore_missing],options[:quiet])
+        results = res if res
+      end
+      if options[:seval]
+        list = (results ? [] : [rec.chr,rec.pos])
+        rec.each_sample(options[:sfilter_samples]) { | sample |
+          list << sample.eval(options[:seval],options[:ignore_missing],options[:quiet])
+        }
+        results = (results ? results + "\t" : "" ) + list.join("\t")
+      end
     rescue => e
       $stderr.print "Line: ",line
       $stderr.print "ERROR evaluating --eval <"+options[:eval]+"> #{e.message}\n"
       raise if options[:verbose]
       exit 1
     end
+    print results,"\n" if results
     exit(1) if options[:eval_once]
-  elsif options[:seval]
-    list = [rec.chr,rec.pos]
-    rec.each_sample(options[:sfilter_samples]) do | sample |
-      list << sample.eval(options[:seval],options[:ignore_missing],options[:quiet])
-    end
-    print list.join("\t"),"\n"
   else
     if options[:rdf]
       # Output Turtle RDF
