@@ -153,7 +153,13 @@ module BioVcf
     def eval expr, ignore_missing_data, quiet
       begin
         r = rec = self
-        Kernel::eval(expr) 
+        fields = @fields
+        res = Kernel::eval(expr) 
+        if res.kind_of?(Array)
+          res.join("\t")
+        else
+          res
+        end
       rescue NoMethodError => e
         if not quiet
           $stderr.print "RECORD ERROR!\n"

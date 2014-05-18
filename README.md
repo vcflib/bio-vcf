@@ -38,6 +38,13 @@ use the --eval switch, e.g.,
   bio-vcf --eval 'rec.alt+"\t"+rec.info.dp+"\t"+rec.tumor.gq.to_s' < file.vcf
 ```
 
+In fact, if the result is an Array the output gets tab dilimited so
+the nicer version is
+
+```ruby
+  bio-vcf --eval '[r.alt,r.info.dp,r.tumor.gq.to_s]' < file.vcf
+```
+
 To output the DP values of every sample that has a depth larger than
 100:
 
@@ -110,13 +117,13 @@ The 'fields' array contains unprocessed data (strings).  Print first
 five raw fields
 
 ```ruby
-  bio-vcf --eval 'fields[0..4].join("\t")' < file.vcf 
+  bio-vcf --eval 'fields[0..4]' < file.vcf 
 ```
 
 Add a filter to display the fields on chromosome 12
 
 ```ruby
-  bio-vcf --filter 'fields[0]=="12"' --eval 'fields[0..4].join("\t")' < file.vcf 
+  bio-vcf --filter 'fields[0]=="12"' --eval 'fields[0..4]' < file.vcf 
 ```
 
 It gets better when we start using processed data, represented by an
