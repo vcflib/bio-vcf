@@ -153,7 +153,6 @@ module BioVcf
     def eval expr, ignore_missing_data, quiet
       begin
         r = rec = self
-        p r.s3t2.pl
         Kernel::eval(expr) 
       rescue NoMethodError => e
         if not quiet

@@ -153,9 +153,9 @@ def parse_line line,header,options,samples
     begin
       res = rec.eval(options[:eval],options[:ignore_missing],options[:quiet])
       print res,"\n" if res
-    rescue 
+    rescue => e
       $stderr.print "Line: ",line
-      $stderr.print "ERROR evaluating --eval <"+options[:eval]+">\n"
+      $stderr.print "ERROR evaluating --eval <"+options[:eval]+"> #{e.message}\n"
       raise if options[:verbose]
       exit 1
     end
