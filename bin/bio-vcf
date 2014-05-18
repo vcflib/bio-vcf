@@ -119,7 +119,7 @@ def parse_line line,header,options,samples
 
   # --------------------------
   # Filtering and set analysis
-  return if options[:filter] and rec.eval(options[:filter],options[:ignore_missing],options[:quiet])
+  return if options[:filter] and not rec.eval(options[:filter],options[:ignore_missing],options[:quiet])
   
   if options[:sfilter]
     rec.each_sample(options[:sfilter_samples]) do | sample |
