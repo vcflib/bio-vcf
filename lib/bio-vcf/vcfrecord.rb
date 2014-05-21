@@ -19,9 +19,7 @@ module BioVcf
 
     def method_missing(m, *args, &block) 
       v = @h[m.to_s.upcase]
-      v = v.to_i if v =~ /^\d+$/
-      v = v.to_f if v =~ /^\d+\.\d+$/
-      v
+      ConvertStringToValue::convert(v)
     end  
   end
 

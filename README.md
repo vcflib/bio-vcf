@@ -49,7 +49,7 @@ To output the DP values of every sample that has a depth larger than
 100:
 
 ```ruby
-bio-vcf -i --sfilter 's.dp>100' --seval 's.dp' < filevcf
+bio-vcf -i --sfilter 's.dp>100' --seval 's.dp' < file.vcf
 
   1       10257   159     242     249     249     186     212     218
   1       10291   165     249     249     247     161     163     189
@@ -59,6 +59,19 @@ bio-vcf -i --sfilter 's.dp>100' --seval 's.dp' < filevcf
 ```
 
 Where -i ignores missing samples.
+
+And to output DP ang GQ values for tumor normal:
+
+```ruby
+bio-vcf --filter 'r.normal.dp>=7 and r.tumor.dp>=5' --seval '[s.dp,s.gq]' < freebayes.vcf
+
+  17      45235620        22      139.35  20      0
+  17      45235635        20      137.224 14      41.5688
+  17      45235653        18      146.509 12      146.509
+  17      45247354        32      0       9       6.59312
+  17      45247362        27      0       6       110.097
+
+```
 
 Most filter and eval commands can be used at the same time. Special set
 commands exit for filtering and eval. When a set is defined, based on

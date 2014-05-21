@@ -37,18 +37,9 @@ module BioVcf
       end
     end
 
-    def integer?(str)
-      !!Integer(str) rescue false
-    end
-
     def method_missing(m, *args, &block)  
       v = @values[@format[m.to_s.upcase]]  # <-- save on the upcase!
-      if integer?(v)  # the common case
-        v = v.to_i
-      else
-        v = v.to_f if v =~ /^\d+\.\d+$/
-      end
-      v
+      ConvertStringToValue::convert(v)
     end  
 
   end
