@@ -73,6 +73,16 @@ bio-vcf --filter 'r.normal.dp>=7 and r.tumor.dp>=5' --seval '[s.dp,s.gq]' < free
 
 ```
 
+To parse and output genotype
+
+```ruby
+bio-vcf -iq --sfilter 's.dp>=20 and s.gq>=20' --ifilter-sampler 's.gt!="0/0"' --seval s.gt < test/data/input/multisample.vcf
+1       10257   0/0     0/0     0/0     0/0     0/0     0/1     0/0
+1       10291   0/1     0/1     0/1     0/1     0/1     0/1     0/1
+1       10297   0/1     0/1     0/1     0/0     0/0     0/1     0/1
+1       12783   0/1     0/1     0/1     0/1     0/1     0/1     0/1
+```
+
 Most filter and eval commands can be used at the same time. Special set
 commands exit for filtering and eval. When a set is defined, based on
 the sample name, you can apply filters on the samples inside the set,
