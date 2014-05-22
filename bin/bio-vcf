@@ -51,6 +51,10 @@ opts = OptionParser.new do |o|
   o.on('--efilter cmd','--ef cmd',String, 'Exclude filter') do |cmd|
     options[:efilter] = cmd
   end
+  o.on("--efilter-samples list", Array, "Exclude set - overrides exclude set") do |l|
+    options[:efilter_samples] = l
+  end
+
 
   o.on('-e cmd', '--eval cmd',String, 'Evaluate command on each record') do |cmd|
     options[:eval] = cmd
@@ -245,7 +249,7 @@ STDIN.each_line do | line |
       end
     end
     next if line =~ /^##/ # empty file
-    if not options[:ifilter_samples] and options[:efilter_samples]
+    if not options[:efilter_samples] and options[:ifilter_samples]
       # Create exclude set as a complement of include set
       options[:efilter_samples] = header.column_names[9..-1].fill{|i|i.to_s}-options[:ifilter_samples]
     end
