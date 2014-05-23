@@ -23,14 +23,14 @@ module BioVcf
         s = sample = self
         Kernel::eval(expr)
       rescue NoMethodError => e
+        empty = VcfSample::empty?(@sample.values.to_s)
+        $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty
         if not quiet
-          $stderr.print "\nSAMPLE ERROR!\n"
-          $stderr.print "Empty sample" if VcfSample::empty?(@sample)
           $stderr.print [@format,@values],"\n"
           $stderr.print expr,"\n"
         end
         if ignore_missing_data
-          $stderr.print e.message if not quiet
+          $stderr.print e.message if not quiet and not empty
           return false
         else
           raise
@@ -41,7 +41,7 @@ module BioVcf
     def method_missing(m, *args, &block)
       name = m.to_s.upcase
       n = @format[name]
-      raise "Uknown sample field <#{name}>" if not n
+      raise "Unknown sample field <#{name}>" if not n
       v = @values[n]  # <-- save on the upcase!
       ConvertStringToValue::convert(v)
     end  
