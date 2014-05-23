@@ -58,7 +58,14 @@ bio-vcf -i --sfilter 's.dp>100' --seval 's.dp' < file.vcf
   (etc.)
 ```
 
-Where -i ignores missing samples.
+Where -i ignores missing samples. Pick up sample allele depth
+
+```ruby
+bio-vcf -i --seval 's.ad'
+  1       10257   151,8   219,22  227,22  226,22  166,18  185,27  201,15
+  1       10291   145,16  218,26  214,30  213,32  122,36  131,27  156,31
+  1       10297   155,18  218,23  219,26  207,30  137,20  124,27  151,27
+```
 
 And to output DP ang GQ values for tumor normal:
 
