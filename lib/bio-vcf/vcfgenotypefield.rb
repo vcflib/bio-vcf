@@ -3,23 +3,28 @@ module BioVcf
   MAXINT=100_000
 
   # Helper class for a list of (variant) values, such as A,G. 
-  # The [] function does the hard work (see ./features for examples)
-  class VcfNucleotides 
+  # The [] function does the hard work. You can pass in an index (integer)
+  # or nucleotide which translates to an index.
+  # (see ./features for examples)
+  class VcfNucleotideCount4
     def initialize alt,list
       @alt = alt
-      @list = list.map{|i| i.to_i}
+      @list = list.split(/,/).map{|i| i.to_i}
     end
   
     def [] idx
       if idx.kind_of?(Integer)
-        @list[idx].to_i
+        # return a value
+        @list[idx]
       elsif idx.kind_of?(String)
-        @list[["A","C","G","T"].index(idx)].to_i
+        # return a value
+        @list[["A","C","G","T"].index(idx)]
       else idx.kind_of?(Array)
+        # return a list of values
         idx.map { |nuc|
           idx2 = ["A","C","G","T"].index(nuc)
           # p [idx,nuc,idx2,@list]
-          @list[idx2].to_i
+          @list[idx2]
         }
       end
     end
@@ -106,17 +111,17 @@ module BioVcf
     end
 
     def dp4 
-      fetch('DP4') 
+      ilist('DP4') 
     end
     def ad 
-      fetch('AD') 
+      ilist('AD') 
     end
     def pl 
-      fetch('PL') 
+      ilist('PL') 
     end
 
     def bcount
-      VcfNucleotides.new(@alt,@values[@format['BCOUNT']].split(','))
+      VcfNucleotideCount4.new(@alt,@values[@format['BCOUNT']])
     end
 
     def bq
@@ -142,7 +147,7 @@ module BioVcf
 
   private
 
-    def fetch name
+    def ilist name
       v = @values[@format[name]]
       return nil if not v
       v.split(',').map{|i| i.to_i} 
