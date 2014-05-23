@@ -458,10 +458,20 @@ or as a nucleotide string
     1       10297   C       C       C       C       C       C       C
 ```
 
-These values can also be used if filters
+These values can also be used in filters and output read depth, for
+example
 
 ```ruby
-  bio-vcf --ifilter 'rec.clone3.gt!="0/0"' --efilter 'rec.original.gt=="0/0" and rec.original.ad[rec.clone3.gt[1]]==0?
+  bio-vcf -vi --ifilter 'rec.original.gt!="0/1"' --efilter 'rec.original.gt=="0/0"' --seval 'rec.original.ad[s.gti[1]]'
+    1       10257   151     151     151     151     151     8       151
+    1       13302   26      10      10      10      10      10      10
+    1       13757   47      47      4       47      47      4       47
+```
+
+The following does not yet work (using the gti in a sample directly)
+
+```ruby
+bio-vcf -vi --ifilter 'rec.original.gt!="0/1"' --efilter 'rec.original.gti[0]==0' --seval 'rec.original.ad[s.gti[1]]'
 ```
 
 ## Modify VCF files

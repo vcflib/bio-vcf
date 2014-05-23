@@ -136,6 +136,7 @@ module BioVcf
     def method_missing(m, *args, &block)
       return nil if @is_empty
       if m =~ /\?$/
+        # query if a value exists
         v = @values[fetch(m.to_s.upcase.chop)]
         v != nil
       else
