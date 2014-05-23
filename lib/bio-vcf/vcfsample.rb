@@ -40,6 +40,8 @@ module BioVcf
 
     # Split GT into index values
     def gti
+      p @rec
+      exit
       v = fetch_values("GT")
       v.split(/\//).map{ |s| s.to_i }
     end
@@ -48,6 +50,7 @@ module BioVcf
       name = m.to_s.upcase
       ConvertStringToValue::convert(fetch_values(name))
     end  
+
 private
 
     def fetch_values name
