@@ -136,10 +136,10 @@ module BioVcf
     def method_missing(m, *args, &block)
       return nil if @is_empty
       if m =~ /\?$/
-        v = @values[@format[m.to_s.upcase.chop]]
+        v = @values[fetch(m.to_s.upcase.chop)]
         v != nil
       else
-        v = @values[@format[m.to_s.upcase]]
+        v = @values[fetch(m.to_s.upcase)]
         v = v.to_i if v =~ /^\d+$/
         v = v.to_f if v =~ /^\d+\.\d+$/
         v
@@ -154,7 +154,7 @@ module BioVcf
     end
 
     def ilist name
-      v = @values[@format[name]]
+      v = @values[fetch(name)]
       return nil if not v
       v.split(',').map{|i| i.to_i} 
     end

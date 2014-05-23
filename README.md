@@ -419,7 +419,7 @@ With the filter commands you can use --ignore-missing to skip errors.
 The sample GT field counts 0 as the reference and numbers >1 as
 indexed ALT values. The field is simply built up using a slash or | as
 a separator (e.g., 0/1, 0|2, ./. are valid values). The standard field
-is a string value
+results in a string value
 
 ```ruby
   bio-vcf --seval s.gt
@@ -439,15 +439,29 @@ to access components of the genotype field we can use standard Ruby
     1       15274   1     1     1     1     1     1     1
 ```
 
-or special functions, such as gti which gives the genotype as a value
+or special functions, such as _gt which gives the genotype as an
+indexed value
 
 ```ruby
-  bio-vcf --seval 's.gti' 
+  bio-vcf --seval 's.gti[0]' 
+    1       10257   0       0       0       0       0       0       0
+    1       10291   0       0       0       0       0       0       0
+    1       10297   0       0       0       0       0       0       0
 ```
 
+or as a nucleotide string
 
 ```ruby
-bio-vcf --ifilter ?rec.clone3.gt!="0/0"' --efilter 'rec.original.gt=="0/0" and rec.original.ad[rec.clone3.gt[1]]==0?
+  bio-vcf --seval 's.gts[0]' 
+    1       10257   A       A       A       A       A       A       A
+    1       10291   C       C       C       C       C       C       C
+    1       10297   C       C       C       C       C       C       C
+```
+
+These values can also be used if filters
+
+```ruby
+  bio-vcf --ifilter 'rec.clone3.gt!="0/0"' --efilter 'rec.original.gt=="0/0" and rec.original.ad[rec.clone3.gt[1]]==0?
 ```
 
 ## Modify VCF files

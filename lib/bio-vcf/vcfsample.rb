@@ -40,10 +40,13 @@ module BioVcf
 
     # Split GT into index values
     def gti
-      p @rec
-      exit
       v = fetch_values("GT")
-      v.split(/\//).map{ |s| s.to_i }
+      v.split(/\//).map{ |v| (v=='.' ? nil : v.to_i) }
+    end
+
+    # Split GT into into a nucleode sequence
+    def gts
+      gti.map { |i| (i ? @rec.get_gt(i) : nil) }
     end
 
     def method_missing(m, *args, &block)

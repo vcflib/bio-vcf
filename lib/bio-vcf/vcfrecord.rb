@@ -44,6 +44,15 @@ module BioVcf
       ['A','C','G','T'][index()]
     end
 
+    # Get the GT when 0 is REF and >0 is ALT
+    def get_gt(index)
+      if index == 0
+        ref()
+      else
+        alt[index-1]
+      end
+    end
+
     def call_tumor_count
       tumor.bcount.to_ary[index()]
     end
