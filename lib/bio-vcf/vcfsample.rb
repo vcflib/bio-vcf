@@ -4,7 +4,7 @@ module BioVcf
   # Check whether a sample is empty (on the raw string value)
   def VcfSample::empty? raw_sample
     s = raw_sample.strip
-    s == './.' or s == ''
+    s == './.' or s == '' or s == nil
   end
 
   class Sample
@@ -25,6 +25,7 @@ module BioVcf
       rescue NoMethodError => e
         if not quiet
           $stderr.print "\nSAMPLE ERROR!\n"
+          $stderr.print "Empty sample" if VcfSample::empty?(@sample)
           $stderr.print [@format,@values],"\n"
           $stderr.print expr,"\n"
         end
@@ -37,8 +38,11 @@ module BioVcf
       end
     end
 
-    def method_missing(m, *args, &block)  
-      v = @values[@format[m.to_s.upcase]]  # <-- save on the upcase!
+    def method_missing(m, *args, &block)
+      name = m.to_s.upcase
+      n = @format[name]
+      raise "Uknown sample field <#{name}>" if not n
+      v = @values[n]  # <-- save on the upcase!
       ConvertStringToValue::convert(v)
     end  
 
