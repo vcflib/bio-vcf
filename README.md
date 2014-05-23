@@ -439,8 +439,8 @@ to access components of the genotype field we can use standard Ruby
     1       15274   1     1     1     1     1     1     1
 ```
 
-or special functions, such as _gt which gives the genotype as an
-indexed value
+or special functions, such as 'gti' which gives the genotype as an
+indexed value array
 
 ```ruby
   bio-vcf --seval 's.gti[0]' 
@@ -449,7 +449,7 @@ indexed value
     1       10297   0       0       0       0       0       0       0
 ```
 
-or as a nucleotide string
+and 'gts' as a nucleotide string array
 
 ```ruby
   bio-vcf --seval 's.gts[0]' 
@@ -458,7 +458,7 @@ or as a nucleotide string
     1       10297   C       C       C       C       C       C       C
 ```
 
-These values can also be used in filters and output read depth, for
+These values can also be used in filters and output allele depth, for
 example
 
 ```ruby
