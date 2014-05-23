@@ -38,13 +38,23 @@ module BioVcf
       end
     end
 
+    # Split GT into index values
+    def gti
+      v = fetch_values("GT")
+      v.split(/\//).map{ |s| s.to_i }
+    end
+
     def method_missing(m, *args, &block)
       name = m.to_s.upcase
+      ConvertStringToValue::convert(fetch_values(name))
+    end  
+private
+
+    def fetch_values name
       n = @format[name]
       raise "Unknown sample field <#{name}>" if not n
-      v = @values[n]  # <-- save on the upcase!
-      ConvertStringToValue::convert(v)
-    end  
+      @values[n]  # <-- save on the upcase!
+    end
 
   end
 

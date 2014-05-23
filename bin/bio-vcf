@@ -55,7 +55,6 @@ opts = OptionParser.new do |o|
     options[:efilter_samples] = l
   end
 
-
   o.on('-e cmd', '--eval cmd',String, 'Evaluate command on each record') do |cmd|
     options[:eval] = cmd
   end
@@ -169,7 +168,7 @@ def parse_line line,header,options,samples
       end
     rescue => e
       $stderr.print "Line: ",line
-      $stderr.print "ERROR evaluating --eval <"+options[:eval]+"> #{e.message}\n"
+      $stderr.print "ERROR evaluating --eval <#{options[:eval]}> #{e.message}\n"
       raise if options[:verbose]
       exit 1
     end

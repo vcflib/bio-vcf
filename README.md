@@ -414,6 +414,41 @@ select all samples where the name starts with s3)
 
 With the filter commands you can use --ignore-missing to skip errors.
 
+## Genotype processing
+
+The sample GT field counts 0 as the reference and numbers >1 as
+indexed ALT values. The field is simply built up using a slash or | as
+a separator (e.g., 0/1, 0|2, ./. are valid values). The standard field
+is a string value
+
+```ruby
+  bio-vcf --seval s.gt
+    1       10665   ./.     ./.     0/1     0/1     ./.     0/0     0/0
+    1       10694   ./.     ./.     1/1     1/1     ./.     ./.     ./.
+    1       12783   0/1     0/1     0/1     0/1     0/1     0/1     0/1
+    1       15274   1/2     1/2     1/2     1/2     1/2     1/2     1/2
+```
+
+to access components of the genotype field we can use standard Ruby
+
+```ruby
+  bio-vcf --seval 's.gt.split(/\//)[0]' 
+    1       10665   .     .     0     0     .     0     0
+    1       10694   .     .     1     1     .     .     .
+    1       12783   0     0     0     0     0     0     0
+    1       15274   1     1     1     1     1     1     1
+```
+
+or special functions, such as gti which gives the genotype as a value
+
+```ruby
+  bio-vcf --seval 's.gti' 
+```
+
+
+```ruby
+bio-vcf --ifilter ?rec.clone3.gt!="0/0"' --efilter 'rec.original.gt=="0/0" and rec.original.ad[rec.clone3.gt[1]]==0?
+```
 
 ## Modify VCF files
 
