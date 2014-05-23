@@ -451,18 +451,20 @@ indexed value array
 
 ```ruby
   bio-vcf --seval 's.gti[0]' 
-    1       10257   0       0       0       0       0       0       0
-    1       10291   0       0       0       0       0       0       0
-    1       10297   0       0       0       0       0       0       0
+    1       10665                   0       0               0       0
+    1       10694                   1       1
+    1       12783   0       0       0       0       0       0       0
+    1       15274   1       1       1       1       1       1       1
 ```
 
 and 'gts' as a nucleotide string array
 
 ```ruby
   bio-vcf --seval 's.gts[0]' 
-    1       10257   A       A       A       A       A       A       A
-    1       10291   C       C       C       C       C       C       C
-    1       10297   C       C       C       C       C       C       C
+    1       10665                   C       C               C       C
+    1       10694                   G       G
+    1       12783   G       G       G       G       G       G       G
+    1       15274   G       G       G       G       G       G       G
 ```
 
 These values can also be used in filters and output allele depth, for
