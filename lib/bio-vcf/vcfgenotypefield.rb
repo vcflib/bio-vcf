@@ -52,10 +52,11 @@ module BioVcf
 
   end
 
-  class VcfAltInfo
+  # Handle info fields with multiple entries, possibly relating to ALT (single nucleotide only)
+  class VcfAltInfoList
     def initialize alt,list
       @alt = alt
-      @list = list.map{|i| i.to_i}
+      @list = list.split(/,/).map{|i| i.to_i}
     end
   
     def [] idx
@@ -121,15 +122,15 @@ module BioVcf
     end
 
     def bcount
-      VcfNucleotideCount4.new(@alt,@values[@format['BCOUNT']])
+      VcfNucleotideCount4.new(@alt,@values[fetch('BCOUNT')])
     end
 
     def bq
-      VcfAltInfo.new(@alt,@values[@format['BQ']].split(','))
+      VcfAltInfoList.new(@alt,@values[fetch('BQ')])
     end
 
     def amq
-      VcfAltInfo.new(@alt,@values[@format['AMQ']].split(','))
+      VcfAltInfoList.new(@alt,@values[fetch('AMQ')])
     end
 
     def method_missing(m, *args, &block)
@@ -146,6 +147,11 @@ module BioVcf
     end  
 
   private
+
+    def fetch name
+      raise "ERROR: Field with name #{name} does not exist!" if !@format[name]
+      @format[name]
+    end
 
     def ilist name
       v = @values[@format[name]]

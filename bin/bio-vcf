@@ -256,7 +256,7 @@ STDIN.each_line do | line |
     # ---- Parse VCF record line
     parse_line line,header,options,samples
   rescue Exception => e
-    $stderr.print line
+    # $stderr.print line
     $stderr.print e.message
     raise if options[:verbose]
     exit 1
