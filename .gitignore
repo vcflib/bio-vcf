@@ -4,3 +4,4 @@ notes.txt
 pkg/
 scripts/timings.sh
 TAGS
+test/data/regression/*.new
