@@ -76,12 +76,12 @@ Assign some repeated Hash queries
 
 Profiler now picking out eval for further optimization
 
-    %   cumulative   self              self     total
-   time   seconds   seconds    calls  ms/call  ms/call  name
-   10.45     1.80      1.80    34968     0.05     0.59  Object#parse_line
-    7.89     3.16      1.36    34968     0.04     0.17  Kernel.eval
-    5.69     4.14      0.98    34253     0.03     0.57  BioVcf::VcfRecord#each_sample
-    4.93     4.99      0.85    12497     0.07     1.37  nil#
+      %   cumulative   self              self     total
+     time   seconds   seconds    calls  ms/call  ms/call  name
+     10.45     1.80      1.80    34968     0.05     0.59  Object#parse_line
+      7.89     3.16      1.36    34968     0.04     0.17  Kernel.eval
+      5.69     4.14      0.98    34253     0.03     0.57  BioVcf::VcfRecord#each_sample
+      4.93     4.99      0.85    12497     0.07     1.37  nil#
 
 Compiling sample eval
 
