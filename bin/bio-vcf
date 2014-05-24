@@ -120,25 +120,31 @@ def parse_line line,header,options,samples
   rec = VcfRecord.new(fields,header)
   r = rec # alias
 
+  filter = options[:filter]
+  sfilter = options[:sfilter]
+  efilter = options[:efilter]
+  ifilter = options[:ifilter]
+  ignore_missing = options[:ignore_missing]
+  quiet = options[:quiet]
   # --------------------------
   # Filtering and set analysis
-  return if options[:filter] and not rec.eval(options[:filter],options[:ignore_missing],options[:quiet])
+  return if filter and not rec.eval(filter,ignore_missing,quiet)
   
-  if options[:sfilter]
+  if sfilter
     rec.each_sample(options[:sfilter_samples]) do | sample |
-      return if not sample.eval(options[:sfilter],options[:ignore_missing],options[:quiet])
+      return if not sample.eval(sfilter,ignore_missing,quiet)
     end
   end
 
-  if options[:ifilter]
+  if ifilter
     rec.each_sample(options[:ifilter_samples]) do | sample |
-      return if not sample.eval(options[:ifilter],options[:ignore_missing],options[:quiet])
+      return if not sample.eval(ifilter,ignore_missing,quiet)
     end
   end
 
-  if options[:efilter]
+  if efilter
     rec.each_sample(options[:efilter_samples]) do | sample |
-      return if not sample.eval(options[:efilter],options[:ignore_missing],options[:quiet])
+      return if not sample.eval(efilter,ignore_missing,quiet)
     end
   end
 
@@ -156,13 +162,13 @@ def parse_line line,header,options,samples
     begin
       results = nil # result string
       if options[:eval] 
-        res = rec.eval(options[:eval],options[:ignore_missing],options[:quiet])
+        res = rec.eval(options[:eval],ignore_missing,quiet)
         results = res if res
       end
       if options[:seval]
         list = (results ? [] : [rec.chr,rec.pos])
         rec.each_sample(options[:sfilter_samples]) { | sample |
-          list << sample.eval(options[:seval],options[:ignore_missing],options[:quiet])
+          list << sample.eval(options[:seval],ignore_missing,quiet)
         }
         results = (results ? results + "\t" : "" ) + list.join("\t")
       end
