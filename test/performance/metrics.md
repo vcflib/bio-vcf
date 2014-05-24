@@ -34,4 +34,9 @@ Introduce !!Float test
     user    0m1.180s
     sys     0m0.004s
 
+Cache sample index 
+
+    real    0m1.156s
+    user    0m1.148s
+    sys     0m0.004s
 

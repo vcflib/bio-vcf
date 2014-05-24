@@ -44,8 +44,10 @@ module BioVcf
     end
 
     def sample_index
+      return @sample_index if @sample_index
       index = {}
       samples.each_with_index { |k,i| index[k] = i+9 ; index[k.downcase] = i+9 }
+      @sample_index = index
       index
     end
   end
