@@ -9,14 +9,12 @@ module BioVcf
       !!Float(str) rescue false
     end
 
-    def self::convert v
-      if integer?(v)  # the common case
-        v = v.to_i
+    def self::convert str
+      if integer?(str)
+        str.to_i 
       else
-        # 150.268 or 9.68463e-05
-        v = v.to_f if float?(v)
+        str.to_f if float?(str)
       end
-      v
     end
   end
 
