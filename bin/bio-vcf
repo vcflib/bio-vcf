@@ -77,6 +77,9 @@ opts = OptionParser.new do |o|
     options[:rdf] = true
     options[:skip_header] = true
   end
+  o.on("--use-threads", "Multi-core version") do |b|
+    options[:use_threads] = true
+  end
   o.on_tail("--id name", String, "Identifier") do |s|
     options[:id] = s
   end
@@ -165,23 +168,23 @@ def parse_line line,header,options,samples
 
   # --------------------------
   # Filtering and set analysis
-  return if filter and not rec.eval(filter,ignore_missing,quiet)
+  return if filter and not rec.filter(filter,ignore_missing,quiet)
   
   if sfilter
     rec.each_sample(options[:sfilter_samples]) do | sample |
-      return if not sample.eval(sfilter,ignore_missing,quiet)
+      return if not sample.sfilter(sfilter,ignore_missing,quiet)
     end
   end
 
   if ifilter
     rec.each_sample(options[:ifilter_samples]) do | sample |
-      return if not sample.eval(ifilter,ignore_missing,quiet)
+      return if not sample.ifilter(ifilter,ignore_missing,quiet)
     end
   end
 
   if efilter
     rec.each_sample(options[:efilter_samples]) do | sample |
-      return if not sample.eval(efilter,ignore_missing,quiet)
+      return if not sample.efilter(efilter,ignore_missing,quiet)
     end
   end
 
@@ -228,20 +231,28 @@ def parse_line line,header,options,samples
     elsif options[:rewrite]
       # Default behaviour prints VCF line, but rewrite info
       eval(options[:rewrite]) 
-      print (fields[0..6]+[rec.info.to_s]+fields[8..-1]).join("\t"),"\n"
+      print (fields[0..6]+[rec.info.to_s]+fields[8..-1]).join("\t")+"\n"
     else
       # Default behaviour prints VCF line
-      print fields.join("\t"),"\n"
+      print fields.join("\t")+"\n"
     end
   end
 end
 
 def parse_lines lines,header,options,samples
-  lines.each do | line |
-    parse_line line,header,options,samples
+  if options[:use_threads]
+    lines2 = lines.dup
+    fork do
+      lines2.each do | line |
+        parse_line line,header,options,samples
+      end
+    end
+  else
+    lines.each do | line |
+      parse_line line,header,options,samples
+    end
   end
 end
-
 
 opts.parse!(ARGV)
 

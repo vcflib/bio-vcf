@@ -46,6 +46,96 @@ module BioVcf
       end
     end
 
+    def sfilter expr, ignore_missing_data, quiet
+      begin
+        if not respond_to?(:call_cached_sfilter)
+          code = 
+          """
+          def call_cached_sfilter(rec,sample)
+            r = rec
+            s = sample 
+            #{expr}
+          end
+          """
+          self.class.class_eval(code)
+        end
+        call_cached_sfilter(@rec,self)
+      rescue NoMethodError => e
+        empty = VcfSample::empty?(@sample.values.to_s)
+        $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty
+        if not quiet
+          $stderr.print [@format,@values],"\n"
+          $stderr.print expr,"\n"
+        end
+        if ignore_missing_data
+          $stderr.print e.message if not quiet and not empty
+          return false
+        else
+          raise
+        end
+      end
+    end
+
+    def ifilter expr, ignore_missing_data, quiet
+      begin
+        if not respond_to?(:call_cached_ifilter)
+          code = 
+          """
+          def call_cached_ifilter(rec,sample)
+            r = rec
+            s = sample 
+            #{expr}
+          end
+          """
+          self.class.class_eval(code)
+        end
+        call_cached_ifilter(@rec,self)
+      rescue NoMethodError => e
+        empty = VcfSample::empty?(@sample.values.to_s)
+        $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty
+        if not quiet
+          $stderr.print [@format,@values],"\n"
+          $stderr.print expr,"\n"
+        end
+        if ignore_missing_data
+          $stderr.print e.message if not quiet and not empty
+          return false
+        else
+          raise
+        end
+      end
+    end
+
+    def efilter expr, ignore_missing_data, quiet
+      begin
+        if not respond_to?(:call_cached_efilter)
+          code = 
+          """
+          def call_cached_efilter(rec,sample)
+            r = rec
+            s = sample 
+            #{expr}
+          end
+          """
+          self.class.class_eval(code)
+        end
+        call_cached_efilter(@rec,self)
+      rescue NoMethodError => e
+        empty = VcfSample::empty?(@sample.values.to_s)
+        $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty
+        if not quiet
+          $stderr.print [@format,@values],"\n"
+          $stderr.print expr,"\n"
+        end
+        if ignore_missing_data
+          $stderr.print e.message if not quiet and not empty
+          return false
+        else
+          raise
+        end
+      end
+    end
+
     # Split GT into index values
     def gti
       v = fetch_values("GT")

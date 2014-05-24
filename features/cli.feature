@@ -23,6 +23,12 @@ Feature: Command-line interface (CLI)
     When I execute "./bin/bio-vcf -i --seval 's.dp'"
     Then I expect the named output to match the named output "seval_s.dp"
 
+  Scenario: Test the sample filter + eval using dp
+    Given I have input file(s) named "test/data/input/multisample.vcf"
+    When I execute "./bin/bio-vcf -i --sfilter 's.dp>10' --seval 's.dp'"
+    Then I expect the named output to match the named output "sfilter_seval_s.dp"
+
+
   Scenario: Rewrite an info field
     Given I have input file(s) named "test/data/input/multisample.vcf"
     When I execute "./bin/bio-vcf --rewrite rec.info[\'sample\']=\'XXXXX\'"

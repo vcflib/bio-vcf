@@ -232,6 +232,39 @@ module BioVcf
       end
     end
 
+    def filter expr, ignore_missing_data, quiet
+      begin
+        if not respond_to?(:call_cached_filter)
+          code =
+          """
+          def call_cached_filter(rec,fields)
+            r = rec
+            #{expr}
+          end
+          """
+          self.class.class_eval(code)
+        end
+        res = call_cached_filter(self,@fields)
+        if res.kind_of?(Array)
+          res.join("\t")
+        else
+          res
+        end
+      rescue NoMethodError => e
+        if not quiet
+          $stderr.print "RECORD ERROR!\n"
+          $stderr.print [@fields],"\n"
+          $stderr.print expr,"\n"
+        end
+        if ignore_missing_data
+          $stderr.print e.message if not quiet
+          return false
+        else
+          raise
+        end
+      end
+    end
+
     # Return the sample
     def method_missing(m, *args, &block)  
       name = m.to_s
