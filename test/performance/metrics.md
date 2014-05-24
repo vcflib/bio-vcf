@@ -62,4 +62,10 @@ Late parsing of info field without split:
     user    0m1.120s
     sys     0m0.008s
 
+Global sample info caching
+
+    real    0m1.032s
+    user    0m1.020s
+    sys     0m0.008s
+
 

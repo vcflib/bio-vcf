@@ -56,9 +56,15 @@ module BioVcf
   module VcfRecordParser
     # Parse the format field into a Hash
     def VcfRecordParser.get_format s
-      h = {}
-      s.split(/:/).each_with_index { |v,i| h[v] = i }
-      h
+      if s==$cached_sample_format_s
+        $cached_sample_format
+      else
+        h = {}
+        s.split(/:/).each_with_index { |v,i| h[v] = i }
+        $cached_sample_format = h
+        $cached_sample_format_s = s
+        h
+      end
     end
     def VcfRecordParser.get_info s
       VcfRecordInfo.new(s)
