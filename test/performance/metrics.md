@@ -107,3 +107,17 @@ More caching
     user    0m0.592s
     sys     0m0.004s
 
+And the latest profiling
+
+      %   cumulative   self              self     total
+     time   seconds   seconds    calls  ms/call  ms/call  name
+     12.98     2.02      2.02    34968     0.06     0.51  Object#parse_line
+      7.78     3.23      1.21    22518     0.05     0.14  BioVcf::VcfRecord#sample_by_index
+      5.59     4.10      0.87    34253     0.03     0.47  BioVcf::VcfRecord#each_sample
+      4.82     4.85      0.75    34968     0.02     0.03  BioVcf::ConvertStringToValue.integer?
+      4.50     5.55      0.70    12450     0.06     0.13  BioVcf::VcfRecordInfo#method_missing
+      4.31     6.22      0.67    69974     0.01     0.03  Class#new
+      4.24     6.88      0.66    12499     0.05     1.23  nil#
+      3.79     7.47      0.59    12450     0.05     0.06  BioVcf::VcfLine.parse
+
+
