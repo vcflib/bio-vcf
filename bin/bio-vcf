@@ -113,6 +113,8 @@ opts = OptionParser.new do |o|
   end
 end
 
+include BioVcf
+
 def parse_header line, samples, options
   header = VcfHeader.new
   header.add(line)
@@ -234,7 +236,12 @@ def parse_line line,header,options,samples
   end
 end
 
-include BioVcf
+def parse_lines lines,header,options,samples
+  lines.each do | line |
+    parse_line line,header,options,samples
+  end
+end
+
 
 opts.parse!(ARGV)
 
@@ -259,7 +266,7 @@ end
 header_out = false
 header = nil
 line_number=0
-test = []
+lines = []
 
 STDIN.each_line do | line |
   line_number += 1
@@ -269,8 +276,11 @@ STDIN.each_line do | line |
       header,line = parse_header line,samples,options
     end
     next if line =~ /^##/ # empty file
-    # ---- Parse VCF record line
-    parse_line line,header,options,samples
+    lines << line
+    if lines.size > 10_000
+      parse_lines lines,header,options,samples
+      lines = []
+    end
   rescue Exception => e
     # $stderr.print line
     $stderr.print e.message,"\n"
@@ -278,4 +288,6 @@ STDIN.each_line do | line |
     exit 1
   end
 end
+
+parse_lines lines,header,options,samples
 
