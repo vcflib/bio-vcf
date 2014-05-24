@@ -224,9 +224,15 @@ $stderr.print "Options: ",options,"\n" if !options[:quiet]
 if options[:samples]
   samples = options[:samples].map { |s| s.to_i }
 end
+if not options[:efilter_samples] and options[:ifilter_samples]
+  # Create exclude set as a complement of include set
+  options[:efilter_samples] = header.column_names[9..-1].fill{|i|i.to_s}-options[:ifilter_samples]
+end
+
 header = VcfHeader.new
 header_out = false
 line_number=0
+test = []
 
 STDIN.each_line do | line |
   line_number += 1
@@ -262,12 +268,9 @@ STDIN.each_line do | line |
       end
     end
     next if line =~ /^##/ # empty file
-    if not options[:efilter_samples] and options[:ifilter_samples]
-      # Create exclude set as a complement of include set
-      options[:efilter_samples] = header.column_names[9..-1].fill{|i|i.to_s}-options[:ifilter_samples]
-    end
     # ---- Parse VCF record line
-    parse_line line,header,options,samples
+    # parse_line line,header,options,samples
+    test << line
   rescue Exception => e
     # $stderr.print line
     $stderr.print e.message,"\n"
