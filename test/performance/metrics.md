@@ -101,4 +101,9 @@ Walk examples by index, rather than by name
     user    0m0.596s
     sys     0m0.012s
 
+More caching
+
+    real    0m0.600s
+    user    0m0.592s
+    sys     0m0.004s
 

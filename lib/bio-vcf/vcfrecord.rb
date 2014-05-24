@@ -184,7 +184,7 @@ module BioVcf
 
     # Walk the samples. list contains an Array of int (the index)
     def each_sample(list = nil)
-      list = @header.column_names[9..-1].fill{|i| i} if not list 
+      list = @header.samples_index_array() if not list 
       list.each { |i| yield VcfSample::Sample.new(self,sample_by_index(i)) }
     end
 
