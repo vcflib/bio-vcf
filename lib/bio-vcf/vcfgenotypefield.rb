@@ -97,10 +97,14 @@ module BioVcf
 
     def initialize s, format, header, alt
       @is_empty = (s == '' or s == nil or s == './.')
-      @values = s.split(/:/)
+      @original_s = s
       @format = format
       @header = header
       @alt = alt
+    end
+
+    def values
+      @cache_values ||= @original_s.split(/:/)
     end
 
     def empty?
@@ -122,25 +126,25 @@ module BioVcf
     end
 
     def bcount
-      VcfNucleotideCount4.new(@alt,@values[fetch('BCOUNT')])
+      VcfNucleotideCount4.new(@alt,values[fetch('BCOUNT')])
     end
 
     def bq
-      VcfAltInfoList.new(@alt,@values[fetch('BQ')])
+      VcfAltInfoList.new(@alt,values[fetch('BQ')])
     end
 
     def amq
-      VcfAltInfoList.new(@alt,@values[fetch('AMQ')])
+      VcfAltInfoList.new(@alt,values[fetch('AMQ')])
     end
 
     def method_missing(m, *args, &block)
       return nil if @is_empty
       if m =~ /\?$/
         # query if a value exists, e.g., r.info.dp?
-        v = @values[fetch(m.to_s.upcase.chop)]
+        v = values[fetch(m.to_s.upcase.chop)]
         v != nil
       else
-        v = @values[fetch(m.to_s.upcase)]
+        v = values[fetch(m.to_s.upcase)]
         v = v.to_i if v =~ /^\d+$/
         v = v.to_f if v =~ /^\d+\.\d+$/
         v
@@ -155,7 +159,7 @@ module BioVcf
     end
 
     def ilist name
-      v = @values[fetch(name)]
+      v = values[fetch(name)]
       return nil if not v
       v.split(',').map{|i| i.to_i} 
     end

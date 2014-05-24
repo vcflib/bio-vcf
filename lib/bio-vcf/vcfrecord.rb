@@ -30,7 +30,7 @@ module BioVcf
             @info =~ /#{m.to_s.upcase}=([^;]+)/
             value = $1
             if value == nil
-              split_fields
+              split_fields # no option but to split
               @h[m.to_s.upcase]
             else
               value
