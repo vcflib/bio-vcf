@@ -68,4 +68,9 @@ Global sample info caching
     user    0m1.020s
     sys     0m0.008s
 
+Assign some repeated Hash queries
+
+    real    0m1.028s
+    user    0m1.024s
+    sys     0m0.000s
 
