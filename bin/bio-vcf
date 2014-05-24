@@ -15,6 +15,7 @@ version = File.new(VERSION_FILENAME).read.chomp
 
 require 'bio-vcf'
 require 'optparse'
+require 'timeout'
 
 # Uncomment when using the bio-logger 
 # require 'bio-logger'
@@ -78,6 +79,7 @@ opts = OptionParser.new do |o|
     options[:skip_header] = true
   end
   o.on("--use-threads", "Multi-core version") do |b|
+    $stdout.sync = true
     options[:use_threads] = true
   end
   o.on_tail("--id name", String, "Identifier") do |s|
@@ -234,18 +236,25 @@ def parse_line line,header,options,samples
       print (fields[0..6]+[rec.info.to_s]+fields[8..-1]).join("\t")+"\n"
     else
       # Default behaviour prints VCF line
-      print fields.join("\t")+"\n"
+      $stdout.print fields.join("\t")+"\n"
+      $stdout.flush
+      return true
     end
   end
 end
 
 def parse_lines lines,header,options,samples
   if options[:use_threads]
-    lines2 = lines.dup
-    fork do
+    lines2 = lines.map { |l| l.clone }
+    $stdout.flush
+    fork do  # returns pid
+      count_lines = 0
+      $stdout.sync = true
       lines2.each do | line |
-        parse_line line,header,options,samples
+        count_lines +=1 if parse_line(line,header,options,samples)
       end
+      $stderr.print "#{count_lines} lines written of #{lines2.size}\n"
+      $stdout.flush
     end
   else
     lines.each do | line |
@@ -278,6 +287,9 @@ header_out = false
 header = nil
 line_number=0
 lines = []
+pids = []
+
+$stdout.sync = true
 
 STDIN.each_line do | line |
   line_number += 1
@@ -288,8 +300,9 @@ STDIN.each_line do | line |
     end
     next if line =~ /^##/ # empty file
     lines << line
-    if lines.size > 10_000
-      parse_lines lines,header,options,samples
+    if lines.size > 2_000
+      $stderr.print line
+      pids << parse_lines(lines,header,options,samples)
       lines = []
     end
   rescue Exception => e
@@ -300,5 +313,22 @@ STDIN.each_line do | line |
   end
 end
 
-parse_lines lines,header,options,samples
+
+pids << parse_lines(lines,header,options,samples)
+$stderr.print "Final pid=#{pids.last}, size=#{lines.size}\n"
+lines = []
+
+pids.each do |pid|
+  $stderr.print "Waiting for pid=#{pid}\n"
+  begin
+    Timeout.timeout(10) do
+      Process.wait
+    end
+  $stderr.print "OK pid=#{pid}\n"
+  rescue Timeout::Error
+    Process.kill 9, pid
+    Process.wait pid
+    $stderr.print "child killed, pid = #{pid}\n"
+  end
+end
 
