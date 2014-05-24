@@ -49,9 +49,20 @@ module BioVcf
       gti.map { |i| (i ? @rec.get_gt(i) : nil) }
     end
 
+    def cache_method(name, &block)
+      self.class.send(:define_method, name, &block)
+    end
+
     def method_missing(m, *args, &block)
       name = m.to_s.upcase
-      ConvertStringToValue::convert(fetch_values(name))
+      if @format[name]
+        cache_method(m) { 
+          ConvertStringToValue::convert(fetch_values(name))
+        }
+        self.send(m)
+      else
+        super(m, *args, &block)
+      end
     end  
 
 private
@@ -59,7 +70,7 @@ private
     def fetch_values name
       n = @format[name]
       raise "Unknown sample field <#{name}>" if not n
-      @values[n]  # <-- save on the upcase!
+      @values[n]  # <-- save names with upcase!
     end
 
   end
