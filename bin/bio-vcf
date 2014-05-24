@@ -113,9 +113,36 @@ opts = OptionParser.new do |o|
   end
 end
 
+def parse_header line, samples, options
+  header = VcfHeader.new
+  header.add(line)
+  print line if not options[:skip_header]
+  STDIN.each_line do | headerline |
+    if headerline !~ /^#/
+      line = headerline
+      break # end of header
+    end
+    header.add(headerline)
+    if not options[:skip_header]
+      if headerline =~ /^#CHR/
+        selected = header.column_names
+        if samples
+          newfields = selected[0..8]
+          samples.each do |s|
+            newfields << selected[s+9] 
+          end
+          selected = newfields
+        end
+        print "#",selected.join("\t"),"\n"
+      else
+        print headerline
+      end
+    end
+  end
+  return header,line
+end
 
 def parse_line line,header,options,samples
-  # fields = VcfLine.parse(line,header.columns)
   fields = VcfLine.parse(line)
   rec = VcfRecord.new(fields,header)
   r = rec # alias
@@ -229,8 +256,8 @@ if not options[:efilter_samples] and options[:ifilter_samples]
   options[:efilter_samples] = header.column_names[9..-1].fill{|i|i.to_s}-options[:ifilter_samples]
 end
 
-header = VcfHeader.new
 header_out = false
+header = nil
 line_number=0
 test = []
 
@@ -239,38 +266,11 @@ STDIN.each_line do | line |
   $stderr.print '.' if line_number%100_000 == 0 and not options[:quiet]
   begin
     if line =~ /^##fileformat=/
-      # ---- We have a new file header
-      header = VcfHeader.new
-      header.add(line)
-      print line if not options[:skip_header]
-      STDIN.each_line do | headerline |
-        if headerline !~ /^#/
-          line = headerline
-          break # end of header
-        end
-        header.add(headerline)
-        if not options[:skip_header]
-          if headerline =~ /^#CHR/
-            selected = header.column_names
-            if samples
-              newfields = selected[0..8]
-              samples.each do |s|
-                newfields << selected[s+9] 
-              end
-              selected = newfields
-            end
-                  
-            print "#",selected.join("\t"),"\n"
-          else
-            print headerline
-          end
-        end
-      end
+      header,line = parse_header line,samples,options
     end
     next if line =~ /^##/ # empty file
     # ---- Parse VCF record line
-    # parse_line line,header,options,samples
-    test << line
+    parse_line line,header,options,samples
   rescue Exception => e
     # $stderr.print line
     $stderr.print e.message,"\n"
