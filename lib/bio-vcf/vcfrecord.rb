@@ -4,14 +4,21 @@ module BioVcf
     def initialize s
       @h = {}
       @original_key = {}
-      s.split(/;/).each { |f| k,v=f.split(/=/) ; self[k] = v }
+      s.split(/;/).each do |f| 
+        k,v = f.split(/=/) 
+        # self[k] = v 
+        kupper = k.upcase
+        @h[kupper] = v
+        @original_key[kupper] = k
+      end
     end
 
     def to_s
       @h.map { |k,v| (v ? @original_key[k] + '=' + v : @original_key[k])  }.join(';')
     end
 
-    def []= k, v
+    # Set INFO fields (used by --rewrite)
+    def []= k, v   
       kupper = k.upcase
       @h[kupper] = v
       @original_key[kupper] = k
