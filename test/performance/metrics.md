@@ -120,4 +120,13 @@ And the latest profiling
       4.24     6.88      0.66    12499     0.05     1.23  nil#
       3.79     7.47      0.59    12450     0.05     0.06  BioVcf::VcfLine.parse
 
+Introduced --use-threads
+
+    time ./bin/bio-vcf -i --use-threads --filter 'r.info.dp>20' --sfilter 's.dp>10' < test/tmp/test.vcf > /dev/null
+
+on a dual-core running Linux
+
+    real    0m0.389s
+    user    0m1.132s
+    sys     0m0.148s
 

@@ -79,7 +79,6 @@ opts = OptionParser.new do |o|
     options[:skip_header] = true
   end
   o.on("--use-threads", "Multi-core version") do |b|
-    $stdout.sync = true
     options[:use_threads] = true
   end
   o.on_tail("--id name", String, "Identifier") do |s|
@@ -246,21 +245,14 @@ end
 def parse_lines lines,header,options,samples
   if options[:use_threads]
     lines2 = lines.map { |l| l.clone }
-    $stdout.sync = true
-    STDOUT.sync = true
-    $stdout.flush
     fork do  # returns pid
       count_lines = 0
-      STDOUT.reopen $stdout
-      STDOUT.sync = true
-      $stdout.sync = true
-      $stdout.puts "Starting #{Process.pid}"
+      STDOUT.reopen(File.open(Process.pid.to_s, 'w+'))
       lines2.each do | line |
         count_lines +=1 if parse_line(line,header,options,samples)
       end
-      $stderr.print "#{count_lines} lines written of #{lines2.size}\n"
-      $stdout.puts "Stopping #{Process.pid}"
-      $stdout.flush
+      STDOUT.flush
+      STDOUT.close
     end
   else
     lines.each do | line |
@@ -295,7 +287,7 @@ line_number=0
 lines = []
 pids = []
 
-$stdout.sync = true
+orig_std_out = STDOUT.clone
 
 STDIN.each_line do | line |
   line_number += 1
@@ -307,7 +299,6 @@ STDIN.each_line do | line |
     next if line =~ /^##/ # empty file
     lines << line
     if lines.size > 2_000
-      $stderr.print line
       pids << parse_lines(lines,header,options,samples)
       lines = []
     end
@@ -320,23 +311,31 @@ STDIN.each_line do | line |
 end
 
 pids << parse_lines(lines,header,options,samples)
+
 if options[:use_threads]
+  STDOUT.reopen(orig_std_out)
   $stderr.print "Final pid=#{pids.last}, size=#{lines.size}\n"
   lines = []
-
-  sleep 2
 
   pids.each do |pid|
     $stderr.print "Waiting for pid=#{pid}\n"
     begin
-      Timeout.timeout(10) do
+      Timeout.timeout(100) do
         Process.wait
       end
-    $stderr.print "OK pid=#{pid}\n"
+      $stderr.print "OK pid=#{pid}\n"
     rescue Timeout::Error
       Process.kill 9, pid
       Process.wait pid
       $stderr.print "child killed, pid = #{pid}\n"
     end
   end
+  File.open('collate.vcf','w') { |f|
+  pids.each do | pid |
+    File.new(pid.to_s).each_line { |buf|
+      print buf
+    }
+    File.unlink(pid.to_s)
+  end
+  }
 end
