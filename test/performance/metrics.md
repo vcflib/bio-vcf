@@ -83,3 +83,10 @@ Profiler now picking out eval for further optimization
     5.69     4.14      0.98    34253     0.03     0.57  BioVcf::VcfRecord#each_sample
     4.93     4.99      0.85    12497     0.07     1.37  nil#
 
+Compiling sample eval
+
+    real    0m0.820s
+    user    0m0.812s
+    sys     0m0.004s
+
+

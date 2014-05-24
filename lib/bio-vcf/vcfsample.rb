@@ -18,10 +18,18 @@ module BioVcf
 
     def eval expr, ignore_missing_data, quiet
       begin
-        rec = @rec.dup
-        r = rec
-        s = sample = self
-        Kernel::eval(expr)
+        if not respond_to?(:call_cached_eval)
+          code = 
+          """
+          def call_cached_eval(rec,sample)
+            r = rec
+            s = sample 
+            #{expr}
+          end
+          """
+          self.class.class_eval(code)
+        end
+        call_cached_eval(@rec,self)
       rescue NoMethodError => e
         empty = VcfSample::empty?(@sample.values.to_s)
         $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty
