@@ -89,4 +89,10 @@ Compiling sample eval
     user    0m0.812s
     sys     0m0.004s
 
+Compiling record eval
+
+    real    0m0.647s
+    user    0m0.644s
+    sys     0m0.000s
+
 

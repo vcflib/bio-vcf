@@ -199,9 +199,17 @@ module BioVcf
 
     def eval expr, ignore_missing_data, quiet
       begin
-        r = rec = self
-        fields = @fields
-        res = Kernel::eval(expr) 
+        if not respond_to?(:call_cached_eval)
+          code =
+          """
+          def call_cached_eval(rec,fields)
+            r = rec
+            #{expr}
+          end
+          """
+          self.class.class_eval(code)
+        end
+        res = call_cached_eval(self,@fields)
         if res.kind_of?(Array)
           res.join("\t")
         else
