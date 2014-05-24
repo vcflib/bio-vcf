@@ -139,7 +139,9 @@ module BioVcf
     end
 
     def each_sample(list = nil)
-      @header.column_names[9..-1].each_with_index { |name,i|
+      samples = @header.column_names[9..-1]
+      raise "Empty sample list, can not execute query!" if not samples
+      samples.each_with_index { |name,i|
         # p [i,list]
         next if list and not list.index(i.to_s)
         yield VcfSample::Sample.new(self,sample[name]) 
