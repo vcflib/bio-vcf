@@ -56,4 +56,10 @@ Run the profiler
     3.93    10.27      0.91    93880     0.01     0.03  BioVcf::VcfRecordParser.get_format
     3.88    11.17      0.90   145920     0.01     0.01  String#split
 
+Late parsing of info field without split:
+
+    real    0m1.124s
+    user    0m1.120s
+    sys     0m0.008s
+
 

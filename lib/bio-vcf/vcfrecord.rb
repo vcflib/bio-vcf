@@ -15,15 +15,27 @@ module BioVcf
 
     # Set INFO fields (used by --rewrite)
     def []= k, v   
-      split_fields
+      split_fields if not @h
       kupper = k.upcase
       @h[kupper] = v
       @original_key[kupper] = k
     end
 
     def method_missing(m, *args, &block)
-      split_fields if not @h
-      v = @h[m.to_s.upcase]
+      # split_fields if not @h
+      # /#{m}=(?<value>[^;])/.@info
+      v = if @h
+            @h[m.to_s.upcase]
+          else
+            @info =~ /#{m.to_s.upcase}=([^;]+)/
+            value = $1
+            if value == nil
+              split_fields
+              @h[m.to_s.upcase]
+            else
+              value
+            end
+          end
       ConvertStringToValue::convert(v)
     end  
 
@@ -34,7 +46,6 @@ module BioVcf
       @original_key = {}
       @info.split(/;/).each do |f| 
         k,v = f.split(/=/) 
-        # self[k] = v 
         kupper = k.upcase
         @h[kupper] = v
         @original_key[kupper] = k
