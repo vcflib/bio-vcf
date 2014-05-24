@@ -246,14 +246,20 @@ end
 def parse_lines lines,header,options,samples
   if options[:use_threads]
     lines2 = lines.map { |l| l.clone }
+    $stdout.sync = true
+    STDOUT.sync = true
     $stdout.flush
     fork do  # returns pid
       count_lines = 0
+      STDOUT.reopen $stdout
+      STDOUT.sync = true
       $stdout.sync = true
+      $stdout.puts "Starting #{Process.pid}"
       lines2.each do | line |
         count_lines +=1 if parse_line(line,header,options,samples)
       end
       $stderr.print "#{count_lines} lines written of #{lines2.size}\n"
+      $stdout.puts "Stopping #{Process.pid}"
       $stdout.flush
     end
   else
@@ -313,22 +319,24 @@ STDIN.each_line do | line |
   end
 end
 
-
 pids << parse_lines(lines,header,options,samples)
-$stderr.print "Final pid=#{pids.last}, size=#{lines.size}\n"
-lines = []
+if options[:use_threads]
+  $stderr.print "Final pid=#{pids.last}, size=#{lines.size}\n"
+  lines = []
 
-pids.each do |pid|
-  $stderr.print "Waiting for pid=#{pid}\n"
-  begin
-    Timeout.timeout(10) do
-      Process.wait
+  sleep 2
+
+  pids.each do |pid|
+    $stderr.print "Waiting for pid=#{pid}\n"
+    begin
+      Timeout.timeout(10) do
+        Process.wait
+      end
+    $stderr.print "OK pid=#{pid}\n"
+    rescue Timeout::Error
+      Process.kill 9, pid
+      Process.wait pid
+      $stderr.print "child killed, pid = #{pid}\n"
     end
-  $stderr.print "OK pid=#{pid}\n"
-  rescue Timeout::Error
-    Process.kill 9, pid
-    Process.wait pid
-    $stderr.print "child killed, pid = #{pid}\n"
   end
 end
-
