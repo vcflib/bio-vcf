@@ -24,11 +24,14 @@ Reload
 
 Introduced method caching
         
-    vcf 0.0.3-pre4 (biogem Ruby 2.1.0) by Pjotr Prins 2014
-    Options: {:show_help=>false, :ignore_missing=>true, :filter=>"r.info.dp>20", :sfilter=>"s.dp>10"}
     real    0m1.190s
     user    0m1.180s
     sys     0m0.004s
 
+Introduce !!Float test
+
+    real    0m1.187s
+    user    0m1.180s
+    sys     0m0.004s
 
 
