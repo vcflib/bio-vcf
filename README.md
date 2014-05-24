@@ -111,7 +111,7 @@ If something is not working, check out the feature descriptions and
 the source code. It is not hard to add features. Otherwise, send a short
 example of a VCF statement you need to work on.
 
-bio-vcf is fast. Parsing a 55K line DbSNP file (22Mb) takes 5 seconds on a
+bio-vcf is fast. Parsing a 55K line DbSNP file (22Mb) takes 1.5 seconds on a
 Macbook PRO running 64-bits Linux (Ruby 2.1.0).
 
 ## Installation
