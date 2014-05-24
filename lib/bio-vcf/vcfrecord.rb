@@ -2,9 +2,37 @@ module BioVcf
 
   class VcfRecordInfo 
     def initialize s
+      @info = s
+    end
+
+    def to_s
+      if @h
+        @h.map { |k,v| (v ? @original_key[k] + '=' + v : @original_key[k])  }.join(';')
+      else
+        @info
+      end
+    end
+
+    # Set INFO fields (used by --rewrite)
+    def []= k, v   
+      split_fields
+      kupper = k.upcase
+      @h[kupper] = v
+      @original_key[kupper] = k
+    end
+
+    def method_missing(m, *args, &block)
+      split_fields if not @h
+      v = @h[m.to_s.upcase]
+      ConvertStringToValue::convert(v)
+    end  
+
+  private
+ 
+    def split_fields
       @h = {}
       @original_key = {}
-      s.split(/;/).each do |f| 
+      @info.split(/;/).each do |f| 
         k,v = f.split(/=/) 
         # self[k] = v 
         kupper = k.upcase
@@ -12,22 +40,6 @@ module BioVcf
         @original_key[kupper] = k
       end
     end
-
-    def to_s
-      @h.map { |k,v| (v ? @original_key[k] + '=' + v : @original_key[k])  }.join(';')
-    end
-
-    # Set INFO fields (used by --rewrite)
-    def []= k, v   
-      kupper = k.upcase
-      @h[kupper] = v
-      @original_key[kupper] = k
-    end
-
-    def method_missing(m, *args, &block) 
-      v = @h[m.to_s.upcase]
-      ConvertStringToValue::convert(v)
-    end  
   end
 
   module VcfRecordParser
