@@ -95,4 +95,10 @@ Compiling record eval
     user    0m0.644s
     sys     0m0.000s
 
+Walk examples by index, rather than by name
+
+    real    0m0.612s
+    user    0m0.596s
+    sys     0m0.012s
+
 

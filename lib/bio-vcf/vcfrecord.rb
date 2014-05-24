@@ -117,6 +117,7 @@ module BioVcf
     def initialize fields, header
       @fields = fields
       @header = header
+      @sample_by_index = []
     end
 
     def chrom
@@ -176,14 +177,15 @@ module BioVcf
       sample[name]
     end
 
+    def sample_by_index i
+      # p [i,@fields[i+9]]
+      @sample_by_index[i] ||= VcfGenotypeField.new(@fields[i+9],format,@header,alt)
+    end
+
+    # Walk the samples. list contains an Array of int (the index)
     def each_sample(list = nil)
-      samples = @header.column_names[9..-1]
-      raise "Empty sample list, can not execute query!" if not samples
-      samples.each_with_index { |name,i|
-        # p [i,list]
-        next if list and not list.index(i.to_s)
-        yield VcfSample::Sample.new(self,sample[name]) 
-      }
+      list = @header.column_names[9..-1].fill{|i| i} if not list 
+      list.each { |i| yield VcfSample::Sample.new(self,sample_by_index(i)) }
     end
 
     def missing_samples?

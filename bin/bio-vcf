@@ -124,8 +124,16 @@ def parse_line line,header,options,samples
   sfilter = options[:sfilter]
   efilter = options[:efilter]
   ifilter = options[:ifilter]
+  seval = options[:seval]
   ignore_missing = options[:ignore_missing]
   quiet = options[:quiet]
+
+  if sfilter or efilter or ifilter or seval
+    # check for samples
+    header_samples = header.column_names[9..-1]
+    raise "Empty sample list, can not execute query!" if not header_samples
+  end
+
   # --------------------------
   # Filtering and set analysis
   return if filter and not rec.eval(filter,ignore_missing,quiet)
@@ -158,17 +166,17 @@ def parse_line line,header,options,samples
     end
     fields = newfields
   end
-  if options[:eval] or options[:seval]
+  if options[:eval] or seval
     begin
       results = nil # result string
       if options[:eval] 
         res = rec.eval(options[:eval],ignore_missing,quiet)
         results = res if res
       end
-      if options[:seval]
+      if seval
         list = (results ? [] : [rec.chr,rec.pos])
         rec.each_sample(options[:sfilter_samples]) { | sample |
-          list << sample.eval(options[:seval],ignore_missing,quiet)
+          list << sample.eval(seval,ignore_missing,quiet)
         }
         results = (results ? results + "\t" : "" ) + list.join("\t")
       end
