@@ -36,11 +36,21 @@ Feature: Multi-sample VCF
     And I expect rec.sample.original.gt to be [0,1]
     And I expect rec.sample.s3t2.pl to be [20,0,522]
     # And the even better
+    And I expect r.original.gt? to be true
     And I expect rec.original.gt to be [0,1]
     And I expect rec.s3t2.pl to be [20,0,522]
     # Check for missing data
     And I expect test rec.missing_samples? to be false 
     And I expect test rec.original? to be true
+    # Special functions
+    And I expect r.original? to be true
+    And I expect r.original.gti? to be true
+    And I expect r.original.gti to be [0,1]
+    And I expect r.original.gti[1] to be 1
+    And I expect r.original.gts? to be true
+    And I expect r.original.gts to be ["C","T"]
+    And I expect r.original.gts[1] to be "T"
+
     Given multisample vcf line
     """
 1 10723 . C G 73.85 . AC=4;AF=0.667;AN=6;BaseQRankSum=1.300;DP=18;Dels=0.00;FS=3.680;HaplotypeScore=0.0000;MLEAC=4;MLEAF=0.667;MQ=20.49;MQ0=11;MQRankSum=1.754;QD=8.21;ReadPosRankSum=0.000 GT:AD:DP:GQ:PL  ./. ./. 1/1:2,2:4:6:66,6,0  1/1:4,1:5:3:36,3,0  ./. ./.  0/0:6,0:6:3:0,3,33
