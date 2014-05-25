@@ -2,12 +2,12 @@
 
 [![Build Status](https://secure.travis-ci.org/pjotrp/bioruby-vcf.png)](http://travis-ci.org/pjotrp/bioruby-vcf) 
 
-Yet another VCF parser. This one may give better performance because
-of lazy parsing and useful combinations of (fancy) command line
-filtering. bio-vcf comes with a sensible parser definition language,
-as well as primitives for set analysis. Also few assumptions are made
-about the actual contents of the VCF file (field names are resolved on
-the fly).
+Yet another VCF parser. This sucker is fast! Better performance
+because of lazy parsing, multi-threading, and useful combinations of
+(fancy) command line filtering. bio-vcf comes with a sensible parser
+definition language, as well as primitives for set analysis. Few
+assumptions are made about the actual contents of the VCF file (field
+names are resolved on the fly).
 
 To fetch all entries where all samples have depth larger than 20 use an sfilter
 
