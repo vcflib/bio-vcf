@@ -32,7 +32,7 @@ module BioVcf
         call_cached_eval(@rec,self)
       rescue NoMethodError => e
         empty = VcfSample::empty?(@sample.values.to_s)
-        $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty
+        $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty and not quiet
         if not quiet
           $stderr.print [@format,@values],"\n"
           $stderr.print expr,"\n"
@@ -62,7 +62,7 @@ module BioVcf
         call_cached_sfilter(@rec,self)
       rescue NoMethodError => e
         empty = VcfSample::empty?(@sample.values.to_s)
-        $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty
+        $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty and not quiet
         if not quiet
           $stderr.print [@format,@values],"\n"
           $stderr.print expr,"\n"
@@ -92,7 +92,7 @@ module BioVcf
         call_cached_ifilter(@rec,self)
       rescue NoMethodError => e
         empty = VcfSample::empty?(@sample.values.to_s)
-        $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty
+        $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty and not quiet
         if not quiet
           $stderr.print [@format,@values],"\n"
           $stderr.print expr,"\n"
@@ -122,7 +122,7 @@ module BioVcf
         call_cached_efilter(@rec,self)
       rescue NoMethodError => e
         empty = VcfSample::empty?(@sample.values.to_s)
-        $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty
+        $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty and not quiet
         if not quiet
           $stderr.print [@format,@values],"\n"
           $stderr.print expr,"\n"
