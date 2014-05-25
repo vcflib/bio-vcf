@@ -298,7 +298,7 @@ STDIN.each_line do | line |
     end
     next if line =~ /^##/ # empty file
     lines << line
-    if lines.size > 30_000
+    if lines.size > 20_000
       pids << parse_lines(lines,header,options,samples)
       lines = []
     end
@@ -330,14 +330,14 @@ if options[:use_threads]
       $stderr.print "child killed, pid = #{pid}\n"
     end
   end
-  File.open('collate.vcf','w') { |f|
+  # File.open('collate.vcf','w') { |f|
   pids.each do | pid |
     $stderr.print "Reading #{pid}\n"
     File.new(pid.to_s).each_line { |buf|
-      f.print buf
+      print buf
     }
     File.unlink(pid.to_s)
   end
-  }
-  $stderr.print "Writing collate.vcf\n"
+  # }
+  # $stderr.print "Writing collate.vcf\n"
 end
