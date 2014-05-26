@@ -79,8 +79,8 @@ opts = OptionParser.new do |o|
     options[:rdf] = true
     options[:skip_header] = true
   end
-  o.on("--use-threads", "Multi-core version") do |b|
-    options[:use_threads] = true
+  o.on("--num-threads [num]", Integer, "Multi-core version") do |i|
+    options[:num_threads] = i.to_i
   end
   o.on_tail("--id name", String, "Identifier") do |s|
     options[:id] = s
@@ -244,9 +244,10 @@ def parse_line line,header,options,samples
 end
 
 def parse_lines lines,header,options,samples
-  if options[:use_threads]
+  pid = nil
+  if options[:num_threads]
     lines2 = lines.map { |l| l.clone }
-    fork do  # returns pid
+    pid = fork do
       count_lines = 0
       fn = Process.pid.to_s
       STDOUT.reopen(File.open(fn, 'w+'))
@@ -256,11 +257,23 @@ def parse_lines lines,header,options,samples
       STDOUT.flush
       STDOUT.close
       FileUtils::mv(fn,fn+'.bio-vcf')
+      exit 0
     end
+    Process::detach(pid)
   else
     lines.each do | line |
       parse_line line,header,options,samples
     end
+  end
+  pid
+end
+
+def manage_thread_pool(workers, pids, num_threads)
+  while true
+    # ---- count running pids
+    running = pids.reduce(0) { | sum, pid | ( File.exist?(pid.to_s) ? sum+1 : sum ) }
+    break if running < num_threads
+    sleep 0.1
   end
 end
 
@@ -284,11 +297,15 @@ if not options[:efilter_samples] and options[:ifilter_samples]
   options[:efilter_samples] = header.column_names[9..-1].fill{|i|i.to_s}-options[:ifilter_samples]
 end
 
+num_threads = options[:num_threads]
+num_threads = 8 if num_threads != nil and num_threads < 2
+
 header_out = false
 header = nil
 line_number=0
 lines = []
 pids = []
+workers = []
 
 orig_std_out = STDOUT.clone
 
@@ -302,6 +319,7 @@ STDIN.each_line do | line |
     next if line =~ /^##/ # empty file
     lines << line
     if lines.size > 20_000
+      manage_thread_pool(workers,pids,num_threads) if options[:num_threads]
       pids << parse_lines(lines,header,options,samples)
       lines = []
     end
@@ -315,7 +333,7 @@ end
 
 pids << parse_lines(lines,header,options,samples)
 
-if options[:use_threads]
+if options[:num_threads]
   STDOUT.reopen(orig_std_out)
   $stderr.print "Final pid=#{pids.last}, size=#{lines.size}\n"
   lines = []
@@ -324,8 +342,11 @@ if options[:use_threads]
   pids.each do |pid|
     $stderr.print "Waiting for pid=#{pid}\n"
     begin
-      Timeout.timeout(20) do
-        $stderr.print Process.waitpid(pid),"\n"
+      Timeout.timeout(10) do  # 10 seconds for child to complete
+        while File.exist?(pid.to_s)
+          sleep 0.2
+        end
+        raise Timeout::Error if File.exist?(pid.to_s)
       end
       $stderr.print "OK pid=#{pid}\n"
     rescue Timeout::Error
@@ -335,7 +356,6 @@ if options[:use_threads]
       fault = true
     end
   end
-  # File.open('collate.vcf','w') { |f|
   pids.each do | pid |
     fn = pid.to_s+'.bio-vcf'
     raise "child process output #{fn} is missing" if not File.exist?(fn)
@@ -345,7 +365,5 @@ if options[:use_threads]
     }
     File.unlink(fn)
   end
-  # }
-  # $stderr.print "Writing collate.vcf\n"
   return 1 if fault
 end
