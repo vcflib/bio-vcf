@@ -16,6 +16,7 @@ version = File.new(VERSION_FILENAME).read.chomp
 require 'bio-vcf'
 require 'optparse'
 require 'timeout'
+require 'fileutils'
 
 # Uncomment when using the bio-logger 
 # require 'bio-logger'
@@ -247,12 +248,14 @@ def parse_lines lines,header,options,samples
     lines2 = lines.map { |l| l.clone }
     fork do  # returns pid
       count_lines = 0
-      STDOUT.reopen(File.open(Process.pid.to_s, 'w+'))
+      fn = Process.pid.to_s
+      STDOUT.reopen(File.open(fn, 'w+'))
       lines2.each do | line |
         count_lines +=1 if parse_line(line,header,options,samples)
       end
       STDOUT.flush
       STDOUT.close
+      FileUtils::mv(fn,fn+'.bio-vcf')
     end
   else
     lines.each do | line |
@@ -317,6 +320,7 @@ if options[:use_threads]
   $stderr.print "Final pid=#{pids.last}, size=#{lines.size}\n"
   lines = []
 
+  fault = false
   pids.each do |pid|
     $stderr.print "Waiting for pid=#{pid}\n"
     begin
@@ -327,17 +331,21 @@ if options[:use_threads]
     rescue Timeout::Error
       Process.kill 9, pid
       Process.wait pid
-      $stderr.print "child killed, pid = #{pid}\n"
+      $stderr.print "child process killed because it stopped responding, pid = #{pid}\n"
+      fault = true
     end
   end
   # File.open('collate.vcf','w') { |f|
   pids.each do | pid |
-    $stderr.print "Reading #{pid}\n"
-    File.new(pid.to_s).each_line { |buf|
+    fn = pid.to_s+'.bio-vcf'
+    raise "child process output #{fn} is missing" if not File.exist?(fn)
+    $stderr.print "Reading #{fn}\n"
+    File.new(fn).each_line { |buf|
       print buf
     }
-    File.unlink(pid.to_s)
+    File.unlink(fn)
   end
   # }
   # $stderr.print "Writing collate.vcf\n"
+  return 1 if fault
 end
