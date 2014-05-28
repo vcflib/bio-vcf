@@ -33,8 +33,9 @@ module BioVcf
       h2.delete(:show_help)
       h2[:date] = Time.now.to_s
       info = h2.map { |k,v| k.to_s.capitalize+'='+'"'+v.to_s+'"' }.join(',')
-      line = '##Bio-vcf=<'+info+'>'
+      line = '##BioVcf=<'+info+'>'
       @lines.insert(-2,line)
+      line
     end
 
     def version

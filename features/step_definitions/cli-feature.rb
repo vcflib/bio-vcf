@@ -8,5 +8,5 @@ When /^I execute "(.*?)"$/ do |arg1|
 end
 
 Then(/^I expect the named output to match the named output "(.*?)"$/) do |arg1|
-  RegressionTest::CliExec::exec(@cmd,arg1,ignore: '##Bio-vcf=').should be_true
+  RegressionTest::CliExec::exec(@cmd,arg1,ignore: '##BioVcf=').should be_true
 end

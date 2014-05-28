@@ -127,12 +127,13 @@ def parse_header line, samples, options
   STDIN.each_line do | headerline |
     if headerline !~ /^#/
       line = headerline
-      header.tag(options)
       break # end of header
     end
     header.add(headerline)
     if not options[:skip_header]
       if headerline =~ /^#CHR/
+        # The header before data, first inject the BioVcf meta information
+        print header.tag(options),"\n" if not options[:skip_header]
         selected = header.column_names
         if samples
           newfields = selected[0..8]
