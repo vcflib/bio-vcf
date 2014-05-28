@@ -35,8 +35,6 @@ module BioVcf
       info = h2.map { |k,v| k.to_s.capitalize+'='+'"'+v.to_s+'"' }.join(',')
       line = '##Bio-vcf=<'+info+'>'
       @lines.insert(-2,line)
-      p self
-      exit
     end
 
     def version
