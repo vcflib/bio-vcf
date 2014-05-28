@@ -13,7 +13,11 @@ module BioVcf
       if integer?(str)
         str.to_i 
       else
-        str.to_f if float?(str)
+        if float?(str)
+          str.to_f 
+        else
+          str
+        end
       end
     end
   end

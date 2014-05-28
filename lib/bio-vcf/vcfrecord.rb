@@ -27,9 +27,10 @@ module BioVcf
       v = if @h
             @h[m.to_s.upcase]
           else
-            @info =~ /#{m.to_s.upcase}=([^;]+)/
+            @info =~ /#{m.to_s}=([^;]+)/i
             value = $1
-            # m = @info.match(/#{m.to_s.upcase}=(?<value>[^;]+)/)
+            # p [m,value]
+            # m = @info.match(/#{m.to_s.upcase}=(?<value>[^;]+)/) slower!
             # value = m[:value]
             if value == nil
               split_fields # no option but to split
