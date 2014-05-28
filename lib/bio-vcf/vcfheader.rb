@@ -31,7 +31,6 @@ module BioVcf
     def tag h
       h2 = h.dup
       h2.delete(:show_help)
-      h2[:date] = Time.now.to_s
       info = h2.map { |k,v| k.to_s.capitalize+'='+'"'+v.to_s+'"' }.join(',')
       line = '##BioVcf=<'+info+'>'
       @lines.insert(-2,line)
