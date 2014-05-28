@@ -89,6 +89,10 @@ opts = OptionParser.new do |o|
     options[:tags] = eval(s)
   end
  
+  o.on("--skip-header", "Do not output header info") do 
+    options[:skip_header] = true
+  end
+   
   # Uncomment the following when using the bio-logger 
   # o.separator ""
   # o.on("--logger filename",String,"Log to file (default stderr)") do | name |
@@ -227,9 +231,9 @@ def parse_line line,header,options,samples
   else
     if options[:rdf]
       # Output Turtle RDF
-      if not header_out
+      if not rdf_header
         VcfRdf::header
-        header_out = true
+        rdf_header = true
       end
       VcfRdf::record(options[:id],rec,options[:tags])
     elsif options[:rewrite]
@@ -302,8 +306,9 @@ end
 num_threads = options[:num_threads]
 num_threads = 8 if num_threads != nil and num_threads < 2
 
-header_out = false
+rdf_header = false
 header = nil
+header_output_completed = false
 line_number=0
 lines = []
 pids = []
@@ -315,10 +320,12 @@ STDIN.each_line do | line |
   line_number += 1
   $stderr.print '.' if line_number%100_000 == 0 and not options[:quiet]
   begin
+    next if header_output_completed and line =~ /^#/
     if line =~ /^##fileformat=/
       header,line = parse_header line,samples,options
     end
     next if line =~ /^##/ # empty file
+    header_output_completed = true
     lines << line
     if lines.size > 20_000
       manage_thread_pool(workers,pids,num_threads) if options[:num_threads]

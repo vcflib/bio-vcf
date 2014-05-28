@@ -30,7 +30,7 @@ module BioVcf
     # Add a key value list to the header
     def tag h
       h2 = h.dup
-      h2.delete(:show_help)
+      [:show_help,:skip_header,:verbose,:quiet,:debug].each { |key| h2.delete(key) }
       info = h2.map { |k,v| k.to_s.capitalize+'='+'"'+v.to_s+'"' }.join(',')
       line = '##BioVcf=<'+info+'>'
       @lines.insert(-2,line)
