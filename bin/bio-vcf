@@ -25,7 +25,7 @@ require 'fileutils'
 # Bio::Log::CLI.logger('stderr')
 # Bio::Log::CLI.trace('info')
 
-options = { show_help: false}
+options = { show_help: false, source: 'https://github.com/CuppenResearch/bioruby-vcf', version: version }
 opts = OptionParser.new do |o|
   o.banner = "Usage: #{File.basename($0)} [options] filename\ne.g.  #{File.basename($0)} < test/data/input/somaticsniper.vcf"
 
@@ -127,6 +127,7 @@ def parse_header line, samples, options
   STDIN.each_line do | headerline |
     if headerline !~ /^#/
       line = headerline
+      header.tag(options)
       break # end of header
     end
     header.add(headerline)

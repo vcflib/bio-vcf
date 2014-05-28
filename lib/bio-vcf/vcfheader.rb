@@ -27,6 +27,18 @@ module BioVcf
       @lines << line.strip
     end
 
+    # Add a key value list to the header
+    def tag h
+      h2 = h.dup
+      h2.delete(:show_help)
+      h2[:date] = Time.now.to_s
+      info = h2.map { |k,v| k.to_s.capitalize+'='+'"'+v.to_s+'"' }.join(',')
+      line = '##Bio-vcf=<'+info+'>'
+      @lines.insert(-2,line)
+      p self
+      exit
+    end
+
     def version
       @version ||= lines[0].scan(/##fileformat=VCFv(\d+\.\d+)/)[0][0]
     end
