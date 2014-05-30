@@ -2,9 +2,25 @@
 
 [![Build Status](https://secure.travis-ci.org/pjotrp/bioruby-vcf.png)](http://travis-ci.org/pjotrp/bioruby-vcf) 
 
-Yet another VCF parser. This sucker is fast! Better performance
+Yet another VCF parser. Bio-vcf is not only fast for genome-wide data,
+it also comes with a really nice filtering, evaluation and rewrite
+language. Bio-vcf has better performance than other tools
 because of lazy parsing, multi-threading, and useful combinations of
-(fancy) command line filtering. bio-vcf comes with a sensible parser
+(fancy) command line filtering. For example on an 2 core machine 
+bio-vcf is 50% faster than SnpSift. On an 8 cores machine bio-vcf is
+5x faster than SnpSift. Using a 1 Gb file:
+
+  time ./bin/bio-vcf -iv --num-threads 8 --filter 'r.info.cp>0.3' < ESP6500SI_V2_SSA137.vcf > test1.vcf
+  real    0m21.095s
+  user    1m41.101s
+  sys     0m7.852s
+
+  time cat ESP6500SI_V2_SSA137.vcf |java -jar snpEff/SnpSift.jar filter "( CP>0.3 )" > test.vcf
+  real    1m4.913s
+  user    0m58.071s
+  sys     0m7.982s
+
+bio-vcf comes with a sensible parser
 definition language, as well as primitives for set analysis. Few
 assumptions are made about the actual contents of the VCF file (field
 names are resolved on the fly).
