@@ -10,6 +10,7 @@ because of lazy parsing, multi-threading, and useful combinations of
 bio-vcf is 50% faster than SnpSift. On an 8 cores machine bio-vcf is
 5x faster than SnpSift. Using a 1 Gb file:
 
+```sh
   time ./bin/bio-vcf -iv --num-threads 8 --filter 'r.info.cp>0.3' < ESP6500SI_V2_SSA137.vcf > test1.vcf
   real    0m21.095s
   user    1m41.101s
@@ -19,6 +20,7 @@ bio-vcf is 50% faster than SnpSift. On an 8 cores machine bio-vcf is
   real    1m4.913s
   user    0m58.071s
   sys     0m7.982s
+```
 
 bio-vcf comes with a sensible parser
 definition language, as well as primitives for set analysis. Few
