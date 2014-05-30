@@ -8,7 +8,7 @@ language. Bio-vcf has better performance than other tools
 because of lazy parsing, multi-threading, and useful combinations of
 (fancy) command line filtering. For example on an 2 core machine 
 bio-vcf is 50% faster than SnpSift. On an 8 cores machine bio-vcf is
-5x faster than SnpSift. Using a 1 Gb file:
+5x faster than SnpSift. Parsing a 1 Gb VCF with 8 cores:
 
 ```sh
   time ./bin/bio-vcf -iv --num-threads 8 --filter 'r.info.cp>0.3' < ESP6500SI_V2_SSA137.vcf > test1.vcf
@@ -129,13 +129,17 @@ If something is not working, check out the feature descriptions and
 the source code. It is not hard to add features. Otherwise, send a short
 example of a VCF statement you need to work on.
 
-bio-vcf is fast. Parsing a 55K line DbSNP file (22Mb) takes 1.5 seconds on a
-Macbook PRO running 64-bits Linux (Ruby 2.1.0).
-
 ## Installation
+
+Note that you need Ruby 1.9.3 or later. The 2.x Ruby series also give
+a performance improvement. Bio-vcf will show the Ruby version when
+typing the command 'bio-vcf -h'.
+
+To intall bio-vcf with gem:
 
 ```sh
 gem install bio-vcf
+bio-vcf -h
 ```
 
 ## Command line interface (CLI)
