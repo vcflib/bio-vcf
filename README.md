@@ -8,7 +8,7 @@ language. Bio-vcf has better performance than other tools
 because of lazy parsing, multi-threading, and useful combinations of
 (fancy) command line filtering. For example on an 2 core machine 
 bio-vcf is 50% faster than SnpSift. On an 8 cores machine bio-vcf is
-5x faster than SnpSift. Parsing a 1 Gb VCF with 8 cores:
+3x faster than SnpSift. Parsing a 1 Gb VCF with 8 cores:
 
 ```sh
   time ./bin/bio-vcf -iv --num-threads 8 --filter 'r.info.cp>0.3' < ESP6500SI_V2_SSA137.vcf > test1.vcf
