@@ -124,6 +124,7 @@ end
 
 include BioVcf
 
+# Parse the header section of a VCF file
 def parse_header line, samples, options
   header = VcfHeader.new
   header.add(line)
@@ -136,7 +137,7 @@ def parse_header line, samples, options
     header.add(headerline)
     if not options[:skip_header]
       if headerline =~ /^#CHR/
-        # The header before data, first inject the BioVcf meta information
+        # The header before actual data contains the sample names, first inject the BioVcf meta information
         print header.tag(options),"\n" if not options[:skip_header]
         selected = header.column_names
         if samples
@@ -155,6 +156,7 @@ def parse_header line, samples, options
   return header,line
 end
 
+# Parse a VCF line
 def parse_line line,header,options,samples
   fields = VcfLine.parse(line)
   rec = VcfRecord.new(fields,header)
@@ -320,12 +322,14 @@ STDIN.each_line do | line |
   line_number += 1
   $stderr.print '.' if line_number%100_000 == 0 and not options[:quiet]
   begin
+    # ---- In this section header information is handled
     next if header_output_completed and line =~ /^#/
-    if line =~ /^##fileformat=/
-      header,line = parse_header line,samples,options
+    if line =~ /^##fileformat=/ or line =~ /^#CHR/
+      header,line = parse_header(line,samples,options)
     end
     next if line =~ /^##/ # empty file
     header_output_completed = true
+    # ---- In this section the VCF variant lines are parsed
     lines << line
     if lines.size > 20_000
       manage_thread_pool(workers,pids,num_threads) if options[:num_threads]
