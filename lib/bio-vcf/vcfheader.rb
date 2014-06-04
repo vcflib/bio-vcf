@@ -49,6 +49,16 @@ module BioVcf
       @column ||= column_names.size
     end
 
+    def printable_header_line(fields)
+      fields.map { | field |
+        if field == '#samples'
+          samples
+        else
+          field
+        end
+      }.join("\t")
+    end
+
     def samples
       @samples ||= column_names[9..-1]
     end
