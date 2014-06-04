@@ -10,13 +10,17 @@ module BioVcf
     end
 
     def self::convert str
-      if integer?(str)
-        str.to_i 
+      if str =~ /,/
+        str.split(/,/)
       else
-        if float?(str)
-          str.to_f 
+        if integer?(str)
+          str.to_i 
         else
-          str
+          if float?(str)
+            str.to_f 
+          else
+            str
+          end
         end
       end
     end
