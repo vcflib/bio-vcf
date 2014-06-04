@@ -11,7 +11,7 @@ module BioVcf
 
     def self::convert str
       if str =~ /,/
-        str.split(/,/)
+        str.split(/,/).map { |item| convert(item) }
       else
         if integer?(str)
           str.to_i 
