@@ -11,20 +11,27 @@ module BioVcf
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix hgnc: <http://identifiers.org/hgnc.symbol/> .
 @prefix doi: <http://dx.doi.org/> .
-@prefix : <http://biobeat.org/rdf/ns#> .
+@prefix db: <http://biobeat.org/rdf/db#> .
+@prefix seq: <http://biobeat.org/rdf/seq#> .
+@prefix : <http://biobeat.org/rdf/vcf#> .
 EOB
     end
 
-    def VcfRdf::record id,rec,hash = {}
-      id2 = [id,'ch'+rec.chrom,rec.pos].join('_')
+    def VcfRdf::record id,rec,tags = "{}"
+      id2 = [id,'ch'+rec.chrom,rec.pos,rec.alt.join('')].join('_')
       print <<OUT
-:#{id2} :chr \"#{rec.chrom}\" .
-:#{id2} :pos #{rec.pos} .
-:#{id2} :vcf true .
+:#{id2} seq:chr \"#{rec.chrom}\" .
+:#{id2} seq:pos #{rec.pos} .
+:#{id2} seq:alt #{rec.alt[0]} .
+:#{id2} db:vcf true .
 OUT
-      hash.each do |k,v|
-        print ":#{id2} :#{k} #{v} .\n"
+      hash = eval(tags)
+      if hash
+        hash.each do |k,v|
+          print ":#{id2} #{k} #{v} .\n"
+        end
       end
+      print "\n"
     end
   end
 end

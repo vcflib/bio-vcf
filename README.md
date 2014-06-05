@@ -562,7 +562,32 @@ To remove/select 3 samples and create a new file:
 
 ## RDF output
 
-Use [bio-table](https://github.com/pjotrp/bioruby-table) to convert tabular data to RDF.
+You can use --rdf for turtle RDF output, note the use of --id and
+--tags which includes the MAF record:
+
+```ruby
+bio-vcf --id evs --rdf --tags '{"db:evs" => true, "seq:freq" => rec.info.maf[0]/100 }' < EVS.vcf
+  :evs_ch9_139266496_T seq:chr "9" .
+  :evs_ch9_139266496_T seq:pos 139266496 .
+  :evs_ch9_139266496_T seq:alt T .
+  :evs_ch9_139266496_T db:vcf true .
+  :evs_ch9_139266496_T db:evs true .
+  :evs_ch9_139266496_T seq:freq 0.419801 .
+```
+
+It is possible to filter too! Pick out the rare variants with
+
+```ruby
+bio-vcf --id evs --filter 'r.info.maf[0]<5.0' --rdf --tags '{"db:evs" => true, "seq:freq" => rec.info.maf[0]/100 }' < EVS.vcf
+```
+
+Similarly for GoNL
+
+```ruby
+bio-vcf --id gonl --rdf --tags '{"db:evs" => true, "seq:freq" => rec.info.af }' < GoNL.vcf
+```
+
+Also check out [bio-table](https://github.com/pjotrp/bioruby-table) to convert tabular data to RDF.
 
 ## Other examples
 

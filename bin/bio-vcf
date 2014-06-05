@@ -86,7 +86,7 @@ opts = OptionParser.new do |o|
     options[:id] = s
   end
   o.on_tail("--tags list", String, "Add tags") do |s|
-    options[:tags] = eval(s)
+    options[:tags] = s
   end
  
   o.on("--skip-header", "Do not output VCF header info") do 
@@ -159,6 +159,7 @@ def parse_header line, samples, options
     end
   end
   print header.printable_header_line(options[:set_header]),"\n" if options[:set_header]
+  VcfRdf::header if options[:rdf]
   return header,line
 end
 
@@ -239,10 +240,6 @@ def parse_line line,header,options,samples
   else
     if options[:rdf]
       # Output Turtle RDF
-      if not rdf_header
-        VcfRdf::header
-        rdf_header = true
-      end
       VcfRdf::record(options[:id],rec,options[:tags])
     elsif options[:rewrite]
       # Default behaviour prints VCF line, but rewrite info
@@ -310,7 +307,6 @@ end
 num_threads = options[:num_threads]
 num_threads = 8 if num_threads != nil and num_threads < 2
 
-rdf_header = false
 header = nil
 header_output_completed = false
 line_number=0
