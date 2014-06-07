@@ -22,7 +22,7 @@ EOB
       print <<OUT
 :#{id2} seq:chr \"#{rec.chrom}\" .
 :#{id2} seq:pos #{rec.pos} .
-:#{id2} seq:alt #{rec.alt[0]} .
+:#{id2} seq:alt \"#{rec.alt[0]}\" .
 :#{id2} db:vcf true .
 OUT
       hash = eval(tags)
