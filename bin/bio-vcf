@@ -227,7 +227,7 @@ def parse_line line,header,options,samples
         rec.each_sample(options[:sfilter_samples]) { | sample |
           list << sample.eval(seval,ignore_missing,quiet)
         }
-        results = (results ? results + "\t" : "" ) + list.join("\t")
+        results = (results ? results.to_s + "\t" : "" ) + list.join("\t")
       end
     rescue => e
       $stderr.print "\nLine: ",line
