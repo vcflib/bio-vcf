@@ -361,9 +361,9 @@ if options[:num_threads]
 
   fault = false
   pids.each do |pid|
-    $stderr.print "Waiting up to 60 seconds for pid=#{pid} to complete\n"
+    $stderr.print "Waiting up to 3 minutes for pid=#{pid} to complete\n"
     begin
-      Timeout.timeout(60) do  # 60 seconds for child to complete
+      Timeout.timeout(180) do
         while File.exist?(pid.to_s)  # this is the running file
           sleep 0.2
         end
