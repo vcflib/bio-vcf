@@ -361,14 +361,14 @@ if options[:num_threads]
 
   fault = false
   pids.each do |pid|
-    $stderr.print "Waiting for pid=#{pid}\n"
+    $stderr.print "Waiting up to 60 seconds for pid=#{pid} to complete\n"
     begin
-      Timeout.timeout(10) do  # 10 seconds for child to complete
-        while File.exist?(pid.to_s)
+      Timeout.timeout(60) do  # 60 seconds for child to complete
+        while File.exist?(pid.to_s)  # this is the running file
           sleep 0.2
         end
-        raise Timeout::Error if File.exist?(pid.to_s)
       end
+      raise Timeout::Error if File.exist?(pid.to_s)
       $stderr.print "OK pid=#{pid}\n"
     rescue Timeout::Error
       Process.kill 9, pid
