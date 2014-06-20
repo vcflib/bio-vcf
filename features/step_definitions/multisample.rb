@@ -117,3 +117,35 @@ Then(/^I expect rec\.valid\? to be true$/) do
   expect(@rec1.valid?).to eq true
 end
 
+Then(/^I expect r\.original\.gt\? to be true$/) do
+  pending # express the regexp above with the code you wish you had
+end
+
+Then(/^I expect r\.original\? to be true$/) do
+  pending # express the regexp above with the code you wish you had
+end
+
+Then(/^I expect r\.original\.gti\? to be true$/) do
+  pending # express the regexp above with the code you wish you had
+end
+
+Then(/^I expect r\.original\.gti to be \[(\d+),(\d+)\]$/) do |arg1, arg2|
+  pending # express the regexp above with the code you wish you had
+end
+
+Then(/^I expect r\.original\.gti\[(\d+)\] to be (\d+)$/) do |arg1, arg2|
+  pending # express the regexp above with the code you wish you had
+end
+
+Then(/^I expect r\.original\.gts\? to be true$/) do
+  pending # express the regexp above with the code you wish you had
+end
+
+Then(/^I expect r\.original\.gts to be \["(.*?)","(.*?)"\]$/) do |arg1, arg2|
+  pending # express the regexp above with the code you wish you had
+end
+
+Then(/^I expect r\.original\.gts\[(\d+)\] to be "(.*?)"$/) do |arg1, arg2|
+  pending # express the regexp above with the code you wish you had
+end
+
