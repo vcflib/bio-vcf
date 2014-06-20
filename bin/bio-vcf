@@ -82,6 +82,9 @@ opts = OptionParser.new do |o|
   o.on("--num-threads [num]", Integer, "Multi-core version") do |i|
     options[:num_threads] = i.to_i
   end
+  o.on("--thread-lines num", Integer, "Fork thread on num lines (default 100_000)") do |i|
+    options[:thread_lines] = i.to_i
+  end
   o.on_tail("--id name", String, "Identifier") do |s|
     options[:id] = s
   end
