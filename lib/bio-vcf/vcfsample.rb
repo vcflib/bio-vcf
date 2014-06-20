@@ -2,8 +2,7 @@ module BioVcf
   module VcfSample
 
   # Check whether a sample is empty (on the raw string value)
-  def VcfSample::empty? raw_sample
-    s = raw_sample.strip
+  def VcfSample::empty? s
     s == './.' or s == '' or s == nil
   end
 
@@ -14,6 +13,10 @@ module BioVcf
       @sample = sample
       @format = @sample.format
       @values = @sample.values
+    end
+
+    def empty?
+     cache_empty ||= VcfSample::empty?(@sample.to_s)
     end
 
     def eval expr, ignore_missing_data, quiet
@@ -31,14 +34,13 @@ module BioVcf
         end
         call_cached_eval(@rec,self)
       rescue NoMethodError => e
-        empty = VcfSample::empty?(@sample.values.to_s)
-        $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty and not quiet
+        $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty? and not quiet
         if not quiet
           $stderr.print [@format,@values],"\n"
           $stderr.print expr,"\n"
         end
         if ignore_missing_data
-          $stderr.print e.message if not quiet and not empty
+          $stderr.print e.message if not quiet and not empty?
           return false
         else
           raise
@@ -61,14 +63,13 @@ module BioVcf
         end
         call_cached_sfilter(@rec,self)
       rescue NoMethodError => e
-        empty = VcfSample::empty?(@sample.values.to_s)
-        $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty and not quiet
+        $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty? and not quiet
         if not quiet
           $stderr.print [@format,@values],"\n"
           $stderr.print expr,"\n"
         end
         if ignore_missing_data
-          $stderr.print e.message if not quiet and not empty
+          $stderr.print e.message if not quiet and not empty?
           return false
         else
           raise
@@ -91,14 +92,13 @@ module BioVcf
         end
         call_cached_ifilter(@rec,self)
       rescue NoMethodError => e
-        empty = VcfSample::empty?(@sample.values.to_s)
-        $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty and not quiet
+        $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty? and not quiet
         if not quiet
           $stderr.print [@format,@values],"\n"
           $stderr.print expr,"\n"
         end
         if ignore_missing_data
-          $stderr.print e.message if not quiet and not empty
+          $stderr.print e.message if not quiet and not empty?
           return false
         else
           raise
@@ -121,14 +121,13 @@ module BioVcf
         end
         call_cached_efilter(@rec,self)
       rescue NoMethodError => e
-        empty = VcfSample::empty?(@sample.values.to_s)
-        $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty and not quiet
+        $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty? and not quiet
         if not quiet
           $stderr.print [@format,@values],"\n"
           $stderr.print expr,"\n"
         end
         if ignore_missing_data
-          $stderr.print e.message if not quiet and not empty
+          $stderr.print e.message if not quiet and not empty?
           return false
         else
           raise

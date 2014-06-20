@@ -103,6 +103,10 @@ module BioVcf
       @alt = alt
     end
 
+    def to_s
+      @original_s
+    end
+
     def values
       @cache_values ||= @original_s.split(/:/)
     end
@@ -163,7 +167,6 @@ module BioVcf
       return nil if not v
       v.split(',').map{|i| i.to_i} 
     end
-
 
   end
 
