@@ -316,12 +316,13 @@ line_number=0
 lines = []
 pids = []
 workers = []
+thread_lines ||= options[:thread_lines]
 
 orig_std_out = STDOUT.clone
 
 STDIN.each_line do | line |
   line_number += 1
-  $stderr.print '.' if line_number%100_000 == 0 and not options[:quiet]
+  $stderr.print '.' if line_number % thread_lines == 0 and not options[:quiet]
   begin
     # ---- In this section header information is handled
     next if header_output_completed and line =~ /^#/
