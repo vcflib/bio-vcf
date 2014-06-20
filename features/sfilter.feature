@@ -18,13 +18,13 @@ Feature: Sample filters
     And sfilter 's.dp>4' to be true
 
   Scenario: Sample with missing data
-
     When I evaluate missing '0/0:6,0:.:3:0,3,33'
     Then I expect s.empty? to be false
     Then I expect s.dp? to be false
     Then I expect s.dp to be nil
     And sfilter 's.dp>4' to throw an error
 
+  Scenario: Sample with missing data with ignore missing set
     When I evaluate missing '0/0:6,0:.:3:0,3,33' with ignore missing
     Then I expect s.empty? to be false
     Then I expect s.dp? to be false
@@ -38,10 +38,23 @@ Feature: Sample filters
     Then I expect s.dp to throw an error
     And sfilter 's.dp>4' to throw an error
 
+  Scenario: Missing sample with ignore missing set
     When I evaluate empty './.' with ignore missing
     Then I expect s.empty? to be true
     Then I expect s.dp? to be false
     Then I expect s.dp to be nil
     And sfilter 's.dp>4' to be false
 
+  Scenario: Wrong field name in sample
+    When I evaluate '0/0:6,0:6:3:0,3,33'
+    Then I expect s.empty? to be false
+    Then I expect s.dp? to be true
+    Then I expect s.what? to throw an error
+    And I expect s.what to throw an error
+
+   Scenario: Get other information for a sample
+    When I evaluate '0/0:6,0:6:3:0,3,33'
+    Then I expect r.chrom to be "1"
+    And I expect r.alt to be ["G"]
+    And I expect r.info.af to be 0.667
 
