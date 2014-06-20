@@ -25,7 +25,7 @@ require 'fileutils'
 # Bio::Log::CLI.logger('stderr')
 # Bio::Log::CLI.trace('info')
 
-options = { show_help: false, source: 'https://github.com/CuppenResearch/bioruby-vcf', version: version+' (Pjotr Prins)', date: Time.now.to_s }
+options = { show_help: false, source: 'https://github.com/CuppenResearch/bioruby-vcf', version: version+' (Pjotr Prins)', date: Time.now.to_s, thread_lines: 100_000 }
 opts = OptionParser.new do |o|
   o.banner = "Usage: #{File.basename($0)} [options] filename\ne.g.  #{File.basename($0)} < test/data/input/somaticsniper.vcf"
 
@@ -322,7 +322,7 @@ orig_std_out = STDOUT.clone
 
 STDIN.each_line do | line |
   line_number += 1
-  $stderr.print '.' if line_number % thread_lines == 0 and not options[:quiet]
+  $stderr.print '.' if line_number % 100_000 == 0 and not options[:quiet]
   begin
     # ---- In this section header information is handled
     next if header_output_completed and line =~ /^#/
@@ -338,7 +338,7 @@ STDIN.each_line do | line |
 
     # ---- In this section the VCF variant lines are parsed
     lines << line
-    if lines.size > 20_000
+    if lines.size > thread_lines
       manage_thread_pool(workers,pids,num_threads) if options[:num_threads]
       pids << parse_lines(lines,header,options,samples)
       lines = []
