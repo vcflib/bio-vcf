@@ -13,6 +13,7 @@ Feature: Sample filters
     """
     When I evaluate '0/0:6,0:6:3:0,3,33'
     Then I expect s.empty? to be false
+    Then I expect s.dp? to be true
     Then I expect s.dp to be 6
     And sfilter 's.dp>4' to be true
 
@@ -20,22 +21,26 @@ Feature: Sample filters
 
     When I evaluate missing '0/0:6,0:.:3:0,3,33'
     Then I expect s.empty? to be false
+    Then I expect s.dp? to be false
     Then I expect s.dp to be nil
     And sfilter 's.dp>4' to throw an error
 
     When I evaluate missing '0/0:6,0:.:3:0,3,33' with ignore missing
     Then I expect s.empty? to be false
+    Then I expect s.dp? to be false
     Then I expect s.dp to be nil
     And sfilter 's.dp>4' to be false
 
   Scenario: Missing sample
     When I evaluate empty './.'
     Then I expect s.empty? to be true
+    Then I expect s.dp? to be false
     Then I expect s.dp to throw an error
     And sfilter 's.dp>4' to throw an error
 
     When I evaluate empty './.' with ignore missing
     Then I expect s.empty? to be true
+    Then I expect s.dp? to be false
     Then I expect s.dp to be nil
     And sfilter 's.dp>4' to be false
 
