@@ -379,7 +379,7 @@ if options[:num_threads]
   end
   pids.each do | pid |
     fn = pid.to_s+'.bio-vcf'
-    raise "child process output #{fn} is missing" if not File.exist?(fn)
+    raise "FATAL: child process output #{fn} is missing" if not File.exist?(fn)
     $stderr.print "Reading #{fn}\n"
     File.new(fn).each_line { |buf|
       print buf
