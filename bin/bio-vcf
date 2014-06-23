@@ -258,10 +258,15 @@ def parse_line line,header,options,samples
   end
 end
 
-def parse_lines lines,header,options,samples
+# Collect a buffer of lines and feed them to a thread
+# Returns the created pid, tempfilen and count_threads
+# (Note: this function should be turned into a closure)
+def parse_lines lines,header,options,samples,tempdir,count_threads
   pid = nil
+  tempfilen = nil
   if options[:num_threads]
     lines2 = lines.map { |l| l.clone }
+    count_threads += 1
     pid = fork do
       count_lines = 0
       fn = Process.pid.to_s
@@ -280,6 +285,7 @@ def parse_lines lines,header,options,samples
       parse_line line,header,options,samples
     end
   end
+  # return (pid,tempfilen,count_threads)
   pid
 end
 
@@ -318,6 +324,7 @@ lines = []
 pids = []
 workers = []
 thread_lines = options[:thread_lines]
+count_threads=0
 
 orig_std_out = STDOUT.clone
 
@@ -344,7 +351,7 @@ Dir::mktmpdir do |tempdir|
       lines << line
       if lines.size > thread_lines
         manage_thread_pool(workers,pids,num_threads) if options[:num_threads]
-        pids << parse_lines(lines,header,options,samples)
+        pids << parse_lines(lines,header,options,samples,tempdir,count_threads)
         lines = []
       end
     rescue Exception => e
@@ -355,7 +362,7 @@ Dir::mktmpdir do |tempdir|
     end
   end
 
-  pids << parse_lines(lines,header,options,samples)
+  pids << parse_lines(lines,header,options,samples,tempdir,count_threads)
 
   # ---- In this section the output gets collected and printed on STDOUT
   if options[:num_threads]

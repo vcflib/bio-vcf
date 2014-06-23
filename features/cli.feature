@@ -8,6 +8,16 @@ Feature: Command-line interface (CLI)
     When I execute "./bin/bio-vcf -i --filter 'r.info.dp>100'"
     Then I expect the named output to match the named output "r.info.dp"
 
+  Scenario: Test the info filter using dp and threads
+    Given I have input file(s) named "test/data/input/multisample.vcf"
+    When I execute "./bin/bio-vcf -i --num-threads 4 --filter 'r.info.dp>2'"
+    Then I expect the named output to match the named output "thread4"
+
+  Scenario: Test the info filter using dp and threads with lines
+    Given I have input file(s) named "test/data/input/multisample.vcf"
+    When I execute "./bin/bio-vcf -i --num-threads 4 --thread-lines 4 --filter 'r.info.dp>2'"
+    Then I expect the named output to match the named output "thread4_4"
+
   Scenario: Test the sample filter using dp
     Given I have input file(s) named "test/data/input/multisample.vcf"
     When I execute "./bin/bio-vcf -i --sfilter 's.dp>20'"
