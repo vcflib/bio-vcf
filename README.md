@@ -8,7 +8,7 @@ language. Bio-vcf has better performance than other tools
 because of lazy parsing, multi-threading, and useful combinations of
 (fancy) command line filtering. For example on an 2 core machine 
 bio-vcf is 50% faster than SnpSift. On an 8 cores machine bio-vcf is
-3x faster than SnpSift. Parsing a 1 Gb VCF with 8 cores:
+3x faster than SnpSift. Parsing a 1 Gb ESP VCF with 8 cores:
 
 ```sh
   time ./bin/bio-vcf -iv --num-threads 8 --filter 'r.info.cp>0.3' < ESP6500SI_V2_SSA137.vcf > test1.vcf
@@ -22,8 +22,20 @@ bio-vcf is 50% faster than SnpSift. On an 8 cores machine bio-vcf is
   sys     0m7.982s
 ```
 
-bio-vcf comes with a sensible parser
-definition language, as well as primitives for set analysis. Few
+and parsing 650 Gb GATK Illumina Hiseq VCF and evaluating the results
+to a BED format on a 16 core machine:
+
+```sh
+  time bio-vcf --num-threads 36 --filter 'r.chrom.to_i>0 and r.chrom.to_i<21 and r.qual>50' --sfilter '!s.empty? and s.dp>20' --eval '[r.chrom,r.pos,r.pos+1]' < test.large2.vcf > test.out.3
+  real    0m47.612s
+  user    8m18.234s
+  sys     0m5.039s
+```
+
+which shows some pretty decent core utilisation (10x).
+
+bio-vcf comes with a sensible parser definition language (100%
+Ruby), as well as primitives for set analysis. Few
 assumptions are made about the actual contents of the VCF file (field
 names are resolved on the fly).
 
