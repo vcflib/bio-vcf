@@ -376,22 +376,24 @@ Dir::mktmpdir do |tempdir|
       $stderr.print "Waiting up to 3 minutes for pid=#{pid} to complete\n"
       begin
         Timeout.timeout(180) do
-          while File.exist?(pid.to_s)  # this is the running file
-            sleep 0.1
+          while not File.exist?(pid.to_s+'.bio-vcf')  # wait for the result to appear
+            sleep 0.2
           end
         end
-        raise Timeout::Error if File.exist?(pid.to_s)
+        # Thread file should have gone:
+        raise "FATAL: child process appears to have crashed #{pid.to_s}" if File.exist?(pid.to_s)
         $stderr.print "OK pid=#{pid}\n"
       rescue Timeout::Error
         Process.kill 9, pid
         Process.wait pid
-        $stderr.print "child process killed because it stopped responding, pid = #{pid}\n"
+        $stderr.print "FATAL: child process killed because it stopped responding, pid = #{pid}\n"
         fault = true
       end
     end
     # Collate the output
     pids.each do | pid |
       fn = pid.to_s+'.bio-vcf'
+      # This should never happen
       raise "FATAL: child process output #{fn} is missing" if not File.exist?(fn)
       $stderr.print "Reading #{fn}\n"
       File.new(fn).each_line { |buf|
