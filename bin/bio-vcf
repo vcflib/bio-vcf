@@ -17,6 +17,7 @@ require 'bio-vcf'
 require 'optparse'
 require 'timeout'
 require 'fileutils'
+require 'tempfile'
 
 # Uncomment when using the bio-logger 
 # require 'bio-logger'
@@ -320,71 +321,77 @@ thread_lines = options[:thread_lines]
 
 orig_std_out = STDOUT.clone
 
-STDIN.each_line do | line |
-  line_number += 1
-  $stderr.print '.' if line_number % thread_lines == 0 and not options[:quiet]
-  begin
-    # ---- In this section header information is handled
-    next if header_output_completed and line =~ /^#/
-    if line =~ /^##fileformat=/ or line =~ /^#CHR/
-      header,line = parse_header(line,samples,options)
-    end
-    next if line =~ /^##/ # empty file
-    header_output_completed = true
-    if not options[:efilter_samples] and options[:ifilter_samples]
-      # Create exclude set as a complement of include set
-      options[:efilter_samples] = header.column_names[9..-1].fill{|i|i.to_s}-options[:ifilter_samples]
-    end
+Dir::mktmpdir do |tempdir|
 
-    # ---- In this section the VCF variant lines are parsed
-    lines << line
-    if lines.size > thread_lines
-      manage_thread_pool(workers,pids,num_threads) if options[:num_threads]
-      pids << parse_lines(lines,header,options,samples)
-      lines = []
-    end
-  rescue Exception => e
-    # $stderr.print line
-    $stderr.print e.message,"\n"
-    raise if options[:verbose]
-    exit 1
-  end
-end
-
-pids << parse_lines(lines,header,options,samples)
-
-# ---- In this section the output gets collected and printed on STDOUT
-if options[:num_threads]
-  STDOUT.reopen(orig_std_out)
-  $stderr.print "Final pid=#{pids.last}, size=#{lines.size}\n"
-  lines = []
-
-  fault = false
-  pids.each do |pid|
-    $stderr.print "Waiting up to 3 minutes for pid=#{pid} to complete\n"
+  # ---- Main loop
+  STDIN.each_line do | line |
+    line_number += 1
+    $stderr.print '.' if line_number % thread_lines == 0 and not options[:quiet]
     begin
-      Timeout.timeout(180) do
-        while File.exist?(pid.to_s)  # this is the running file
-          sleep 0.2
-        end
+      # ---- In this section header information is handled
+      next if header_output_completed and line =~ /^#/
+      if line =~ /^##fileformat=/ or line =~ /^#CHR/
+        header,line = parse_header(line,samples,options)
       end
-      raise Timeout::Error if File.exist?(pid.to_s)
-      $stderr.print "OK pid=#{pid}\n"
-    rescue Timeout::Error
-      Process.kill 9, pid
-      Process.wait pid
-      $stderr.print "child process killed because it stopped responding, pid = #{pid}\n"
-      fault = true
+      next if line =~ /^##/ # empty file
+      header_output_completed = true
+      if not options[:efilter_samples] and options[:ifilter_samples]
+        # Create exclude set as a complement of include set
+        options[:efilter_samples] = header.column_names[9..-1].fill{|i|i.to_s}-options[:ifilter_samples]
+      end
+
+      # ---- In this section the VCF variant lines are parsed
+      lines << line
+      if lines.size > thread_lines
+        manage_thread_pool(workers,pids,num_threads) if options[:num_threads]
+        pids << parse_lines(lines,header,options,samples)
+        lines = []
+      end
+    rescue Exception => e
+      # $stderr.print line
+      $stderr.print e.message,"\n"
+      raise if options[:verbose]
+      exit 1
     end
   end
-  pids.each do | pid |
-    fn = pid.to_s+'.bio-vcf'
-    raise "FATAL: child process output #{fn} is missing" if not File.exist?(fn)
-    $stderr.print "Reading #{fn}\n"
-    File.new(fn).each_line { |buf|
-      print buf
-    }
-    File.unlink(fn)
+
+  pids << parse_lines(lines,header,options,samples)
+
+  # ---- In this section the output gets collected and printed on STDOUT
+  if options[:num_threads]
+    STDOUT.reopen(orig_std_out)
+    $stderr.print "Final pid=#{pids.last}, size=#{lines.size}\n"
+    lines = []
+
+    fault = false
+    # Wait for the running threads to complete
+    pids.each do |pid|
+      $stderr.print "Waiting up to 3 minutes for pid=#{pid} to complete\n"
+      begin
+        Timeout.timeout(180) do
+          while File.exist?(pid.to_s)  # this is the running file
+            sleep 0.1
+          end
+        end
+        raise Timeout::Error if File.exist?(pid.to_s)
+        $stderr.print "OK pid=#{pid}\n"
+      rescue Timeout::Error
+        Process.kill 9, pid
+        Process.wait pid
+        $stderr.print "child process killed because it stopped responding, pid = #{pid}\n"
+        fault = true
+      end
+    end
+    # Collate the output
+    pids.each do | pid |
+      fn = pid.to_s+'.bio-vcf'
+      raise "FATAL: child process output #{fn} is missing" if not File.exist?(fn)
+      $stderr.print "Reading #{fn}\n"
+      File.new(fn).each_line { |buf|
+        print buf
+      }
+      File.unlink(fn)
+    end
+    return 1 if fault
   end
-  return 1 if fault
-end
+end  # cleans up tempdir

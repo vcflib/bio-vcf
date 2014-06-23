@@ -622,6 +622,13 @@ what the command line interface uses (see ./bin/bio-vcf)
   end
 ```
 
+## Trouble shooting
+
+The multi-threading creates temporary files using the system TMPDIR.
+This behaviour can be overridden by setting the environment variable.
+Also, for genome-wide sequencing it may be useful to increase
+--thread-lines to a value larger than 1_000_000.
+
 ## Project home page
 
 Information on the source tree, documentation, examples, issues and
