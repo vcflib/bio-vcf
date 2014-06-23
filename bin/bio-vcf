@@ -263,20 +263,21 @@ end
 # (Note: this function should be turned into a closure)
 def parse_lines lines,header,options,samples,tempdir,count_threads
   pid = nil
-  tempfilen = nil
+  threadfilen = nil
   if options[:num_threads]
     lines2 = lines.map { |l| l.clone }
     count_threads += 1
+    threadfilen = tempdir+sprintf("/%0.6d-pid",count_threads)+'.bio-vcf'
     pid = fork do
       count_lines = 0
-      fn = Process.pid.to_s
-      STDOUT.reopen(File.open(fn, 'w+'))
+      tempfn = threadfilen+'.running'
+      STDOUT.reopen(File.open(tempfn, 'w+'))
       lines2.each do | line |
         count_lines +=1 if parse_line(line,header,options,samples)
       end
       STDOUT.flush
       STDOUT.close
-      FileUtils::mv(fn,fn+'.bio-vcf')
+      FileUtils::mv(tempfn,threadfilen)
       exit 0
     end
     Process::detach(pid)
@@ -285,14 +286,14 @@ def parse_lines lines,header,options,samples,tempdir,count_threads
       parse_line line,header,options,samples
     end
   end
-  # return (pid,tempfilen,count_threads)
-  pid
+  return pid,threadfilen,count_threads
 end
 
-def manage_thread_pool(workers, pids, num_threads)
+# Make sure no more than num_threads are running at the same time
+def manage_thread_pool(workers, thread_list, num_threads)
   while true
     # ---- count running pids
-    running = pids.reduce(0) { | sum, pid | ( File.exist?(pid.to_s) ? sum+1 : sum ) }
+    running = thread_list.reduce(0) { | sum, thread_info | ( File.exist?(thread_info[1]+'.running') ? sum+1 : sum ) }
     break if running < num_threads
     sleep 0.1
   end
@@ -321,15 +322,16 @@ header = nil
 header_output_completed = false
 line_number=0
 lines = []
-pids = []
+thread_list = []
 workers = []
 thread_lines = options[:thread_lines]
 count_threads=0
 
 orig_std_out = STDOUT.clone
 
-Dir::mktmpdir do |tempdir|
-
+Dir::mktmpdir("bio-vcf_") do |tempdir|
+  $stderr.print "Using #{tempdir} for temporary files\n" if num_threads
+   
   # ---- Main loop
   STDIN.each_line do | line |
     line_number += 1
@@ -350,8 +352,9 @@ Dir::mktmpdir do |tempdir|
       # ---- In this section the VCF variant lines are parsed
       lines << line
       if lines.size > thread_lines
-        manage_thread_pool(workers,pids,num_threads) if options[:num_threads]
-        pids << parse_lines(lines,header,options,samples,tempdir,count_threads)
+        manage_thread_pool(workers,thread_list,num_threads) if options[:num_threads]
+        thread_list << parse_lines(lines,header,options,samples,tempdir,count_threads)
+        count_threads = thread_list.last[2]
         lines = []
       end
     rescue Exception => e
@@ -362,26 +365,29 @@ Dir::mktmpdir do |tempdir|
     end
   end
 
-  pids << parse_lines(lines,header,options,samples,tempdir,count_threads)
+  thread_list << parse_lines(lines,header,options,samples,tempdir,count_threads)
+  count_threads = thread_list.last[2]
 
   # ---- In this section the output gets collected and printed on STDOUT
   if options[:num_threads]
     STDOUT.reopen(orig_std_out)
-    $stderr.print "Final pid=#{pids.last}, size=#{lines.size}\n"
+    $stderr.print "Final pid=#{thread_list.last[0]}, size=#{lines.size}\n"
     lines = []
 
     fault = false
     # Wait for the running threads to complete
-    pids.each do |pid|
+    thread_list.each do |info|
+      (pid,threadfn) = info
+      tempfn = threadfn + '.running'
       $stderr.print "Waiting up to 3 minutes for pid=#{pid} to complete\n"
       begin
         Timeout.timeout(180) do
-          while not File.exist?(pid.to_s+'.bio-vcf')  # wait for the result to appear
+          while not File.exist?(threadfn)  # wait for the result to appear
             sleep 0.2
           end
         end
         # Thread file should have gone:
-        raise "FATAL: child process appears to have crashed #{pid.to_s}" if File.exist?(pid.to_s)
+        raise "FATAL: child process appears to have crashed #{tempfn}" if File.exist?(tempfn)
         $stderr.print "OK pid=#{pid}\n"
       rescue Timeout::Error
         Process.kill 9, pid
@@ -391,8 +397,8 @@ Dir::mktmpdir do |tempdir|
       end
     end
     # Collate the output
-    pids.each do | pid |
-      fn = pid.to_s+'.bio-vcf'
+    thread_list.each do | info |
+      (pid,fn) = info
       # This should never happen
       raise "FATAL: child process output #{fn} is missing" if not File.exist?(fn)
       $stderr.print "Reading #{fn}\n"
