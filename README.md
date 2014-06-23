@@ -8,22 +8,28 @@ language. Bio-vcf has better performance than other tools
 because of lazy parsing, multi-threading, and useful combinations of
 (fancy) command line filtering. For example on an 2 core machine 
 bio-vcf is 50% faster than SnpSift. On an 8 core machine bio-vcf is
-3x faster than SnpSift. Parsing a 1 Gb ESP VCF with 8 cores takes
+3x faster than SnpSift. Parsing a 1 Gb ESP VCF with 8 cores with
+bio-vcf takes
 
 ```sh
   time ./bin/bio-vcf -iv --num-threads 8 --filter 'r.info.cp>0.3' < ESP6500SI_V2_SSA137.vcf > test1.vcf
   real    0m21.095s
   user    1m41.101s
   sys     0m7.852s
+```
 
+and parsing with SnpSift takes
+
+```sh
   time cat ESP6500SI_V2_SSA137.vcf |java -jar snpEff/SnpSift.jar filter "( CP>0.3 )" > test.vcf
   real    1m4.913s
   user    0m58.071s
   sys     0m7.982s
 ```
 
-and parsing a 650 Mb GATK Illumina Hiseq VCF file and evaluating the results
-to a BED format on a 16 core machine takes
+Bio-vcf is perfect for parsing large data files. Parsing a 650 Mb GATK
+Illumina Hiseq VCF file and evaluating the results into a BED format on
+a 16 core machine takes
 
 ```sh
   time bio-vcf --num-threads 36 --filter 'r.chrom.to_i>0 and r.chrom.to_i<21 and r.qual>50' --sfilter '!s.empty? and s.dp>20' --eval '[r.chrom,r.pos,r.pos+1]' < test.large2.vcf > test.out.3
@@ -32,14 +38,26 @@ to a BED format on a 16 core machine takes
   sys     0m5.039s
 ```
 
-which shows some pretty decent core utilisation (10x).
+which shows some pretty decent core utilisation (10x). 
 
-bio-vcf comes with a sensible parser definition language (100%
+Use zcat to
+pipe gzipped (vcf.gz) files into bio-vcf, e.g.
+
+```sh
+  zcat huge_file.vcf.gz| bio-vcf --num-threads 36 --filter 'r.chrom.to_i>0 and r.chrom.to_i<21 and r.qual>50'
+    --sfilter '!s.empty? and s.dp>20' 
+    --eval '[r.chrom,r.pos,r.pos+1]' > test.bed
+
+```
+
+bio-vcf comes with a sensible parser definition language (it is 100%
 Ruby), as well as primitives for set analysis. Few
 assumptions are made about the actual contents of the VCF file (field
-names are resolved on the fly).
+names are resolved on the fly), so bio-vcf should practically work with
+all VCF files.
 
-To fetch all entries where all samples have depth larger than 20 use an sfilter
+To fetch all entries where all samples have depth larger than 20 use
+a sample filter
 
 ```ruby
   bio-vcf --sfilter 'sample.dp>20' < file.vcf
