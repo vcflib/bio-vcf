@@ -56,7 +56,7 @@ use the --eval switch, e.g.,
   bio-vcf --eval 'rec.alt+"\t"+rec.info.dp+"\t"+rec.tumor.gq.to_s' < file.vcf
 ```
 
-In fact, if the result is an Array the output gets tab dilimited so
+In fact, if the result is an Array the output gets tab dilimited, so
 the nicer version is
 
 ```ruby
@@ -255,7 +255,7 @@ Output
 
 ```ruby
   bio-vcf --filter 'rec.tumor.gq>30' 
-    --eval '[rec.ref,rec.alt,rec.tumor.bcount,rec.tumor.gq,rec.normal.gq].join("\t")' 
+    --eval '[rec.ref,rec.alt,rec.tumor.bcount,rec.tumor.gq,rec.normal.gq]' 
     < file.vcf
 ```
 
@@ -385,7 +385,7 @@ ref should always be identical across samples.
 One clinical variant DbSNP example 
 
 ```sh
-    bio-vcf --eval '[rec.id,rec.chr,rec.pos,rec.alt,rec.info.sao,rec.info.CLNDBN].join("\t")' < clinvar_20140303.vcf
+    bio-vcf --eval '[rec.id,rec.chr,rec.pos,rec.alt,rec.info.sao,rec.info.CLNDBN]' < clinvar_20140303.vcf
 ```
 
 renders
