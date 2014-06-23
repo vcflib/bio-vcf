@@ -80,10 +80,10 @@ opts = OptionParser.new do |o|
     options[:skip_header] = true
   end
   o.on("--num-threads [num]", Integer, "Multi-core version") do |i|
-    options[:num_threads] = i.to_i
+    options[:num_threads] = i
   end
   o.on("--thread-lines num", Integer, "Fork thread on num lines (default 100_000)") do |i|
-    options[:thread_lines] = i.to_i
+    options[:thread_lines] = i
   end
   o.on_tail("--id name", String, "Identifier") do |s|
     options[:id] = s
@@ -316,13 +316,13 @@ line_number=0
 lines = []
 pids = []
 workers = []
-thread_lines ||= options[:thread_lines]
+thread_lines = options[:thread_lines]
 
 orig_std_out = STDOUT.clone
 
 STDIN.each_line do | line |
   line_number += 1
-  $stderr.print '.' if line_number % 100_000 == 0 and not options[:quiet]
+  $stderr.print '.' if line_number % thread_lines == 0 and not options[:quiet]
   begin
     # ---- In this section header information is handled
     next if header_output_completed and line =~ /^#/
