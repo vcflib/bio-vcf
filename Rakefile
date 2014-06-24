@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "bio-vcf"
   gem.homepage = "http://github.com/pjotrp/bioruby-vcf"
   gem.license = "MIT"
-  gem.summary = %Q{VCF parser}
-  gem.description = %Q{Smart parser for VCF format}
+  gem.summary = %Q{Fast multi-threaded VCF parser}
+  gem.description = %Q{Smart lazy multi-threaded parser for VCF format with useful filtering and output rewriting}
   gem.email = "pjotr.public01@thebird.nl"
   gem.authors = ["Pjotr Prins"]
   # dependencies defined in Gemfile
