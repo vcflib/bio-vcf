@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "bio-vcf"
-  s.version = "0.0.3"
+  s.version = "0.7.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Pjotr Prins"]
-  s.date = "2014-05-24"
+  s.date = "2014-06-24"
   s.description = "Smart parser for VCF format"
   s.email = "pjotr.public01@thebird.nl"
   s.executables = ["bio-vcf"]
@@ -30,11 +30,13 @@ Gem::Specification.new do |s|
     "features/cli.feature",
     "features/diff_count.feature",
     "features/multisample.feature",
+    "features/sfilter.feature",
     "features/somaticsniper.feature",
     "features/step_definitions/bio-vcf_steps.rb",
     "features/step_definitions/cli-feature.rb",
     "features/step_definitions/diff_count.rb",
     "features/step_definitions/multisample.rb",
+    "features/step_definitions/sfilter.rb",
     "features/step_definitions/somaticsniper.rb",
     "features/support/env.rb",
     "lib/bio-vcf.rb",
@@ -55,7 +57,9 @@ Gem::Specification.new do |s|
     "test/data/regression/rewrite.info.sample.ref",
     "test/data/regression/s.dp.ref",
     "test/data/regression/seval_s.dp.ref",
-    "test/data/regression/sfilter001.ref",
+    "test/data/regression/sfilter_seval_s.dp.ref",
+    "test/data/regression/thread4.ref",
+    "test/data/regression/thread4_4.ref",
     "test/performance/metrics.md"
   ]
   s.homepage = "http://github.com/pjotrp/bioruby-vcf"
