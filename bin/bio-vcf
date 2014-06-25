@@ -309,6 +309,10 @@ if options[:show_help]
   exit 1
 end
 
+if RUBY_VERSION =~ /^1/
+  $stderr.print "WARNING: bio-vcf runs on Ruby 2.x only\n"
+end
+
 $stderr.print "Options: ",options,"\n" if !options[:quiet]
 
 if options[:samples]

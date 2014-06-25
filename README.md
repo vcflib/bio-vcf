@@ -654,6 +654,9 @@ what the command line interface uses (see ./bin/bio-vcf)
 
 ## Trouble shooting
 
+Note that Ruby 2.x is required for Bio-vcf. JRuby works, but only
+in single threaded mode (for now).
+
 The multi-threading creates temporary files using the system TMPDIR.
 This behaviour can be overridden by setting the environment variable.
 Also, for genome-wide sequencing it may be useful to increase
