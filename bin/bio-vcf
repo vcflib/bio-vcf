@@ -189,23 +189,23 @@ def parse_line line,header,options,samples
 
   # --------------------------
   # Filtering and set analysis
-  return if filter and not rec.filter(filter,ignore_missing,quiet)
+  return if filter and not rec.filter(filter,ignore_missing_data: ignore_missing,quiet: quiet)
   
   if sfilter
     rec.each_sample(options[:sfilter_samples]) do | sample |
-      return if not sample.sfilter(sfilter,ignore_missing,quiet)
+      return if not sample.sfilter(sfilter,ignore_missing_data: ignore_missing,quiet: quiet)
     end
   end
 
   if ifilter
     rec.each_sample(options[:ifilter_samples]) do | sample |
-      return if not sample.ifilter(ifilter,ignore_missing,quiet)
+      return if not sample.ifilter(sfilter,ignore_missing_data: ignore_missing,quiet: quiet)
     end
   end
 
   if efilter
     rec.each_sample(options[:efilter_samples]) do | sample |
-      return if not sample.efilter(efilter,ignore_missing,quiet)
+      return if not sample.efilter(sfilter,ignore_missing_data: ignore_missing,quiet: quiet)
     end
   end
 
@@ -223,13 +223,13 @@ def parse_line line,header,options,samples
     begin
       results = nil # result string
       if options[:eval] 
-        res = rec.eval(options[:eval],ignore_missing,quiet)
+        res = rec.eval(options[:eval],ignore_missing_data: ignore_missing,quiet: quiet)
         results = res if res
       end
       if seval
         list = (results ? [] : [rec.chr,rec.pos])
         rec.each_sample(options[:sfilter_samples]) { | sample |
-          list << sample.eval(seval,ignore_missing,quiet)
+          list << sample.eval(seval,ignore_missing_data: ignore_missing,quiet: quiet)
         }
         results = (results ? results.to_s + "\t" : "" ) + list.join("\t")
       end

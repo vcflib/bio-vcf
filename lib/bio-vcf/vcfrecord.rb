@@ -195,9 +195,7 @@ module BioVcf
     end
 
     def missing_samples?
-      p [:fields,"**********",@fields]
       @fields[9..-1].each { |sample|
-         p sample
         return true if VcfSample::empty?(sample)
       }
       false
@@ -207,7 +205,7 @@ module BioVcf
       @fields.size == @header.column_names.size
     end
 
-    def eval expr, ignore_missing_data, quiet
+    def eval expr, ignore_missing_data: true, quiet: false
       begin
         if not respond_to?(:call_cached_eval)
           code =
@@ -240,7 +238,7 @@ module BioVcf
       end
     end
 
-    def filter expr, ignore_missing_data, quiet
+    def filter expr, ignore_missing_data: true, quiet: false
       begin
         if not respond_to?(:call_cached_filter)
           code =

@@ -35,7 +35,7 @@ Feature: Sample filters
     When I evaluate empty './.'
     Then I expect s.empty? to be true
     Then I expect s.dp? to be false
-    Then I expect s.dp to throw an error
+    Then I expect s.dp to be nil
     And sfilter 's.dp>4' to throw an error
 
   # Scenario: Missing sample with ignore missing set

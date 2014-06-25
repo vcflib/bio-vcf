@@ -99,7 +99,7 @@ Then(/^I expect s\.empty\? to be true$/) do
 end
 
 Then(/^I expect s\.dp to throw an error$/) do
-  @s.instance_eval { undef :dp }
+  # @s.instance_eval { undef :dp }
   p @s.eval("s.dp",do_cache: false)
   expect { @s.eval("s.dp",do_cache: false) }.to raise_error NoMethodError
 end
@@ -117,23 +117,23 @@ When(/^I evaluate empty '\.\/\.' with ignore missing$/) do
 end
 
 Then(/^I expect s\.what\? to throw an error$/) do
-  pending # express the regexp above with the code you wish you had
+  expect { @s.eval("s.what?",do_cache: false) }.to raise_error RuntimeError
 end
 
 Then(/^I expect s\.what to throw an error$/) do
-  pending # express the regexp above with the code you wish you had
+  expect { @s.eval("s.what",do_cache: false) }.to raise_error NoMethodError
 end
 
 Then(/^I expect r\.chrom to be "(.*?)"$/) do |arg1|
-  pending # express the regexp above with the code you wish you had
+  expect(@s.eval("r.chrom",do_cache: false)).to eq "1"
 end
 
 Then(/^I expect r\.alt to be \["(.*?)"\]$/) do |arg1|
-  pending # express the regexp above with the code you wish you had
+  expect(@s.eval("r.alt",do_cache: false)).to eq ["G"] 
 end
 
 Then(/^I expect r\.info\.af to be (\d+)\.(\d+)$/) do |arg1, arg2|
-  pending # express the regexp above with the code you wish you had
+  expect(@s.eval("r.info.af",do_cache: false)).to eq 0.667
 end
 
 
