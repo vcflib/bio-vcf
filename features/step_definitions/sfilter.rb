@@ -13,6 +13,7 @@ When(/^I evaluate '([^']+)'$/) do |arg1|
   p @g
   expect(@g).not_to be nil
   @s = VcfSample::Sample.new(@rec,@g)
+  @ignore_missing = false
 end
 
 Then(/^I expect s\.empty\? to be false$/) do
@@ -50,6 +51,7 @@ When(/^I evaluate missing '([^']+)'$/) do |arg1|
   @s = VcfSample::Sample.new(@rec,@g)
   p @s
   expect(@s).not_to be nil
+  @ignore_missing = false
 end
 
 Then(/^I expect s\.dp\? to be false$/) do
@@ -57,7 +59,7 @@ Then(/^I expect s\.dp\? to be false$/) do
 end
 
 Then(/^I expect s\.dp to be nil$/) do
-  expect(@s.eval("s.dp",do_cache: false)).to be nil 
+  expect(@s.eval("s.dp",ignore_missing_data: @ignore_missing, do_cache: false)).to be nil 
 end
 
 Then(/^sfilter 's\.dp>(\d+)' to throw an error$/) do |arg1|
@@ -65,29 +67,54 @@ Then(/^sfilter 's\.dp>(\d+)' to throw an error$/) do |arg1|
 end
 
 Then(/^sfilter 's\.dp>(\d+)' to be false$/) do |arg1|
-  pending # express the regexp above with the code you wish you had
+   expect(@s.sfilter("s.dp>#{arg1}",ignore_missing_data: @ignore_missing, do_cache: false)).to be false
 end
 
 When(/^I evaluate empty '\.\/\.'$/) do
-  pending # express the regexp above with the code you wish you had
+  # concat VCF line with sample (arg1)
+  @fields = VcfLine.parse((@vcfline.split(/\s+/)+['./.']).join("\t"))
+  @rec = VcfRecord.new(@fields,@header)
+  p @rec
+  @g = @rec.sample['Sample']
+  @s = VcfSample::Sample.new(@rec,@g)
+  p @s
+  expect(@s).not_to be nil
+  @ignore_missing = false
 end
 
-When(/^I evaluate missing '(\d+)\/(\d+):(\d+),(\d+):\.:(\d+):(\d+),(\d+),(\d+)' with ignore missing$/) do |arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8|
-  pending # express the regexp above with the code you wish you had
+When(/^I evaluate missing '([^']+)' with ignore missing$/) do |arg1|
+  # concat VCF line with sample (arg1)
+  @fields = VcfLine.parse((@vcfline.split(/\s+/)+[arg1]).join("\t"))
+  @rec = VcfRecord.new(@fields,@header)
+  p @rec
+  @g = @rec.sample['Sample']
+  @s = VcfSample::Sample.new(@rec,@g)
+  p @s
+  expect(@s).not_to be nil
+  @ignore_missing = true
 end
 
 Then(/^I expect s\.empty\? to be true$/) do
-  pending # express the regexp above with the code you wish you had
+  expect(@s.sfilter("s.empty?",do_cache: false)).to be true
 end
 
 Then(/^I expect s\.dp to throw an error$/) do
-  pending # express the regexp above with the code you wish you had
+  @s.instance_eval { undef :dp }
+  p @s.eval("s.dp",do_cache: false)
+  expect { @s.eval("s.dp",do_cache: false) }.to raise_error NoMethodError
 end
 
 When(/^I evaluate empty '\.\/\.' with ignore missing$/) do
-  pending # express the regexp above with the code you wish you had
+  # concat VCF line with sample (arg1)
+  @fields = VcfLine.parse((@vcfline.split(/\s+/)+['./.']).join("\t"))
+  @rec = VcfRecord.new(@fields,@header)
+  p @rec
+  @g = @rec.sample['Sample']
+  @s = VcfSample::Sample.new(@rec,@g)
+  p @s
+  expect(@s).not_to be nil
+  @ignore_missing = true
 end
-
 
 Then(/^I expect s\.what\? to throw an error$/) do
   pending # express the regexp above with the code you wish you had
