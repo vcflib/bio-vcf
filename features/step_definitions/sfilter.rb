@@ -16,7 +16,7 @@ When(/^I evaluate '([^']+)'$/) do |arg1|
 end
 
 Then(/^I expect s\.empty\? to be false$/) do
-  # expect(@g.empty?).to be false
+  expect(@s.empty?).to be false
   expect(@s.sfilter("s.empty?",do_cache: false)).to be false
 end
 
@@ -46,21 +46,22 @@ When(/^I evaluate missing '([^']+)'$/) do |arg1|
   @fields = VcfLine.parse((@vcfline.split(/\s+/)+[arg1]).join("\t"))
   @rec = VcfRecord.new(@fields,@header)
   p @rec
-  @s = @rec.sample['Sample']
+  @g = @rec.sample['Sample']
+  @s = VcfSample::Sample.new(@rec,@g)
   p @s
   expect(@s).not_to be nil
 end
 
 Then(/^I expect s\.dp\? to be false$/) do
-  expect(@s.dp?).to be false
+  expect(@s.eval("s.dp?",do_cache: false)).to be false
 end
 
 Then(/^I expect s\.dp to be nil$/) do
-  expect(@s.dp).to be nil 
+  expect(@s.eval("s.dp",do_cache: false)).to be nil 
 end
 
 Then(/^sfilter 's\.dp>(\d+)' to throw an error$/) do |arg1|
-  expect { @s.dp>arg1.to_i }.to raise_error NoMethodError
+  expect { @s.eval("s.dp>#{arg1}",do_cache: false) }.to raise_error NoMethodError
 end
 
 Then(/^sfilter 's\.dp>(\d+)' to be false$/) do |arg1|

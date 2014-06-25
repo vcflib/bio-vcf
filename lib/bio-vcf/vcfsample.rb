@@ -172,15 +172,17 @@ module BioVcf
     
       def method_missing(m, *args, &block)
         name = m.to_s.upcase
-        p [:here,name,m ,@values]
-        p [:respond_to_call_cached_eval,respond_to?(:call_cached_eval)]
+        # p [:here,name,m ,@values]
+        # p [:respond_to_call_cached_eval,respond_to?(:call_cached_eval)]
         if name =~ /\?$/
           # test for valid field
           return !VcfValue::empty?(fetch_values(name.chop))
         else
           if @format[name]
-            cache_method(m) { 
-              ConvertStringToValue::convert(fetch_values(name))
+            cache_method(m) {
+              v = fetch_values(name) 
+              return nil if VcfValue::empty?(v)
+              ConvertStringToValue::convert(v)
             }
             self.send(m)
           else
