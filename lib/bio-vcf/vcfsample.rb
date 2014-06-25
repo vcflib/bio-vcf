@@ -21,7 +21,7 @@ module BioVcf
        cache_empty ||= VcfSample::empty?(@sample.to_s)
       end
 
-      def eval expr, ignore_missing_data, quiet
+      def eval expr, ignore_missing_data=false, quiet=false
         begin
           if not respond_to?(:call_cached_eval)
             code = 
@@ -50,7 +50,7 @@ module BioVcf
         end
       end
 
-      def sfilter expr, ignore_missing_data, quiet
+      def sfilter expr, ignore_missing_data=false, quiet=true
         begin
           if not respond_to?(:call_cached_sfilter)
             code = 
@@ -151,16 +151,21 @@ module BioVcf
       def cache_method(name, &block)
         self.class.send(:define_method, name, &block)
       end
-
+    
       def method_missing(m, *args, &block)
         name = m.to_s.upcase
-        if @format[name]
-          cache_method(m) { 
-            ConvertStringToValue::convert(fetch_values(name))
-          }
-          self.send(m)
+        if name =~ /\?$/
+          # test for valid field
+          return !VcfValue::empty?(fetch_values(name.chop))
         else
-          super(m, *args, &block)
+          if @format[name]
+            cache_method(m) { 
+              ConvertStringToValue::convert(fetch_values(name))
+            }
+            self.send(m)
+          else
+            super(m, *args, &block)
+          end
         end
       end  
 

@@ -21,19 +21,17 @@ Then(/^I expect s\.empty\? to be false$/) do
 end
 
 Then(/^I expect s\.dp\? to be true$/) do
-  # expect(@g.dp?).to be true
   p @g.dp
   p @s.dp
-  p @s.sample.dp
-  p @s.s.dp
-  p @s
-  p @s.sfilter("s.dp",false,true)
-  p @s.sfilter("s.dp?",false,true)
-  expect(@s.sfilter("s.dp?",false,true)).to be true
+  p ['eval s.dp?',@s.eval("s.dp?")]
+  p ['eval s.dp',@s.eval("s.dp")]
+  p @s.sfilter("s.dp?")
+  expect(@s.eval("s.dp?")).to be true
 end
 
 Then(/^I expect s\.dp to be (\d+)$/) do |arg1|
-  expect(@s.dp).to equal arg1.to_i
+  p @s.eval("s.dp")
+  expect(@s.eval("s.dp")).to equal arg1.to_i
 end
 
 Then(/^sfilter 's\.dp>(\d+)' to be true$/) do |arg1|
