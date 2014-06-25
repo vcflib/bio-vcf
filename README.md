@@ -184,6 +184,13 @@ commands exit for filtering and eval. When a set is defined, based on
 the sample name, you can apply filters on the samples inside the set,
 outside the set and over all samples. E.g.
 
+So, why would you use bio-vcf instead of rolling out your own
+Perl/Python/other ad-hoc script? I think the reason should be that
+there is less chance of mistakes because of Bio-vcf's clear filtering
+language and sensible built-in validation. The second reason would be
+speed. Bio-vcf's multi-threading capability gives it great and hard to
+replicate performance.
+
 Also note you can use
 [bio-table](https://github.com/pjotrp/bioruby-table) to
 filter/transform data further and convert to other formats, such as
@@ -202,7 +209,7 @@ example of a VCF statement you need to work on.
 
 ## Installation
 
-Note that you need Ruby 1.9.3 or later. The 2.x Ruby series also give
+Note that you need Ruby 2.x or later. The 2.x Ruby series also give
 a performance improvement. Bio-vcf will show the Ruby version when
 typing the command 'bio-vcf -h'.
 
