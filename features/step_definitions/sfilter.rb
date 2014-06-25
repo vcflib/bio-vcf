@@ -9,18 +9,27 @@ When(/^I evaluate '([^']+)'$/) do |arg1|
   @fields = VcfLine.parse((@vcfline.split(/\s+/)+[arg1]).join("\t"))
   @rec = VcfRecord.new(@fields,@header)
   p @rec
-  @s = @rec.sample['Sample']
-  p @s
-  expect(@s).not_to be nil
+  @g = @rec.sample['Sample']
+  p @g
+  expect(@g).not_to be nil
+  @s = VcfSample::Sample.new(@rec,@g)
 end
 
 Then(/^I expect s\.empty\? to be false$/) do
-  expect(@s.empty?).to be false
-  expect(@rec.sfilter("s.empty?",false,false)).to be false
+  # expect(@g.empty?).to be false
+  expect(@s.sfilter("s.empty?",false,false)).to be false
 end
 
 Then(/^I expect s\.dp\? to be true$/) do
-  expect(@s.dp?).to be true
+  # expect(@g.dp?).to be true
+  p @g.dp
+  p @s.dp
+  p @s.sample.dp
+  p @s.s.dp
+  p @s
+  p @s.sfilter("s.dp",false,true)
+  p @s.sfilter("s.dp?",false,true)
+  expect(@s.sfilter("s.dp?",false,true)).to be true
 end
 
 Then(/^I expect s\.dp to be (\d+)$/) do |arg1|
