@@ -3,14 +3,13 @@
 [![Build Status](https://secure.travis-ci.org/pjotrp/bioruby-vcf.png)](http://travis-ci.org/pjotrp/bioruby-vcf) 
 
 A new generation VCF parser. Bio-vcf is not only fast for genome-wide
-(WGS) data,
-it also comes with a really nice filtering, evaluation and rewrite
-language. Bio-vcf has better performance than other tools
+(WGS) data, it also comes with a really nice filtering, evaluation and
+rewrite language. Bio-vcf has better performance than other tools
 because of lazy parsing, multi-threading, and useful combinations of
-(fancy) command line filtering. For example on an 2 core machine 
-bio-vcf is 50% faster than SnpSift. On an 8 core machine bio-vcf is
-at least 3x faster than SnpSift. E.g., parsing a 1 Gb ESP VCF with 8 cores with
-bio-vcf takes
+(fancy) command line filtering. For example on an 2 core machine
+bio-vcf is 50% faster than SnpSift. On an 8 core machine bio-vcf is at
+least 3x faster than SnpSift. E.g., parsing a 1 Gb ESP VCF with 8
+cores with bio-vcf takes
 
 ```sh
   time ./bin/bio-vcf -iv --num-threads 8 --filter 'r.info.cp>0.3' < ESP6500SI_V2_SSA137.vcf > test1.vcf
@@ -33,22 +32,22 @@ Illumina Hiseq VCF file and evaluating the results into a BED format on
 a 16 core machine takes
 
 ```sh
-  time bio-vcf --num-threads 36 --filter 'r.chrom.to_i>0 and r.chrom.to_i<21 and r.qual>50' --sfilter '!s.empty? and s.dp>20' --eval '[r.chrom,r.pos,r.pos+1]' < test.large2.vcf > test.out.3
+  time bio-vcf --num-threads 16 --filter 'r.chrom.to_i>0 and r.chrom.to_i<21 and r.qual>50' --sfilter '!s.empty? and s.dp>20' --eval '[r.chrom,r.pos,r.pos+1]' < test.large2.vcf > test.out.3
   real    0m47.612s
   user    8m18.234s
   sys     0m5.039s
 ```
 
-which shows some pretty decent core utilisation (10x). 
+which shows pretty decent core utilisation (10x). We are running 
+gzip compressed VCF files of 33 GB with similar performance gains.
 
 Use zcat to
-pipe gzipped (vcf.gz) files into bio-vcf, e.g.
+pipe such gzipped (vcf.gz) files into bio-vcf, e.g.
 
 ```sh
   zcat huge_file.vcf.gz| bio-vcf --num-threads 36 --filter 'r.chrom.to_i>0 and r.chrom.to_i<21 and r.qual>50'
     --sfilter '!s.empty? and s.dp>20' 
     --eval '[r.chrom,r.pos,r.pos+1]' > test.bed
-
 ```
 
 bio-vcf comes with a sensible parser definition language (it is 100%
