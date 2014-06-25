@@ -16,6 +16,7 @@ end
 
 Then(/^I expect s\.empty\? to be false$/) do
   expect(@s.empty?).to be false
+  expect(@rec.sfilter("s.empty?",false,false)).to be false
 end
 
 Then(/^I expect s\.dp\? to be true$/) do
@@ -45,7 +46,11 @@ Then(/^I expect s\.dp\? to be false$/) do
 end
 
 Then(/^I expect s\.dp to be nil$/) do
-  pending # express the regexp above with the code you wish you had
+  expect(@s.dp).to be nil 
+end
+
+Then(/^sfilter 's\.dp>(\d+)' to throw an error$/) do |arg1|
+  expect { @s.dp>arg1.to_i }.to raise_error NoMethodError
 end
 
 Then(/^sfilter 's\.dp>(\d+)' to be false$/) do |arg1|
@@ -53,10 +58,6 @@ Then(/^sfilter 's\.dp>(\d+)' to be false$/) do |arg1|
 end
 
 When(/^I evaluate empty '\.\/\.'$/) do
-  pending # express the regexp above with the code you wish you had
-end
-
-Then(/^sfilter 's\.dp>(\d+)' to throw an error$/) do |arg1|
   pending # express the regexp above with the code you wish you had
 end
 

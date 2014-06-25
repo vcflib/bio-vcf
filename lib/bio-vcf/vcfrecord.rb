@@ -159,9 +159,14 @@ module BioVcf
       @format ||= VcfRecordParser.get_format(@fields[8])
     end
 
+    # Return the first (single) sample (used in one sample VCF)
+    def first
+      @first ||= VcfGenotypeField.new(@fields[9],format,@header,alt)
+    end
+
     # Return the normal sample (used in two sample VCF)
     def normal
-      @normal ||= VcfGenotypeField.new(@fields[9],format,@header,alt)
+      first
     end
 
     # Return the tumor sample (used in two sample VCF)
@@ -190,7 +195,9 @@ module BioVcf
     end
 
     def missing_samples?
+      p [:fields,"**********",@fields]
       @fields[9..-1].each { |sample|
+         p sample
         return true if VcfSample::empty?(sample)
       }
       false

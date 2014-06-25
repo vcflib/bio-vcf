@@ -2,6 +2,15 @@ module BioVcf
 
   MAXINT=100_000
 
+  class ValueError < Exception
+  end
+
+  module VcfValue
+    def VcfValue::empty? v
+      v == nil or v == '' or v == '.'
+    end
+  end
+
   # Helper class for a list of (variant) values, such as A,G. 
   # The [] function does the hard work. You can pass in an index (integer)
   # or nucleotide which translates to an index.
@@ -141,14 +150,16 @@ module BioVcf
       VcfAltInfoList.new(@alt,values[fetch('AMQ')])
     end
 
+    # Returns the value of a field
     def method_missing(m, *args, &block)
       return nil if @is_empty
       if m =~ /\?$/
-        # query if a value exists, e.g., r.info.dp?
+        # query if a value exists, e.g., r.info.dp? or s.dp?
         v = values[fetch(m.to_s.upcase.chop)]
-        v != nil
+        return (not VcfValue::empty?(v))
       else
         v = values[fetch(m.to_s.upcase)]
+        return nil if VcfValue::empty?(v)
         v = v.to_i if v =~ /^\d+$/
         v = v.to_f if v =~ /^\d+\.\d+$/
         v
@@ -157,6 +168,7 @@ module BioVcf
 
   private
 
+    # Fetch a value and throw an error if it does not exist
     def fetch name
       raise "ERROR: Field with name #{name} does not exist!" if !@format[name]
       @format[name]
