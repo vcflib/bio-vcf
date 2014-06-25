@@ -17,25 +17,28 @@ end
 
 Then(/^I expect s\.empty\? to be false$/) do
   # expect(@g.empty?).to be false
-  expect(@s.sfilter("s.empty?",false,false)).to be false
+  expect(@s.sfilter("s.empty?",do_cache: false)).to be false
 end
 
 Then(/^I expect s\.dp\? to be true$/) do
+  p ['eval s.dp?',@s.eval("s.dp?",do_cache: false)]
+  p ['eval s.dp',@s.eval("s.dp",do_cache: false)]
   p @g.dp
   p @s.dp
-  p ['eval s.dp?',@s.eval("s.dp?")]
-  p ['eval s.dp',@s.eval("s.dp")]
-  p @s.sfilter("s.dp?")
-  expect(@s.eval("s.dp?")).to be true
+  p @s.sfilter("s.dp?",do_cache: false)
+  expect(@s.eval("s.dp?",do_cache: false)).to be true
 end
 
 Then(/^I expect s\.dp to be (\d+)$/) do |arg1|
-  p @s.eval("s.dp")
-  expect(@s.eval("s.dp")).to equal arg1.to_i
+  # p @s.eval("s.dp")
+  p :now
+  p ['eval s.dp?',@s.eval("s.dp?",do_cache: false)]
+  p ['eval s.dp',@s.eval("s.dp",do_cache: false)]
+  expect(@s.eval("s.dp",do_cache: false)).to equal arg1.to_i
 end
 
 Then(/^sfilter 's\.dp>(\d+)' to be true$/) do |arg1|
-  expect(@s.dp>arg1.to_i).to be true
+  expect(@s.sfilter("dp>#{arg1}",do_cache: false)).to be true
 end
 
 When(/^I evaluate missing '([^']+)'$/) do |arg1|

@@ -21,20 +21,29 @@ module BioVcf
        cache_empty ||= VcfSample::empty?(@sample.to_s)
       end
 
-      def eval expr, ignore_missing_data=false, quiet=false
+      def eval expr, ignore_missing_data: false, quiet: false, do_cache: true
         begin
-          if not respond_to?(:call_cached_eval)
-            code = 
-            """
-            def call_cached_eval(rec,sample)
-              r = rec
-              s = sample 
-              #{expr}
+          if do_cache
+            if not respond_to?(:call_cached_eval)
+              code = 
+              """
+              def call_cached_eval(rec,sample)
+                r = rec
+                s = sample 
+                #{expr}
+              end
+              """
+              self.class.class_eval(code)
             end
-            """
-            self.class.class_eval(code)
+            call_cached_eval(@rec,self)
+          else 
+            print "WARNING: NOT CACHING EVAL\n"
+            self.class.class_eval { undef :call_cached_eval } if respond_to?(:call_cached_eval)
+            # Without cache for testing 
+            r = @rec
+            s = @sample
+            eval(expr)
           end
-          call_cached_eval(@rec,self)
         rescue NoMethodError => e
           $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty? and not quiet
           if not quiet
@@ -50,20 +59,29 @@ module BioVcf
         end
       end
 
-      def sfilter expr, ignore_missing_data=false, quiet=true
+      def sfilter expr, ignore_missing_data: false, quiet: true, do_cache: true
         begin
-          if not respond_to?(:call_cached_sfilter)
-            code = 
-            """
-            def call_cached_sfilter(rec,sample)
-              r = rec
-              s = sample 
-              #{expr}
+          if do_cache
+            if not respond_to?(:call_cached_sfilter)
+              code = 
+              """
+              def call_cached_sfilter(rec,sample)
+                r = rec
+                s = sample 
+                #{expr}
+              end
+              """
+              self.class.class_eval(code)
             end
-            """
-            self.class.class_eval(code)
+            call_cached_sfilter(@rec,self)
+          else 
+            print "WARNING: NOT CACHING EVAL\n"
+            self.class.class_eval { undef :call_cached_eval } if respond_to?(:call_cached_eval)
+            # Without cache for testing 
+            r = @rec
+            s = @sample
+            eval(expr)
           end
-          call_cached_sfilter(@rec,self)
         rescue NoMethodError => e
           $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty? and not quiet
           if not quiet
@@ -79,7 +97,7 @@ module BioVcf
         end
       end
 
-      def ifilter expr, ignore_missing_data, quiet
+      def ifilter expr, ignore_missing_data: false, quiet: false
         begin
           if not respond_to?(:call_cached_ifilter)
             code = 
@@ -108,7 +126,7 @@ module BioVcf
         end
       end
 
-      def efilter expr, ignore_missing_data, quiet
+      def efilter expr, ignore_missing_data: false, quiet: false
         begin
           if not respond_to?(:call_cached_efilter)
             code = 
@@ -154,6 +172,8 @@ module BioVcf
     
       def method_missing(m, *args, &block)
         name = m.to_s.upcase
+        p [:here,name,m ,@values]
+        p [:respond_to_call_cached_eval,respond_to?(:call_cached_eval)]
         if name =~ /\?$/
           # test for valid field
           return !VcfValue::empty?(fetch_values(name.chop))
