@@ -104,10 +104,12 @@ module BioVcf
 
     attr_reader :format, :values, :header
 
-    def initialize s, format, header, alt
+    def initialize s, format, header, ref, alt
+      @is_empty = VcfSample::empty?(s)
       @original_s = s
       @format = format
       @header = header
+      @ref = ref
       @alt = alt
     end
 
@@ -120,7 +122,7 @@ module BioVcf
     end
 
     def empty?
-      @is_empty ||= VcfSample::empty?(s)
+      @is_empty
     end
 
     def valid?
@@ -162,13 +164,13 @@ module BioVcf
     end
 
     def gts
-      genotypes = [ref] + @alt
+      genotypes = [@ref] + @alt
       gti.map { |i| genotypes[i] }
     end
 
     # Returns the value of a field
     def method_missing(m, *args, &block)
-      return nil if empty?
+      return nil if @is_empty
       if m =~ /\?$/
         # query if a value exists, e.g., r.info.dp? or s.dp?
         v = values[fetch(m.to_s.upcase.chop)]
@@ -205,17 +207,18 @@ module BioVcf
 
   # Holds all samples
   class VcfGenotypeFields
-    def initialize fields, format, header, alt
+    def initialize fields, format, header, ref, alt
       @fields = fields
       @format = format
       @header = header
+      @ref = ref
       @alt = alt
       @samples = {} # lazy cache
       @sample_index = @header.sample_index()
     end
 
     def [] name
-      @samples[name] ||= VcfGenotypeField.new(@fields[@sample_index[name]],@format,@header,@alt)
+      @samples[name] ||= VcfGenotypeField.new(@fields[@sample_index[name]],@format,@header,@ref,@alt)
     end
 
     def method_missing(m, *args, &block) 
@@ -224,7 +227,7 @@ module BioVcf
         # test for valid sample
         return !VcfSample::empty?(@fields[@sample_index[name.chop]])
       else
-        @samples[name] ||= VcfGenotypeField.new(@fields[@sample_index[name]],@format,@header,@alt)
+        @samples[name] ||= VcfGenotypeField.new(@fields[@sample_index[name]],@format,@header,@ref,@alt)
       end
     end  
 

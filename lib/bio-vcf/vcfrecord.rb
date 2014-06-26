@@ -161,7 +161,7 @@ module BioVcf
 
     # Return the first (single) sample (used in one sample VCF)
     def first
-      @first ||= VcfGenotypeField.new(@fields[9],format,@header,alt)
+      @first ||= VcfGenotypeField.new(@fields[9],format,@header,ref,alt)
     end
 
     # Return the normal sample (used in two sample VCF)
@@ -171,12 +171,12 @@ module BioVcf
 
     # Return the tumor sample (used in two sample VCF)
     def tumor
-      @tumor ||= VcfGenotypeField.new(@fields[10],format,@header,alt)
+      @tumor ||= VcfGenotypeField.new(@fields[10],format,@header,ref,alt)
     end
    
     # Return the sample as a named hash 
     def sample 
-      @sample ||= VcfGenotypeFields.new(@fields,format,@header,alt)
+      @sample ||= VcfGenotypeFields.new(@fields,format,@header,ref,alt)
     end
 
     def sample_by_name name
@@ -186,7 +186,7 @@ module BioVcf
     def sample_by_index i
       # p @fields
       raise "Can not index sample on parameter <#{i}>" if not i.kind_of?(Integer)
-      @sample_by_index[i] ||= VcfGenotypeField.new(@fields[i+9],format,@header,alt)
+      @sample_by_index[i] ||= VcfGenotypeField.new(@fields[i+9],format,@header,ref,alt)
     end
 
     # Walk the samples. list contains an Array of int (the index)

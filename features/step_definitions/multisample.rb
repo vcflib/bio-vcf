@@ -105,10 +105,6 @@ Then(/^I expect rec\.original\? to be true$/) do
   expect(@rec1.original?).to be true
 end
 
-Given(/^multisample vcf line with missing data$/) do |string|
-  pending # express the regexp above with the code you wish you had
-end
-
 Then(/^I expect rec\.original\? to be false$/) do
   expect(@rec1.original?).to eq false
 end
@@ -162,6 +158,6 @@ Then(/^I expect r\.original\.gts to be \["(.*?)","(.*?)"\]$/) do |arg1, arg2|
 end
 
 Then(/^I expect r\.original\.gts\[(\d+)\] to be "(.*?)"$/) do |arg1, arg2|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.original.gts[arg1.to_i]).to eq arg2
 end
 
