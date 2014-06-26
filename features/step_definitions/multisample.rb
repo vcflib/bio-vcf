@@ -46,7 +46,7 @@ Then(/^I expect rec\.original\.gt to be "(.*?)"$/) do |arg1|
 end
 
 Then(/^I expect rec\.sample\['Original'\]\.gt to be "(.*?)"$/) do |arg1|
-  # expect(@rec1.sample['Original'].gt).to eq "0/1"
+  expect(@rec1.sample['Original'].gt).to eq "0/1"
 end
 
 Then(/^I expect rec\.sample\['Original'\]\.ad to be \[(\d+),(\d+)\]$/) do |arg1, arg2|
