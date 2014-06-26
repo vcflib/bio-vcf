@@ -21,13 +21,13 @@ module BioVcf
        cache_empty ||= VcfSample::empty?(@sample.to_s)
       end
 
-      def eval expr, ignore_missing_data: false, quiet: false, do_cache: true
+      def caching_eval method, cached_method, expr, ignore_missing_data: false, quiet: false, do_cache: true
         begin
           if do_cache
-            if not respond_to?(:call_cached_eval)
+            if not respond_to?(cached_method)
               code = 
               """
-              def call_cached_eval(rec,sample)
+              def #{cached_method}(rec,sample)
                 r = rec
                 s = sample 
                 #{expr}
@@ -35,17 +35,17 @@ module BioVcf
               """
               self.class.class_eval(code)
             end
-            call_cached_eval(@rec,self)
+            self.send(cached_method,@rec,self)
           else 
-            print "WARNING: NOT CACHING EVAL\n"
-            self.class.class_eval { undef :call_cached_eval } if respond_to?(:call_cached_eval)
-            # Without cache for testing 
+            # This is used for testing mostly
+            print "WARNING: NOT CACHING #{method}\n"
+            self.class.class_eval { undef :call_cached_eval } if respond_to?(cached_method)
             r = @rec
             s = @sample
             eval(expr)
           end
         rescue NoMethodError => e
-          $stderr.print "\nTrying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty? and not quiet
+          $stderr.print "\n#{method} trying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty? and not quiet
           if not quiet
             $stderr.print [@format,@values],"\n"
             $stderr.print expr,"\n"
@@ -57,6 +57,10 @@ module BioVcf
             raise
           end
         end
+      end
+
+      def eval expr, ignore_missing_data: false, quiet: false, do_cache: true
+        caching_eval :eval, :call_cached_eval, expr, ignore_missing_data: ignore_missing_data, quiet: quiet, do_cache: do_cache
       end
 
       def sfilter expr, ignore_missing_data: false, quiet: true, do_cache: true

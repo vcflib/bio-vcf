@@ -40,7 +40,7 @@ opts = OptionParser.new do |o|
   o.on('--sfilter cmd',String, 'Evaluate filter on each sample') do |cmd|
     options[:sfilter] = cmd
   end
-  o.on("--sfilter-samples list", Array, "Filter on selected samples") do |l|
+  o.on("--sfilter-samples list", Array, "Filter on selected samples (e.g., 0,1") do |l|
     options[:sfilter_samples] = l
   end
 
@@ -199,13 +199,13 @@ def parse_line line,header,options,samples
 
   if ifilter
     rec.each_sample(options[:ifilter_samples]) do | sample |
-      return if not sample.ifilter(sfilter,ignore_missing_data: ignore_missing,quiet: quiet)
+      return if not sample.ifilter(ifilter,ignore_missing_data: ignore_missing,quiet: quiet)
     end
   end
 
   if efilter
     rec.each_sample(options[:efilter_samples]) do | sample |
-      return if not sample.efilter(sfilter,ignore_missing_data: ignore_missing,quiet: quiet)
+      return if not sample.efilter(efilter,ignore_missing_data: ignore_missing,quiet: quiet)
     end
   end
 

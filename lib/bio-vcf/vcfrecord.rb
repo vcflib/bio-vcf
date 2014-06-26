@@ -192,7 +192,7 @@ module BioVcf
     # Walk the samples. list contains an Array of int (the index)
     def each_sample(list = nil)
       list = @header.samples_index_array() if not list 
-      list.each { |i| yield VcfSample::Sample.new(self,sample_by_index(i)) }
+      list.each { |i| yield VcfSample::Sample.new(self,sample_by_index(i.to_i)) }
     end
 
     def missing_samples?
