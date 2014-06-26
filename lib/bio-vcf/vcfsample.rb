@@ -21,44 +21,6 @@ module BioVcf
        cache_empty ||= VcfSample::empty?(@sample.to_s)
       end
 
-      def caching_eval method, cached_method, expr, ignore_missing_data: false, quiet: false, do_cache: true
-        begin
-          if do_cache
-            if not respond_to?(cached_method)
-              code = 
-              """
-              def #{cached_method}(rec,sample)
-                r = rec
-                s = sample 
-                #{expr}
-              end
-              """
-              self.class.class_eval(code)
-            end
-            self.send(cached_method,@rec,self)
-          else 
-            # This is used for testing mostly
-            print "WARNING: NOT CACHING #{method}\n"
-            self.class.class_eval { undef :call_cached_eval } if respond_to?(cached_method)
-            r = @rec
-            s = @sample
-            eval(expr)
-          end
-        rescue NoMethodError => e
-          $stderr.print "\n#{method} trying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty? and not quiet
-          if not quiet
-            $stderr.print [@format,@values],"\n"
-            $stderr.print expr,"\n"
-          end
-          if ignore_missing_data
-            $stderr.print e.message if not quiet and not empty?
-            return false
-          else
-            raise
-          end
-        end
-      end
-
       def eval expr, ignore_missing_data: false, quiet: false, do_cache: true
         caching_eval :eval, :call_cached_eval, expr, ignore_missing_data: ignore_missing_data, quiet: quiet, do_cache: do_cache
       end
@@ -201,6 +163,44 @@ module BioVcf
         n = @format[name]
         raise "Unknown sample field <#{name}>" if not n
         @values[n]  # <-- save names with upcase!
+      end
+
+      def caching_eval method, cached_method, expr, ignore_missing_data: false, quiet: false, do_cache: true
+        begin
+          if do_cache
+            if not respond_to?(cached_method)
+              code = 
+              """
+              def #{cached_method}(rec,sample)
+                r = rec
+                s = sample 
+                #{expr}
+              end
+              """
+              self.class.class_eval(code)
+            end
+            self.send(cached_method,@rec,self)
+          else 
+            # This is used for testing mostly
+            print "WARNING: NOT CACHING #{method}\n"
+            self.class.class_eval { undef :call_cached_eval } if respond_to?(cached_method)
+            r = @rec
+            s = @sample
+            eval(expr)
+          end
+        rescue NoMethodError => e
+          $stderr.print "\n#{method} trying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty? and not quiet
+          if not quiet
+            $stderr.print [@format,@values],"\n"
+            $stderr.print expr,"\n"
+          end
+          if ignore_missing_data
+            $stderr.print e.message if not quiet and not empty?
+            return false
+          else
+            raise
+          end
+        end
       end
 
     end
