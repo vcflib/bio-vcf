@@ -105,7 +105,6 @@ module BioVcf
     attr_reader :format, :values, :header
 
     def initialize s, format, header, alt
-      @is_empty = (s == '' or s == nil or s == './.')
       @original_s = s
       @format = format
       @header = header
@@ -121,11 +120,11 @@ module BioVcf
     end
 
     def empty?
-      @is_empty
+      @is_empty ||= VcfSample::empty?(s)
     end
 
     def valid?
-      !@is_empty
+      !empty?
     end
 
     def dp4 
@@ -150,9 +149,26 @@ module BioVcf
       VcfAltInfoList.new(@alt,values[fetch('AMQ')])
     end
 
+    def gti?
+      not VcfValue::empty?(fetch_value("GT"))
+    end
+
+    def gti
+      gt.split('/').map { |g| g.to_i }
+    end
+
+    def gts?
+      not VcfValue::empty?(fetch_value("GT"))
+    end
+
+    def gts
+      genotypes = [ref] + @alt
+      gti.map { |i| genotypes[i] }
+    end
+
     # Returns the value of a field
     def method_missing(m, *args, &block)
-      return nil if @is_empty
+      return nil if empty?
       if m =~ /\?$/
         # query if a value exists, e.g., r.info.dp? or s.dp?
         v = values[fetch(m.to_s.upcase.chop)]
@@ -174,8 +190,13 @@ module BioVcf
       @format[name]
     end
 
+    def fetch_value name
+      values[fetch(name)]
+    end
+
+    # Return an integer list
     def ilist name
-      v = values[fetch(name)]
+      v = fetch_value(name)
       return nil if not v
       v.split(',').map{|i| i.to_i} 
     end

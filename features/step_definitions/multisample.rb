@@ -37,8 +37,16 @@ Then(/^I expect rec\.info\.readposranksum to be (\d+)\.(\d+)$/) do |arg1, arg2|
   expect(@rec1.info.readposranksum).to eq 0.815
 end
 
-Then(/^I expect rec\.sample\['Original'\]\.gt to be "(.*?)"$/) do |arg1|
+Then(/^I expect rec\.sample\.original\.gt to be "(.*?)"$/) do |arg1|
   expect(@rec1.sample['Original'].gt).to eq "0/1"
+end
+
+Then(/^I expect rec\.original\.gt to be "(.*?)"$/) do |arg1|
+  expect(@rec1.original.gt).to eq "0/1"
+end
+
+Then(/^I expect rec\.sample\['Original'\]\.gt to be "(.*?)"$/) do |arg1|
+  # expect(@rec1.sample['Original'].gt).to eq "0/1"
 end
 
 Then(/^I expect rec\.sample\['Original'\]\.ad to be \[(\d+),(\d+)\]$/) do |arg1, arg2|
@@ -118,31 +126,39 @@ Then(/^I expect rec\.valid\? to be true$/) do
 end
 
 Then(/^I expect r\.original\.gt\? to be true$/) do
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.original.gt?).to be true
 end
 
 Then(/^I expect r\.original\? to be true$/) do
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.original?).to be true
+end
+
+Then(/^I expect rec\.original\? to be true$/) do
+  expect(@rec1.original?).to be true
+end
+
+Then(/^I expect rec\.original\.gt\? to be true$/) do
+  expect(@rec1.original.gt?).to be true
 end
 
 Then(/^I expect r\.original\.gti\? to be true$/) do
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.original.gti?).to eq true
 end
 
 Then(/^I expect r\.original\.gti to be \[(\d+),(\d+)\]$/) do |arg1, arg2|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.original.gti).to eq [arg1.to_i,arg2.to_i]
 end
 
 Then(/^I expect r\.original\.gti\[(\d+)\] to be (\d+)$/) do |arg1, arg2|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.original.gti[arg1.to_i]).to eq arg2.to_i
 end
 
 Then(/^I expect r\.original\.gts\? to be true$/) do
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.original.gts?).to eq true
 end
 
 Then(/^I expect r\.original\.gts to be \["(.*?)","(.*?)"\]$/) do |arg1, arg2|
-  pending # express the regexp above with the code you wish you had
+  expect(@rec1.original.gts).to eq [arg1,arg2]
 end
 
 Then(/^I expect r\.original\.gts\[(\d+)\] to be "(.*?)"$/) do |arg1, arg2|

@@ -27,17 +27,17 @@ Feature: Multi-sample VCF
     And I expect rec.info.dp to be 1537
     And I expect rec.info.readposranksum to be 0.815
     And I expect rec.sample['Original'].ad to be [189,25]
-    And I expect rec.sample['Original'].gt to be [0,1]
+    And I expect rec.sample['Original'].gt to be "0/1"
     And I expect rec.sample['s3t2'].ad to be [167,26]
     And I expect rec.sample['s3t2'].dp to be 196 
     And I expect rec.sample['s3t2'].gq to be 20
     And I expect rec.sample['s3t2'].pl to be [20,0,522]
     # And the nicer self resolving
-    And I expect rec.sample.original.gt to be [0,1]
+    And I expect rec.sample.original.gt to be "0/1"
     And I expect rec.sample.s3t2.pl to be [20,0,522]
     # And the even better
-    And I expect r.original.gt? to be true
-    And I expect rec.original.gt to be [0,1]
+    And I expect rec.original.gt? to be true
+    And I expect rec.original.gt to be "0/1"
     And I expect rec.s3t2.pl to be [20,0,522]
     # Check for missing data
     And I expect test rec.missing_samples? to be false 
