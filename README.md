@@ -378,7 +378,7 @@ And even better because of Ruby magic
 Note that only valid method names in lower case get picked up this
 way. Also by convention normal is sample 1 and tumor is sample 2.
 
-Even shorter r is an alias for rec (nyi) 
+Even shorter r is an alias for rec
 
 ```sh
   bio-vcf --eval "r.original.gt" < file.vcf
@@ -387,7 +387,8 @@ Even shorter r is an alias for rec (nyi)
 
 ## Special functions
 
-Note: special functions are not yet implemented!
+Note: special functions are not yet implemented! Look below
+for genotype processing which has indexing in 'gti'.
 
 Sometime you want to use a special function in a filter. For 
 example percentage variant reads can be defined as [a,c,g,t] 
@@ -569,6 +570,8 @@ and 'gts' as a nucleotide string array
     1       15274   G       G       G       G       G       G       G
 ```
 
+where gts represents the indexed genotype on [ref] + [alt].
+
 These values can also be used in filters and output allele depth, for
 example
 
@@ -579,11 +582,17 @@ example
     1       13757   47      47      4       47      47      4       47
 ```
 
-The following does not yet work (using the gti in a sample directly)
+You can use the genotype index gti to fetch values from, for example,
+allele depth:
 
 ```ruby
 bio-vcf -vi --ifilter 'rec.original.gt!="0/1"' --efilter 'rec.original.gti[0]==0' --seval 'rec.original.ad[s.gti[1]]'
+
+1       10257   151     151     151     151     151     8       151
+1       13302   26      10      10      10      10      10      10
+1       13757   47      47      4       47      47      4       47
 ```
+
 
 ## Modify VCF files
 

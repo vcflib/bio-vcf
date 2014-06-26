@@ -33,7 +33,7 @@ module BioVcf
         caching_eval :ifilter, :call_cached_ifilter, expr, ignore_missing_data: ignore_missing_data, quiet: quiet, do_cache: do_cache
       end
 
-      def efilter expr, ignore_missing_data: false, quiet: false
+      def efilter expr, ignore_missing_data: false, quiet: false, do_cache: true
         caching_eval :efilter, :call_cached_efilter, expr, ignore_missing_data: ignore_missing_data, quiet: quiet, do_cache: do_cache
       end
 
