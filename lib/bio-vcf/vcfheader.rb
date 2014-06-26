@@ -64,7 +64,7 @@ module BioVcf
     end
 
     def samples_index_array
-      @all_samples_index ||= column_names[9..-1].fill{|i| i} 
+      @all_samples_index ||= column_names[9..-1].fill{|i| i}
     end
 
     def sample_index

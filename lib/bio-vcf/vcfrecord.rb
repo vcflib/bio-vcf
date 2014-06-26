@@ -184,7 +184,8 @@ module BioVcf
     end
 
     def sample_by_index i
-      # p [i,@fields[i+9]]
+      # p @fields
+      raise "Can not index sample on parameter <#{i}>" if not i.kind_of?(Integer)
       @sample_by_index[i] ||= VcfGenotypeField.new(@fields[i+9],format,@header,alt)
     end
 
