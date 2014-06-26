@@ -462,8 +462,10 @@ selector
   bio-vcf --sfilter-samples 0,1,4 --sfilter 's.dp>20' 
 ```
 
-For set analysis there are the additional ifilter (include) and efilter (exclude). To filter
-on samples 0,1,4 and output the gq values
+For set analysis there are the additional ifilter (include) and
+efilter (exclude).  Where sfilter represents an ALL match, the ifilter
+represents an ANY match. To filter on samples 0,1,4 and output the gq
+values
 
 ```sh
   bio-vcf -i --ifilter-samples 0,1,4 --ifilter 's.gq<10 or s.gq==99' --seval s.gq

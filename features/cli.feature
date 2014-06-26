@@ -23,6 +23,11 @@ Feature: Command-line interface (CLI)
     When I execute "./bin/bio-vcf -i --sfilter 's.dp>20'"
     Then I expect the named output to match the named output "s.dp"
 
+  Scenario: Test the include sample filter using dp
+    Given I have input file(s) named "test/data/input/multisample.vcf"
+    When I execute "./bin/bio-vcf -i --ifilter 's.dp>20'"
+    Then I expect the named output to match the named output "ifilter_s.dp"
+
   Scenario: Test the info eval using dp
     Given I have input file(s) named "test/data/input/multisample.vcf"
     When I execute "./bin/bio-vcf -i --eval 'r.info.dp'"

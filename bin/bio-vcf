@@ -198,9 +198,12 @@ def parse_line line,header,options,samples
   end
 
   if ifilter
+    # Skip if no matches
+    iset = []
     rec.each_sample(options[:ifilter_samples]) do | sample |
-      return if not sample.ifilter(ifilter,ignore_missing_data: ignore_missing,quiet: quiet)
+      iset << sample.ifilter(ifilter,ignore_missing_data: ignore_missing,quiet: quiet)
     end
+    return if not iset.index(true)
   end
 
   if efilter
