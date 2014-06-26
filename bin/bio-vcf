@@ -315,6 +315,11 @@ end
 
 $stderr.print "Options: ",options,"\n" if !options[:quiet]
 
+# Check for option combinations
+raise "Missing option --ifilter" if options[:ifilter_samples] and not options[:ifilter]
+raise "Missing option --efilter" if options[:efilter_samples] and not options[:efilter]
+raise "Missing option --sfilter" if options[:sfilter_samples] and not options[:sfilter]
+
 if options[:samples]
   samples = options[:samples].map { |s| s.to_i }
 end
