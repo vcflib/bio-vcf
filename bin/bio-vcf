@@ -338,14 +338,15 @@ count_threads=0
 
 orig_std_out = STDOUT.clone
 
-Dir::mktmpdir("bio-vcf_") do |tempdir|
-  $stderr.print "Using #{tempdir} for temporary files\n" if num_threads
-   
-  # ---- Main loop
-  STDIN.each_line do | line |
-    line_number += 1
-    $stderr.print '.' if line_number % thread_lines == 0 and not options[:quiet]
-    begin
+begin
+
+  Dir::mktmpdir("bio-vcf_") do |tempdir|
+    $stderr.print "Using #{tempdir} for temporary files\n" if num_threads
+     
+    # ---- Main loop
+    STDIN.each_line do | line |
+      line_number += 1
+      $stderr.print '.' if line_number % thread_lines == 0 and not options[:quiet]
       # ---- In this section header information is handled
       next if header_output_completed and line =~ /^#/
       if line =~ /^##fileformat=/ or line =~ /^#CHR/
@@ -366,56 +367,58 @@ Dir::mktmpdir("bio-vcf_") do |tempdir|
         count_threads = thread_list.last[2]
         lines = []
       end
-    rescue Exception => e
-      # $stderr.print line
-      $stderr.print e.message,"\n"
-      raise if options[:verbose]
-      exit 1
     end
-  end
 
-  thread_list << parse_lines(lines,header,options,samples,tempdir,count_threads)
-  count_threads = thread_list.last[2]
+    thread_list << parse_lines(lines,header,options,samples,tempdir,count_threads)
+    count_threads = thread_list.last[2]
 
-  # ---- In this section the output gets collected and printed on STDOUT
-  if options[:num_threads]
-    STDOUT.reopen(orig_std_out)
-    $stderr.print "Final pid=#{thread_list.last[0]}, size=#{lines.size}\n"
-    lines = []
+    # ---- In this section the output gets collected and printed on STDOUT
+    if options[:num_threads]
+      STDOUT.reopen(orig_std_out)
+      $stderr.print "Final pid=#{thread_list.last[0]}, size=#{lines.size}\n"
+      lines = []
 
-    fault = false
-    # Wait for the running threads to complete
-    thread_list.each do |info|
-      (pid,threadfn) = info
-      tempfn = threadfn + '.running'
-      $stderr.print "Waiting up to 3 minutes for pid=#{pid} to complete\n"
-      begin
-        Timeout.timeout(180) do
-          while not File.exist?(threadfn)  # wait for the result to appear
-            sleep 0.2
+      fault = false
+      # Wait for the running threads to complete
+      thread_list.each do |info|
+        (pid,threadfn) = info
+        tempfn = threadfn + '.running'
+        $stderr.print "Waiting up to 3 minutes for pid=#{pid} to complete\n"
+        begin
+          Timeout.timeout(180) do
+            while not File.exist?(threadfn)  # wait for the result to appear
+              sleep 0.2
+            end
           end
+          # Thread file should have gone:
+          raise "FATAL: child process appears to have crashed #{tempfn}" if File.exist?(tempfn)
+          $stderr.print "OK pid=#{pid}\n"
+        rescue Timeout::Error
+          Process.kill 9, pid
+          Process.wait pid
+          $stderr.print "FATAL: child process killed because it stopped responding, pid = #{pid}\n"
+          fault = true
         end
-        # Thread file should have gone:
-        raise "FATAL: child process appears to have crashed #{tempfn}" if File.exist?(tempfn)
-        $stderr.print "OK pid=#{pid}\n"
-      rescue Timeout::Error
-        Process.kill 9, pid
-        Process.wait pid
-        $stderr.print "FATAL: child process killed because it stopped responding, pid = #{pid}\n"
-        fault = true
       end
+      # Collate the output
+      thread_list.each do | info |
+        (pid,fn) = info
+        # This should never happen
+        raise "FATAL: child process output #{fn} is missing" if not File.exist?(fn)
+        $stderr.print "Reading #{fn}\n"
+        File.new(fn).each_line { |buf|
+          print buf
+        }
+        File.unlink(fn)
+      end
+      return 1 if fault
     end
-    # Collate the output
-    thread_list.each do | info |
-      (pid,fn) = info
-      # This should never happen
-      raise "FATAL: child process output #{fn} is missing" if not File.exist?(fn)
-      $stderr.print "Reading #{fn}\n"
-      File.new(fn).each_line { |buf|
-        print buf
-      }
-      File.unlink(fn)
-    end
-    return 1 if fault
-  end
-end  # cleans up tempdir
+  end  # cleans up tempdir
+
+rescue Exception => e
+  # $stderr.print line
+  $stderr.print e.message,"\n"
+  raise if options[:verbose]
+  exit 1
+end
+

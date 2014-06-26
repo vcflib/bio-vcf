@@ -108,14 +108,14 @@ module BioVcf
         rescue NoMethodError => e
           $stderr.print "\n#{method} trying to evaluate on an empty sample #{@sample.values.to_s}!\n" if not empty? and not quiet
           if not quiet
-            $stderr.print [@format,@values],"\n"
-            $stderr.print expr,"\n"
+            $stderr.print [:format,@format,:sample,@values],"\n"
+            $stderr.print [:filter,expr],"\n"
           end
           if ignore_missing_data
             $stderr.print e.message if not quiet and not empty?
             return false
           else
-            raise
+            raise NoMethodError.new(e.message + ". Can not evaluate empty sample data by default: test for s.empty? or use the -i switch!")
           end
         end
       end
