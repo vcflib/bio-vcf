@@ -25,7 +25,7 @@ Feature: Command-line interface (CLI)
 
   Scenario: Test the include sample filter using dp
     Given I have input file(s) named "test/data/input/multisample.vcf"
-    When I execute "./bin/bio-vcf -i --ifilter 's.dp>20'"
+    When I execute "./bin/bio-vcf -i --ifilter 's.dp>100' --seval s.dp"
     Then I expect the named output to match the named output "ifilter_s.dp"
 
   Scenario: Test the info eval using dp
