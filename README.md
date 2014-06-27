@@ -461,7 +461,8 @@ example, samples are selected that evaluate to true, all others should
 evaluate to false. For this we create three filters, one for all 
 samples that are included (the --ifilter or -if), for all samples that
 are excluded (the --efilter or -ef) and for any sample (the --sfilter
-or -sf). So i=include, e=exclude and s=any sample. 
+or -sf). So i=include (OR filter), e=exclude and s=any sample (AND
+filter). 
 
 The equivalent of the union filter is by using the --sfilter, so
 
@@ -469,7 +470,8 @@ The equivalent of the union filter is by using the --sfilter, so
   bio-vcf --sfilter 's.dp>20' 
 ```
 
-Filters DP on all samples. To filter on a subset you can add a
+Filters DP on all samples and is true if all samples match the
+criterium (AND). To filter on a subset you can add a
 selector
 
 ```sh
@@ -478,7 +480,8 @@ selector
 
 For set analysis there are the additional ifilter (include) and
 efilter (exclude).  Where sfilter represents an ALL match, the ifilter
-represents an ANY match. To filter on samples 0,1,4 and output the gq
+represents an ANY match, i.e., it is true if one of the samples
+matches the criterium (OR). To filter on samples 0,1,4 and output the gq
 values
 
 ```sh
@@ -517,8 +520,10 @@ To set an additional filter on the excluded samples:
 ```
 
 Etc. etc. Any combination of sfilter, ifilter and efilter is possible.
+Currently the efilter is an ALL filter (AND), i.e. all excluded
+samples need to match the criterium.
 
-The following are not yet implemented:
+The following regular expression matches are not yet implemented:
 
 In the near future it is also possible to select samples on a regex (here
 select all samples where the name starts with s3)
@@ -615,7 +620,7 @@ Add or modify the sample file name in the INFO fields:
   bio-vcf --rewrite 'rec.info["sample"]="mytest"' < mytest.vcf
 ```
 
-To remove/select 3 samples and create a new file:
+To remove/select 3 samples:
 
 ```sh
   bio-vcf --samples 0,1,3 < mytest.vcf
