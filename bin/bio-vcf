@@ -203,7 +203,7 @@ def parse_line line,header,options,samples
       iset << sample.ifilter(ifilter,ignore_missing_data: ignore_missing,quiet: quiet)
     end
     # Skip if there are no matches
-    return if not iset.index(true)
+    return if not iset.include?(true)
   end
 
   if efilter
