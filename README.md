@@ -4,12 +4,25 @@
 
 A new generation VCF parser. Bio-vcf is not only fast for genome-wide
 (WGS) data, it also comes with a really nice filtering, evaluation and
-rewrite language. Bio-vcf has better performance than other tools
+rewrite language. Why would you use bio-vcf over other parsers?
+
+1. Bio-vcf is fast and scales on multi-core computers
+2. Bio-vcf has an expressive filtering and evaluation language
+3. Bio-vcf has great multi-sample support
+4. Bio-vcf has multiple global filters and sample filters
+5. Bio-vcf can access any VCF format
+6. Bio-vcf can do calculations on fields
+7. Bio-vcf allows for genotype processing
+8. Bio-vcf has support for set analysis
+9. Bio-vcf has sane error handling
+10. Bio-vcf can output tabular data, HTML, LaTeX, RDF and (soon) JSON
+
+Bio-vcf has better performance than other tools
 because of lazy parsing, multi-threading, and useful combinations of
 (fancy) command line filtering. For example on an 2 core machine
-bio-vcf is 50% faster than SnpSift. On an 8 core machine bio-vcf is at
-least 3x faster than SnpSift. E.g., parsing a 1 Gb ESP VCF with 8
-cores with bio-vcf takes
+bio-vcf is typically 50% faster than JVM based SnpSift. On an 8 core machine
+bio-vcf is at least 3x faster than SnpSift. Parsing a 1 Gb ESP
+VCF with 8 cores with bio-vcf takes
 
 ```sh
   time ./bin/bio-vcf -iv --num-threads 8 --filter 'r.info.cp>0.3' < ESP6500SI_V2_SSA137.vcf > test1.vcf
@@ -39,7 +52,7 @@ a 16 core machine takes
 ```
 
 which shows pretty decent core utilisation (10x). We are running 
-gzip compressed VCF files of 33 GB with similar performance gains.
+gzip compressed VCF files of 30+ Gb with similar performance gains.
 
 Use zcat to
 pipe such gzipped (vcf.gz) files into bio-vcf, e.g.
