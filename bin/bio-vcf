@@ -198,12 +198,15 @@ def parse_line line,header,options,samples
   end
 
   if ifilter
-    iset = []
+    found = false
     rec.each_sample(options[:ifilter_samples]) do | sample |
-      iset << sample.ifilter(ifilter,ignore_missing_data: ignore_missing,quiet: quiet)
+      if sample.ifilter(ifilter,ignore_missing_data: ignore_missing,quiet: quiet)
+        found = true
+        break
+      end
     end
     # Skip if there are no matches
-    return if not iset.include?(true)
+    return if not found
   end
 
   if efilter
