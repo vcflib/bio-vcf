@@ -271,14 +271,13 @@ def parse_lines lines,header,options,samples,tempdir,count_threads
   pid = nil
   threadfilen = nil
   if options[:num_threads]
-    lines2 = lines.map { |l| l.clone }
     count_threads += 1
     threadfilen = tempdir+sprintf("/%0.6d-pid",count_threads)+'.bio-vcf'
     pid = fork do
       count_lines = 0
       tempfn = threadfilen+'.running'
       STDOUT.reopen(File.open(tempfn, 'w+'))
-      lines2.each do | line |
+      lines.each do | line |
         count_lines +=1 if parse_line(line,header,options,samples)
       end
       STDOUT.flush
