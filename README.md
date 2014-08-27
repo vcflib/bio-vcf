@@ -650,8 +650,17 @@ bio-vcf --id evs --filter 'r.info.maf[0]<5.0' --rdf --tags '{"db:evs" => true, "
 Similarly for GoNL
 
 ```ruby
-bio-vcf --id gonl --rdf --tags '{"db:evs" => true, "seq:freq" => rec.info.af }' < GoNL.vcf
+bio-vcf --id gonl --rdf --tags '{"db:gonl" => true, "seq:freq" => rec.info.af }' < GoNL.vcf
 ```
+
+or without AF
+
+
+```ruby
+bio-vcf --id gonl --rdf --tags '{"db:gonl" => true, "seq:freq" => (rec.info.ac.to_f/rec.info.an).round(2) }' < gonl_germline_overlap_r4.vcf
+```
+
+
 
 Also check out [bio-table](https://github.com/pjotrp/bioruby-table) to convert tabular data to RDF.
 
