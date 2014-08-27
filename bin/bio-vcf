@@ -293,7 +293,6 @@ def parse_lines lines,header,options,samples,tempdir,count_threads,stats
       FileUtils::mv(tempfn,threadfilen)
       exit 0
     end
-    Process::detach(pid)
   else
     lines.each do | line |
       parse_line line,header,options,samples,stats
@@ -306,10 +305,28 @@ end
 def manage_thread_pool(workers, thread_list, num_threads)
   while true
     # ---- count running pids
-    running = thread_list.reduce(0) { | sum, thread_info | ( File.exist?(thread_info[1]+'.running') ? sum+1 : sum ) }
+    running = thread_list.reduce(0) do | sum, thread_info |
+      if thread_info[0] && pid_running?(thread_info[0])
+        sum+1
+      elsif  nil == thread_info[0] && File.exist?(thread_info[1]+'.running')
+        sum+1
+      else
+        sum
+      end
+    end
     break if running < num_threads
     sleep 0.1
   end
+end
+
+def pid_running?(pid)
+  begin
+    fpid,status=Process.waitpid2(pid,Process::WNOHANG)
+  rescue Errno::ECHILD, Errno::ESRCH
+    return false
+  end
+  return true if nil == fpid && nil == status
+  return ! (status.exited? || status.signaled?)
 end
 
 opts.parse!(ARGV)
@@ -402,9 +419,14 @@ begin
       thread_list.each do |info|
         (pid,threadfn) = info
         tempfn = threadfn + '.running'
-        $stderr.print "Waiting up to 3 minutes for pid=#{pid} to complete\n"
+        timeout = 180
+        if (pid && !pid_running?(pid)) || fault
+          # no point to wait for a long time if we've failed one already or the proc is dead
+          timeout = 1
+        end
+        $stderr.print "Waiting up to #{timeout/60} minutes for pid=#{pid} to complete\n"
         begin
-          Timeout.timeout(180) do
+          Timeout.timeout(timeout) do
             while not File.exist?(threadfn)  # wait for the result to appear
               sleep 0.2
             end
@@ -413,8 +435,10 @@ begin
           raise "FATAL: child process appears to have crashed #{tempfn}" if File.exist?(tempfn)
           $stderr.print "OK pid=#{pid}\n"
         rescue Timeout::Error
-          Process.kill 9, pid
-          Process.wait pid
+          if pid_running?(pid)
+            Process.kill 9, pid
+            Process.wait pid
+          end
           $stderr.print "FATAL: child process killed because it stopped responding, pid = #{pid}\n"
           fault = true
         end
@@ -422,13 +446,16 @@ begin
       # Collate the output
       thread_list.each do | info |
         (pid,fn) = info
-        # This should never happen
-        raise "FATAL: child process output #{fn} is missing" if not File.exist?(fn)
-        $stderr.print "Reading #{fn}\n"
-        File.new(fn).each_line { |buf|
-          print buf
-        }
-        File.unlink(fn)
+        if !fault
+          # This should never happen
+          raise "FATAL: child process output #{fn} is missing" if not File.exist?(fn)
+          $stderr.print "Reading #{fn}\n"
+          File.new(fn).each_line { |buf|
+            print buf
+          }
+          File.unlink(fn)
+        end
+        Process.wait(pid) if pid && pid_running?(pid)
       end
       return 1 if fault
     end
