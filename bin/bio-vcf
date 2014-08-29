@@ -219,7 +219,7 @@ def parse_line line,header,options,samples,stats=nil
     end
   end
 
-  stats.add(rec)
+  stats.add(rec) if stats
 
   # -----------------------------
   # From here on decide on output
