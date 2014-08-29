@@ -26,7 +26,7 @@ require 'tempfile'
 # Bio::Log::CLI.logger('stderr')
 # Bio::Log::CLI.trace('info')
 
-options = { show_help: false, source: 'https://github.com/CuppenResearch/bioruby-vcf', version: version+' (Pjotr Prins)', date: Time.now.to_s, thread_lines: 100_000 }
+options = { show_help: false, source: 'https://github.com/CuppenResearch/bioruby-vcf', version: version+' (Pjotr Prins)', date: Time.now.to_s, thread_lines: 100_000, num_threads: 4 }
 opts = OptionParser.new do |o|
   o.banner = "Usage: #{File.basename($0)} [options] filename\ne.g.  #{File.basename($0)} < test/data/input/somaticsniper.vcf"
 
@@ -80,10 +80,10 @@ opts = OptionParser.new do |o|
     options[:rdf] = true
     options[:skip_header] = true
   end
-  o.on("--num-threads [num]", Integer, "Multi-core version") do |i|
+  o.on("--num-threads [num]", Integer, "Multi-core version (default #{options[:num_threads]})") do |i|
     options[:num_threads] = i
   end
-  o.on("--thread-lines num", Integer, "Fork thread on num lines (default 100_000)") do |i|
+  o.on("--thread-lines num", Integer, "Fork thread on num lines (default #{options[:thread_lines]})") do |i|
     options[:thread_lines] = i
   end
   o.on_tail("--id name", String, "Identifier") do |s|
@@ -112,6 +112,9 @@ opts = OptionParser.new do |o|
   #   Bio::Log::CLI.trace(s)
   # end
   # 
+  o.on("--statistics", "Output statistics") do |q|
+    options[:statistics] = true
+  end
   o.on("-q", "--quiet", "Run quietly") do |q|
     # Bio::Log::CLI.trace('error')
     options[:quiet] = true
