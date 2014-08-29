@@ -114,6 +114,7 @@ opts = OptionParser.new do |o|
   # 
   o.on("--statistics", "Output statistics") do |q|
     options[:statistics] = true
+    options[:num_threads] = nil
   end
   o.on("-q", "--quiet", "Run quietly") do |q|
     # Bio::Log::CLI.trace('error')
@@ -171,7 +172,7 @@ def parse_header line, samples, options
 end
 
 # Parse a VCF line
-def parse_line line,header,options,samples
+def parse_line line,header,options,samples,stats=nil
   fields = VcfLine.parse(line)
   rec = VcfRecord.new(fields,header)
   r = rec # alias
@@ -217,6 +218,8 @@ def parse_line line,header,options,samples
       return if not sample.efilter(efilter,ignore_missing_data: ignore_missing,quiet: quiet)
     end
   end
+
+  stats.add(rec)
 
   # -----------------------------
   # From here on decide on output
@@ -270,7 +273,7 @@ end
 # Collect a buffer of lines and feed them to a thread
 # Returns the created pid, tempfilen and count_threads
 # (Note: this function should be turned into a closure)
-def parse_lines lines,header,options,samples,tempdir,count_threads
+def parse_lines lines,header,options,samples,tempdir,count_threads,stats
   pid = nil
   threadfilen = nil
   if options[:num_threads]
@@ -291,7 +294,7 @@ def parse_lines lines,header,options,samples,tempdir,count_threads
     Process::detach(pid)
   else
     lines.each do | line |
-      parse_line line,header,options,samples
+      parse_line line,header,options,samples,stats
     end
   end
   return pid,threadfilen,count_threads
@@ -322,6 +325,12 @@ if RUBY_VERSION =~ /^1/
 end
 
 $stderr.print "Options: ",options,"\n" if !options[:quiet]
+
+stats = nil
+if options[:statistics]
+  options[:num_threads] = nil
+  stats = BioVcf::VcfStatistics.new
+end
 
 # Check for option combinations
 raise "Missing option --ifilter" if options[:ifilter_samples] and not options[:ifilter]
@@ -371,13 +380,13 @@ begin
       lines << line
       if lines.size > thread_lines
         manage_thread_pool(workers,thread_list,num_threads) if options[:num_threads]
-        thread_list << parse_lines(lines,header,options,samples,tempdir,count_threads)
+        thread_list << parse_lines(lines,header,options,samples,tempdir,count_threads,stats)
         count_threads = thread_list.last[2]
         lines = []
       end
     end
 
-    thread_list << parse_lines(lines,header,options,samples,tempdir,count_threads)
+    thread_list << parse_lines(lines,header,options,samples,tempdir,count_threads,stats)
     count_threads = thread_list.last[2]
 
     # ---- In this section the output gets collected and printed on STDOUT
@@ -422,6 +431,8 @@ begin
       return 1 if fault
     end
   end  # cleans up tempdir
+
+  stats.print if stats
 
 rescue Exception => e
   # $stderr.print line
