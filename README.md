@@ -664,6 +664,36 @@ bio-vcf --id gonl --rdf --tags '{"db:gonl" => true, "seq:freq" => (rec.info.ac.t
 
 Also check out [bio-table](https://github.com/pjotrp/bioruby-table) to convert tabular data to RDF.
 
+## Statistics
+
+Simple statistics are available for REF>ALT changes:
+
+```sh
+./bin/bio-vcf -v --statistics < test/data/input/dbsnp.vcf
+```
+
+    ## ==== Statistics ==================================
+      G>A             59      45%
+      C>T             30      23%
+      A>G              5       4%
+      C>G              5       4% 
+      C>A              5       4%
+      G>T              4       3%
+      T>C              4       3%
+      G>C              4       3%
+      T>A              3       2%
+      A>C              3       2%
+      A>T              2       2%
+      GTCCGACCGCTCC>G  1       1%
+      CGACCGCTCC>C     1       1%
+      T>TGGAGC         1       1%
+      C>CGTCTTCA       1       1%
+      TG>T             1       1%
+      AC>A             1       1%
+
+      Total          130
+    ## ==================================================
+
 ## Other examples
 
 For more examples see the feature [section](https://github.com/pjotrp/bioruby-vcf/tree/master/features).

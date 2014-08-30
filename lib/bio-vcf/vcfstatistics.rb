@@ -15,12 +15,12 @@ module BioVcf
     end
 
     def print
-      puts "==== Statistics ====================================================="
-      @ref_alt_count.sort_by {|k,v| k}.each do |k,v|
+      puts "## ==== Statistics =================================="
+      @ref_alt_count.sort_by {|k,v| v}.reverse.each do |k,v|
         printf k+"\t%d\t%2.0d%%\n",v,(v.to_f/@count*100).round
       end
       puts "Total\t#{@count}"
-      puts "====================================================================="
+      puts "## =================================================="
     end
   end
 

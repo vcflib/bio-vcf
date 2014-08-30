@@ -261,6 +261,8 @@ def parse_line line,header,options,samples,stats=nil
       # Default behaviour prints VCF line, but rewrite info
       eval(options[:rewrite]) 
       print (fields[0..6]+[rec.info.to_s]+fields[8..-1]).join("\t")+"\n"
+    elsif stats
+      # do nothing
     else
       # Default behaviour prints VCF line
       $stdout.print fields.join("\t")+"\n"
