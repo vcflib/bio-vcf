@@ -10,3 +10,7 @@ end
 Then(/^I expect the named output to match the named output "(.*?)"$/) do |arg1|
   RegressionTest::CliExec::exec(@cmd,arg1,ignore: '##BioVcf=').should be_true
 end
+
+Then(/^I expect an error and the named output to match the named output "(.*?)" in under (\d+) seconds$/) do |arg1,arg2|
+  RegressionTest::CliExec::exec(@cmd,arg1,ignore: '(FATAL|Waiting|from|vcf|Options|Final pid)',should_fail: true,timeout:arg2.to_i).should be_true
+end
