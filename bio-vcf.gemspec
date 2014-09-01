@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = "bio-vcf"
-  s.version = "0.7.0"
+  s.version = "0.7.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Pjotr Prins"]
-  s.date = "2014-06-24"
-  s.description = "Smart parser for VCF format"
+  s.date = "2014-09-01"
+  s.description = "Smart lazy multi-threaded parser for VCF format with useful filtering and output rewriting"
   s.email = "pjotr.public01@thebird.nl"
   s.executables = ["bio-vcf"]
   s.extra_rdoc_files = [
@@ -49,10 +49,12 @@ Gem::Specification.new do |s|
     "lib/bio-vcf/vcfrdf.rb",
     "lib/bio-vcf/vcfrecord.rb",
     "lib/bio-vcf/vcfsample.rb",
+    "lib/bio-vcf/vcfstatistics.rb",
     "test/data/input/dbsnp.vcf",
     "test/data/input/multisample.vcf",
     "test/data/input/somaticsniper.vcf",
     "test/data/regression/eval_r.info.dp.ref",
+    "test/data/regression/ifilter_s.dp.ref",
     "test/data/regression/r.info.dp.ref",
     "test/data/regression/rewrite.info.sample.ref",
     "test/data/regression/s.dp.ref",
@@ -60,13 +62,14 @@ Gem::Specification.new do |s|
     "test/data/regression/sfilter_seval_s.dp.ref",
     "test/data/regression/thread4.ref",
     "test/data/regression/thread4_4.ref",
+    "test/data/regression/thread4_4_failed_filter-stderr.ref",
     "test/performance/metrics.md"
   ]
   s.homepage = "http://github.com/pjotrp/bioruby-vcf"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = "2.0.3"
-  s.summary = "VCF parser"
+  s.summary = "Fast multi-threaded VCF parser"
 
   if s.respond_to? :specification_version then
     s.specification_version = 4
@@ -74,19 +77,19 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_development_dependency(%q<rspec>, [">= 0"])
       s.add_development_dependency(%q<cucumber>, [">= 0"])
-      s.add_development_dependency(%q<jeweler>, [">= 0"])
-      s.add_development_dependency(%q<regressiontest>, [">= 0"])
+      s.add_development_dependency(%q<jeweler>, ["~> 2.0.1"])
+      s.add_development_dependency(%q<regressiontest>, ["~> 0.0.3"])
     else
       s.add_dependency(%q<rspec>, [">= 0"])
       s.add_dependency(%q<cucumber>, [">= 0"])
-      s.add_dependency(%q<jeweler>, [">= 0"])
-      s.add_dependency(%q<regressiontest>, [">= 0"])
+      s.add_dependency(%q<jeweler>, ["~> 2.0.1"])
+      s.add_dependency(%q<regressiontest>, ["~> 0.0.3"])
     end
   else
     s.add_dependency(%q<rspec>, [">= 0"])
     s.add_dependency(%q<cucumber>, [">= 0"])
-    s.add_dependency(%q<jeweler>, [">= 0"])
-    s.add_dependency(%q<regressiontest>, [">= 0"])
+    s.add_dependency(%q<jeweler>, ["~> 2.0.1"])
+    s.add_dependency(%q<regressiontest>, ["~> 0.0.3"])
   end
 end
 
