@@ -60,7 +60,7 @@ GEM
     rake (10.1.1)
     rdoc (4.1.1)
       json (~> 1.4)
-    regressiontest (0.0.2)
+    regressiontest (0.0.3)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
@@ -76,6 +76,6 @@ PLATFORMS
 
 DEPENDENCIES
   cucumber
-  jeweler
-  regressiontest
+  jeweler (~> 2.0.1)
+  regressiontest (~> 0.0.3)
   rspec
