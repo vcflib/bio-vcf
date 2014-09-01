@@ -47,6 +47,8 @@ Cucumber::Rake::Task.new(:features)
 
 task :default => :features
 
+task :test => [ :features ] 
+
 require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
