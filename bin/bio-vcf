@@ -364,14 +364,14 @@ begin
             process.call(chunk)
           }
           chunks = []
-          output.call out
+          # output.call out
           # Output is forked to a separate process too
-          # fork do
-          #  output.call out
-          #  STDOUT.flush
-          #  STDOUT.close
-          #  exit 0
-          #end
+          fork do
+            output.call out
+            STDOUT.flush
+            STDOUT.close
+            exit 0
+          end
         end
         lines = []
       end
