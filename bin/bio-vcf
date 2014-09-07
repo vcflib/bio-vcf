@@ -211,7 +211,7 @@ def parse_header line, samples, options
   return header,line
 end
 
-# Parse a VCF line
+# Parse a VCF line and return the result as a string
 def parse_line line,header,options,samples,stats=nil
   fields = VcfLine.parse(line)
   rec = VcfRecord.new(fields,header)
@@ -291,8 +291,8 @@ def parse_line line,header,options,samples,stats=nil
       raise if options[:verbose]
       exit 1
     end
-    print results,"\n" if results
-    exit(1) if options[:eval_once]
+    return results+"\n" if results
+    exit(1) if options[:eval_once]  # <--- can this be reached?
   else
     if options[:rdf]
       # Output Turtle RDF
@@ -305,27 +305,27 @@ def parse_line line,header,options,samples,stats=nil
       # do nothing
     else
       # Default behaviour prints VCF line
-      $stdout.print fields.join("\t")+"\n"
-      $stdout.flush
-      return true
+      fields.join("\t")+"\n"
     end
   end
 end
 
 header = nil
 header_output_completed = false
-line_number=0
+NUM_THREADS = options[:num_threads]
+CHUNK_SIZE = options[:thread_lines]
+CHUNK_NUM = 1000
 chunks = []
-CHUNK_SIZE = 100_000
-CHUNK_NUM = 100
 lines = []
-thread_lines = options[:thread_lines]
+line_number=0
 
 begin
   process = lambda { | lines |
+    res = []
     lines.each do | line |
-       parse_line line,header,options,samples,stats
+      res << parse_line(line,header,options,samples,stats)
     end
+    res
   }
   output = lambda { |collection| 
     collection.each do | result |
@@ -336,7 +336,7 @@ begin
   # ---- Main loop
   STDIN.each_line do | line |
     line_number += 1
-    $stderr.print '.' if line_number % thread_lines == 0 and not options[:quiet]
+    $stderr.print '.' if line_number % CHUNK_SIZE == 0 and not options[:quiet]
     # ---- In this section header information is handled
     next if header_output_completed and line =~ /^#/
     if line =~ /^##fileformat=/ or line =~ /^#CHR/
@@ -351,18 +351,19 @@ begin
 
     # ---- In this section the VCF variant lines are parsed
     lines << line
-    if options[:num_threads] == 1
+    if NUM_THREADS == 1
       if lines.size > CHUNK_SIZE
-        process.call(lines).each { | line | print line }
+        process.call(lines).each { | l | print l }
         lines = []
       end
     else
       if lines.size > CHUNK_SIZE
         chunks << lines
         if chunks.size > CHUNK_NUM
-          out = Parallel.map(chunks, :in_processes => options[:num_threads]) { | chunk |
+          out = Parallel.map(chunks, :in_processes => NUM_THREADS) { | chunk |
             process.call(chunk)
           }
+          chunks = []
           output.call out
           # Output is forked to a separate process too
           # fork do
@@ -372,15 +373,15 @@ begin
           #  exit 0
           #end
         end
-        chunks = []
+        lines = []
       end
-      lines = []
     end
-    if options[:num_threads] == 1
-      process.call(lines).each { | line | print line }
+    if NUM_THREADS == 1
+      process.call(lines).each { | l | print l }
+      # p process.call(lines)
     else
       chunks << lines
-      output.call Parallel.map(chunks, :in_processes => options[:num_threads]) { | chunk |
+      output.call Parallel.map(chunks, :in_processes => NUM_THREADS) { | chunk |
         process.call(chunk)
       }
     end
