@@ -152,6 +152,15 @@ end
 
 $stderr.print "Options: ",options,"\n" if !options[:quiet]
 
+if options[:num_threads] != 1
+  begin
+    require 'parallel'
+  rescue LoadError
+    $stderr.print "Error: Missing 'parallel' module. Install with command 'gem install parallel' if you want multiple threads\n"
+    options[:num_threads] = 1
+  end
+end
+
 stats = nil
 if options[:statistics]
   options[:num_threads] = nil
