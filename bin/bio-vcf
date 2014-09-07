@@ -387,90 +387,34 @@ orig_std_out = STDOUT.clone
 
 begin
 
-  Dir::mktmpdir("bio-vcf_") do |tempdir|
-    $stderr.print "Using #{tempdir} for temporary files\n" if num_threads
-     
-    # ---- Main loop
-    STDIN.each_line do | line |
-      line_number += 1
-      $stderr.print '.' if line_number % thread_lines == 0 and not options[:quiet]
-      # ---- In this section header information is handled
-      next if header_output_completed and line =~ /^#/
-      if line =~ /^##fileformat=/ or line =~ /^#CHR/
-        header,line = parse_header(line,samples,options)
-      end
-      next if line =~ /^##/ # empty file
-      header_output_completed = true
-      if not options[:efilter_samples] and options[:ifilter_samples]
-        # Create exclude set as a complement of include set
-        options[:efilter_samples] = header.column_names[9..-1].fill{|i|i.to_s}-options[:ifilter_samples]
-      end
-
-      # ---- In this section the VCF variant lines are parsed
-      lines << line
-      if lines.size > thread_lines
-        manage_thread_pool(workers,thread_list,num_threads) if options[:num_threads]
-        thread_list << parse_lines(lines,header,options,samples,tempdir,count_threads,stats)
-        count_threads = thread_list.last[2]
-        lines = []
-      end
+  # ---- Main loop
+  STDIN.each_line do | line |
+    line_number += 1
+    $stderr.print '.' if line_number % thread_lines == 0 and not options[:quiet]
+    # ---- In this section header information is handled
+    next if header_output_completed and line =~ /^#/
+    if line =~ /^##fileformat=/ or line =~ /^#CHR/
+      header,line = parse_header(line,samples,options)
+    end
+    next if line =~ /^##/ # empty file
+    header_output_completed = true
+    if not options[:efilter_samples] and options[:ifilter_samples]
+      # Create exclude set as a complement of include set
+      options[:efilter_samples] = header.column_names[9..-1].fill{|i|i.to_s}-options[:ifilter_samples]
     end
 
-    thread_list << parse_lines(lines,header,options,samples,tempdir,count_threads,stats)
-    count_threads = thread_list.last[2]
-
-    # ---- In this section the output gets collected and printed on STDOUT
-    if options[:num_threads]
-      STDOUT.reopen(orig_std_out)
-      $stderr.print "Final pid=#{thread_list.last[0]}, size=#{lines.size}\n"
+    # ---- In this section the VCF variant lines are parsed
+    lines << line
+    if lines.size > thread_lines
+      manage_thread_pool(workers,thread_list,num_threads) if options[:num_threads]
+      thread_list << parse_lines(lines,header,options,samples,tempdir,count_threads,stats)
+      count_threads = thread_list.last[2]
       lines = []
-
-      fault = false
-      # Wait for the running threads to complete
-      thread_list.each do |info|
-        (pid,threadfn) = info
-        tempfn = threadfn + '.running'
-        timeout = 180
-        if (pid && !pid_running?(pid)) || fault
-          # no point to wait for a long time if we've failed one already or the proc is dead
-          timeout = 1
-        end
-        $stderr.print "Waiting up to #{timeout/60} minutes for pid=#{pid} to complete\n"
-        begin
-          Timeout.timeout(timeout) do
-            while not File.exist?(threadfn)  # wait for the result to appear
-              sleep 0.2
-            end
-          end
-          # Thread file should have gone:
-          raise "FATAL: child process appears to have crashed #{tempfn}" if File.exist?(tempfn)
-          $stderr.print "OK pid=#{pid}\n"
-        rescue Timeout::Error
-          if pid_running?(pid)
-            Process.kill 9, pid
-            Process.wait pid
-          end
-          $stderr.print "FATAL: child process killed because it stopped responding, pid = #{pid}\n"
-          fault = true
-        end
-      end
-      # Collate the output
-      thread_list.each do | info |
-        (pid,fn) = info
-        if !fault
-          # This should never happen
-          raise "FATAL: child process output #{fn} is missing" if not File.exist?(fn)
-          $stderr.print "Reading #{fn}\n"
-          File.new(fn).each_line { |buf|
-            print buf
-          }
-          File.unlink(fn)
-        end
-        Process.wait(pid) if pid && pid_running?(pid)
-      end
-      return 1 if fault
     end
-  end  # cleans up tempdir
+  end
+
+  thread_list << parse_lines(lines,header,options,samples,tempdir,count_threads,stats)
+  count_threads = thread_list.last[2]
 
   stats.print if stats
 
