@@ -26,7 +26,7 @@ require 'fileutils'
 # Bio::Log::CLI.logger('stderr')
 # Bio::Log::CLI.trace('info')
 
-options = { show_help: false, source: 'https://github.com/CuppenResearch/bioruby-vcf', version: version+' (Pjotr Prins)', date: Time.now.to_s, thread_lines: 100_000, num_threads: 4 }
+options = { show_help: false, source: 'https://github.com/CuppenResearch/bioruby-vcf', version: version+' (Pjotr Prins)', date: Time.now.to_s, thread_lines: 40_000 }
 opts = OptionParser.new do |o|
   o.banner = "Usage: #{File.basename($0)} [options] filename\ne.g.  #{File.basename($0)} < test/data/input/somaticsniper.vcf"
 
@@ -291,7 +291,7 @@ def parse_line line,header,options,samples,stats=nil
       raise if options[:verbose]
       exit 1
     end
-    return results+"\n" if results
+    results+"\n" if results
     exit(1) if options[:eval_once]  # <--- can this be reached?
   else
     if options[:rdf]
@@ -300,7 +300,7 @@ def parse_line line,header,options,samples,stats=nil
     elsif options[:rewrite]
       # Default behaviour prints VCF line, but rewrite info
       eval(options[:rewrite]) 
-      print (fields[0..6]+[rec.info.to_s]+fields[8..-1]).join("\t")+"\n"
+      (fields[0..6]+[rec.info.to_s]+fields[8..-1]).join("\t")+"\n"
     elsif stats
       # do nothing
     else
@@ -314,7 +314,7 @@ header = nil
 header_output_completed = false
 NUM_THREADS = options[:num_threads]
 CHUNK_SIZE = options[:thread_lines]
-CHUNK_NUM = 1000
+CHUNK_NUM = 24 
 chunks = []
 lines = []
 line_number=0
@@ -325,7 +325,6 @@ begin
     lines.each do | line |
       res << parse_line(line,header,options,samples,stats)
     end
-    puts "====>",res.size
     res
   }
   output = lambda { |collection| 
