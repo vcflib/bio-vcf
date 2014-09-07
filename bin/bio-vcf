@@ -291,7 +291,7 @@ def parse_line line,header,options,samples,stats=nil
       raise if options[:verbose]
       exit 1
     end
-    results+"\n" if results
+    return results.to_s+"\n" if results
     exit(1) if options[:eval_once]  # <--- can this be reached?
   else
     if options[:rdf]
