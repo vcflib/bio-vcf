@@ -325,6 +325,7 @@ begin
     lines.each do | line |
       res << parse_line(line,header,options,samples,stats)
     end
+    puts "====>",res.size
     res
   }
   output = lambda { |collection| 
@@ -376,15 +377,14 @@ begin
         lines = []
       end
     end
-    if NUM_THREADS == 1
-      process.call(lines).each { | l | print l }
-      # p process.call(lines)
-    else
-      chunks << lines
-      output.call Parallel.map(chunks, :in_processes => NUM_THREADS) { | chunk |
-        process.call(chunk)
-      }
-    end
+  end
+  if NUM_THREADS == 1
+    process.call(lines).each { |l| print l}
+  else
+    chunks << lines
+    output.call Parallel.map(chunks, :in_processes => NUM_THREADS) { | chunk |
+      process.call(chunk)
+    }
   end
   stats.print if stats
 
