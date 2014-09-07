@@ -18,7 +18,6 @@ require 'bio-vcf'
 require 'optparse'
 require 'timeout'
 require 'fileutils'
-require 'tempfile'
 
 # Uncomment when using the bio-logger 
 # require 'bio-logger'
@@ -313,19 +312,12 @@ def parse_line line,header,options,samples,stats=nil
   end
 end
 
-# Collect a buffer of lines and feed them to a thread
-# Returns the created pid, tempfilen and count_threads
-# (Note: this function should be turned into a closure)
-def parse_lines lines,header,options,samples,tempdir,count_threads,stats
-  lines.each do | line |
-    parse_line line,header,options,samples,stats
-  end
-  return pid,threadfilen,count_threads
-end
-
 header = nil
 header_output_completed = false
 line_number=0
+chunks = []
+CHUNK_SIZE = 10_000
+CHUNK_NUM = 100
 lines = []
 thread_lines = options[:thread_lines]
 
@@ -347,19 +339,42 @@ begin
       options[:efilter_samples] = header.column_names[9..-1].fill{|i|i.to_s}-options[:ifilter_samples]
     end
 
+    process = lambda { | line |
+      lines.each do | line |
+         parse_line line,header,options,samples,stats
+      end
+    end
+
+    output = lambda { |collection| 
+      collection.each do | result |
+        result.each { |line| print line }
+      end
+    } # end output
+
     # ---- In this section the VCF variant lines are parsed
     lines << line
-    if lines.size > thread_lines
-      manage_thread_pool(workers,thread_list,num_threads) if options[:num_threads]
-      thread_list << parse_lines(lines,header,options,samples,tempdir,count_threads,stats)
-      count_threads = thread_list.last[2]
-      lines = []
+    if lines.size > CHUNK_SIZE
+      chunks << lines
+      if chunks.size > CHUNK_NUM
+        out = Parallel.map_with_index(chunks, :in_processes => options[:num_threads]) { | chunk |
+          process.call(chunk)
+        }
+        # Output is forked to a separate process too
+        fork do
+          output.call out
+          STDOUT.flush
+          STDOUT.close
+          exit 0
+        end
+      chunks = []
     end
+    lines = []
   end
+  output.call Parallel.map_with_index(chunks, :in_processes => options[:num_threads]) { | chunk |
+    process.call(chunk)
+  }
 
-  thread_list << parse_lines(lines,header,options,samples,tempdir,count_threads,stats)
-  count_threads = thread_list.last[2]
-
+  thread_list << parse_lines(lines,header,options,samples,count_threads,stats)
   stats.print if stats
 
 rescue Exception => e
