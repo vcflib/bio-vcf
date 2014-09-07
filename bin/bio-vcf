@@ -362,7 +362,7 @@ if options[:samples]
 end
 
 num_threads = options[:num_threads]
-num_threads = 8 if num_threads != nil and num_threads < 2
+num_threads = 8 if num_threads != nil and num_threads < 1
 
 header = nil
 header_output_completed = false
