@@ -364,7 +364,6 @@ begin
             process.call(chunk)
           }
           chunks = []
-          # output.call out
           # Output is forked to a separate process too
           fork do
             output.call out
