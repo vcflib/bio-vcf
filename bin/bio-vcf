@@ -316,12 +316,22 @@ header = nil
 header_output_completed = false
 line_number=0
 chunks = []
-CHUNK_SIZE = 10_000
+CHUNK_SIZE = 100_000
 CHUNK_NUM = 100
 lines = []
 thread_lines = options[:thread_lines]
 
 begin
+  process = lambda { | lines |
+    lines.each do | line |
+       parse_line line,header,options,samples,stats
+    end
+  }
+  output = lambda { |collection| 
+    collection.each do | result |
+      result.each { |line| print line }
+    end
+  } # end output
 
   # ---- Main loop
   STDIN.each_line do | line |
@@ -339,42 +349,42 @@ begin
       options[:efilter_samples] = header.column_names[9..-1].fill{|i|i.to_s}-options[:ifilter_samples]
     end
 
-    process = lambda { | line |
-      lines.each do | line |
-         parse_line line,header,options,samples,stats
-      end
-    end
-
-    output = lambda { |collection| 
-      collection.each do | result |
-        result.each { |line| print line }
-      end
-    } # end output
-
     # ---- In this section the VCF variant lines are parsed
     lines << line
-    if lines.size > CHUNK_SIZE
-      chunks << lines
-      if chunks.size > CHUNK_NUM
-        out = Parallel.map_with_index(chunks, :in_processes => options[:num_threads]) { | chunk |
-          process.call(chunk)
-        }
-        # Output is forked to a separate process too
-        fork do
+    if options[:num_threads] == 1
+      if lines.size > CHUNK_SIZE
+        process.call(lines).each { | line | print line }
+        lines = []
+      end
+    else
+      if lines.size > CHUNK_SIZE
+        chunks << lines
+        if chunks.size > CHUNK_NUM
+          out = Parallel.map(chunks, :in_processes => options[:num_threads]) { | chunk |
+            process.call(chunk)
+          }
           output.call out
-          STDOUT.flush
-          STDOUT.close
-          exit 0
+          # Output is forked to a separate process too
+          # fork do
+          #  output.call out
+          #  STDOUT.flush
+          #  STDOUT.close
+          #  exit 0
+          #end
         end
-      chunks = []
+        chunks = []
+      end
+      lines = []
     end
-    lines = []
+    if options[:num_threads] == 1
+      process.call(lines).each { | line | print line }
+    else
+      chunks << lines
+      output.call Parallel.map(chunks, :in_processes => options[:num_threads]) { | chunk |
+        process.call(chunk)
+      }
+    end
   end
-  output.call Parallel.map_with_index(chunks, :in_processes => options[:num_threads]) { | chunk |
-    process.call(chunk)
-  }
-
-  thread_list << parse_lines(lines,header,options,samples,count_threads,stats)
   stats.print if stats
 
 rescue Exception => e
