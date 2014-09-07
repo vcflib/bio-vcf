@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
 #
-# BioRuby vcf plugin 
+# bio-vcf parser and transformer
 # Author:: Pjotr Prins
+# License:: MIT
 #
 # Copyright (C) 2014 Pjotr Prins <pjotr.prins@thebird.nl>
 
