@@ -176,10 +176,6 @@ if options[:samples]
   samples = options[:samples].map { |s| s.to_i }
 end
 
-num_threads = options[:num_threads]
-num_threads = 8 if num_threads != nil and num_threads < 1
-
-
 include BioVcf
 
 # Parse the header section of a VCF file
@@ -321,69 +317,17 @@ end
 # Returns the created pid, tempfilen and count_threads
 # (Note: this function should be turned into a closure)
 def parse_lines lines,header,options,samples,tempdir,count_threads,stats
-  pid = nil
-  threadfilen = nil
-  if options[:num_threads]
-    count_threads += 1
-    threadfilen = tempdir+sprintf("/%0.6d-pid",count_threads)+'.bio-vcf'
-    pid = fork do
-      count_lines = 0
-      tempfn = threadfilen+'.running'
-      STDOUT.reopen(File.open(tempfn, 'w+'))
-      lines.each do | line |
-        count_lines +=1 if parse_line(line,header,options,samples)
-      end
-      STDOUT.flush
-      STDOUT.close
-      FileUtils::mv(tempfn,threadfilen)
-      exit 0
-    end
-  else
-    lines.each do | line |
-      parse_line line,header,options,samples,stats
-    end
+  lines.each do | line |
+    parse_line line,header,options,samples,stats
   end
   return pid,threadfilen,count_threads
-end
-
-# Make sure no more than num_threads are running at the same time
-def manage_thread_pool(workers, thread_list, num_threads)
-  while true
-    # ---- count running pids
-    running = thread_list.reduce(0) do | sum, thread_info |
-      if thread_info[0] && pid_running?(thread_info[0])
-        sum+1
-      elsif  nil == thread_info[0] && File.exist?(thread_info[1]+'.running')
-        sum+1
-      else
-        sum
-      end
-    end
-    break if running < num_threads
-    sleep 0.1
-  end
-end
-
-def pid_running?(pid)
-  begin
-    fpid,status=Process.waitpid2(pid,Process::WNOHANG)
-  rescue Errno::ECHILD, Errno::ESRCH
-    return false
-  end
-  return true if nil == fpid && nil == status
-  return ! (status.exited? || status.signaled?)
 end
 
 header = nil
 header_output_completed = false
 line_number=0
 lines = []
-thread_list = []
-workers = []
 thread_lines = options[:thread_lines]
-count_threads=0
-
-orig_std_out = STDOUT.clone
 
 begin
 
