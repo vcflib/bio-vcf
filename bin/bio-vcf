@@ -136,6 +136,41 @@ opts = OptionParser.new do |o|
   end
 end
 
+opts.parse!(ARGV)
+
+$stderr.print "vcf #{version} (biogem Ruby #{RUBY_VERSION}) by Pjotr Prins 2014\n" if !options[:quiet]
+
+if options[:show_help] 
+  print opts 
+  print USAGE
+  exit 1
+end
+
+if RUBY_VERSION =~ /^1/
+  $stderr.print "WARNING: bio-vcf runs on Ruby 2.x only\n"
+end
+
+$stderr.print "Options: ",options,"\n" if !options[:quiet]
+
+stats = nil
+if options[:statistics]
+  options[:num_threads] = nil
+  stats = BioVcf::VcfStatistics.new
+end
+
+# Check for option combinations
+raise "Missing option --ifilter" if options[:ifilter_samples] and not options[:ifilter]
+raise "Missing option --efilter" if options[:efilter_samples] and not options[:efilter]
+raise "Missing option --sfilter" if options[:sfilter_samples] and not options[:sfilter]
+
+if options[:samples]
+  samples = options[:samples].map { |s| s.to_i }
+end
+
+num_threads = options[:num_threads]
+num_threads = 8 if num_threads != nil and num_threads < 1
+
+
 include BioVcf
 
 # Parse the header section of a VCF file
@@ -329,40 +364,6 @@ def pid_running?(pid)
   return true if nil == fpid && nil == status
   return ! (status.exited? || status.signaled?)
 end
-
-opts.parse!(ARGV)
-
-$stderr.print "vcf #{version} (biogem Ruby #{RUBY_VERSION}) by Pjotr Prins 2014\n" if !options[:quiet]
-
-if options[:show_help] 
-  print opts 
-  print USAGE
-  exit 1
-end
-
-if RUBY_VERSION =~ /^1/
-  $stderr.print "WARNING: bio-vcf runs on Ruby 2.x only\n"
-end
-
-$stderr.print "Options: ",options,"\n" if !options[:quiet]
-
-stats = nil
-if options[:statistics]
-  options[:num_threads] = nil
-  stats = BioVcf::VcfStatistics.new
-end
-
-# Check for option combinations
-raise "Missing option --ifilter" if options[:ifilter_samples] and not options[:ifilter]
-raise "Missing option --efilter" if options[:efilter_samples] and not options[:efilter]
-raise "Missing option --sfilter" if options[:sfilter_samples] and not options[:sfilter]
-
-if options[:samples]
-  samples = options[:samples].map { |s| s.to_i }
-end
-
-num_threads = options[:num_threads]
-num_threads = 8 if num_threads != nil and num_threads < 1
 
 header = nil
 header_output_completed = false
