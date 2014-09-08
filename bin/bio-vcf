@@ -75,7 +75,7 @@ opts = OptionParser.new do |o|
   o.on("--samples list", Array, "Output selected samples") do |l|
     options[:samples] = l
   end
-  o.on("--rdf", "Generate Turtle RDF") do |b|
+  o.on("--rdf", "Generate Turtle RDF (also check out --template!)") do |b|
     require 'bio-vcf/vcfrdf'
     options[:rdf] = true
     options[:skip_header] = true
@@ -101,6 +101,14 @@ opts = OptionParser.new do |o|
     options[:set_header] = list
     options[:skip_header] = true
   end
+
+  o.on("-t erb","--template erb",String, "Use ERB template for output") do |s|
+    require 'bio-vcf/vcfrdf'
+    require 'erb'
+    options[:template] = s
+    options[:skip_header] = true
+  end
+  
    
   # Uncomment the following when using the bio-logger 
   # o.separator ""
@@ -150,6 +158,13 @@ if RUBY_VERSION =~ /^1/
 end
 
 $stderr.print "Options: ",options,"\n" if !options[:quiet]
+
+if options[:template]
+  include BioVcf::RDF
+  fn = options[:template]
+  raise "No template #{fn}!" if not File.exist?(fn)
+  template = ERB.new(File.read(fn))
+end
 
 if options[:num_threads] != 1
   begin
@@ -212,7 +227,7 @@ def parse_header line, samples, options
 end
 
 # Parse a VCF line and return the result as a string
-def parse_line line,header,options,samples,stats=nil
+def parse_line line,header,options,samples,template,stats=nil
   fields = VcfLine.parse(line)
   rec = VcfRecord.new(fields,header)
   r = rec # alias
@@ -297,6 +312,8 @@ def parse_line line,header,options,samples,stats=nil
     if options[:rdf]
       # Output Turtle RDF
       VcfRdf::record(options[:id],rec,options[:tags])
+    elsif options[:template]
+      template.result(binding)
     elsif options[:rewrite]
       # Default behaviour prints VCF line, but rewrite info
       eval(options[:rewrite]) 
@@ -323,7 +340,7 @@ begin
   process = lambda { | lines |
     res = []
     lines.each do | line |
-      res << parse_line(line,header,options,samples,stats)
+      res << parse_line(line,header,options,samples,template,stats)
     end
     res
   }

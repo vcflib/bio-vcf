@@ -1,0 +1,13 @@
+<%
+  id = Turtle::mangle_identifier(['ch'+rec.chrom,rec.pos,rec.alt.join('')].join('_')) 
+%>
+:<%= id %>
+  :query_id    "<%= id %>",
+  seq:chr      "<%= rec.chrom %>" ,
+  seq:pos      <%= rec.pos %> ,
+  seq:ref      "<%= rec.ref %>" ,
+  seq:alt      "<%= rec.alt[0] %>" ,
+  seq:maf      <%= rec.info.maf[0] %> ,
+  seq:dp       <%= rec.info.dp %> ,
+  db:vcf       true .
+
