@@ -4,7 +4,8 @@
 
 A new generation VCF parser. Bio-vcf is not only fast for genome-wide
 (WGS) data, it also comes with a really nice filtering, evaluation and
-rewrite language. Why would you use bio-vcf over other parsers?
+rewrite language and it can output any type of textual data, including
+RDF and JSON. Why would you use bio-vcf over other parsers?
 
 1. Bio-vcf is fast and scales on multi-core computers
 2. Bio-vcf has an expressive filtering and evaluation language

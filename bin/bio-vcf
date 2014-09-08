@@ -314,7 +314,7 @@ header = nil
 header_output_completed = false
 NUM_THREADS = options[:num_threads]
 CHUNK_SIZE = options[:thread_lines]
-CHUNK_NUM = 24 
+CHUNK_NUM = (NUM_THREADS && NUM_THREADS>6 ? NUM_THREADS*4 : 24) 
 chunks = []
 lines = []
 line_number=0
@@ -336,7 +336,6 @@ begin
   # ---- Main loop
   STDIN.each_line do | line |
     line_number += 1
-    $stderr.print '.' if line_number % CHUNK_SIZE == 0 and not options[:quiet]
     # ---- In this section header information is handled
     next if header_output_completed and line =~ /^#/
     if line =~ /^##fileformat=/ or line =~ /^#CHR/
@@ -352,6 +351,7 @@ begin
     # ---- In this section the VCF variant lines are parsed
     lines << line
     if NUM_THREADS == 1
+      $stderr.print '.' if line_number % CHUNK_SIZE == 0 and not options[:quiet]
       if lines.size > CHUNK_SIZE
         process.call(lines).each { | l | print l }
         lines = []
@@ -360,6 +360,7 @@ begin
       if lines.size > CHUNK_SIZE
         chunks << lines
         if chunks.size > CHUNK_NUM
+          $stderr.print '.' if not options[:quiet]
           out = Parallel.map(chunks, :in_processes => NUM_THREADS) { | chunk |
             process.call(chunk)
           }
@@ -376,6 +377,7 @@ begin
       end
     end
   end
+  $stderr.print '.' if not options[:quiet]
   if NUM_THREADS == 1
     process.call(lines).each { |l| print l}
   else
