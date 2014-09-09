@@ -313,7 +313,14 @@ def parse_line line,header,options,samples,template,stats=nil
       # Output Turtle RDF
       VcfRdf::record(options[:id],rec,options[:tags])
     elsif options[:template]
-      template.result(binding)
+      # Ruby ERB template
+      begin
+        template.result(binding)
+      rescue Exception => e
+        $stderr.print e,": ",fields,"\n"
+        $stderr.print e.backtrace.inspect if options[:verbose]
+        raise 
+      end
     elsif options[:rewrite]
       # Default behaviour prints VCF line, but rewrite info
       eval(options[:rewrite]) 
