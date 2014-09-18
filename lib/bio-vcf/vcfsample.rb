@@ -77,7 +77,7 @@ module BioVcf
 
       def fetch_values name
         n = @format[name]
-        raise "Unknown sample field <#{name}>" if not n
+        raise NoMethodError.new("Unknown sample field <#{name}>") if not n
         @values[n]  # <-- save names with upcase!
       end
 
