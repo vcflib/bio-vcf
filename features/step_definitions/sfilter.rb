@@ -117,7 +117,7 @@ When(/^I evaluate empty '\.\/\.' with ignore missing$/) do
 end
 
 Then(/^I expect s\.what\? to throw an error$/) do
-  expect { @s.eval("s.what?",do_cache: false) }.to raise_error RuntimeError
+  expect { @s.eval("s.what?",do_cache: false) }.to raise_error NoMethodError
 end
 
 Then(/^I expect s\.what to throw an error$/) do
