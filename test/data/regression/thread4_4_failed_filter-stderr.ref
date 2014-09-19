@@ -1,1 +1,1 @@
-unexpected return
+Error: Missing 'parallel' module. Install with command 'gem install parallel' if you want multiple threads

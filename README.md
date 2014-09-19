@@ -4,7 +4,8 @@
 
 A new generation VCF parser. Bio-vcf is not only fast for genome-wide
 (WGS) data, it also comes with a really nice filtering, evaluation and
-rewrite language. Why would you use bio-vcf over other parsers?
+rewrite language and it can output any type of textual data, including
+RDF and JSON. Why would you use bio-vcf over other parsers?
 
 1. Bio-vcf is fast and scales on multi-core computers
 2. Bio-vcf has an expressive filtering and evaluation language
@@ -15,7 +16,7 @@ rewrite language. Why would you use bio-vcf over other parsers?
 7. Bio-vcf allows for genotype processing
 8. Bio-vcf has support for set analysis
 9. Bio-vcf has sane error handling
-10. Bio-vcf can output tabular data, HTML, LaTeX, RDF and (soon) JSON
+10. Bio-vcf can output tabular data, HTML, LaTeX, RDF, JSON and JSON-LD using templates
 
 Bio-vcf has better performance than other tools
 because of lazy parsing, multi-threading, and useful combinations of
@@ -231,6 +232,12 @@ To intall bio-vcf with gem:
 ```sh
 gem install bio-vcf
 bio-vcf -h
+```
+
+For multi-core also install the parallel gem
+
+```sh
+gem install parallel
 ```
 
 ## Command line interface (CLI)
@@ -628,7 +635,7 @@ To remove/select 3 samples:
 
 ## RDF output
 
-You can use --rdf for turtle RDF output, note the use of --id and
+You can use --rdf for turtle RDF output from simple one-liners, note the use of --id and
 --tags which includes the MAF record:
 
 ```ruby
@@ -640,6 +647,8 @@ bio-vcf --id evs --rdf --tags '{"db:evs" => true, "seq:freq" => rec.info.maf[0]/
   :evs_ch9_139266496_T db:evs true .
   :evs_ch9_139266496_T seq:freq 0.419801 .
 ```
+
+Also check out the more powerful templating system below.
 
 It is possible to filter too! Pick out the rare variants with
 
@@ -660,9 +669,85 @@ or without AF
 bio-vcf --id gonl --rdf --tags '{"db:gonl" => true, "seq:freq" => (rec.info.ac.to_f/rec.info.an).round(2) }' < gonl_germline_overlap_r4.vcf
 ```
 
-
-
 Also check out [bio-table](https://github.com/pjotrp/bioruby-table) to convert tabular data to RDF.
+
+## Templates
+
+To have more output options blastxmlparser can use an [ERB
+template](http://www.stuartellis.eu/articles/erb/) for every match. This is a
+very flexible option that can output textual formats such as JSON, YAML, HTML
+and RDF. Examples are provided in
+[./templates](https://github.com/pjotrp/bioruby-vcf/templates/). A JSON
+template could be
+
+```Javascript
+{
+  "seq:chr": "<%= rec.chrom %>" ,
+  "seq:pos": <%= rec.pos %> ,
+  "seq:ref": "<%= rec.ref %>" ,
+  "seq:alt": "<%= rec.alt[0] %>" ,
+  "seq:maf": <%= rec.info.maf[0] %> ,
+  "dp":      <%= rec.info.dp %> ,
+};
+```
+
+To get JSON, run with something like
+
+```sh
+  bio-vcf --template template/vcf2json.erb --filter 'r.info.maf[0]<0.01' < dbsnp.vcf
+```
+
+which renders
+
+```Javascript
+{
+  "seq:chr": "13" ,
+  "seq:pos": 35745475 ,
+  "seq:ref": "C" ,
+  "seq:alt": "T" ,
+  "seq:maf": 0.0151 ,
+  "dp":      86 ,
+};
+```
+
+Likewise for RDF output:
+
+```sh
+  bio-vcf --template template/vcf2rdf.erb --filter 'r.info.maf[0]<0.01' < dbsnp.vcf
+```
+
+renders the ERB template 
+
+```ruby
+<%
+  id = Turtle::mangle_identifier(['ch'+rec.chrom,rec.pos,rec.alt.join('')].join('_')) 
+%>
+:<%= id %>
+  :query_id    "<%= id %>",
+  seq:chr      "<%= rec.chrom %>" ,
+  seq:pos      <%= rec.pos %> ,
+  seq:ref      "<%= rec.ref %>" ,
+  seq:alt      "<%= rec.alt[0] %>" ,
+  seq:maf      <%= rec.info.maf[0] %> ,
+  seq:dp       <%= rec.info.dp %> ,
+  db:vcf       true .
+```
+
+into 
+
+```
+:ch13_33703698_A
+  :query_id    "ch13_33703698_A",
+  seq:chr      "13" ,
+  seq:pos      33703698 ,
+  seq:ref      "C" ,
+  seq:alt      "A" ,
+  seq:maf      0.1567 ,
+  seq:dp       92 ,
+  db:vcf       true .
+```
+
+Be creative! You can write templates for csv, HTML, XML, LaTeX, RDF, JSON, YAML, JSON-LD, etc. etc.!
 
 ## Statistics
 

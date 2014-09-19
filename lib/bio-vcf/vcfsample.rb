@@ -3,7 +3,7 @@ module BioVcf
 
     # Check whether a sample is empty (on the raw string value)
     def VcfSample::empty? s
-      s == './.' or s == '' or s == nil
+      s==nil or s == './.' or s == '' or s[0..2]=='./.'
     end
 
     class Sample
