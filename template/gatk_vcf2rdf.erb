@@ -1,0 +1,35 @@
+<%
+  id = Turtle::mangle_identifier(['ch'+rec.chrom,rec.pos,rec.alt.join('')].join('_')) 
+  sample_num = 0
+%>
+:<%= id %>
+  :query_id    "<%= id %>";
+  seq:chr      "<%= rec.chrom %>" ;
+  seq:pos      <%= rec.pos %> ;
+  seq:ref      "<%= rec.ref %>" ;
+  seq:alt      "<%= rec.alt[0] %>" ;
+  db:gatk      true .
+
+<% rec.each_sample do | s | %>
+  <% if not s.empty? 
+    sample_name = header.samples[sample_num]
+    sample_id = id + '_' + Turtle::mangle_identifier(sample_name)
+    sample_num += 1
+    if s.ad[0]+s.ad[1] != 0
+      alt_bias = (s.ad[1].to_f/(s.ad[0]+s.ad[1])).round(2) 
+    end
+  %>
+:<%= sample_id %>
+  :call_id     :<%= id %> ;
+  sample:name  "<%= sample_name  %>" ;
+  sample:gt    "<%= s.gt %>" ;
+  <% s.gti.each do | index | %>
+  sample:ad<%= index %>    <%= s.ad[index] %> ;
+  sample:gts<%= index %>   "<%= s.gts[index] %>" ;
+  <% end %>
+  sample:dp        <%= s.dp %> ;
+  sample:alt_bias  <%= alt_bias %> .
+  <% end %>
+<% end %>
+
+
