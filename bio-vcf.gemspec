@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "bio-vcf"
-  s.version = "0.7.3"
+  s.version = "0.8.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Pjotr Prins"]
-  s.date = "2014-09-01"
+  s.date = "2014-09-19"
   s.description = "Smart lazy multi-threaded parser for VCF format with useful filtering and output rewriting"
   s.email = "pjotr.public01@thebird.nl"
   s.executables = ["bio-vcf"]
@@ -50,6 +50,9 @@ Gem::Specification.new do |s|
     "lib/bio-vcf/vcfrecord.rb",
     "lib/bio-vcf/vcfsample.rb",
     "lib/bio-vcf/vcfstatistics.rb",
+    "template/gatk_vcf2rdf.erb",
+    "template/vcf2json.erb",
+    "template/vcf2rdf.erb",
     "test/data/input/dbsnp.vcf",
     "test/data/input/multisample.vcf",
     "test/data/input/somaticsniper.vcf",
