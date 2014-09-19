@@ -16,7 +16,7 @@ RDF and JSON. Why would you use bio-vcf over other parsers?
 7. Bio-vcf allows for genotype processing
 8. Bio-vcf has support for set analysis
 9. Bio-vcf has sane error handling
-10. Bio-vcf can output tabular data, HTML, LaTeX, RDF and (soon) JSON
+10. Bio-vcf can output tabular data, HTML, LaTeX, RDF, JSON and JSON-LD using templates
 
 Bio-vcf has better performance than other tools
 because of lazy parsing, multi-threading, and useful combinations of
@@ -232,6 +232,12 @@ To intall bio-vcf with gem:
 ```sh
 gem install bio-vcf
 bio-vcf -h
+```
+
+For multi-core also install the parallel gem
+
+```sh
+gem install parallel
 ```
 
 ## Command line interface (CLI)
