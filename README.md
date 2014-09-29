@@ -16,7 +16,7 @@ RDF and JSON. Why would you use bio-vcf over other parsers?
 7. Bio-vcf allows for genotype processing
 8. Bio-vcf has support for set analysis
 9. Bio-vcf has sane error handling
-10. Bio-vcf can output tabular data, HTML, LaTeX, RDF, JSON and JSON-LD using templates
+10. Bio-vcf can output tabular data, HTML, LaTeX, RDF, JSON and JSON-LD and even other VCFs using (erb) templates
 
 Bio-vcf has better performance than other tools
 because of lazy parsing, multi-threading, and useful combinations of
@@ -52,7 +52,7 @@ a 16 core machine takes
   sys     0m5.039s
 ```
 
-which shows pretty decent core utilisation (10x). We are running 
+which shows decent core utilisation (10x). We are running 
 gzip compressed VCF files of 30+ Gb with similar performance gains.
 
 Use zcat to
