@@ -218,7 +218,12 @@ module BioVcf
     end
 
     def [] name
-      @samples[name] ||= VcfGenotypeField.new(@fields[@sample_index[name]],@format,@header,@ref,@alt)
+      begin
+        @samples[name] ||= VcfGenotypeField.new(@fields[@sample_index[name]],@format,@header,@ref,@alt)
+      rescue TypeError
+        $stderr.print "Unknown field name <#{name}> in record, did you mean r.info.#{name}?\n"
+        raise 
+      end
     end
 
     def method_missing(m, *args, &block) 

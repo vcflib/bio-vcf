@@ -60,11 +60,19 @@ module BioVcf
     end
 
     def samples
-      @samples ||= column_names[9..-1]
+      @samples ||= if column_names.size > 8
+                     column_names[9..-1]
+                   else
+                     []
+                   end
     end
 
     def samples_index_array
       @all_samples_index ||= column_names[9..-1].fill{|i| i}
+    end
+
+    def num_samples
+      @num_samples ||= ( samples == nil ? 0 : samples.size )
     end
 
     def sample_index
