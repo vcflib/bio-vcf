@@ -58,6 +58,10 @@ opts = OptionParser.new do |o|
     options[:efilter_samples] = l
   end
 
+  o.on("--bed bedfile", String, "Filter on BED elements") do |bed|
+    options[:bed] = bed
+  end
+
   o.on('-e cmd', '--eval cmd',String, 'Evaluate command on each record') do |cmd|
     options[:eval] = cmd
   end
@@ -248,6 +252,12 @@ def parse_line line,header,options,samples,template,stats=nil
 
   # --------------------------
   # Filtering and set analysis
+  if bed
+    bedfilter = BedFilter.new(bed) if not bedfilter
+    return if not bedfilter.contains(rec)
+    $stderr.print 'he'
+  end
+
   return if filter and not rec.filter(filter,ignore_missing_data: ignore_missing,quiet: quiet)
   
   if sfilter
