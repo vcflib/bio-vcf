@@ -13,4 +13,3 @@ group :development do
   gem "regressiontest", "~> 0.0.3"
 end
 
-gem "binary_search"
