@@ -633,6 +633,12 @@ To remove/select 3 samples:
   bio-vcf --samples 0,1,3 < mytest.vcf
 ```
 
+Filter on a BED file and annotate the gene name in the resulting VCF
+
+```sh
+  bio-vcf -v --bed test/data/input/test.bed --rewrite 'rec.info["gene"]=bed[3]' < test/data/input/somaticsniper.vcf
+```
+
 ## RDF output
 
 You can use --rdf for turtle RDF output from simple one-liners, note the use of --id and

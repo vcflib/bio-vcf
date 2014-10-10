@@ -252,7 +252,10 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
 
   # --------------------------
   # Filtering and set analysis
-  return if bedfilter and not bedfilter.contains(rec)
+  if bedfilter
+    bed = bedfilter.contains(rec)
+    return if not bed
+  end
 
   return if filter and not rec.filter(filter,ignore_missing_data: ignore_missing,quiet: quiet)
   
