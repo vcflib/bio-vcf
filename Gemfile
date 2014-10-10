@@ -12,3 +12,5 @@ group :development do
   gem "jeweler", "~> 2.0.1" # , "~> 1.8.4", :git => "https://github.com/technicalpickles/jeweler.git"
   gem "regressiontest", "~> 0.0.3"
 end
+
+gem "binary_search"

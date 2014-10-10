@@ -231,7 +231,7 @@ def parse_header line, samples, options
 end
 
 # Parse a VCF line and return the result as a string
-def parse_line line,header,options,samples,template,stats=nil
+def parse_line line,header,options,bedfilter,samples,template,stats=nil
   fields = VcfLine.parse(line)
   rec = VcfRecord.new(fields,header)
   r = rec # alias
@@ -252,11 +252,7 @@ def parse_line line,header,options,samples,template,stats=nil
 
   # --------------------------
   # Filtering and set analysis
-  if options[:bed]
-    bedfilter = BedFilter.new(options[:bed]) if not bedfilter
-    return if not bedfilter.contains(rec)
-    $stderr.print 'he'
-  end
+  return if bedfilter and not bedfilter.contains(rec)
 
   return if filter and not rec.filter(filter,ignore_missing_data: ignore_missing,quiet: quiet)
   
@@ -353,11 +349,15 @@ chunks = []
 lines = []
 line_number=0
 
+if options[:bed]
+  bedfilter = BedFilter.new(options[:bed])
+end 
+
 begin
   process = lambda { | lines |
     res = []
     lines.each do | line |
-      res << parse_line(line,header,options,samples,template,stats)
+      res << parse_line(line,header,options,bedfilter,samples,template,stats)
     end
     res
   }
