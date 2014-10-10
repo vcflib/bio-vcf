@@ -1,1 +1,2 @@
 Error: Missing 'parallel' module. Install with command 'gem install parallel' if you want multiple threads
+.Unknown field name <t> in record, did you mean r.info.t?

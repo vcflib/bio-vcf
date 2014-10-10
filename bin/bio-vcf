@@ -252,8 +252,8 @@ def parse_line line,header,options,samples,template,stats=nil
 
   # --------------------------
   # Filtering and set analysis
-  if bed
-    bedfilter = BedFilter.new(bed) if not bedfilter
+  if options[:bed]
+    bedfilter = BedFilter.new(options[:bed]) if not bedfilter
     return if not bedfilter.contains(rec)
     $stderr.print 'he'
   end
