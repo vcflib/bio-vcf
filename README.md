@@ -697,7 +697,8 @@ template could be
 };
 ```
 
-To get JSON, run with something like
+To get JSON, run with something like (combining 
+with a filter)
 
 ```sh
   bio-vcf --template template/vcf2json.erb --filter 'r.info.maf[0]<0.01' < dbsnp.vcf
@@ -734,7 +735,7 @@ renders the ERB template
   seq:pos      <%= rec.pos %> ,
   seq:ref      "<%= rec.ref %>" ,
   seq:alt      "<%= rec.alt[0] %>" ,
-  seq:maf      <%= rec.info.maf[0] %> ,
+  seq:maf      <%= (rec.info.maf[0]*100).round %> ,
   seq:dp       <%= rec.info.dp %> ,
   db:vcf       true .
 ```
@@ -748,12 +749,12 @@ into
   seq:pos      33703698 ,
   seq:ref      "C" ,
   seq:alt      "A" ,
-  seq:maf      0.1567 ,
+  seq:maf      16 ,
   seq:dp       92 ,
   db:vcf       true .
 ```
 
-Be creative! You can write templates for csv, HTML, XML, LaTeX, RDF, JSON, YAML, JSON-LD, etc. etc.!
+Note the calculated field value for maf. Be creative! You can write templates for csv, HTML, XML, LaTeX, RDF, JSON, YAML, JSON-LD, etc. etc.!
 
 ## Statistics
 
