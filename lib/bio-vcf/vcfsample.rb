@@ -40,7 +40,7 @@ module BioVcf
       # Split GT into index values
       def gti
         v = fetch_values("GT")
-        v.split(/\//).map{ |v| (v=='.' ? nil : v.to_i) }
+        v.split(/[\/\|]/).map{ |v| (v=='.' ? nil : v.to_i) }
       end
 
       # Split GT into into a nucleode sequence
