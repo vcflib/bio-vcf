@@ -156,7 +156,7 @@ module BioVcf
     end
 
     def gti
-      gt.split('/').map { |g| g.to_i }
+      gt.split(/[\/\|]/).map { |g| g.to_i }
     end
 
     def gts?
