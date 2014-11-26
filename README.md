@@ -701,7 +701,7 @@ To get JSON, run with something like (combining
 with a filter)
 
 ```sh
-  bio-vcf --template template/vcf2json.erb --filter 'r.info.maf[0]<0.01' < dbsnp.vcf
+  bio-vcf --template template/vcf2json.erb --filter 'r.info.sao==1' < dbsnp.vcf
 ```
 
 which renders
@@ -720,7 +720,7 @@ which renders
 Likewise for RDF output:
 
 ```sh
-  bio-vcf --template template/vcf2rdf.erb --filter 'r.info.maf[0]<0.01' < dbsnp.vcf
+  bio-vcf --template template/vcf2rdf.erb --filter 'r.info.sao==1' < dbsnp.vcf
 ```
 
 renders the ERB template 
