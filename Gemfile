@@ -7,9 +7,9 @@ source "http://rubygems.org"
 # Include everything needed to run rake, tests, features, etc.
 group :development do
   # gem "minitest"
-  gem "rspec"
-  gem "cucumber"
-  gem "jeweler", "~> 2.0.1" # , "~> 1.8.4", :git => "https://github.com/technicalpickles/jeweler.git"
-  gem "regressiontest", "~> 0.0.3"
+  gem "rspec", ">= 2.14.0"
+  gem "cucumber", ">= 1.3.11"
+  gem "jeweler", ">= 2.0.1" # , "~> 1.8.4", :git => "https://github.com/technicalpickles/jeweler.git"
+  gem "regressiontest", ">= 0.0.3"
 end
 
