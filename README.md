@@ -679,7 +679,7 @@ Also check out [bio-table](https://github.com/pjotrp/bioruby-table) to convert t
 
 ## Templates
 
-To have more output options blastxmlparser can use an [ERB
+To have more output options bio-vcf can use an [ERB
 template](http://www.stuartellis.eu/articles/erb/) for every match. This is a
 very flexible option that can output textual formats such as JSON, YAML, HTML
 and RDF. Examples are provided in
