@@ -167,9 +167,11 @@ $stderr.print "Options: ",options,"\n" if !options[:quiet]
 
 if options[:template]
   include BioVcf::RDF
+  require 'bio-vcf/template'
   fn = options[:template]
   raise "No template #{fn}!" if not File.exist?(fn)
-  template = ERB.new(File.read(fn))
+  # template = ERB.new(File.read(fn))
+  template = Bio::Template.new(fn)
 end
 
 if options[:num_threads] != 1
@@ -326,7 +328,7 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
     elsif options[:template]
       # Ruby ERB template
       begin
-        template.result(binding)
+        template.body(binding)
       rescue Exception => e
         $stderr.print e,": ",fields,"\n"
         $stderr.print e.backtrace.inspect if options[:verbose]
@@ -372,6 +374,7 @@ begin
     end
   } # end output
 
+  print template.header(binding) if template
   # ---- Main loop
   STDIN.each_line do | line |
     line_number += 1
@@ -425,6 +428,7 @@ begin
       process.call(chunk)
     }
   end
+  print template.footer(binding) if template
   stats.print if stats
 
 rescue Exception => e
