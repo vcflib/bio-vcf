@@ -21,6 +21,7 @@ Jeweler::Tasks.new do |gem|
   gem.description = %Q{Smart lazy multi-threaded parser for VCF format with useful filtering and output rewriting}
   gem.email = "pjotr.public01@thebird.nl"
   gem.authors = ["Pjotr Prins"]
+  gem.required_ruby_version = '>=2.0.0'
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new

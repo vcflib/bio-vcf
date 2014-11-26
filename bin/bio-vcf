@@ -149,7 +149,9 @@ end
 
 opts.parse!(ARGV)
 
-$stderr.print "vcf #{version} (biogem Ruby #{RUBY_VERSION}) by Pjotr Prins 2014\n" if !options[:quiet]
+BIOVCF_VERSION=version
+BIOVCF_BANNER = "vcf #{version} (biogem Ruby #{RUBY_VERSION}) by Pjotr Prins 2014\n" if !options[:quiet]
+$stderr.print BIOVCF_BANNER
 
 if options[:show_help] 
   print opts 
