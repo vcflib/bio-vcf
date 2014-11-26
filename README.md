@@ -756,6 +756,66 @@ into
 
 Note the calculated field value for maf. Be creative! You can write templates for csv, HTML, XML, LaTeX, RDF, JSON, YAML, JSON-LD, etc. etc.!
 
+### Metadata
+
+Templates can also print data as a header of the JSON/YAML/RDF output. For this
+use the '=' prefix with HEADER, BODY, FOOTER keywords in the template. A small example
+can be
+
+```Javascript
+=HEADER
+<% require 'json' %>
+[
+  { "HEADER": {
+    "options":  <%= options.to_h.to_json %>,
+    "files":    <%= ARGV %>,
+    "version":  "<%= BIOVCF_VERSION %>"
+  },
+
+=BODY
+
+{
+  "seq:chr": "<%= rec.chrom %>" ,
+  "seq:pos": <%= rec.pos %> ,
+  "seq:ref": "<%= rec.ref %>" ,
+  "seq:alt": "<%= rec.alt[0] %>" ,
+  "dp":      <%= rec.info.dp %> ,
+},
+=FOOTER
+]
+```
+
+may generate something like
+
+```Javascript
+[
+  { "HEADER": {
+    "options":  {"show_help":false,"source":"https://github.com/CuppenResearch/bioruby-vcf","version":"0.8.1-pre3 (Pjotr Prins)","date":"2014-11-26 12:51:36 +0000","thread_lines":40000,"template":"template/vcf2json.erb","skip_header":true},
+    "files":    [],
+    "version":  "0.8.1-pre3"
+  },
+{
+  "seq:chr": "1" ,
+  "seq:pos": 883516 ,
+  "seq:ref": "G" ,
+  "seq:alt": "A" ,
+  "dp":       ,
+},
+{
+  "seq:chr": "1" ,
+  "seq:pos": 891344 ,
+  "seq:ref": "G" ,
+  "seq:alt": "A" ,
+  "dp":       ,
+},
+]
+```
+
+Note that the template is not smart enough to remove the final comma
+from the last BODY element. To make it valid JSON that needs to be
+removed. A future version may add a parameter to the BODY element or a
+global rewrite function for this purpose. YAML and RDF have no such issue.
+
 ## Statistics
 
 Simple statistics are available for REF>ALT changes:
