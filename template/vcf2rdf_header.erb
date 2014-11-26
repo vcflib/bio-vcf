@@ -1,0 +1,24 @@
+=HEADER
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix hgnc: <http://identifiers.org/hgnc.symbol/> .
+@prefix doi: <http://dx.doi.org/> .
+@prefix seq: <http://biobeat.org/rdf/seq#> .
+@prefix db: <http://biobeat.org/rdf/db#> .
+@prefix : <http://biobeat.org/rdf/dbsnp#> .
+
+=BODY
+<%
+  id = Turtle::mangle_identifier(['ch'+rec.chrom,rec.pos,rec.alt.join('')].join('_')) 
+%>
+:<%= id %>
+  :query_id    "<%= id %>";
+  seq:chr      "<%= rec.chrom %>" ;
+  seq:pos      <%= rec.pos %> ;
+  seq:ref      "<%= rec.ref %>" ;
+  seq:alt      "<%= rec.alt[0] %>" ;
+  seq:dp       <%= rec.info.dp %> ;
+  db:vcf       true .
+
+=FOOTER
