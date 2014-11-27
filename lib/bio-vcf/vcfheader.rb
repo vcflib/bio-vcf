@@ -13,6 +13,10 @@ module BioVcf
       end
       nil
     end
+
+    def VcfHeaderParser.parse_field(line)
+      raise 'Illegal field: '+line
+    end
   end
 
   class VcfHeader
@@ -103,7 +107,8 @@ module BioVcf
         value = line.scan(/###{name}=<(.*)>/)
         if value[0]
           str = value[0][0]
-          @@ split
+          p str
+          v = VcfHeaderParser.parse_field(str)
           id = v['ID']
           res[id] = v
         end
@@ -115,7 +120,7 @@ module BioVcf
       find_fields('FORMAT')
     end
 
-    def format 
+    def info
       find_fields('INFO')
     end
     
