@@ -17,10 +17,11 @@ module BioVcf
 
   class VcfHeader
 
-    attr_reader :lines
+    attr_reader :lines, :field
 
     def initialize
       @lines = []
+      @field = {}
     end
 
     def add line
@@ -82,13 +83,24 @@ module BioVcf
       @sample_index = index
       index
     end
+
+    def find_field name
+      return field[name] if field[name]
+      @lines.each do | line |
+        value = line.scan(/###{name}=(.*)/)
+        if value[0]
+          v = value[0][0]
+          field[name] = v
+          return v
+        end
+      end
+      nil
+    end
     
     def method_missing(m, *args, &block)
       name = m.to_s
-      lines.each do | line |
-        value = line.scan(/###{name}=(.*)/)
-        return value[0][0] if value[0]
-      end
+      value = find_field(name)
+      return value if value
       raise "Unknown VCF header query '#{name}'"
     end
 
