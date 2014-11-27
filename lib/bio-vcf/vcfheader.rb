@@ -24,7 +24,7 @@ module BioVcf
     end
 
     def add line
-      @lines << line.strip
+      @lines = line.split(/\n/)
     end
 
     # Add a key value list to the header
@@ -82,6 +82,17 @@ module BioVcf
       @sample_index = index
       index
     end
+    
+    def method_missing(m, *args, &block)
+      name = m.to_s
+      lines.each do | line |
+        value = line.scan(/###{name}=(.*)/)
+        return value[0][0] if value[0]
+      end
+      raise "Unknown VCF header query '#{name}'"
+    end
+
+
   end
 
 end
