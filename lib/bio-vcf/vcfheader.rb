@@ -96,6 +96,28 @@ module BioVcf
       end
       nil
     end
+
+    def find_fields name
+      res = {}
+      @lines.each do | line |
+        value = line.scan(/###{name}=<(.*)>/)
+        if value[0]
+          str = value[0][0]
+          @@ split
+          id = v['ID']
+          res[id] = v
+        end
+      end
+      res
+    end
+
+    def format 
+      find_fields('FORMAT')
+    end
+
+    def format 
+      find_fields('INFO')
+    end
     
     def method_missing(m, *args, &block)
       name = m.to_s
