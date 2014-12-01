@@ -11,20 +11,18 @@
   identifier  = [a-zA-Z][a-zA-Z_]+; 
   string      = ["][^"]*["];
   boolean     = '.';
-  id_kw       = 'ID';
+  id_kw       = 'ID'|'Number';
 
   action call_pairs { fcall pairs ; }
 
-  # keyword id pair parser
-  # pairs := ( id_kw ); 
   pairs := |*
-    id_kw => {
+    'ID=' identifier => {
                emit(:identifier, data, token_array, ts, te) 
              };
   *|;
 
   # parser
-  main := '<'  @ call_pairs ;
+  main := '<' @call_pairs ;
 }%%
 =end
 
