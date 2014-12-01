@@ -13,16 +13,19 @@
   boolean     = '.';
   id_kw       = 'ID'|'Number';
 
-  action call_pairs { fcall pairs ; }
+  action call_key { fcall key ; }
+  action call_value {}
 
-  pairs := |*
-    'ID=' identifier => {
+  n := ( identifier );
+
+  key := |*
+    'ID'  => {
                emit(:identifier, data, token_array, ts, te) 
              };
   *|;
 
   # parser
-  main := '<' @call_pairs ;
+  main := ( ('<'|',') @call_key '=' @call_value )+ ;
 }%%
 =end
 
