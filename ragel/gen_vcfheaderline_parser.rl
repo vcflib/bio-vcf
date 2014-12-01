@@ -19,7 +19,7 @@
   n := ( identifier );
 
   key := |*
-    'ID'  => {
+    'ID'|'Number'  => {
                emit(:identifier, data, token_array, ts, te) 
              };
   *|;
