@@ -10,11 +10,11 @@
   integer     = ('+'|'-')?[0-9]+             >mark %{ emit("integer",data,ts,p)  };
   float       = ('+'|'-')?[0-9]+'.'[0-9]+    >mark %{ emit("float",data,ts,p) };
   assignment  = '=';
-  identifier  = [a-zA-Z][a-zA-Z_]+           >mark %{ emit("identifier",data,ts,p) }; 
-  string      = ["][^"]*["]                  >mark %{ emit("string",data,ts,p) };
-  boolean     = '.';
-  key_word    = ( ('ID'|'Number'|'Type'|'Description') %{ print "*k:" } );
-  value       = ( (integer|float|boolean|identifier|string) %{ print "*v:" } );
+  identifier  = ([a-zA-Z][a-zA-Z_]+)         >mark %{ emit("identifier",data,ts,p) }; 
+  string      = (["][^"]*["])                >mark %{ emit("string",data,ts,p) };
+  boolean     = '.'                          >mark %{ emit("bool",data,ts,p) };
+  key_word    = ( ('ID'|'Number'|'Type'|'Description') >mark %{ print "*k:"; emit("key_word",data,ts,p) } );
+  value       = ( (integer|float|boolean|identifier|string) >mark %{ print "*v:" ; emit("value",data,ts,p) } );
 
   key_value = ( key_word '=' value ) ;
   
@@ -28,6 +28,7 @@
 
 def emit type, data, ts, p
   # Print the type and text of the last read token
+  # p ts,p
   puts "#{type}: #{data[ts...p].pack('c*')}"
 end
       
