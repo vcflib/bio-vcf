@@ -11,21 +11,12 @@
   identifier  = [a-zA-Z][a-zA-Z_]+; 
   string      = ["][^"]*["];
   boolean     = '.';
-  id_kw       = 'ID'|'Number';
+  key_word    = ( ('ID'|'Number'|'Type'|'Description') %{ puts "**keyword" } );
+  value       = ( (integer|float|boolean|identifier|string) %{ puts "***value" } );
 
-  action call_key { fcall key ; }
-  action call_value {}
-
-  n := ( identifier );
-
-  key := |*
-    'ID'|'Number'  => {
-               emit(:identifier, data, token_array, ts, te) 
-             };
-  *|;
-
-  # parser
-  main := ( ('<'|',') @call_key '=' @call_value )+ ;
+  key_value = ( key_word '=' value ) ;
+  
+  main := ( ('<'|',') key_value )*;
 }%%
 =end
 
