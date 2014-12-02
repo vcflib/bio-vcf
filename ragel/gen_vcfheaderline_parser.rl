@@ -5,16 +5,34 @@
 
   machine simple_lexer;
   
-
   action mark { ts=p }
+  action Start {
+    ts = p
+  }
+  action Stop {
+    quoted_text = data[ts...p].pack('c*')
+    # do something with the quoted text!
+    emit('string',data,ts,p)
+  }
+
+  squote = "'";
+  dquote = '"';
+  not_squote_or_escape = [^'\\];
+  not_dquote_or_escape = [^"\\];
+  escaped_something = /\\./;
+  ss = space* squote ( not_squote_or_escape | escaped_something )* >Start %Stop squote;
+  dd = space* dquote ( not_dquote_or_escape | escaped_something )* >Start %Stop dquote;
+
+  # main := (ss | dd)*;
+
   integer     = ('+'|'-')?[0-9]+             >mark %{ emit("integer",data,ts,p)  };
   float       = ('+'|'-')?[0-9]+'.'[0-9]+    >mark %{ emit("float",data,ts,p) };
   assignment  = '=';
   identifier  = ([a-zA-Z][a-zA-Z_]+)         >mark %{ emit("identifier",data,ts,p) }; 
-  string      = (["][^"]*["])                >mark %{ emit("string",data,ts,p) };
+  str         = (ss|dd)* ;       
   boolean     = '.'                          >mark %{ emit("bool",data,ts,p) };
   key_word    = ( ('ID'|'Number'|'Type'|'Description') >mark %{ print "*k:"; emit("key_word",data,ts,p) } );
-  value       = ( (integer|float|boolean|identifier|string) >mark %{ print "*v:" ; emit("value",data,ts,p) } );
+  value       = ( (integer|float|boolean|identifier|str) >mark %{ print "*v:" ; emit("value",data,ts,p) } );
 
   key_value = ( key_word '=' value ) ;
   
