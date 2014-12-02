@@ -5,14 +5,16 @@
 
   machine simple_lexer;
   
-  integer     = ('+'|'-')?[0-9]+;
-  float       = ('+'|'-')?[0-9]+'.'[0-9]+;
+
+  action mark { ts=p }
+  integer     = ('+'|'-')?[0-9]+             >mark %{ emit("integer",data,ts,p)  };
+  float       = ('+'|'-')?[0-9]+'.'[0-9]+    >mark %{ emit("float",data,ts,p) };
   assignment  = '=';
-  identifier  = [a-zA-Z][a-zA-Z_]+; 
-  string      = ["][^"]*["];
+  identifier  = [a-zA-Z][a-zA-Z_]+           >mark %{ emit("identifier",data,ts,p) }; 
+  string      = ["][^"]*["]                  >mark %{ emit("string",data,ts,p) };
   boolean     = '.';
-  key_word    = ( ('ID'|'Number'|'Type'|'Description') %{ puts "**keyword" } );
-  value       = ( (integer|float|boolean|identifier|string) %{ puts "***value" } );
+  key_word    = ( ('ID'|'Number'|'Type'|'Description') %{ print "*k:" } );
+  value       = ( (integer|float|boolean|identifier|string) %{ print "*v:" } );
 
   key_value = ( key_word '=' value ) ;
   
@@ -23,7 +25,13 @@
 %% write data;
 # %% this just fixes our syntax highlighting...
 
-def emit(token_name, data, target_array, ts, te)
+
+def emit type, data, ts, p
+  # Print the type and text of the last read token
+  puts "#{type}: #{data[ts...p].pack('c*')}"
+end
+      
+def xemit(token_name, data, target_array, ts, te)
   target_array << {:name => token_name.to_sym, :value => data.pack("c*")[ts...te] }
 end
 
@@ -60,34 +68,4 @@ lines.strip.split("\n").each { |s| run_lexer(s.sub(/^##(FORMAT|INFO)=/,'')) }
 
 cmd=ARGV.shift
 run_lexer(cmd)
-
-  # key := (
-    
-    # integer => { 
-    #   emit(:integer_literal, data, token_array, ts, te) 
-    # };
-    
-    # float => { 
-    #   emit(:float_literal, data, token_array, ts, te) 
-    # };
-    
-    # assignment => { 
-    #   emit(:assignment_operator, data, token_array, ts, te) 
-    # };
-    
-    # boolean => { 
-    #   emit(:boolean, data, token_array, ts, te) 
-    # };
-    
-    # identifier => { 
-    #   emit(:identifier, data, token_array, ts, te) 
-    # };
-
-    # string => { 
-    #   emit(:string, data, token_array, ts, te) 
-    # };
-    
-    # space|',';
-    
-  # );
 
