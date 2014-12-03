@@ -57,6 +57,7 @@ module VcfHeader
 # %% this just fixes our syntax highlighting...
 
 def self.run_lexer(buf, options = {})
+  do_debug = (options[:debug] == true)
   data = buf.unpack("c*") if(buf.is_a?(String))
   eof = data.length
   values = []
@@ -65,7 +66,7 @@ def self.run_lexer(buf, options = {})
   emit = lambda { |type, data, ts, p|
     # Print the type and text of the last read token
     # p ts,p
-    puts "#{type}: #{data[ts...p].pack('c*')}" if options[:debug]==true
+    puts "#{type}: #{data[ts...p].pack('c*')}" if do_debug
     values << [type,data[ts...p].pack('c*')]
   }
 
@@ -88,7 +89,8 @@ def self.run_lexer(buf, options = {})
     print "ERROR: "
     p values
   end
-  p res
+  p res if do_debug
+  res
 end
 
   end
@@ -109,7 +111,7 @@ LINES
 
 lines.strip.split("\n").each { |s|
   print s,"\n"
-  VcfHeader::RagelKeyValues.run_lexer(s, debug: false)
+  p VcfHeader::RagelKeyValues.run_lexer(s, debug: false)
 }
 
 end
