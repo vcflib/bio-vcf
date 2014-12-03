@@ -3,6 +3,11 @@ rvm:
 #  - 1.9.3 <- No longer working
   - 2.0.0
   - 2.1.0
+
+branches:
+  only: 
+    -master
+
 #  - jruby-head
 #  - jruby-19mode # JRuby in 1.9 mode
 #  - 1.8.7
