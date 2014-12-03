@@ -33,7 +33,7 @@
 
   key_value = ( key_word '=' value ) ;
   
-  main := ('##FORMAT'|'##INFO') '=' (('<'|',') key_value )+;
+  main := ('##FORMAT'|'##INFO') '=' (('<'|',') key_value )*;
 }%%
 =end
 
