@@ -28,7 +28,7 @@
   integer     = ('+'|'-')?[0-9]+             >mark %{ emit("integer",data,ts,p)  };
   float       = ('+'|'-')?[0-9]+'.'[0-9]+    >mark %{ emit("float",data,ts,p) };
   assignment  = '=';
-  identifier  = ([a-zA-Z][a-zA-Z_]+)         >mark %{ emit("identifier",data,ts,p) }; 
+  identifier  = ([a-zA-Z][a-zA-Z_0-9]+)         >mark %{ emit("identifier",data,ts,p) }; 
   str         = (ss|dd)* ;       
   boolean     = '.'                          >mark %{ emit("bool",data,ts,p) };
   key_word    = ( ('ID'|'Number'|'Type'|'Description') >mark %{ print "*k:"; emit("key_word",data,ts,p) } );
