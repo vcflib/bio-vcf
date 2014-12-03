@@ -1,4 +1,12 @@
-# Parser for VCF-header info and format fields
+# Ragel lexer for VCF-header
+#
+# This is a partial lexer for the VCF file format. Bio-vcf uses that
+# to generate meta information in (for example) JSON format. The
+# advantage of using a full state engine is that it allows for easy
+# parsing of key-value pairs with syntax checking and, for example,
+# escaped quotes in quoted string values. Currently we validate ID and
+# Number fields only. If should not be hard to continue adding syntax
+# checking features.
 
 module VcfHeader
 
