@@ -32,14 +32,15 @@ module VcfHeader
   identifier  = (alpha alnum+); 
   str         = (ss|dd)* ;       
   boolean     = '.';
-  key_word    = ( ('Number'|'Type'|'Description') >mark %{ emit.call(:key_word,data,ts,p) } );
-  any_value   = ( (integer|float|boolean|identifier|str) >mark %{ emit.call(:value,data,ts,p) } );
+  key_word    = ( ('Type'|'Description'|'Source'|'Version'|identifier - ('ID'|'Number')) >mark %{ emit.call(:key_word,data,ts,p) } );
+  any_value   = ( str|( integer|float|boolean|identifier >mark %{ emit.call(:value,data,ts,p) } ));
   id_value   = ( identifier >mark %{ emit.call(:value,data,ts,p) } );
   
-  number_value = ( ( integer|boolean|'A' ) >mark %{ emit.call(:value,data,ts,p) } );
+  number_value = ( ( integer|boolean|'A'|'R'|'G' ) >mark %{ emit.call(:value,data,ts,p) } );
 
   id_kv     = ( ( ('ID') %kw '=' id_value ) @!{ error_code="ID"} );
-  key_value = ( id_kv | (key_word '=' any_value) ) >mark @!{ error_code="key-value" };
+  number_kv = ( ( ('Number') %kw '=' number_value ) @!{ error_code="Number"} );
+  key_value = ( id_kv | number_kv | (key_word '=' any_value) ) >mark @!{ error_code="key-value" };
   
   main := ( '##' ('FILTER'|'FORMAT'|'INFO'|'ALT') '=') (('<'|',') key_value )* ;
 }%%
@@ -90,10 +91,10 @@ if __FILE__ == $0
 
 lines = <<LINES
 ##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
-##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Total read depth">
+##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Total read depth",Extra="Yes?">
 ##FORMAT=<ID=DP4,Number=4,Type=Integer,Description="# high-quality ref-forward bases, ref-reverse, alt-forward and alt-reverse bases">
 ##INFO=<ID=PM,Number=0,Type=Flag,Description="Variant is Precious(Clinical,Pubmed Cited)">
-##INFO=<ID=VP,Number=1,Type=String,Description="Variation Property.  Documentation is at ftp://ftp.ncbi.nlm.nih.gov/snp/specs/dbSNP_BitField_latest.pdf">
+##INFO=<ID=VP,Number=1,Type=String,Description="Variation Property.  Documentation is at ftp://ftp.ncbi.nlm.nih.gov/snp/specs/dbSNP_BitField_latest.pdf",Source="dbsnp",Version="138">
 ##INFO=<ID=GENEINFO,Number=1,Type=String,Description="Pairs each of gene symbol:gene id.  The gene symbol and id are delimited by a colon (:), and each pair is delimited by a vertical bar (|)">
 ##INFO=<ID=CLNHGVS,Number=.,Type=String,Description="Variant names from HGVS. The order of these variants corresponds to the order of the info in the other clinical  INFO tags.">
 ##INFO=<ID=CLNHGVS1,Number=.,Type=String,Description="Variant names from \\"HGVS\\". The order of these 'variants' corresponds to the order of the info in the other clinical  INFO tags.">
