@@ -56,10 +56,13 @@ def self.run_lexer(data, options = {})
   %% write init;
   %% write exec;
 
-  values.each do | v |
-    p v
+  res = {}
+  values.each_slice(2) do | a,b |
+    # p '*',a,b
+    res[a[1]] = b[1]
     # p h[:value] if h[:name]==:identifier or h[:name]==:value or h[:name]==:string
   end
+  p res
 end
 
   end
@@ -79,7 +82,7 @@ lines = <<LINES
 LINES
 
 lines.strip.split("\n").each { |s|
-  p s
+  print s,"\n"
   VcfHeader::RagelKeyValues.run_lexer(s, debug: false)
 }
 
