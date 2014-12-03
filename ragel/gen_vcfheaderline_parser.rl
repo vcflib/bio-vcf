@@ -67,13 +67,18 @@ def self.run_lexer(buf, options = {})
   %% write exec;
 
   raise "ERROR: "+error_code+" in "+buf if error_code
-  
-  res = {}
-  # p values
-  values.each_slice(2) do | a,b |
-    # p '*',a,b
-    res[a[1]] = b[1]
-    # p h[:value] if h[:name]==:identifier or h[:name]==:value or h[:name]==:string
+
+  begin
+    res = {}
+    # p values
+    values.each_slice(2) do | a,b |
+      # p '*',a,b
+      res[a[1]] = b[1]
+      # p h[:value] if h[:name]==:identifier or h[:name]==:value or h[:name]==:string
+    end
+  rescue
+    print "ERROR: "
+    p values
   end
   p res
 end
