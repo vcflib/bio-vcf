@@ -1,5 +1,9 @@
 # Parser for VCF-header info and format fields
 
+module VcfHeader
+
+  module RagelKeyValues
+  
 =begin
 %%{
 
@@ -41,7 +45,7 @@
 # %% this just fixes our syntax highlighting...
 
      
-def run_lexer(data)
+def self.run_lexer(data)
   p data
   data = data.unpack("c*") if(data.is_a?(String))
   eof = data.length
@@ -63,6 +67,9 @@ def run_lexer(data)
   end
 end
 
+  end
+end
+
 if __FILE__ == $0
 
 lines = <<LINES
@@ -76,9 +83,6 @@ lines = <<LINES
 ##INFO=<ID=CLNHGVS1,Number=.,Type=String,Description="Variant names from \\"HGVS\\". The order of these 'variants' corresponds to the order of the info in the other clinical  INFO tags.">
 LINES
 
-lines.strip.split("\n").each { |s| run_lexer(s) }
-
-cmd=ARGV.shift
-run_lexer(cmd)
+lines.strip.split("\n").each { |s| VcfHeader::RagelKeyValues.run_lexer(s) }
 
 end
