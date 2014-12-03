@@ -6,9 +6,6 @@
   machine simple_lexer;
   
   action mark { ts=p }
-  action Start {
-    ts = p
-  }
   action Stop {
     quoted_text = data[ts...p].pack('c*')
     # do something with the quoted text!
@@ -20,8 +17,8 @@
   not_squote_or_escape = [^'\\];
   not_dquote_or_escape = [^"\\];
   escaped_something = /\\./;
-  ss = space* squote ( not_squote_or_escape | escaped_something )* >Start %Stop squote;
-  dd = space* dquote ( not_dquote_or_escape | escaped_something )* >Start %Stop dquote;
+  ss = space* squote ( not_squote_or_escape | escaped_something )* >mark %Stop squote;
+  dd = space* dquote ( not_dquote_or_escape | escaped_something )* >mark %Stop dquote;
 
   # main := (ss | dd)*;
 
@@ -70,8 +67,6 @@ def run_lexer(data)
     # p h[:value] if h[:name]==:identifier or h[:name]==:value or h[:name]==:string
   end
 end
-
-# run_lexer("value = -2.00")
 
 lines = <<LINES
 ##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
