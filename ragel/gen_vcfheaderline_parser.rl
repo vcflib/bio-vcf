@@ -10,7 +10,7 @@ module VcfHeader
   machine simple_lexer;
   
   action mark { ts=p }
-  action Stop {
+  action endquoted {
     quoted_text = data[ts...p].pack('c*')
     # do something with the quoted text!
     emit.call('string',data,ts,p)
@@ -21,8 +21,8 @@ module VcfHeader
   not_squote_or_escape = [^'\\];
   not_dquote_or_escape = [^"\\];
   escaped_something = /\\./;
-  ss = space* squote ( not_squote_or_escape | escaped_something )* >mark %Stop squote;
-  dd = space* dquote ( not_dquote_or_escape | escaped_something )* >mark %Stop dquote;
+  ss = space* squote ( not_squote_or_escape | escaped_something )* >mark %endquoted squote;
+  dd = space* dquote ( not_dquote_or_escape | escaped_something )* >mark %endquoted dquote;
 
   # main := (ss | dd)*;
 
@@ -44,7 +44,6 @@ module VcfHeader
 %% write data;
 # %% this just fixes our syntax highlighting...
 
-     
 def self.run_lexer(data)
   p data
   data = data.unpack("c*") if(data.is_a?(String))
