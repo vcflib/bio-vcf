@@ -76,7 +76,7 @@ lines = <<LINES
 ##INFO=<ID=VP,Number=1,Type=String,Description="Variation Property.  Documentation is at ftp://ftp.ncbi.nlm.nih.gov/snp/specs/dbSNP_BitField_latest.pdf">
 ##INFO=<ID=GENEINFO,Number=1,Type=String,Description="Pairs each of gene symbol:gene id.  The gene symbol and id are delimited by a colon (:), and each pair is delimited by a vertical bar (|)">
 ##INFO=<ID=CLNHGVS,Number=.,Type=String,Description="Variant names from HGVS. The order of these variants corresponds to the order of the info in the other clinical  INFO tags.">
-##INFO=<ID=CLNHGVS1,Number=.,Type=String,Description="Variant names from \"HGVS\". The order of these 'variants' corresponds to the order of the info in the other clinical  INFO tags.">
+##INFO=<ID=CLNHGVS1,Number=.,Type=String,Description="Variant names from \\"HGVS\\". The order of these 'variants' corresponds to the order of the info in the other clinical  INFO tags.">
 LINES
 
 lines.strip.split("\n").each { |s| run_lexer(s) }
