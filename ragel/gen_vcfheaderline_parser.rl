@@ -24,8 +24,6 @@ module VcfHeader
   ss = space* squote ( not_squote_or_escape | escaped_something )* >mark %endquoted squote;
   dd = space* dquote ( not_dquote_or_escape | escaped_something )* >mark %endquoted dquote;
 
-  # main := (ss | dd)*;
-
   integer     = ('+'|'-')?[0-9]+             >mark %{ emit.call(:integer,data,ts,p)  };
   float       = ('+'|'-')?[0-9]+'.'[0-9]+    >mark %{ emit.call(:float,data,ts,p) };
   assignment  = '=';
@@ -47,20 +45,21 @@ module VcfHeader
 def self.run_lexer(data, options = {})
   data = data.unpack("c*") if(data.is_a?(String))
   eof = data.length
-  token_array = []
+  values = []
   stack = []
 
   emit = lambda { |type, data, ts, p|
     # Print the type and text of the last read token
     # p ts,p
     puts "#{type}: #{data[ts...p].pack('c*')}" if options[:debug]==true
+    values << [type,data[ts...p].pack('c*')]
   }
 
   %% write init;
   %% write exec;
 
-  token_array.each do | h |
-    p h
+  values.each do | v |
+    p v
     # p h[:value] if h[:name]==:identifier or h[:name]==:value or h[:name]==:string
   end
 end
@@ -83,7 +82,7 @@ LINES
 
 lines.strip.split("\n").each { |s|
   p s
-  VcfHeader::RagelKeyValues.run_lexer(s, debug: true)
+  VcfHeader::RagelKeyValues.run_lexer(s, debug: false)
 }
 
 end
