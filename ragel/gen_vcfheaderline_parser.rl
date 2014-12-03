@@ -13,7 +13,7 @@ module VcfHeader
   action endquoted {
     quoted_text = data[ts...p].pack('c*')
     # do something with the quoted text!
-    emit.call('string',data,ts,p)
+    emit.call(:string,data,ts,p)
   }
 
   squote = "'";
@@ -26,10 +26,10 @@ module VcfHeader
 
   # main := (ss | dd)*;
 
-  integer     = ('+'|'-')?[0-9]+             >mark %{ emit.call("integer",data,ts,p)  };
-  float       = ('+'|'-')?[0-9]+'.'[0-9]+    >mark %{ emit.call("float",data,ts,p) };
+  integer     = ('+'|'-')?[0-9]+             >mark %{ emit.call(:integer,data,ts,p)  };
+  float       = ('+'|'-')?[0-9]+'.'[0-9]+    >mark %{ emit.call(:float,data,ts,p) };
   assignment  = '=';
-  identifier  = ([a-zA-Z][a-zA-Z_0-9]+)         >mark %{ emit.call("identifier",data,ts,p) }; 
+  identifier  = ([a-zA-Z][a-zA-Z_0-9]+)         >mark %{ emit.call(:identifier,data,ts,p) }; 
   str         = (ss|dd)* ;       
   boolean     = '.'                          >mark %{ emit.call("bool",data,ts,p) };
   key_word    = ( ('ID'|'Number'|'Type'|'Description') >mark %{ print "*k:"; emit.call("key_word",data,ts,p) } );
