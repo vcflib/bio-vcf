@@ -33,7 +33,7 @@ module VcfHeader
 
   key_value = ( ('ID=' identifier) | (key_word '=' value) ) @!{ error_code="key-value" };
   
-  main := ( '##' ('FORMAT'|'INFO'|'ALT') '=') (('<'|',') key_value )* ;
+  main := ( '##' ('FILTER'|'FORMAT'|'INFO'|'ALT') '=') (('<'|',') key_value )* ;
 }%%
 =end
 
