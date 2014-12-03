@@ -11,8 +11,6 @@ module VcfHeader
   
   action mark { ts=p }
   action endquoted {
-    quoted_text = data[ts...p].pack('c*')
-    # do something with the quoted text!
     emit.call(:value,data,ts,p)
   }
 
@@ -24,10 +22,10 @@ module VcfHeader
   ss = space* squote ( not_squote_or_escape | escaped_something )* >mark %endquoted squote;
   dd = space* dquote ( not_dquote_or_escape | escaped_something )* >mark %endquoted dquote;
 
-  integer     = ('+'|'-')?[0-9]+;
-  float       = ('+'|'-')?[0-9]+'.'[0-9]+;
+  integer     = ('+'|'-')?digit+;
+  float       = ('+'|'-')?digit+'.'digit+;
   assignment  = '=';
-  identifier  = ([a-zA-Z][a-zA-Z_0-9]+); 
+  identifier  = (alpha alnum+); 
   str         = (ss|dd)* ;       
   boolean     = '.';
   key_word    = ( ('ID'|'Number'|'Type'|'Description') >mark %{ emit.call(:key_word,data,ts,p) } );
