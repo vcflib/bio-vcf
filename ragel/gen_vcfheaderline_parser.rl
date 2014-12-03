@@ -36,7 +36,7 @@
 
   key_value = ( key_word '=' value ) ;
   
-  main := ( ('<'|',') key_value )*;
+  main := ('##FORMAT'|'##INFO') '=' (('<'|',') key_value )+;
 }%%
 =end
 
@@ -84,7 +84,7 @@ lines = <<LINES
 ##INFO=<ID=CLNHGVS1,Number=.,Type=String,Description="Variant names from \"HGVS\". The order of these 'variants' corresponds to the order of the info in the other clinical  INFO tags.">
 LINES
 
-lines.strip.split("\n").each { |s| run_lexer(s.sub(/^##(FORMAT|INFO)=/,'')) }
+lines.strip.split("\n").each { |s| run_lexer(s) }
 
 cmd=ARGV.shift
 run_lexer(cmd)
