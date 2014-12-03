@@ -28,10 +28,10 @@ module VcfHeader
   identifier  = (alpha alnum+); 
   str         = (ss|dd)* ;       
   boolean     = '.';
-  key_word    = ( ('ID'|'Number'|'Type'|'Description') >mark %{ emit.call(:key_word,data,ts,p) } );
+  key_word    = ( ('Number'|'Type'|'Description') >mark %{ emit.call(:key_word,data,ts,p) } );
   value       = ( (integer|float|boolean|identifier|str) >mark %{ emit.call(:value,data,ts,p) } );
 
-  key_value = ( key_word '=' value ) ;
+  key_value = ( 'ID' = identifier | key_word '=' value ) ;
   
   main := ('##FORMAT'|'##INFO') '=' (('<'|',') key_value )*;
 }%%
