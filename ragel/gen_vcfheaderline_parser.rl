@@ -31,9 +31,9 @@ module VcfHeader
   assignment  = '=';
   identifier  = ([a-zA-Z][a-zA-Z_0-9]+)         >mark %{ emit.call(:identifier,data,ts,p) }; 
   str         = (ss|dd)* ;       
-  boolean     = '.'                          >mark %{ emit.call("bool",data,ts,p) };
-  key_word    = ( ('ID'|'Number'|'Type'|'Description') >mark %{ print "*k:"; emit.call("key_word",data,ts,p) } );
-  value       = ( (integer|float|boolean|identifier|str) >mark %{ print "*v:" ; emit.call("value",data,ts,p) } );
+  boolean     = '.'                          >mark %{ emit.call(:bool,data,ts,p) };
+  key_word    = ( ('ID'|'Number'|'Type'|'Description') >mark %{ emit.call(:key_word,data,ts,p) } );
+  value       = ( (integer|float|boolean|identifier|str) >mark %{ emit.call(:value,data,ts,p) } );
 
   key_value = ( key_word '=' value ) ;
   
@@ -44,8 +44,7 @@ module VcfHeader
 %% write data;
 # %% this just fixes our syntax highlighting...
 
-def self.run_lexer(data)
-  p data
+def self.run_lexer(data, options = {})
   data = data.unpack("c*") if(data.is_a?(String))
   eof = data.length
   token_array = []
@@ -54,7 +53,7 @@ def self.run_lexer(data)
   emit = lambda { |type, data, ts, p|
     # Print the type and text of the last read token
     # p ts,p
-    puts "#{type}: #{data[ts...p].pack('c*')}"
+    puts "#{type}: #{data[ts...p].pack('c*')}" if options[:debug]==true
   }
 
   %% write init;
@@ -82,6 +81,9 @@ lines = <<LINES
 ##INFO=<ID=CLNHGVS1,Number=.,Type=String,Description="Variant names from \\"HGVS\\". The order of these 'variants' corresponds to the order of the info in the other clinical  INFO tags.">
 LINES
 
-lines.strip.split("\n").each { |s| VcfHeader::RagelKeyValues.run_lexer(s) }
+lines.strip.split("\n").each { |s|
+  p s
+  VcfHeader::RagelKeyValues.run_lexer(s, debug: true)
+}
 
 end
