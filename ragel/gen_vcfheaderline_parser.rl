@@ -14,6 +14,10 @@ module VcfHeader
     emit.call(:value,data,ts,p)
   }
 
+  action kw {
+    emit.call(:key_word,data,ts,p)
+  }
+  
   squote = "'";
   dquote = '"';
   not_squote_or_escape = [^'\\];
@@ -28,10 +32,14 @@ module VcfHeader
   identifier  = (alpha alnum+); 
   str         = (ss|dd)* ;       
   boolean     = '.';
-  key_word    = ( ('Number'|'Type'|'Description') >mark %{ emit.call(:key_word,data,ts,p) } );
-  value       = ( (integer|float|boolean|identifier|str) >mark %{ emit.call(:value,data,ts,p) } );
+  key_word    = ( ('ID'|'Number'|'Type'|'Description') >mark %{ emit.call(:key_word,data,ts,p) } );
+  any_value   = ( (integer|float|boolean|identifier|str) >mark %{ emit.call(:value,data,ts,p) } );
+  id_value   = ( identifier >mark %{ emit.call(:value,data,ts,p) } );
+  
+  number_value = ( ( integer|boolean|'A' ) >mark %{ emit.call(:value,data,ts,p) } );
 
-  key_value = ( ('ID=' identifier) | (key_word '=' value) ) @!{ error_code="key-value" };
+  id        = ( 'ID=' id_value ) @kw;
+  key_value = ( (id | (key_word '=' any_value) ) >mark @!{ error_code="key-value" };
   
   main := ( '##' ('FILTER'|'FORMAT'|'INFO'|'ALT') '=') (('<'|',') key_value )* ;
 }%%
@@ -61,6 +69,7 @@ def self.run_lexer(buf, options = {})
   raise "ERROR: "+error_code+" in "+buf if error_code
   
   res = {}
+  # p values
   values.each_slice(2) do | a,b |
     # p '*',a,b
     res[a[1]] = b[1]
