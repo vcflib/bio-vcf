@@ -9,7 +9,7 @@
   action Stop {
     quoted_text = data[ts...p].pack('c*')
     # do something with the quoted text!
-    emit('string',data,ts,p)
+    emit.call('string',data,ts,p)
   }
 
   squote = "'";
@@ -22,14 +22,14 @@
 
   # main := (ss | dd)*;
 
-  integer     = ('+'|'-')?[0-9]+             >mark %{ emit("integer",data,ts,p)  };
-  float       = ('+'|'-')?[0-9]+'.'[0-9]+    >mark %{ emit("float",data,ts,p) };
+  integer     = ('+'|'-')?[0-9]+             >mark %{ emit.call("integer",data,ts,p)  };
+  float       = ('+'|'-')?[0-9]+'.'[0-9]+    >mark %{ emit.call("float",data,ts,p) };
   assignment  = '=';
-  identifier  = ([a-zA-Z][a-zA-Z_0-9]+)         >mark %{ emit("identifier",data,ts,p) }; 
+  identifier  = ([a-zA-Z][a-zA-Z_0-9]+)         >mark %{ emit.call("identifier",data,ts,p) }; 
   str         = (ss|dd)* ;       
-  boolean     = '.'                          >mark %{ emit("bool",data,ts,p) };
-  key_word    = ( ('ID'|'Number'|'Type'|'Description') >mark %{ print "*k:"; emit("key_word",data,ts,p) } );
-  value       = ( (integer|float|boolean|identifier|str) >mark %{ print "*v:" ; emit("value",data,ts,p) } );
+  boolean     = '.'                          >mark %{ emit.call("bool",data,ts,p) };
+  key_word    = ( ('ID'|'Number'|'Type'|'Description') >mark %{ print "*k:"; emit.call("key_word",data,ts,p) } );
+  value       = ( (integer|float|boolean|identifier|str) >mark %{ print "*v:" ; emit.call("value",data,ts,p) } );
 
   key_value = ( key_word '=' value ) ;
   
@@ -40,33 +40,30 @@
 %% write data;
 # %% this just fixes our syntax highlighting...
 
-
-def emit type, data, ts, p
-  # Print the type and text of the last read token
-  # p ts,p
-  puts "#{type}: #{data[ts...p].pack('c*')}"
-end
-      
-def xemit(token_name, data, target_array, ts, te)
-  target_array << {:name => token_name.to_sym, :value => data.pack("c*")[ts...te] }
-end
-
+     
 def run_lexer(data)
   p data
   data = data.unpack("c*") if(data.is_a?(String))
   eof = data.length
   token_array = []
   stack = []
-  
+
+  emit = lambda { |type, data, ts, p|
+    # Print the type and text of the last read token
+    # p ts,p
+    puts "#{type}: #{data[ts...p].pack('c*')}"
+  }
+
   %% write init;
   %% write exec;
 
-  p token_array
   token_array.each do | h |
     p h
     # p h[:value] if h[:name]==:identifier or h[:name]==:value or h[:name]==:string
   end
 end
+
+if __FILE__ == $0
 
 lines = <<LINES
 ##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
@@ -84,3 +81,4 @@ lines.strip.split("\n").each { |s| run_lexer(s) }
 cmd=ARGV.shift
 run_lexer(cmd)
 
+end
