@@ -10,10 +10,11 @@ module VcfHeader
   machine simple_lexer;
   
   action mark { ts=p }
+  action mark2 { ts2=p }
   action endquoted {
-    quoted_text = data[ts...p].pack('c*')
+    quoted_text = data[ts2...p].pack('c*')
     # do something with the quoted text!
-    emit.call(:string,data,ts,p)
+    emit.call(:string,data,ts2,p)
   }
 
   squote = "'";
@@ -21,8 +22,8 @@ module VcfHeader
   not_squote_or_escape = [^'\\];
   not_dquote_or_escape = [^"\\];
   escaped_something = /\\./;
-  ss = space* squote ( not_squote_or_escape | escaped_something )* >mark %endquoted squote;
-  dd = space* dquote ( not_dquote_or_escape | escaped_something )* >mark %endquoted dquote;
+  ss = space* squote ( not_squote_or_escape | escaped_something )* >mark2 %endquoted squote;
+  dd = space* dquote ( not_dquote_or_escape | escaped_something )* >mark2 %endquoted dquote;
 
   integer     = ('+'|'-')?[0-9]+             >mark %{ emit.call(:integer,data,ts,p)  };
   float       = ('+'|'-')?[0-9]+'.'[0-9]+    >mark %{ emit.call(:float,data,ts,p) };
