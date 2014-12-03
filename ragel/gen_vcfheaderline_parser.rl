@@ -15,7 +15,7 @@ module VcfHeader
   }
 
   action kw {
-    emit.call(:key_word,data,ts,p)
+    emit.call(:kw,data,ts,p)
   }
   
   squote = "'";
@@ -32,14 +32,14 @@ module VcfHeader
   identifier  = (alpha alnum+); 
   str         = (ss|dd)* ;       
   boolean     = '.';
-  key_word    = ( ('ID'|'Number'|'Type'|'Description') >mark %{ emit.call(:key_word,data,ts,p) } );
+  key_word    = ( ('Number'|'Type'|'Description') >mark %{ emit.call(:key_word,data,ts,p) } );
   any_value   = ( (integer|float|boolean|identifier|str) >mark %{ emit.call(:value,data,ts,p) } );
   id_value   = ( identifier >mark %{ emit.call(:value,data,ts,p) } );
   
   number_value = ( ( integer|boolean|'A' ) >mark %{ emit.call(:value,data,ts,p) } );
 
-  id        = ( 'ID=' id_value ) @kw;
-  key_value = ( (id | (key_word '=' any_value) ) >mark @!{ error_code="key-value" };
+  id_kv     = ( ( ('ID') %kw '=' id_value ) @!{ error_code="ID"} );
+  key_value = ( id_kv | (key_word '=' any_value) ) >mark @!{ error_code="key-value" };
   
   main := ( '##' ('FILTER'|'FORMAT'|'INFO'|'ALT') '=') (('<'|',') key_value )* ;
 }%%
@@ -96,7 +96,7 @@ lines = <<LINES
 ##INFO=<ID=VP,Number=1,Type=String,Description="Variation Property.  Documentation is at ftp://ftp.ncbi.nlm.nih.gov/snp/specs/dbSNP_BitField_latest.pdf">
 ##INFO=<ID=GENEINFO,Number=1,Type=String,Description="Pairs each of gene symbol:gene id.  The gene symbol and id are delimited by a colon (:), and each pair is delimited by a vertical bar (|)">
 ##INFO=<ID=CLNHGVS,Number=.,Type=String,Description="Variant names from HGVS. The order of these variants corresponds to the order of the info in the other clinical  INFO tags.">
-##INFO=<ID="CLNHGVS1",Number=.,Type=String,Description="Variant names from \\"HGVS\\". The order of these 'variants' corresponds to the order of the info in the other clinical  INFO tags.">
+##INFO=<ID=CLNHGVS1,Number=.,Type=String,Description="Variant names from \\"HGVS\\". The order of these 'variants' corresponds to the order of the info in the other clinical  INFO tags.">
 LINES
 
 lines.strip.split("\n").each { |s|
