@@ -31,17 +31,17 @@ module VcfHeader
   key_word    = ( ('Number'|'Type'|'Description') >mark %{ emit.call(:key_word,data,ts,p) } );
   value       = ( (integer|float|boolean|identifier|str) >mark %{ emit.call(:value,data,ts,p) } );
 
-  key_value = ( 'ID' = identifier | key_word '=' value ) ;
+  key_value = ( ('ID=' identifier) | (key_word '=' value) ) @!{ error_code="key-value" };
   
-  main := ('##FORMAT'|'##INFO') '=' (('<'|',') key_value )*;
+  main := ( '##' ('FORMAT'|'INFO'|'ALT') '=') (('<'|',') key_value )* ;
 }%%
 =end
 
 %% write data;
 # %% this just fixes our syntax highlighting...
 
-def self.run_lexer(data, options = {})
-  data = data.unpack("c*") if(data.is_a?(String))
+def self.run_lexer(buf, options = {})
+  data = buf.unpack("c*") if(buf.is_a?(String))
   eof = data.length
   values = []
   stack = []
@@ -53,9 +53,13 @@ def self.run_lexer(data, options = {})
     values << [type,data[ts...p].pack('c*')]
   }
 
+  error_code = nil
+  
   %% write init;
   %% write exec;
 
+  raise "ERROR: "+error_code+" in "+buf if error_code
+  
   res = {}
   values.each_slice(2) do | a,b |
     # p '*',a,b
@@ -78,7 +82,7 @@ lines = <<LINES
 ##INFO=<ID=VP,Number=1,Type=String,Description="Variation Property.  Documentation is at ftp://ftp.ncbi.nlm.nih.gov/snp/specs/dbSNP_BitField_latest.pdf">
 ##INFO=<ID=GENEINFO,Number=1,Type=String,Description="Pairs each of gene symbol:gene id.  The gene symbol and id are delimited by a colon (:), and each pair is delimited by a vertical bar (|)">
 ##INFO=<ID=CLNHGVS,Number=.,Type=String,Description="Variant names from HGVS. The order of these variants corresponds to the order of the info in the other clinical  INFO tags.">
-##INFO=<ID=CLNHGVS1,Number=.,Type=String,Description="Variant names from \\"HGVS\\". The order of these 'variants' corresponds to the order of the info in the other clinical  INFO tags.">
+##INFO=<ID="CLNHGVS1",Number=.,Type=String,Description="Variant names from \\"HGVS\\". The order of these 'variants' corresponds to the order of the info in the other clinical  INFO tags.">
 LINES
 
 lines.strip.split("\n").each { |s|
