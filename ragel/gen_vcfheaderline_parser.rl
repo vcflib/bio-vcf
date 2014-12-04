@@ -6,10 +6,14 @@
 # parsing of key-value pairs with syntax checking and, for example,
 # escaped quotes in quoted string values. This edition validates ID and
 # Number fields only.
+#
+# Note the .rb version is generated from ./ragel/gen_vcfheaderline_parser.rl
 
-module VcfHeader
+module BioVcf
 
-  module RagelKeyValues
+  module VcfHeader
+
+    module RagelKeyValues
   
 =begin
 %%{
@@ -93,8 +97,8 @@ def self.run_lexer(buf, options = {})
   p res if do_debug
   res
 end
-
-  end
+    end
+  end 
 end
 
 if __FILE__ == $0
@@ -112,7 +116,7 @@ LINES
 
 lines.strip.split("\n").each { |s|
   print s,"\n"
-  p VcfHeader::RagelKeyValues.run_lexer(s, debug: false)
+  p BioVcf::VcfHeader::RagelKeyValues.run_lexer(s, debug: false)
 }
 
-end
+end # test
