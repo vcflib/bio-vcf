@@ -88,6 +88,7 @@ def self.run_lexer(buf, options = {})
   rescue
     print "ERROR: "
     p values
+    raise
   end
   p res if do_debug
   res
