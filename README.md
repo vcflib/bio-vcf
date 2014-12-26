@@ -5,7 +5,9 @@
 A new generation VCF parser. Bio-vcf is not only fast for genome-wide
 (WGS) data, it also comes with a really nice filtering, evaluation and
 rewrite language and it can output any type of textual data, including
-RDF and JSON. Why would you use bio-vcf over other parsers?
+VCF header and contents in RDF and JSON.
+
+So, why would you use bio-vcf over other parsers? Because
 
 1. Bio-vcf is fast and scales on multi-core computers
 2. Bio-vcf has an expressive filtering and evaluation language
@@ -21,7 +23,9 @@ RDF and JSON. Why would you use bio-vcf over other parsers?
 Bio-vcf has better performance than other tools
 because of lazy parsing, multi-threading, and useful combinations of
 (fancy) command line filtering. For example on an 2 core machine
-bio-vcf is typically 50% faster than JVM based SnpSift. On an 8 core machine
+bio-vcf is typically 50% faster than JVM based SnpSift. Adding
+cores, bio-vcf just does better. The more complicated the filters,
+the larger the gain. On an 8 core machine
 bio-vcf is at least 3x faster than SnpSift. Parsing a 1 Gb ESP
 VCF with 8 cores with bio-vcf takes
 
@@ -52,8 +56,8 @@ a 16 core machine takes
   sys     0m5.039s
 ```
 
-which shows decent core utilisation (10x). We are running 
-gzip compressed VCF files of 30+ Gb with similar performance gains.
+which shows decent core utilisation (10x). Running 
+gzip compressed VCF files of 30+ Gb has similar performance gains.
 
 Use zcat to
 pipe such gzipped (vcf.gz) files into bio-vcf, e.g.
@@ -64,10 +68,10 @@ pipe such gzipped (vcf.gz) files into bio-vcf, e.g.
     --eval '[r.chrom,r.pos,r.pos+1]' > test.bed
 ```
 
-bio-vcf comes with a sensible parser definition language (it is 100%
-Ruby), as well as primitives for set analysis. Few
+bio-vcf comes with a sensible parser definition language (interestingly it is 100%
+Ruby), an embedded Ragel parser for INFO and FORMAT header definitions, as well as primitives for set analysis. Few
 assumptions are made about the actual contents of the VCF file (field
-names are resolved on the fly), so bio-vcf should practically work with
+names are resolved on the fly), so bio-vcf should work with
 all VCF files.
 
 To fetch all entries where all samples have depth larger than 20 use
