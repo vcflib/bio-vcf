@@ -28,6 +28,7 @@ Feature: Parsing VCF meta information from the header
     And I expect vcf.format['DP'] to be {"ID"=>"DP", "Number"=>"1", "Type"=>"Integer", "Description"=>"Total read depth"}
     And I expect vcf.format['DP4'] to be {"ID"=>"DP4", "Number"=>"4", "Type"=>"Integer", "Description"=>"# high-quality ref-forward bases, ref-reverse, alt-forward and alt-reverse bases"}
     And I expect vcf.info['PM'] to be {"ID"=>"PM", "Number"=>"0", "Type"=>"Flag", "Description"=>"Variant is Precious(Clinical,Pubmed Cited)"}'
+    And I expect vcf.meta to contain all header meta information
 
   Scenario: When parsing the header of somatic_sniper.vcf
 

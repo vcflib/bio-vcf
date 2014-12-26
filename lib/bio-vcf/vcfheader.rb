@@ -141,6 +141,24 @@ module BioVcf
     def info
       find_fields('INFO')
     end
+
+    def meta
+      res = { 'INFO' => {}, 'FORMAT' => {} }
+      @lines.each do | line |
+        value = line.scan(/##(.*?)=(.*)/)
+        if value[0]
+          k,v = value[0]
+          if k != 'FORMAT' and k != 'INFO'
+            p [k,v]
+            res[k] = v
+          end
+        end
+      end
+      res['INFO'] = info
+      res['FORMAT'] = format
+      p [:res, res]
+      res
+    end
     
     def method_missing(m, *args, &block)
       name = m.to_s

@@ -39,3 +39,12 @@ Then(/^I expect vcf\.info\['(\w+)'\] to be (\{[^}]+\})/) do |arg1,arg2|
   expect(@vcf.info[arg1].to_s).to eq arg2
 end
 
+Then(/^I expect vcf\.meta to contain all header meta information$/) do
+  m = @vcf.meta
+  p m
+  p "====="
+  
+  expect(m['fileformat']).to eq "VCFv4.1"
+  # expect(m['INFO']['DP']['Number']).to eq "1"
+end
+
