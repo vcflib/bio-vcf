@@ -11,7 +11,7 @@
 
 module BioVcf
 
-  module VcfHeader
+  module VcfHeaderParser
 
     module RagelKeyValues
   
@@ -116,7 +116,7 @@ LINES
 
 lines.strip.split("\n").each { |s|
   print s,"\n"
-  p BioVcf::VcfHeader::RagelKeyValues.run_lexer(s, debug: false)
+  p BioVcf::VcfHeaderParser::RagelKeyValues.run_lexer(s, debug: false)
 }
 
 end # test
