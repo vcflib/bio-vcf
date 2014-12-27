@@ -124,13 +124,13 @@ module BioVcf
         value = line.scan(/###{name}=<(.*)>/)
         if value[0]
           str = value[0][0]
-          p str
+          # p str
           v = VcfHeaderParser.parse_field(line)
           id = v['ID']
           res[id] = v
         end
       end
-      p res
+      # p res
       res
     end
 
@@ -149,14 +149,14 @@ module BioVcf
         if value[0]
           k,v = value[0]
           if k != 'FORMAT' and k != 'INFO'
-            p [k,v]
+            # p [k,v]
             res[k] = v
           end
         end
       end
       res['INFO'] = info
       res['FORMAT'] = format
-      p [:res, res]
+      # p [:res, res]
       res
     end
     
@@ -167,7 +167,5 @@ module BioVcf
       raise "Unknown VCF header query '#{name}'"
     end
 
-
   end
-
 end
