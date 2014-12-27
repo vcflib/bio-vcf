@@ -6,7 +6,7 @@ rvm:
 
 branches:
   only: 
-    -master
+    - master
 
 #  - jruby-head
 #  - jruby-19mode # JRuby in 1.9 mode
