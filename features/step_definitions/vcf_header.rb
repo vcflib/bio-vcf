@@ -44,5 +44,6 @@ Then(/^I expect vcf\.meta to contain all header meta information$/) do
   expect(m['fileformat']).to eq "VCFv4.1"
   expect(m['FORMAT']['DP']['Number']).to eq "1"
   expect(m.size).to be 6
+  p m.to_json
 end
 
