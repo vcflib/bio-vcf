@@ -8,7 +8,7 @@ When /^I execute "(.*?)"$/ do |arg1|
 end
 
 Then(/^I expect the named output to match the named output "(.*?)"$/) do |arg1|
-  RegressionTest::CliExec::exec(@cmd,arg1,ignore: '(##BioVcf|date)').should be_true
+  RegressionTest::CliExec::exec(@cmd,arg1,ignore: '(##BioVcf|date|"version":)').should be_true
 end
 
 Then(/^I expect an error and the named output to match the named output "(.*?)" in under (\d+) seconds$/) do |arg1,arg2|
