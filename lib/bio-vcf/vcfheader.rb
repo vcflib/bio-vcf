@@ -41,7 +41,7 @@ module BioVcf
 
     # Add a new field to the header
     def add line
-      @lines = line.split(/\n/)
+      @lines += line.split(/\n/)
     end
 
     # Push a special key value list to the header

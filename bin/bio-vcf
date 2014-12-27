@@ -200,7 +200,7 @@ end
 
 include BioVcf
 
-# Parse the header section of a VCF file
+# Parse the header section of a VCF file (chomping STDIN)
 def parse_header line, samples, options
   header = VcfHeader.new
   header.add(line)
@@ -374,22 +374,31 @@ begin
     end
   } # end output
 
-  print template.header(binding) if template
   # ---- Main loop
   STDIN.each_line do | line |
     line_number += 1
     # ---- In this section header information is handled
+
+    # ---- Skip embedded headers down the line...
     next if header_output_completed and line =~ /^#/
-    if line =~ /^##fileformat=/ or line =~ /^#CHR/
+
+    # ---- Parse the header lines (chomps from STDIN)
+    #      and returns header info and the current line
+    if line =~ /^#/
       header,line = parse_header(line,samples,options)
     end
-    next if line =~ /^##/ # empty file
-    header_output_completed = true
-    if not options[:efilter_samples] and options[:ifilter_samples]
-      # Create exclude set as a complement of include set
-      options[:efilter_samples] = header.column_names[9..-1].fill{|i|i.to_s}-options[:ifilter_samples]
+    # p [line_number,line]
+    # ---- After the header continue processing
+    if not header_output_completed
+      # one-time post-header processing
+      if not options[:efilter_samples] and options[:ifilter_samples]
+        # Create exclude set as a complement of include set
+        options[:efilter_samples] = header.column_names[9..-1].fill{|i|i.to_s}-options[:ifilter_samples]
+      end
+      print template.header(binding) if template
+      header_output_completed = true
     end
-
+    
     # ---- In this section the VCF variant lines are parsed
     lines << line
     if NUM_THREADS == 1

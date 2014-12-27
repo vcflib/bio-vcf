@@ -789,6 +789,12 @@ can be
 ]
 ```
 
+with
+
+```sh
+  bio-vcf --template template/vcf2json.erb < dbsnp.vcf
+```
+
 may generate something like
 
 ```Javascript
@@ -819,6 +825,11 @@ Note that the template is not smart enough to remove the final comma
 from the last BODY element. To make it valid JSON that needs to be
 removed. A future version may add a parameter to the BODY element or a
 global rewrite function for this purpose. YAML and RDF have no such issue.
+
+### Full VCF header info
+
+To get the full information from the header, simple use vcf.meta.to_json.
+See ./template/vcf2json_full_header.erb for an example.
 
 ## Statistics
 
