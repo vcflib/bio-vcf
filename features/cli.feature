@@ -43,14 +43,19 @@ Feature: Command-line interface (CLI)
     When I execute "./bin/bio-vcf -i --sfilter 's.dp>10' --seval 's.dp'"
     Then I expect the named output to match the named output "sfilter_seval_s.dp"
 
-
   Scenario: Rewrite an info field
     Given I have input file(s) named "test/data/input/multisample.vcf"
     When I execute "./bin/bio-vcf --rewrite rec.info[\'sample\']=\'XXXXX\'"
     Then I expect the named output to match the named output "rewrite.info.sample"
 
+  Scenario: Test JSON output with header meta data
+    Given I have input file(s) named "test/data/input/multisample.vcf"
+    When I execute "./bin/bio-vcf --template template/vcf2json_full_header.erb"
+    Then I expect the named output to match the named output "vcf2json_full_header"
+
   Scenario: Test deadlock on failed filter with threads
     Given I have input file(s) named "test/data/input/multisample.vcf"
     When I execute "./bin/bio-vcf --num-threads 4 --thread-lines 4 --filter 't.info.dp>2'"
     Then I expect an error and the named output to match the named output "thread4_4_failed_filter" in under 30 seconds
+
 
