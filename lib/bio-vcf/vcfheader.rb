@@ -156,10 +156,10 @@ module BioVcf
           end
         end
       end
-      res['INFO'] = info
-      res['FORMAT'] = format
+      res['INFO'] = info()
+      res['FORMAT'] = format()
       # p [:res, res]
-      @meta = res
+      @meta = res # cache values
       res
     end
     
