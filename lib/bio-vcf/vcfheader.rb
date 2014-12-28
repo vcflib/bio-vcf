@@ -37,6 +37,7 @@ module BioVcf
     def initialize
       @lines = []
       @field = {}
+      @meta = nil
     end
 
     # Add a new field to the header
@@ -143,6 +144,7 @@ module BioVcf
     end
 
     def meta
+      return @meta if @meta
       res = { 'INFO' => {}, 'FORMAT' => {} }
       @lines.each do | line |
         value = line.scan(/##(.*?)=(.*)/)
@@ -157,6 +159,7 @@ module BioVcf
       res['INFO'] = info
       res['FORMAT'] = format
       # p [:res, res]
+      @meta = res
       res
     end
     
