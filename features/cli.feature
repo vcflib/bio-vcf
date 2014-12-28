@@ -53,6 +53,11 @@ Feature: Command-line interface (CLI)
     When I execute "./bin/bio-vcf --template template/vcf2json_full_header.erb"
     Then I expect the named output to match the named output "vcf2json_full_header"
 
+  Scenario: Test JSON output with header meta data and query samples
+    Given I have input file(s) named "test/data/input/multisample.vcf"
+    When I execute "./bin/bio-vcf --template template/vcf2json_use_meta.erb"
+    Then I expect the named output to match the named output "vcf2json_use_meta"
+
   Scenario: Test deadlock on failed filter with threads
     Given I have input file(s) named "test/data/input/multisample.vcf"
     When I execute "./bin/bio-vcf --num-threads 4 --thread-lines 4 --filter 't.info.dp>2'"

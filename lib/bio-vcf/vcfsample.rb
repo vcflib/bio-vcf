@@ -51,7 +51,16 @@ module BioVcf
       def cache_method(name, &block)
         self.class.send(:define_method, name, &block)
       end
-    
+
+      def [] name
+        if @format[name]
+          v = fetch_values(name) 
+          return nil if VcfValue::empty?(v)
+          return ConvertStringToValue::convert(v)
+        end
+        nil
+      end
+      
       def method_missing(m, *args, &block)
         name = m.to_s.upcase
         # p [:here,name,m ,@values]

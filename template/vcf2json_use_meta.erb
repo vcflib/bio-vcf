@@ -11,13 +11,31 @@
     "META": <%= header.meta.to_json %>
   },
 =BODY
-
+<% sample_num = 0
+   sample_name = nil
+   sample_size = header.samples.size
+%>
 {
   "seq:chr": "<%= rec.chrom %>" ,
   "seq:pos": <%= rec.pos %> ,
   "seq:ref": "<%= rec.ref %>" ,
   "seq:alt": "<%= rec.alt[0] %>"
-  <% if rec.info.dp %> , "dp": <%= rec.info.dp %> <% end %>
+  <% if rec.info.dp %> , "dp": <%= rec.info.dp %> <% end %>,
+  {
+  <% rec.each_sample do |s| %>
+    <% if not s.empty? 
+    
+         sample_name = header.samples[sample_num]
+         sample_num += 1
+    %>
+    "<%= sample_name %>": {
+      <% header.meta['FORMAT'].each_key do |k| %>
+        "<%= k %>": <%= s[k].to_json %>,
+      <% end %>
+    } <%= (sample_num<sample_size ? "," : "") %>
+    <% end %>
+  <% end %>
+  }
 },
 =FOOTER
 ]
