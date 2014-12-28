@@ -25,9 +25,7 @@ because of lazy parsing, multi-threading, and useful combinations of
 (fancy) command line filtering. For example on an 2 core machine
 bio-vcf is typically 50% faster than JVM based SnpSift. Adding
 cores, bio-vcf just does better. The more complicated the filters,
-the larger the gain. On an 8 core machine
-bio-vcf is at least 3x faster than SnpSift. Parsing a 1 Gb ESP
-VCF with 8 cores with bio-vcf takes
+the larger the gain.
 
 ```sh
   time ./bin/bio-vcf -iv --num-threads 8 --filter 'r.info.cp>0.3' < ESP6500SI_V2_SSA137.vcf > test1.vcf
@@ -826,10 +824,18 @@ from the last BODY element. To make it valid JSON that needs to be
 removed. A future version may add a parameter to the BODY element or a
 global rewrite function for this purpose. YAML and RDF have no such issue.
 
-### Full VCF header info
+### Using full VCF header (meta) info
 
-To get the full information from the header, simple use vcf.meta.to_json.
-See ./template/vcf2json_full_header.erb for an example.
+To get and put the full information from the header, simple use
+vcf.meta.to_json.  See ./template/vcf2json_full_header.erb for an
+example. This meta information can also be used to output info fields
+and sample values on the fly! For an example, see the template at
+[./template/vcf2json_use_meta.erb](https://github.com/pjotrp/bioruby-vcf/tree/master/template/vcf2json_use_meta.erb)
+and the generated output at
+[./test/data/regression/vcf2json_use_meta.ref](https://github.com/pjotrp/bioruby-vcf/tree/master/test/data/regression/vcf2json_use_meta.ref).
+
+This way, it is possible to write templates that can convert the content of
+*any* VCF file without prior knowledge to JSON, RDF, etc.
 
 ## Statistics
 
