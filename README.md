@@ -7,7 +7,7 @@ allows you to pipe that JSON directly into any JSON supporting
 language, including Python and Javascript!
 
 Bio-vcf is a new generation VCF parser, filter and converter. Bio-vcf is not only
-fast for genome-wide (WGS) data, it also comes with a really nice
+very fast for genome-wide (WGS) data, it also comes with a really nice
 filtering, evaluation and rewrite language and it can output any type
 of textual data, including VCF header and contents in RDF and JSON.
 
@@ -18,36 +18,47 @@ So, why would you use bio-vcf over other parsers? Because
 3. Bio-vcf has great multi-sample support
 4. Bio-vcf has multiple global filters and sample filters
 5. Bio-vcf can access any VCF format
-6. Bio-vcf can do calculations on fields
-7. Bio-vcf allows for genotype processing
-8. Bio-vcf has support for set analysis
-9. Bio-vcf has sane error handling
-10. Bio-vcf can convert *any* VCF to *any* output, including tabular data, HTML, LaTeX, RDF, JSON and JSON-LD and even other VCFs by using (erb) templates
+6. Bio-vcf can parse the VCF header 
+7. Bio-vcf can do calculations on fields
+8. Bio-vcf allows for genotype processing
+9. Bio-vcf has support for set analysis
+10. Bio-vcf has sane error handling
+11. Bio-vcf can convert *any* VCF to *any* output, including tabular data, HTML, LaTeX, RDF, JSON and JSON-LD and even other VCFs by using (erb) templates
 
 Bio-vcf has better performance than other tools
 because of lazy parsing, multi-threading, and useful combinations of
-(fancy) command line filtering. For example on an 2 core machine
-bio-vcf is typically 50% faster than JVM based SnpSift. Adding
+(fancy) command line filtering (who says Ruby is slow?). Adding
 cores, bio-vcf just does better. The more complicated the filters,
-the larger the gain.
+the larger the gain. First the base line test to show IO performance
 
 ```sh
-  time ./bin/bio-vcf -iv --num-threads 8 --filter 'r.info.cp>0.3' < ESP6500SI_V2_SSA137.vcf > test1.vcf
-  real    0m21.095s
-  user    1m41.101s
-  sys     0m7.852s
+  time cat ESP6500SI-V2-SSA137.GRCh38-liftover.*.vcf|wc
+  1987143 15897724 1003214613
+  real    0m7.823s
+  user    0m7.002s
+  sys     0m2.972s
 ```
 
-while parsing with SnpSift takes
+Next run the 1Gb data with bio-vcf effectively using 5 cores on AMD Opteron(tm) Processor 6174 using Linux
 
 ```sh
-  time cat ESP6500SI_V2_SSA137.vcf |java -jar snpEff/SnpSift.jar filter "( CP>0.3 )" > test.vcf
-  real    1m4.913s
-  user    0m58.071s
-  sys     0m7.982s
+  time cat ESP6500SI-V2-SSA137.GRCh38-liftover.*.vcf|./bin/bio-vcf -iv --num-threads 8 --filter 'r.info.cp.to_f>0.3' > /dev/null
+  real    0m32.491s
+  user    2m34.767s
+  sys     0m12.733s
 ```
 
-Bio-vcf is perfect for parsing large data files. Parsing a 650 Mb GATK
+The same with SnpSift v4.0 takes
+
+```sh
+time cat ESP6500SI-V2-SSA137.GRCh38-liftover.*.vcf|java -jar snpEff/SnpSift.jar filter "( CP>0.3 )" > /dev/null
+real    12m36.121s
+user    12m53.273s
+sys     0m9.913s
+```
+
+This means that on this machine bio-vcf is 24x faster than SnpSift even for a simple filter.
+In fact, bio-vcf is perfect for complex filters and parsing large data files on powerful machines. Parsing a 650 Mb GATK
 Illumina Hiseq VCF file and evaluating the results into a BED format on
 a 16 core machine takes
 
