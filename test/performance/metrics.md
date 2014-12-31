@@ -130,3 +130,12 @@ on a dual-core running Linux
     user    0m1.132s
     sys     0m0.148s
 
+Latest
+
+    time ./bin/bio-vcf -i --num-threads 4 --thread-lines 2000 --filter 'r.info.dp>20' --sfilter 's.dp>10' < test/tmp/test.vcf > /dev/null
+    vcf 0.8.3-pre1 (biogem Ruby 2.1.0) by Pjotr Prins 2014
+    Options: {:show_help=>false, :source=>"https://github.com/CuppenResearch/bioruby-vcf", :version=>"0.8.3-pre1 (Pjotr Prins)", :date=>"2014-12-31 13:30:32 +0300", :thread_lines=>2000, :ignore_missing=>true, :num_threads=>4, :filter=>"r.info.dp>20", :sfilter=>"s.dp>10"}
+    real    0m0.600s
+    user    0m1.472s
+    sys     0m0.068s
+
