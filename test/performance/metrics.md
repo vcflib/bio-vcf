@@ -1,4 +1,5 @@
-Round of testing with
+Round of testing on Macbook PRO running Linux with Intel(R) Core(TM) i5-3210M CPU @ 2.50GHz
+and
 
     ruby -v
     ruby 2.1.0p0 (2013-12-25 revision 44422) [x86_64-linux]
@@ -139,3 +140,10 @@ Latest
     user    0m1.472s
     sys     0m0.068s
 
+Profiling:
+
+.  %   cumulative   self              self     total
+ time   seconds   seconds    calls  ms/call  ms/call  name
+ 15.01     3.23      3.23    34968     0.09     0.82  Object#parse_line
+  8.22     5.00      1.77    22518     0.08     0.22  BioVcf::VcfRecord#sample_by_index
+  4.97     6.07      1.07    22518     0.05     0.27  BioVcf::VcfSample::Sample#sfilter
