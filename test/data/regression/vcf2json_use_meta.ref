@@ -1,4219 +1,4699 @@
 
-[
-  {
+{
     "HEADER": {
-      "files":    [],
-      },
+	"options":{"show_help":false,"source":"https://github.com/CuppenResearch/bioruby-vcf","version":"0.8.3-pre1 (Pjotr Prins)","date":"2015-01-19 11:23:31 +0100","thread_lines":40000,"template":"../../../template/vcf2json_use_meta.erb","skip_header":true},
+	"files": [],
+	"version": "0.8.3-pre1"
+    },
     "COLUMNS": ["CHROM","POS","ID","REF","ALT","QUAL","FILTER","INFO","FORMAT","Original","s1t1","s2t1","s3t1","s1t2","s2t2","s3t2"],
-    "META": {"INFO":{"AC":{"ID":"AC","Number":"A","Type":"Integer","Description":"Allele count in genotypes, for each ALT allele, in the same order as listed"},"AF":{"ID":"AF","Number":"A","Type":"Float","Description":"Allele Frequency, for each ALT allele, in the same order as listed"},"AN":{"ID":"AN","Number":"1","Type":"Integer","Description":"Total number of alleles in called genotypes"},"BaseQRankSum":{"ID":"BaseQRankSum","Number":"1","Type":"Float","Description":"Z-score from Wilcoxon rank sum test of Alt Vs. Ref base qualities"},"DP":{"ID":"DP","Number":"1","Type":"Integer","Description":"Approximate read depth; some reads may have been filtered"},"DS":{"ID":"DS","Number":"0","Type":"Flag","Description":"Were any of the samples downsampled?"},"Dels":{"ID":"Dels","Number":"1","Type":"Float","Description":"Fraction of Reads Containing Spanning Deletions"},"FS":{"ID":"FS","Number":"1","Type":"Float","Description":"Phred-scaled p-value using Fisher's exact test to detect strand bias"},"HaplotypeScore":{"ID":"HaplotypeScore","Number":"1","Type":"Float","Description":"Consistency of the site with at most two segregating haplotypes"},"InbreedingCoeff":{"ID":"InbreedingCoeff","Number":"1","Type":"Float","Description":"Inbreeding coefficient as estimated from the genotype likelihoods per-sample when compared against the Hardy-Weinberg expectation"},"MLEAC":{"ID":"MLEAC","Number":"A","Type":"Integer","Description":"Maximum likelihood expectation (MLE) for the allele counts (not necessarily the same as the AC), for each ALT allele, in the same order as listed"},"MLEAF":{"ID":"MLEAF","Number":"A","Type":"Float","Description":"Maximum likelihood expectation (MLE) for the allele frequency (not necessarily the same as the AF), for each ALT allele, in the same order as listed"},"MQ":{"ID":"MQ","Number":"1","Type":"Float","Description":"RMS Mapping Quality"},"MQ0":{"ID":"MQ0","Number":"1","Type":"Integer","Description":"Total Mapping Quality Zero Reads"},"MQRankSum":{"ID":"MQRankSum","Number":"1","Type":"Float","Description":"Z-score From Wilcoxon rank sum test of Alt vs. Ref read mapping qualities"},"QD":{"ID":"QD","Number":"1","Type":"Float","Description":"Variant Confidence/Quality by Depth"},"RPA":{"ID":"RPA","Number":".","Type":"Integer","Description":"Number of times tandem repeat unit is repeated, for each allele (including reference)"},"RU":{"ID":"RU","Number":"1","Type":"String","Description":"Tandem repeat unit (bases)"},"ReadPosRankSum":{"ID":"ReadPosRankSum","Number":"1","Type":"Float","Description":"Z-score from Wilcoxon rank sum test of Alt vs. Ref read position bias"},"STR":{"ID":"STR","Number":"0","Type":"Flag","Description":"Variant is a short tandem repeat"}},"FORMAT":{"AD":{"ID":"AD","Number":".","Type":"Integer","Description":"Allelic depths for the ref and alt alleles in the order listed"},"DP":{"ID":"DP","Number":"1","Type":"Integer","Description":"Approximate read depth (reads with MQ=255 or with bad mates are filtered)"},"GQ":{"ID":"GQ","Number":"1","Type":"Integer","Description":"Genotype Quality"},"GT":{"ID":"GT","Number":"1","Type":"String","Description":"Genotype"},"PL":{"ID":"PL","Number":"G","Type":"Integer","Description":"Normalized, Phred-scaled likelihoods for genotypes as defined in the VCF specification"}},"fileformat":"VCFv4.1","FILTER":"<ID=LowQual,Description=\"Low quality\">","GATKCommandLine":"<ID=UnifiedGenotyper,Version=2.8-1-g932cd3a,Date=\"Sat Jan 25 10:33:56 CET 2014\",Epoch=1390642436187,CommandLineOptions=\"analysis_type=UnifiedGenotyper input_file=[/data_fedor12/BAM/sander/Liver_clones/BIOPSY17513D/mapping/BIOPSY17513D_dedup_realigned_recalibrated.bam, /data_fedor12/BAM/sander/Liver_clones/clone3/mapping/clone3_dedup_realigned_recalibrated.bam, /data_fedor12/BAM/sander/Liver_clones/clone4/mapping/clone4_dedup_realigned_recalibrated.bam, /data_fedor12/BAM/sander/Liver_clones/clone10/mapping/clone10_dedup_realigned_recalibrated.bam, /data_fedor12/BAM/sander/Liver_clones/subclone33/mapping/subclone33_dedup_realigned_recalibrated.bam, /data_fedor12/BAM/sander/Liver_clones/subclone46/mapping/subclone46_dedup_realigned_recalibrated.bam, /data_fedor12/BAM/sander/Liver_clones/subclone105/mapping/subclone105_dedup_realigned_recalibrated.bam] read_buffer_size=null phone_home=AWS gatk_key=null tag=NA read_filter=[] intervals=[/data_fedor13/sander/variant_calling/Liver_clones/.queue/scatterGather/UnifiedGenotyper_noref-1-sg/temp_001_of_500/scatter.intervals] excludeIntervals=null interval_set_rule=UNION interval_merging=ALL interval_padding=0 reference_sequence=/data_fedor13/common_data/references/H_sapiens/GATK_b37_bundle_reference/basespace/human_g1k_v37.fasta nonDeterministicRandomSeed=false disableDithering=false maxRuntime=-1 maxRuntimeUnits=MINUTES downsampling_type=BY_SAMPLE downsample_to_fraction=null downsample_to_coverage=250 baq=OFF baqGapOpenPenalty=40.0 fix_misencoded_quality_scores=false allow_potentially_misencoded_quality_scores=false useOriginalQualities=false defaultBaseQualities=-1 performanceLog=null BQSR=null quantize_quals=0 disable_indel_quals=false emit_original_quals=false preserve_qscores_less_than=6 globalQScorePrior=-1.0 allow_bqsr_on_reduced_bams_despite_repeated_warnings=false validation_strictness=SILENT remove_program_records=false keep_program_records=false sample_rename_mapping_file=null unsafe=null disable_auto_index_creation_and_locking_when_reading_rods=false num_threads=1 num_cpu_threads_per_data_thread=1 num_io_threads=0 monitorThreadEfficiency=false num_bam_file_handles=null read_group_black_list=null pedigree=[] pedigreeString=[] pedigreeValidationType=STRICT allow_intervals_with_unindexed_bam=false generateShadowBCF=false variant_index_type=DYNAMIC_SEEK variant_index_parameter=-1 logging_level=INFO log_to_file=null help=false version=false genotype_likelihoods_model=SNP pcr_error_rate=1.0E-4 computeSLOD=false annotateNDA=false pair_hmm_implementation=LOGLESS_CACHING min_base_quality_score=17 max_deletion_fraction=0.05 allSitePLs=false min_indel_count_for_genotyping=5 min_indel_fraction_per_sample=0.25 indelGapContinuationPenalty=10 indelGapOpenPenalty=45 indelHaplotypeSize=80 indelDebug=false ignoreSNPAlleles=false allReadsSP=false ignoreLaneInfo=false reference_sample_calls=(RodBinding name= source=UNBOUND) reference_sample_name=null sample_ploidy=2 min_quality_score=1 max_quality_score=40 site_quality_prior=20 min_power_threshold_for_calling=0.95 min_reference_depth=100 exclude_filtered_reference_sites=false output_mode=EMIT_VARIANTS_ONLY heterozygosity=0.001 indel_heterozygosity=1.25E-4 genotyping_mode=DISCOVERY standard_min_confidence_threshold_for_calling=30.0 standard_min_confidence_threshold_for_emitting=30.0 alleles=(RodBinding name= source=UNBOUND) max_alternate_alleles=6 input_prior=[] contamination_fraction_to_filter=0.0 contamination_fraction_per_sample_file=null p_nonref_model=EXACT_INDEPENDENT exactcallslog=null dbsnp=(RodBinding name= source=UNBOUND) comp=[] out=org.broadinstitute.sting.gatk.io.stubs.VariantContextWriterStub no_cmdline_in_header=org.broadinstitute.sting.gatk.io.stubs.VariantContextWriterStub sites_only=org.broadinstitute.sting.gatk.io.stubs.VariantContextWriterStub bcf=org.broadinstitute.sting.gatk.io.stubs.VariantContextWriterStub onlyEmitSamples=[] debug_file=null metrics_file=null annotation=[] excludeAnnotation=[] filter_reads_with_N_cigar=false filter_mismatching_base_and_quals=false filter_bases_not_stored=false\">","contig":"<ID=GL000192.1,length=547496,assembly=b37>","reference":"file:human_g1k_v37.fasta"}
-  },
-{
-  "seq:chr": "1" ,
-  "seq:pos": 10257 ,
-  "seq:ref": "A" ,
-  "seq:alt": "C"
-   , "dp": 1518 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [151,8],
-      
-        "DP": 159,
-      
-        "GQ": 99,
-      
-        "GT": "0/0",
-      
-        "PL": [0,195,2282],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [219,22],
-      
-        "DP": 242,
-      
-        "GQ": 99,
-      
-        "GT": "0/0",
-      
-        "PL": [0,197,2445],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [227,22],
-      
-        "DP": 249,
-      
-        "GQ": 90,
-      
-        "GT": "0/0",
-      
-        "PL": [0,90,2339],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [226,22],
-      
-        "DP": 249,
-      
-        "GQ": 99,
-      
-        "GT": "0/0",
-      
-        "PL": [0,159,2695],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [166,18],
-      
-        "DP": 186,
-      
-        "GQ": 99,
-      
-        "GT": "0/0",
-      
-        "PL": [0,182,1989],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [185,27],
-      
-        "DP": 212,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [111,0,2387],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [201,15],
-      
-        "DP": 218,
-      
-        "GQ": 24,
-      
-        "GT": "0/0",
-      
-        "PL": [0,24,1972],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 10291 ,
-  "seq:ref": "C" ,
-  "seq:alt": "T"
-   , "dp": 1433 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [145,16],
-      
-        "DP": 165,
-      
-        "GQ": 23,
-      
-        "GT": "0/1",
-      
-        "PL": [23,0,491],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [218,26],
-      
-        "DP": 249,
-      
-        "GQ": 29,
-      
-        "GT": "0/1",
-      
-        "PL": [29,0,611],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [214,30],
-      
-        "DP": 249,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [145,0,801],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [213,32],
-      
-        "DP": 247,
-      
-        "GQ": 20,
-      
-        "GT": "0/1",
-      
-        "PL": [20,0,1031],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [122,36],
-      
-        "DP": 161,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [347,0,182],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [131,27],
-      
-        "DP": 163,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [255,0,508],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [156,31],
-      
-        "DP": 189,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [252,0,372],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 10297 ,
-  "seq:ref": "C" ,
-  "seq:alt": "T"
-   , "dp": 1440 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [155,18],
-      
-        "DP": 182,
-      
-        "GQ": 44,
-      
-        "GT": "0/1",
-      
-        "PL": [44,0,654],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [218,23],
-      
-        "DP": 246,
-      
-        "GQ": 21,
-      
-        "GT": "0/1",
-      
-        "PL": [21,0,673],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [219,26],
-      
-        "DP": 250,
-      
-        "GQ": 41,
-      
-        "GT": "0/1",
-      
-        "PL": [41,0,898],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [207,30],
-      
-        "DP": 246,
-      
-        "GQ": 39,
-      
-        "GT": "0/0",
-      
-        "PL": [0,39,963],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [137,20],
-      
-        "DP": 165,
-      
-        "GQ": 21,
-      
-        "GT": "0/0",
-      
-        "PL": [0,21,363],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [124,27],
-      
-        "DP": 158,
-      
-        "GQ": 65,
-      
-        "GT": "0/1",
-      
-        "PL": [65,0,435],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [151,27],
-      
-        "DP": 183,
-      
-        "GQ": 63,
-      
-        "GT": "0/1",
-      
-        "PL": [63,0,485],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 10303 ,
-  "seq:ref": "C" ,
-  "seq:alt": "T"
-   , "dp": 1460 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [169,25],
-      
-        "DP": 198,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [195,0,609],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [211,31],
-      
-        "DP": 247,
-      
-        "GQ": 1,
-      
-        "GT": "0/1",
-      
-        "PL": [1,0,656],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [214,28],
-      
-        "DP": 248,
-      
-        "GQ": 7,
-      
-        "GT": "0/0",
-      
-        "PL": [0,7,982],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [214,32],
-      
-        "DP": 248,
-      
-        "GQ": 25,
-      
-        "GT": "0/0",
-      
-        "PL": [0,25,980],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [146,17],
-      
-        "DP": 172,
-      
-        "GQ": 2,
-      
-        "GT": "0/0",
-      
-        "PL": [0,2,353],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [123,23],
-      
-        "DP": 157,
-      
-        "GQ": 17,
-      
-        "GT": "0/1",
-      
-        "PL": [17,0,541],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [156,22],
-      
-        "DP": 182,
-      
-        "GQ": 19,
-      
-        "GT": "0/0",
-      
-        "PL": [0,19,413],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 10315 ,
-  "seq:ref": "C" ,
-  "seq:alt": "T"
-   , "dp": 1500 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [181,26],
-      
-        "DP": 212,
-      
-        "GQ": 41,
-      
-        "GT": "0/1",
-      
-        "PL": [41,0,618],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [223,17],
-      
-        "DP": 246,
-      
-        "GQ": 99,
-      
-        "GT": "0/0",
-      
-        "PL": [0,102,832],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [219,20],
-      
-        "DP": 242,
-      
-        "GQ": 66,
-      
-        "GT": "0/0",
-      
-        "PL": [0,66,924],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [217,23],
-      
-        "DP": 245,
-      
-        "GQ": 99,
-      
-        "GT": "0/0",
-      
-        "PL": [0,109,1384],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [155,27],
-      
-        "DP": 190,
-      
-        "GQ": 97,
-      
-        "GT": "0/1",
-      
-        "PL": [97,0,328],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [130,20],
-      
-        "DP": 157,
-      
-        "GQ": 10,
-      
-        "GT": "0/1",
-      
-        "PL": [10,0,531],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [163,24],
-      
-        "DP": 189,
-      
-        "GQ": 5,
-      
-        "GT": "0/0",
-      
-        "PL": [0,5,450],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 10321 ,
-  "seq:ref": "C" ,
-  "seq:alt": "T"
-   , "dp": 1537 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [189,25],
-      
-        "DP": 218,
-      
-        "GQ": 30,
-      
-        "GT": "0/1",
-      
-        "PL": [30,0,810],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [219,22],
-      
-        "DP": 246,
-      
-        "GQ": 24,
-      
-        "GT": "0/0",
-      
-        "PL": [0,24,593],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [218,27],
-      
-        "DP": 248,
-      
-        "GQ": 34,
-      
-        "GT": "0/1",
-      
-        "PL": [34,0,1134],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [220,22],
-      
-        "DP": 248,
-      
-        "GQ": 56,
-      
-        "GT": "0/0",
-      
-        "PL": [0,56,1207],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [168,23],
-      
-        "DP": 193,
-      
-        "GQ": 19,
-      
-        "GT": "0/1",
-      
-        "PL": [19,0,493],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [139,22],
-      
-        "DP": 164,
-      
-        "GQ": 46,
-      
-        "GT": "0/1",
-      
-        "PL": [46,0,689],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [167,26],
-      
-        "DP": 196,
-      
-        "GQ": 20,
-      
-        "GT": "0/1",
-      
-        "PL": [20,0,522],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 10327 ,
-  "seq:ref": "T" ,
-  "seq:alt": "C"
-   , "dp": 1641 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [178,56],
-      
-        "DP": 237,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [178,0,848],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [178,60],
-      
-        "DP": 238,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [320,0,575],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [185,40],
-      
-        "DP": 229,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [236,0,679],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [184,52],
-      
-        "DP": 237,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [358,0,544],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [165,43],
-      
-        "DP": 209,
-      
-        "GQ": 57,
-      
-        "GT": "0/1",
-      
-        "PL": [57,0,726],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [151,31],
-      
-        "DP": 183,
-      
-        "GQ": 9,
-      
-        "GT": "0/1",
-      
-        "PL": [9,0,780],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [164,46],
-      
-        "DP": 210,
-      
-        "GQ": 96,
-      
-        "GT": "0/1",
-      
-        "PL": [96,0,550],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 10583 ,
-  "seq:ref": "G" ,
-  "seq:alt": "A"
-   , "dp": 129 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [5,3],
-      
-        "DP": 8,
-      
-        "GQ": 58,
-      
-        "GT": "0/1",
-      
-        "PL": [58,0,133],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [12,12],
-      
-        "DP": 24,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [231,0,287],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [16,4],
-      
-        "DP": 21,
-      
-        "GQ": 38,
-      
-        "GT": "0/1",
-      
-        "PL": [38,0,491],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [19,4],
-      
-        "DP": 23,
-      
-        "GQ": 57,
-      
-        "GT": "0/1",
-      
-        "PL": [57,0,494],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [9,6],
-      
-        "DP": 15,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [140,0,180],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [11,8],
-      
-        "DP": 19,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [173,0,235],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [15,4],
-      
-        "DP": 19,
-      
-        "GQ": 42,
-      
-        "GT": "0/1",
-      
-        "PL": [42,0,344],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 10665 ,
-  "seq:ref": "C" ,
-  "seq:alt": "G"
-   , "dp": 28 ,
-  {
-  
-    
-  
-    
-  
-    
-    "Original": {
-      
-        "AD": [4,3],
-      
-        "DP": 7,
-      
-        "GQ": 57,
-      
-        "GT": "0/1",
-      
-        "PL": [57,0,78],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [3,2],
-      
-        "DP": 5,
-      
-        "GQ": 23,
-      
-        "GT": "0/1",
-      
-        "PL": [30,0,23],
-      
-    } ,
-    
-  
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [2,0],
-      
-        "DP": 2,
-      
-        "GQ": 3,
-      
-        "GT": "0/0",
-      
-        "PL": [0,3,26],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [6,1],
-      
-        "DP": 7,
-      
-        "GQ": 6,
-      
-        "GT": "0/0",
-      
-        "PL": [0,6,49],
-      
-    } ,
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 10694 ,
-  "seq:ref": "C" ,
-  "seq:alt": "G"
-   , "dp": 22 ,
-  {
-  
-    
-  
-    
-  
-    
-    "Original": {
-      
-        "AD": [2,3],
-      
-        "DP": 5,
-      
-        "GQ": 6,
-      
-        "GT": "1/1",
-      
-        "PL": [74,6,0],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [3,2],
-      
-        "DP": 5,
-      
-        "GQ": 3,
-      
-        "GT": "1/1",
-      
-        "PL": [35,3,0],
-      
-    } ,
-    
-  
-    
-  
-    
-  
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 10723 ,
-  "seq:ref": "C" ,
-  "seq:alt": "G"
-   , "dp": 18 ,
-  {
-  
-    
-  
-    
-  
-    
-    "Original": {
-      
-        "AD": [2,2],
-      
-        "DP": 4,
-      
-        "GQ": 6,
-      
-        "GT": "1/1",
-      
-        "PL": [66,6,0],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [4,1],
-      
-        "DP": 5,
-      
-        "GQ": 3,
-      
-        "GT": "1/1",
-      
-        "PL": [36,3,0],
-      
-    } ,
-    
-  
-    
-  
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [6,0],
-      
-        "DP": 6,
-      
-        "GQ": 3,
-      
-        "GT": "0/0",
-      
-        "PL": [0,3,33],
-      
-    } ,
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 12783 ,
-  "seq:ref": "G" ,
-  "seq:alt": "A"
-   , "dp": 939 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [24,34],
-      
-        "DP": 58,
-      
-        "GQ": 82,
-      
-        "GT": "0/1",
-      
-        "PL": [174,0,82],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [80,84],
-      
-        "DP": 164,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [658,0,433],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [59,85],
-      
-        "DP": 144,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [670,0,407],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [68,114],
-      
-        "DP": 182,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [1074,0,463],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [58,68],
-      
-        "DP": 126,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [437,0,310],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [37,66],
-      
-        "DP": 103,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [446,0,369],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [62,96],
-      
-        "DP": 158,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [911,0,417],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 13116 ,
-  "seq:ref": "T" ,
-  "seq:alt": "G"
-   , "dp": 721 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [20,12],
-      
-        "DP": 32,
-      
-        "GQ": 92,
-      
-        "GT": "0/1",
-      
-        "PL": [92,0,300],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [84,47],
-      
-        "DP": 131,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [479,0,1548],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [65,37],
-      
-        "DP": 102,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [441,0,1153],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [94,57],
-      
-        "DP": 152,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [584,0,1993],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [61,43],
-      
-        "DP": 104,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [360,0,1199],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [54,33],
-      
-        "DP": 88,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [221,0,986],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [62,47],
-      
-        "DP": 109,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [455,0,1128],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 13118 ,
-  "seq:ref": "A" ,
-  "seq:alt": "G"
-   , "dp": 703 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [21,13],
-      
-        "DP": 34,
-      
-        "GQ": 95,
-      
-        "GT": "0/1",
-      
-        "PL": [95,0,277],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [82,47],
-      
-        "DP": 129,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [444,0,1445],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [65,36],
-      
-        "DP": 101,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [412,0,1179],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [92,53],
-      
-        "DP": 145,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [455,0,1989],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [58,40],
-      
-        "DP": 99,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [312,0,1216],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [52,33],
-      
-        "DP": 85,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [186,0,1000],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [61,47],
-      
-        "DP": 108,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [453,0,1079],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 13178 ,
-  "seq:ref": "G" ,
-  "seq:alt": "A"
-   , "dp": 929 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [49,3],
-      
-        "DP": 52,
-      
-        "GQ": 11,
-      
-        "GT": "0/1",
-      
-        "PL": [11,0,292],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [161,11],
-      
-        "DP": 172,
-      
-        "GQ": 60,
-      
-        "GT": "0/0",
-      
-        "PL": [0,60,1328],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [122,15],
-      
-        "DP": 137,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [99,0,936],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [164,8],
-      
-        "DP": 172,
-      
-        "GQ": 99,
-      
-        "GT": "0/0",
-      
-        "PL": [0,112,1436],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [120,9],
-      
-        "DP": 129,
-      
-        "GQ": 62,
-      
-        "GT": "0/0",
-      
-        "PL": [0,62,771],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [113,6],
-      
-        "DP": 119,
-      
-        "GQ": 12,
-      
-        "GT": "0/0",
-      
-        "PL": [0,12,885],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [138,10],
-      
-        "DP": 148,
-      
-        "GQ": 99,
-      
-        "GT": "0/0",
-      
-        "PL": [0,112,1596],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 13302 ,
-  "seq:ref": "C" ,
-  "seq:alt": "T"
-   , "dp": 692 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [26,10],
-      
-        "DP": 36,
-      
-        "GQ": 41,
-      
-        "GT": "0/0",
-      
-        "PL": [0,41,616],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [91,45],
-      
-        "DP": 136,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [183,0,2085],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [71,28],
-      
-        "DP": 99,
-      
-        "GQ": 86,
-      
-        "GT": "0/1",
-      
-        "PL": [86,0,1557],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [96,50],
-      
-        "DP": 146,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [333,0,2098],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [55,34],
-      
-        "DP": 90,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [283,0,1321],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [47,18],
-      
-        "DP": 65,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [157,0,943],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [89,28],
-      
-        "DP": 117,
-      
-        "GQ": 67,
-      
-        "GT": "0/1",
-      
-        "PL": [67,0,1921],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 13757 ,
-  "seq:ref": "G" ,
-  "seq:alt": "A"
-   , "dp": 1149 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [47,4],
-      
-        "DP": 53,
-      
-        "GQ": 16,
-      
-        "GT": "0/0",
-      
-        "PL": [0,16,344],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [185,16],
-      
-        "DP": 201,
-      
-        "GQ": 60,
-      
-        "GT": "0/0",
-      
-        "PL": [0,60,2690],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [157,24],
-      
-        "DP": 181,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [162,0,2556],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [232,18],
-      
-        "DP": 250,
-      
-        "GQ": 99,
-      
-        "GT": "0/0",
-      
-        "PL": [0,137,3600],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [139,13],
-      
-        "DP": 152,
-      
-        "GQ": 15,
-      
-        "GT": "0/0",
-      
-        "PL": [0,15,2266],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [114,16],
-      
-        "DP": 130,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [147,0,1525],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [168,14],
-      
-        "DP": 182,
-      
-        "GQ": 2,
-      
-        "GT": "0/0",
-      
-        "PL": [0,2,2230],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 13868 ,
-  "seq:ref": "A" ,
-  "seq:alt": "G"
-   , "dp": 1108 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [60,15],
-      
-        "DP": 75,
-      
-        "GQ": 80,
-      
-        "GT": "0/1",
-      
-        "PL": [80,0,568],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [146,46],
-      
-        "DP": 192,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [289,0,1030],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [146,36],
-      
-        "DP": 182,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [203,0,1001],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [172,52],
-      
-        "DP": 224,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [222,0,1150],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [106,36],
-      
-        "DP": 142,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [181,0,621],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [79,32],
-      
-        "DP": 111,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [126,0,467],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [129,38],
-      
-        "DP": 167,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [420,0,767],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 13896 ,
-  "seq:ref": "C" ,
-  "seq:alt": "A"
-   , "dp": 830 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [50,12],
-      
-        "DP": 62,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [107,0,367],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [107,28],
-      
-        "DP": 135,
-      
-        "GQ": 40,
-      
-        "GT": "0/1",
-      
-        "PL": [40,0,660],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [120,23],
-      
-        "DP": 143,
-      
-        "GQ": 37,
-      
-        "GT": "0/1",
-      
-        "PL": [37,0,675],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [144,31],
-      
-        "DP": 175,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [172,0,690],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [98,14],
-      
-        "DP": 112,
-      
-        "GQ": 42,
-      
-        "GT": "0/0",
-      
-        "PL": [0,42,577],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [65,16],
-      
-        "DP": 81,
-      
-        "GQ": 34,
-      
-        "GT": "0/1",
-      
-        "PL": [34,0,290],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [102,19],
-      
-        "DP": 121,
-      
-        "GQ": 41,
-      
-        "GT": "0/1",
-      
-        "PL": [41,0,677],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 14354 ,
-  "seq:ref": "C" ,
-  "seq:alt": "A"
-   , "dp": 764 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [36,7],
-      
-        "DP": 43,
-      
-        "GQ": 68,
-      
-        "GT": "0/1",
-      
-        "PL": [68,0,75],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [141,17],
-      
-        "DP": 158,
-      
-        "GQ": 9,
-      
-        "GT": "0/0",
-      
-        "PL": [0,9,86],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [103,12],
-      
-        "DP": 115,
-      
-        "GQ": 42,
-      
-        "GT": "0/1",
-      
-        "PL": [42,0,72],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [132,13],
-      
-        "DP": 145,
-      
-        "GQ": 21,
-      
-        "GT": "0/0",
-      
-        "PL": [0,21,201],
-      
-    } ,
-    
-  
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [62,10],
-      
-        "DP": 72,
-      
-        "GQ": 38,
-      
-        "GT": "0/1",
-      
-        "PL": [38,0,117],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [108,11],
-      
-        "DP": 119,
-      
-        "GQ": 9,
-      
-        "GT": "0/0",
-      
-        "PL": [0,9,86],
-      
-    } ,
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 14464 ,
-  "seq:ref": "A" ,
-  "seq:alt": "T"
-   , "dp": 809 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [41,10],
-      
-        "DP": 51,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [183,0,569],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [107,48],
-      
-        "DP": 155,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [829,0,1388],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [99,42],
-      
-        "DP": 141,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [691,0,1103],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [114,36],
-      
-        "DP": 150,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [454,0,1544],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [48,35],
-      
-        "DP": 83,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [781,0,561],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [64,25],
-      
-        "DP": 89,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [409,0,781],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [102,38],
-      
-        "DP": 140,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [638,0,1310],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 14673 ,
-  "seq:ref": "G" ,
-  "seq:alt": "C"
-   , "dp": 754 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [28,8],
-      
-        "DP": 36,
-      
-        "GQ": 34,
-      
-        "GT": "0/1",
-      
-        "PL": [34,0,409],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [117,25],
-      
-        "DP": 142,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [125,0,1964],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [87,30],
-      
-        "DP": 117,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [214,0,1506],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [130,27],
-      
-        "DP": 157,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [193,0,2076],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [77,18],
-      
-        "DP": 95,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [114,0,1273],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [49,27],
-      
-        "DP": 76,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [200,0,719],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [103,28],
-      
-        "DP": 131,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [172,0,1620],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 14699 ,
-  "seq:ref": "C" ,
-  "seq:alt": "G"
-   , "dp": 719 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [35,6],
-      
-        "DP": 43,
-      
-        "GQ": 51,
-      
-        "GT": "0/0",
-      
-        "PL": [0,51,720],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [91,37],
-      
-        "DP": 128,
-      
-        "GQ": 59,
-      
-        "GT": "0/1",
-      
-        "PL": [59,0,1859],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [80,29],
-      
-        "DP": 109,
-      
-        "GQ": 99,
-      
-        "GT": "0/0",
-      
-        "PL": [0,101,1700],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [113,34],
-      
-        "DP": 147,
-      
-        "GQ": 14,
-      
-        "GT": "0/0",
-      
-        "PL": [0,14,1987],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [72,26],
-      
-        "DP": 98,
-      
-        "GQ": 37,
-      
-        "GT": "0/0",
-      
-        "PL": [0,37,1319],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [53,25],
-      
-        "DP": 78,
-      
-        "GQ": 78,
-      
-        "GT": "0/0",
-      
-        "PL": [0,78,1035],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [84,30],
-      
-        "DP": 114,
-      
-        "GQ": 44,
-      
-        "GT": "0/1",
-      
-        "PL": [44,0,1326],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 14907 ,
-  "seq:ref": "A" ,
-  "seq:alt": "G"
-   , "dp": 1083 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [27,30],
-      
-        "DP": 57,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [603,0,550],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [117,99],
-      
-        "DP": 216,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [2024,0,2888],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [91,71],
-      
-        "DP": 162,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [1489,0,1990],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [119,86],
-      
-        "DP": 205,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [1876,0,2588],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [100,53],
-      
-        "DP": 153,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [1001,0,2297],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [59,59],
-      
-        "DP": 118,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [1240,0,1241],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [91,67],
-      
-        "DP": 158,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [1495,0,2003],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 14930 ,
-  "seq:ref": "A" ,
-  "seq:alt": "G"
-   , "dp": 1092 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [32,36],
-      
-        "DP": 68,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [609,0,659],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [123,92],
-      
-        "DP": 216,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [1636,0,3225],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [92,78],
-      
-        "DP": 170,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [1449,0,2202],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [123,86],
-      
-        "DP": 210,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [1748,0,3028],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [85,50],
-      
-        "DP": 136,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [802,0,2117],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [62,63],
-      
-        "DP": 125,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [1072,0,1437],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [92,71],
-      
-        "DP": 164,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [1389,0,2055],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 14933 ,
-  "seq:ref": "G" ,
-  "seq:alt": "A"
-   , "dp": 1089 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [59,9],
-      
-        "DP": 68,
-      
-        "GQ": 1,
-      
-        "GT": "0/0",
-      
-        "PL": [0,1,1361],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [192,24],
-      
-        "DP": 216,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [125,0,4941],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [160,9],
-      
-        "DP": 169,
-      
-        "GQ": 99,
-      
-        "GT": "0/0",
-      
-        "PL": [0,142,4118],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [191,21],
-      
-        "DP": 212,
-      
-        "GQ": 39,
-      
-        "GT": "0/1",
-      
-        "PL": [39,0,4848],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [126,6],
-      
-        "DP": 132,
-      
-        "GQ": 99,
-      
-        "GT": "0/0",
-      
-        "PL": [0,210,3367],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [113,15],
-      
-        "DP": 128,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [124,0,2578],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [154,10],
-      
-        "DP": 164,
-      
-        "GQ": 99,
-      
-        "GT": "0/0",
-      
-        "PL": [0,158,3934],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 14948 ,
-  "seq:ref": "G" ,
-  "seq:alt": "A"
-   , "dp": 1050 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [56,7],
-      
-        "DP": 63,
-      
-        "GQ": 79,
-      
-        "GT": "0/1",
-      
-        "PL": [79,0,1134],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [168,24],
-      
-        "DP": 192,
-      
-        "GQ": 70,
-      
-        "GT": "0/1",
-      
-        "PL": [70,0,3900],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [160,21],
-      
-        "DP": 181,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [147,0,3515],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [188,23],
-      
-        "DP": 211,
-      
-        "GQ": 57,
-      
-        "GT": "0/1",
-      
-        "PL": [57,0,4113],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [115,14],
-      
-        "DP": 129,
-      
-        "GQ": 32,
-      
-        "GT": "0/1",
-      
-        "PL": [32,0,2406],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [103,18],
-      
-        "DP": 121,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [173,0,2016],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [132,21],
-      
-        "DP": 153,
-      
-        "GQ": 52,
-      
-        "GT": "0/1",
-      
-        "PL": [52,0,2861],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 14976 ,
-  "seq:ref": "G" ,
-  "seq:alt": "A"
-   , "dp": 939 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [50,6],
-      
-        "DP": 56,
-      
-        "GQ": 12,
-      
-        "GT": "0/1",
-      
-        "PL": [12,0,929],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [152,14],
-      
-        "DP": 166,
-      
-        "GQ": 81,
-      
-        "GT": "0/0",
-      
-        "PL": [0,81,3159],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [152,9],
-      
-        "DP": 161,
-      
-        "GQ": 99,
-      
-        "GT": "0/0",
-      
-        "PL": [0,113,2885],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [174,22],
-      
-        "DP": 196,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [127,0,3211],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [100,9],
-      
-        "DP": 109,
-      
-        "GQ": 97,
-      
-        "GT": "0/0",
-      
-        "PL": [0,97,1900],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [103,13],
-      
-        "DP": 116,
-      
-        "GQ": 97,
-      
-        "GT": "0/1",
-      
-        "PL": [97,0,1548],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [122,13],
-      
-        "DP": 135,
-      
-        "GQ": 55,
-      
-        "GT": "0/0",
-      
-        "PL": [0,55,2246],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 15118 ,
-  "seq:ref": "A" ,
-  "seq:alt": "G"
-   , "dp": 1004 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [38,8],
-      
-        "DP": 46,
-      
-        "GQ": 50,
-      
-        "GT": "0/1",
-      
-        "PL": [50,0,575],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [148,50],
-      
-        "DP": 198,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [671,0,2598],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [97,32],
-      
-        "DP": 129,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [358,0,1911],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [176,53],
-      
-        "DP": 230,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [700,0,2989],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [91,19],
-      
-        "DP": 113,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [146,0,1741],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [92,31],
-      
-        "DP": 126,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [347,0,1543],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [126,30],
-      
-        "DP": 158,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [271,0,2193],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 15190 ,
-  "seq:ref": "G" ,
-  "seq:alt": "A"
-   , "dp": 1090 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [42,11],
-      
-        "DP": 53,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [177,0,696],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [157,51],
-      
-        "DP": 208,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [839,0,3145],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [142,28],
-      
-        "DP": 170,
-      
-        "GQ": 91,
-      
-        "GT": "0/1",
-      
-        "PL": [91,0,2919],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [160,40],
-      
-        "DP": 200,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [499,0,2815],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [109,17],
-      
-        "DP": 126,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [167,0,2363],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [111,34],
-      
-        "DP": 145,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [554,0,2268],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [141,38],
-      
-        "DP": 179,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [277,0,2827],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 15211 ,
-  "seq:ref": "T" ,
-  "seq:alt": "G"
-   , "dp": 992 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [19,35],
-      
-        "DP": 54,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [858,0,183],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [63,120],
-      
-        "DP": 183,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [2771,0,960],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [50,111],
-      
-        "DP": 161,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [2213,0,740],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [58,113],
-      
-        "DP": 171,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [2326,0,685],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [39,81],
-      
-        "DP": 120,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [1707,0,678],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [38,96],
-      
-        "DP": 134,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [2126,0,499],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [61,107],
-      
-        "DP": 168,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [2071,0,895],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 15274 ,
-  "seq:ref": "A" ,
-  "seq:alt": "G"
-   , "dp": 636 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [1,14,22],
-      
-        "DP": 37,
-      
-        "GQ": 99,
-      
-        "GT": "1/2",
-      
-        "PL": [717,494,467,224,0,170],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [1,45,75],
-      
-        "DP": 121,
-      
-        "GQ": 99,
-      
-        "GT": "1/2",
-      
-        "PL": [1922,1334,1265,588,0,441],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [0,31,71],
-      
-        "DP": 102,
-      
-        "GQ": 99,
-      
-        "GT": "1/2",
-      
-        "PL": [1960,1563,1515,396,0,222],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [1,59,77],
-      
-        "DP": 137,
-      
-        "GQ": 99,
-      
-        "GT": "1/2",
-      
-        "PL": [2009,1376,1298,633,0,486],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [0,18,52],
-      
-        "DP": 71,
-      
-        "GQ": 62,
-      
-        "GT": "1/2",
-      
-        "PL": [938,789,771,149,0,62],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [0,29,38],
-      
-        "DP": 67,
-      
-        "GQ": 99,
-      
-        "GT": "1/2",
-      
-        "PL": [1141,883,853,258,0,162],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [0,38,60],
-      
-        "DP": 98,
-      
-        "GQ": 99,
-      
-        "GT": "1/2",
-      
-        "PL": [1464,1064,1016,399,0,285],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 15447 ,
-  "seq:ref": "A" ,
-  "seq:alt": "G"
-   , "dp": 1213 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [42,4],
-      
-        "DP": 46,
-      
-        "GQ": 34,
-      
-        "GT": "0/0",
-      
-        "PL": [0,34,690],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [220,22],
-      
-        "DP": 242,
-      
-        "GQ": 99,
-      
-        "GT": "0/0",
-      
-        "PL": [0,99,3639],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [167,16],
-      
-        "DP": 183,
-      
-        "GQ": 42,
-      
-        "GT": "0/0",
-      
-        "PL": [0,42,2582],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [201,25],
-      
-        "DP": 226,
-      
-        "GQ": 78,
-      
-        "GT": "0/1",
-      
-        "PL": [78,0,2854],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [121,16],
-      
-        "DP": 137,
-      
-        "GQ": 39,
-      
-        "GT": "0/1",
-      
-        "PL": [39,0,1877],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [160,13],
-      
-        "DP": 173,
-      
-        "GQ": 99,
-      
-        "GT": "0/0",
-      
-        "PL": [0,139,2724],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [157,18],
-      
-        "DP": 175,
-      
-        "GQ": 34,
-      
-        "GT": "0/1",
-      
-        "PL": [34,0,2472],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 15688 ,
-  "seq:ref": "C" ,
-  "seq:alt": "T"
-   , "dp": 904 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [34,3],
-      
-        "DP": 37,
-      
-        "GQ": 15,
-      
-        "GT": "0/0",
-      
-        "PL": [0,15,335],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [166,16],
-      
-        "DP": 182,
-      
-        "GQ": 61,
-      
-        "GT": "0/0",
-      
-        "PL": [0,61,2190],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [131,16],
-      
-        "DP": 147,
-      
-        "GQ": 69,
-      
-        "GT": "0/1",
-      
-        "PL": [69,0,1563],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [167,17],
-      
-        "DP": 184,
-      
-        "GQ": 22,
-      
-        "GT": "0/1",
-      
-        "PL": [22,0,1894],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [88,12],
-      
-        "DP": 100,
-      
-        "GQ": 15,
-      
-        "GT": "0/0",
-      
-        "PL": [0,15,1099],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [88,13],
-      
-        "DP": 101,
-      
-        "GQ": 1,
-      
-        "GT": "0/0",
-      
-        "PL": [0,1,1126],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [132,16],
-      
-        "DP": 148,
-      
-        "GQ": 18,
-      
-        "GT": "0/0",
-      
-        "PL": [0,18,1706],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 16068 ,
-  "seq:ref": "T" ,
-  "seq:alt": "C"
-   , "dp": 398 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [18,15],
-      
-        "DP": 33,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [182,0,404],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [51,6],
-      
-        "DP": 57,
-      
-        "GQ": 31,
-      
-        "GT": "0/0",
-      
-        "PL": [0,31,815],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [52,16],
-      
-        "DP": 68,
-      
-        "GQ": 64,
-      
-        "GT": "0/1",
-      
-        "PL": [64,0,1101],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [68,13],
-      
-        "DP": 81,
-      
-        "GQ": 99,
-      
-        "GT": "0/0",
-      
-        "PL": [0,99,1505],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [41,8],
-      
-        "DP": 49,
-      
-        "GQ": 51,
-      
-        "GT": "0/0",
-      
-        "PL": [0,51,1010],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [40,9],
-      
-        "DP": 49,
-      
-        "GQ": 21,
-      
-        "GT": "0/1",
-      
-        "PL": [21,0,702],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [38,19],
-      
-        "DP": 58,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [153,0,760],
-      
-    } 
-    
-  
-  }
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 16103 ,
-  "seq:ref": "T" ,
-  "seq:alt": "G"
-   , "dp": 526 ,
-  {
-  
-    
-    "Original": {
-      
-        "AD": [21,29],
-      
-        "DP": 50,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [504,0,450],
-      
-    } ,
-    
-  
-    
-    "s1t1": {
-      
-        "AD": [55,24],
-      
-        "DP": 79,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [209,0,838],
-      
-    } ,
-    
-  
-    
-    "s2t1": {
-      
-        "AD": [49,37],
-      
-        "DP": 86,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [456,0,1002],
-      
-    } ,
-    
-  
-    
-    "s3t1": {
-      
-        "AD": [74,32],
-      
-        "DP": 106,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [193,0,1519],
-      
-    } ,
-    
-  
-    
-    "s1t2": {
-      
-        "AD": [41,19],
-      
-        "DP": 60,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [141,0,740],
-      
-    } ,
-    
-  
-    
-    "s2t2": {
-      
-        "AD": [38,23],
-      
-        "DP": 61,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [257,0,548],
-      
-    } ,
-    
-  
-    
-    "s3t2": {
-      
-        "AD": [38,46],
-      
-        "DP": 84,
-      
-        "GQ": 99,
-      
-        "GT": "0/1",
-      
-        "PL": [628,0,641],
-      
-    } 
-    
-  
-  }
-},]
+    "META": {"INFO":{"AC":{"ID":"AC","Number":"A","Type":"Integer","Description":"Allele count in genotypes, for each ALT allele, in the same order as listed"},"AF":{"ID":"AF","Number":"A","Type":"Float","Description":"Allele Frequency, for each ALT allele, in the same order as listed"},"AN":{"ID":"AN","Number":"1","Type":"Integer","Description":"Total number of alleles in called genotypes"},"BaseQRankSum":{"ID":"BaseQRankSum","Number":"1","Type":"Float","Description":"Z-score from Wilcoxon rank sum test of Alt Vs. Ref base qualities"},"DP":{"ID":"DP","Number":"1","Type":"Integer","Description":"Approximate read depth; some reads may have been filtered"},"DS":{"ID":"DS","Number":"0","Type":"Flag","Description":"Were any of the samples downsampled?"},"Dels":{"ID":"Dels","Number":"1","Type":"Float","Description":"Fraction of Reads Containing Spanning Deletions"},"FS":{"ID":"FS","Number":"1","Type":"Float","Description":"Phred-scaled p-value using Fisher's exact test to detect strand bias"},"HaplotypeScore":{"ID":"HaplotypeScore","Number":"1","Type":"Float","Description":"Consistency of the site with at most two segregating haplotypes"},"InbreedingCoeff":{"ID":"InbreedingCoeff","Number":"1","Type":"Float","Description":"Inbreeding coefficient as estimated from the genotype likelihoods per-sample when compared against the Hardy-Weinberg expectation"},"MLEAC":{"ID":"MLEAC","Number":"A","Type":"Integer","Description":"Maximum likelihood expectation (MLE) for the allele counts (not necessarily the same as the AC), for each ALT allele, in the same order as listed"},"MLEAF":{"ID":"MLEAF","Number":"A","Type":"Float","Description":"Maximum likelihood expectation (MLE) for the allele frequency (not necessarily the same as the AF), for each ALT allele, in the same order as listed"},"MQ":{"ID":"MQ","Number":"1","Type":"Float","Description":"RMS Mapping Quality"},"MQ0":{"ID":"MQ0","Number":"1","Type":"Integer","Description":"Total Mapping Quality Zero Reads"},"MQRankSum":{"ID":"MQRankSum","Number":"1","Type":"Float","Description":"Z-score From Wilcoxon rank sum test of Alt vs. Ref read mapping qualities"},"QD":{"ID":"QD","Number":"1","Type":"Float","Description":"Variant Confidence/Quality by Depth"},"RPA":{"ID":"RPA","Number":".","Type":"Integer","Description":"Number of times tandem repeat unit is repeated, for each allele (including reference)"},"RU":{"ID":"RU","Number":"1","Type":"String","Description":"Tandem repeat unit (bases)"},"ReadPosRankSum":{"ID":"ReadPosRankSum","Number":"1","Type":"Float","Description":"Z-score from Wilcoxon rank sum test of Alt vs. Ref read position bias"},"STR":{"ID":"STR","Number":"0","Type":"Flag","Description":"Variant is a short tandem repeat"}},"FORMAT":{"AD":{"ID":"AD","Number":".","Type":"Integer","Description":"Allelic depths for the ref and alt alleles in the order listed"},"DP":{"ID":"DP","Number":"1","Type":"Integer","Description":"Approximate read depth (reads with MQ=255 or with bad mates are filtered)"},"GQ":{"ID":"GQ","Number":"1","Type":"Integer","Description":"Genotype Quality"},"GT":{"ID":"GT","Number":"1","Type":"String","Description":"Genotype"},"PL":{"ID":"PL","Number":"G","Type":"Integer","Description":"Normalized, Phred-scaled likelihoods for genotypes as defined in the VCF specification"}},"fileformat":"VCFv4.1","FILTER":"<ID=LowQual,Description=\"Low quality\">","GATKCommandLine":"<ID=UnifiedGenotyper,Version=2.8-1-g932cd3a,Date=\"Sat Jan 25 10:33:56 CET 2014\",Epoch=1390642436187,CommandLineOptions=\"analysis_type=UnifiedGenotyper input_file=[/data_fedor12/BAM/sander/Liver_clones/BIOPSY17513D/mapping/BIOPSY17513D_dedup_realigned_recalibrated.bam, /data_fedor12/BAM/sander/Liver_clones/clone3/mapping/clone3_dedup_realigned_recalibrated.bam, /data_fedor12/BAM/sander/Liver_clones/clone4/mapping/clone4_dedup_realigned_recalibrated.bam, /data_fedor12/BAM/sander/Liver_clones/clone10/mapping/clone10_dedup_realigned_recalibrated.bam, /data_fedor12/BAM/sander/Liver_clones/subclone33/mapping/subclone33_dedup_realigned_recalibrated.bam, /data_fedor12/BAM/sander/Liver_clones/subclone46/mapping/subclone46_dedup_realigned_recalibrated.bam, /data_fedor12/BAM/sander/Liver_clones/subclone105/mapping/subclone105_dedup_realigned_recalibrated.bam] read_buffer_size=null phone_home=AWS gatk_key=null tag=NA read_filter=[] intervals=[/data_fedor13/sander/variant_calling/Liver_clones/.queue/scatterGather/UnifiedGenotyper_noref-1-sg/temp_001_of_500/scatter.intervals] excludeIntervals=null interval_set_rule=UNION interval_merging=ALL interval_padding=0 reference_sequence=/data_fedor13/common_data/references/H_sapiens/GATK_b37_bundle_reference/basespace/human_g1k_v37.fasta nonDeterministicRandomSeed=false disableDithering=false maxRuntime=-1 maxRuntimeUnits=MINUTES downsampling_type=BY_SAMPLE downsample_to_fraction=null downsample_to_coverage=250 baq=OFF baqGapOpenPenalty=40.0 fix_misencoded_quality_scores=false allow_potentially_misencoded_quality_scores=false useOriginalQualities=false defaultBaseQualities=-1 performanceLog=null BQSR=null quantize_quals=0 disable_indel_quals=false emit_original_quals=false preserve_qscores_less_than=6 globalQScorePrior=-1.0 allow_bqsr_on_reduced_bams_despite_repeated_warnings=false validation_strictness=SILENT remove_program_records=false keep_program_records=false sample_rename_mapping_file=null unsafe=null disable_auto_index_creation_and_locking_when_reading_rods=false num_threads=1 num_cpu_threads_per_data_thread=1 num_io_threads=0 monitorThreadEfficiency=false num_bam_file_handles=null read_group_black_list=null pedigree=[] pedigreeString=[] pedigreeValidationType=STRICT allow_intervals_with_unindexed_bam=false generateShadowBCF=false variant_index_type=DYNAMIC_SEEK variant_index_parameter=-1 logging_level=INFO log_to_file=null help=false version=false genotype_likelihoods_model=SNP pcr_error_rate=1.0E-4 computeSLOD=false annotateNDA=false pair_hmm_implementation=LOGLESS_CACHING min_base_quality_score=17 max_deletion_fraction=0.05 allSitePLs=false min_indel_count_for_genotyping=5 min_indel_fraction_per_sample=0.25 indelGapContinuationPenalty=10 indelGapOpenPenalty=45 indelHaplotypeSize=80 indelDebug=false ignoreSNPAlleles=false allReadsSP=false ignoreLaneInfo=false reference_sample_calls=(RodBinding name= source=UNBOUND) reference_sample_name=null sample_ploidy=2 min_quality_score=1 max_quality_score=40 site_quality_prior=20 min_power_threshold_for_calling=0.95 min_reference_depth=100 exclude_filtered_reference_sites=false output_mode=EMIT_VARIANTS_ONLY heterozygosity=0.001 indel_heterozygosity=1.25E-4 genotyping_mode=DISCOVERY standard_min_confidence_threshold_for_calling=30.0 standard_min_confidence_threshold_for_emitting=30.0 alleles=(RodBinding name= source=UNBOUND) max_alternate_alleles=6 input_prior=[] contamination_fraction_to_filter=0.0 contamination_fraction_per_sample_file=null p_nonref_model=EXACT_INDEPENDENT exactcallslog=null dbsnp=(RodBinding name= source=UNBOUND) comp=[] out=org.broadinstitute.sting.gatk.io.stubs.VariantContextWriterStub no_cmdline_in_header=org.broadinstitute.sting.gatk.io.stubs.VariantContextWriterStub sites_only=org.broadinstitute.sting.gatk.io.stubs.VariantContextWriterStub bcf=org.broadinstitute.sting.gatk.io.stubs.VariantContextWriterStub onlyEmitSamples=[] debug_file=null metrics_file=null annotation=[] excludeAnnotation=[] filter_reads_with_N_cigar=false filter_mismatching_base_and_quals=false filter_bases_not_stored=false\">","contig":"<ID=GL000192.1,length=547496,assembly=b37>","reference":"file:human_g1k_v37.fasta"},
+    "BODY": [	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 10257 ,
+	    "seq:ref": "A" ,
+	    "seq:alt": "C"
+	     , "dp": 1518 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [151,8],
+		    
+		    "DP": 159,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,195,2282]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [219,22],
+		    
+		    "DP": 242,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,197,2445]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [227,22],
+		    
+		    "DP": 249,
+		    
+		    "GQ": 90,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,90,2339]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [226,22],
+		    
+		    "DP": 249,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,159,2695]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [166,18],
+		    
+		    "DP": 186,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,182,1989]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [185,27],
+		    
+		    "DP": 212,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [111,0,2387]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [201,15],
+		    
+		    "DP": 218,
+		    
+		    "GQ": 24,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,24,1972]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 10291 ,
+	    "seq:ref": "C" ,
+	    "seq:alt": "T"
+	     , "dp": 1433 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [145,16],
+		    
+		    "DP": 165,
+		    
+		    "GQ": 23,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [23,0,491]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [218,26],
+		    
+		    "DP": 249,
+		    
+		    "GQ": 29,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [29,0,611]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [214,30],
+		    
+		    "DP": 249,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [145,0,801]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [213,32],
+		    
+		    "DP": 247,
+		    
+		    "GQ": 20,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [20,0,1031]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [122,36],
+		    
+		    "DP": 161,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [347,0,182]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [131,27],
+		    
+		    "DP": 163,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [255,0,508]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [156,31],
+		    
+		    "DP": 189,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [252,0,372]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 10297 ,
+	    "seq:ref": "C" ,
+	    "seq:alt": "T"
+	     , "dp": 1440 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [155,18],
+		    
+		    "DP": 182,
+		    
+		    "GQ": 44,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [44,0,654]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [218,23],
+		    
+		    "DP": 246,
+		    
+		    "GQ": 21,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [21,0,673]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [219,26],
+		    
+		    "DP": 250,
+		    
+		    "GQ": 41,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [41,0,898]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [207,30],
+		    
+		    "DP": 246,
+		    
+		    "GQ": 39,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,39,963]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [137,20],
+		    
+		    "DP": 165,
+		    
+		    "GQ": 21,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,21,363]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [124,27],
+		    
+		    "DP": 158,
+		    
+		    "GQ": 65,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [65,0,435]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [151,27],
+		    
+		    "DP": 183,
+		    
+		    "GQ": 63,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [63,0,485]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 10303 ,
+	    "seq:ref": "C" ,
+	    "seq:alt": "T"
+	     , "dp": 1460 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [169,25],
+		    
+		    "DP": 198,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [195,0,609]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [211,31],
+		    
+		    "DP": 247,
+		    
+		    "GQ": 1,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [1,0,656]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [214,28],
+		    
+		    "DP": 248,
+		    
+		    "GQ": 7,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,7,982]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [214,32],
+		    
+		    "DP": 248,
+		    
+		    "GQ": 25,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,25,980]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [146,17],
+		    
+		    "DP": 172,
+		    
+		    "GQ": 2,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,2,353]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [123,23],
+		    
+		    "DP": 157,
+		    
+		    "GQ": 17,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [17,0,541]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [156,22],
+		    
+		    "DP": 182,
+		    
+		    "GQ": 19,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,19,413]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 10315 ,
+	    "seq:ref": "C" ,
+	    "seq:alt": "T"
+	     , "dp": 1500 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [181,26],
+		    
+		    "DP": 212,
+		    
+		    "GQ": 41,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [41,0,618]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [223,17],
+		    
+		    "DP": 246,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,102,832]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [219,20],
+		    
+		    "DP": 242,
+		    
+		    "GQ": 66,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,66,924]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [217,23],
+		    
+		    "DP": 245,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,109,1384]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [155,27],
+		    
+		    "DP": 190,
+		    
+		    "GQ": 97,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [97,0,328]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [130,20],
+		    
+		    "DP": 157,
+		    
+		    "GQ": 10,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [10,0,531]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [163,24],
+		    
+		    "DP": 189,
+		    
+		    "GQ": 5,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,5,450]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 10321 ,
+	    "seq:ref": "C" ,
+	    "seq:alt": "T"
+	     , "dp": 1537 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [189,25],
+		    
+		    "DP": 218,
+		    
+		    "GQ": 30,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [30,0,810]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [219,22],
+		    
+		    "DP": 246,
+		    
+		    "GQ": 24,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,24,593]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [218,27],
+		    
+		    "DP": 248,
+		    
+		    "GQ": 34,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [34,0,1134]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [220,22],
+		    
+		    "DP": 248,
+		    
+		    "GQ": 56,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,56,1207]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [168,23],
+		    
+		    "DP": 193,
+		    
+		    "GQ": 19,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [19,0,493]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [139,22],
+		    
+		    "DP": 164,
+		    
+		    "GQ": 46,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [46,0,689]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [167,26],
+		    
+		    "DP": 196,
+		    
+		    "GQ": 20,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [20,0,522]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 10327 ,
+	    "seq:ref": "T" ,
+	    "seq:alt": "C"
+	     , "dp": 1641 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [178,56],
+		    
+		    "DP": 237,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [178,0,848]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [178,60],
+		    
+		    "DP": 238,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [320,0,575]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [185,40],
+		    
+		    "DP": 229,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [236,0,679]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [184,52],
+		    
+		    "DP": 237,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [358,0,544]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [165,43],
+		    
+		    "DP": 209,
+		    
+		    "GQ": 57,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [57,0,726]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [151,31],
+		    
+		    "DP": 183,
+		    
+		    "GQ": 9,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [9,0,780]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [164,46],
+		    
+		    "DP": 210,
+		    
+		    "GQ": 96,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [96,0,550]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 10583 ,
+	    "seq:ref": "G" ,
+	    "seq:alt": "A"
+	     , "dp": 129 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [5,3],
+		    
+		    "DP": 8,
+		    
+		    "GQ": 58,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [58,0,133]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [12,12],
+		    
+		    "DP": 24,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [231,0,287]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [16,4],
+		    
+		    "DP": 21,
+		    
+		    "GQ": 38,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [38,0,491]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [19,4],
+		    
+		    "DP": 23,
+		    
+		    "GQ": 57,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [57,0,494]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [9,6],
+		    
+		    "DP": 15,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [140,0,180]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [11,8],
+		    
+		    "DP": 19,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [173,0,235]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [15,4],
+		    
+		    "DP": 19,
+		    
+		    "GQ": 42,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [42,0,344]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 10665 ,
+	    "seq:ref": "C" ,
+	    "seq:alt": "G"
+	     , "dp": 28 ,
+	    "samples" : {
+		
+		
+		
+		
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [4,3],
+		    
+		    "DP": 7,
+		    
+		    "GQ": 57,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [57,0,78]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [3,2],
+		    
+		    "DP": 5,
+		    
+		    "GQ": 23,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [30,0,23]
+		    
+		}
+		
+		
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [2,0],
+		    
+		    "DP": 2,
+		    
+		    "GQ": 3,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,3,26]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [6,1],
+		    
+		    "DP": 7,
+		    
+		    "GQ": 6,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,6,49]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 10694 ,
+	    "seq:ref": "C" ,
+	    "seq:alt": "G"
+	     , "dp": 22 ,
+	    "samples" : {
+		
+		
+		
+		
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [2,3],
+		    
+		    "DP": 5,
+		    
+		    "GQ": 6,
+		    
+		    "GT": "1/1",
+		    
+		    "PL": [74,6,0]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [3,2],
+		    
+		    "DP": 5,
+		    
+		    "GQ": 3,
+		    
+		    "GT": "1/1",
+		    
+		    "PL": [35,3,0]
+		    
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 10723 ,
+	    "seq:ref": "C" ,
+	    "seq:alt": "G"
+	     , "dp": 18 ,
+	    "samples" : {
+		
+		
+		
+		
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [2,2],
+		    
+		    "DP": 4,
+		    
+		    "GQ": 6,
+		    
+		    "GT": "1/1",
+		    
+		    "PL": [66,6,0]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [4,1],
+		    
+		    "DP": 5,
+		    
+		    "GQ": 3,
+		    
+		    "GT": "1/1",
+		    
+		    "PL": [36,3,0]
+		    
+		}
+		
+		
+		
+		
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [6,0],
+		    
+		    "DP": 6,
+		    
+		    "GQ": 3,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,3,33]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 12783 ,
+	    "seq:ref": "G" ,
+	    "seq:alt": "A"
+	     , "dp": 939 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [24,34],
+		    
+		    "DP": 58,
+		    
+		    "GQ": 82,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [174,0,82]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [80,84],
+		    
+		    "DP": 164,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [658,0,433]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [59,85],
+		    
+		    "DP": 144,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [670,0,407]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [68,114],
+		    
+		    "DP": 182,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [1074,0,463]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [58,68],
+		    
+		    "DP": 126,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [437,0,310]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [37,66],
+		    
+		    "DP": 103,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [446,0,369]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [62,96],
+		    
+		    "DP": 158,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [911,0,417]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 13116 ,
+	    "seq:ref": "T" ,
+	    "seq:alt": "G"
+	     , "dp": 721 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [20,12],
+		    
+		    "DP": 32,
+		    
+		    "GQ": 92,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [92,0,300]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [84,47],
+		    
+		    "DP": 131,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [479,0,1548]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [65,37],
+		    
+		    "DP": 102,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [441,0,1153]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [94,57],
+		    
+		    "DP": 152,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [584,0,1993]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [61,43],
+		    
+		    "DP": 104,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [360,0,1199]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [54,33],
+		    
+		    "DP": 88,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [221,0,986]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [62,47],
+		    
+		    "DP": 109,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [455,0,1128]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 13118 ,
+	    "seq:ref": "A" ,
+	    "seq:alt": "G"
+	     , "dp": 703 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [21,13],
+		    
+		    "DP": 34,
+		    
+		    "GQ": 95,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [95,0,277]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [82,47],
+		    
+		    "DP": 129,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [444,0,1445]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [65,36],
+		    
+		    "DP": 101,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [412,0,1179]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [92,53],
+		    
+		    "DP": 145,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [455,0,1989]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [58,40],
+		    
+		    "DP": 99,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [312,0,1216]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [52,33],
+		    
+		    "DP": 85,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [186,0,1000]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [61,47],
+		    
+		    "DP": 108,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [453,0,1079]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 13178 ,
+	    "seq:ref": "G" ,
+	    "seq:alt": "A"
+	     , "dp": 929 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [49,3],
+		    
+		    "DP": 52,
+		    
+		    "GQ": 11,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [11,0,292]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [161,11],
+		    
+		    "DP": 172,
+		    
+		    "GQ": 60,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,60,1328]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [122,15],
+		    
+		    "DP": 137,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [99,0,936]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [164,8],
+		    
+		    "DP": 172,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,112,1436]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [120,9],
+		    
+		    "DP": 129,
+		    
+		    "GQ": 62,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,62,771]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [113,6],
+		    
+		    "DP": 119,
+		    
+		    "GQ": 12,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,12,885]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [138,10],
+		    
+		    "DP": 148,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,112,1596]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 13302 ,
+	    "seq:ref": "C" ,
+	    "seq:alt": "T"
+	     , "dp": 692 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [26,10],
+		    
+		    "DP": 36,
+		    
+		    "GQ": 41,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,41,616]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [91,45],
+		    
+		    "DP": 136,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [183,0,2085]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [71,28],
+		    
+		    "DP": 99,
+		    
+		    "GQ": 86,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [86,0,1557]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [96,50],
+		    
+		    "DP": 146,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [333,0,2098]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [55,34],
+		    
+		    "DP": 90,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [283,0,1321]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [47,18],
+		    
+		    "DP": 65,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [157,0,943]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [89,28],
+		    
+		    "DP": 117,
+		    
+		    "GQ": 67,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [67,0,1921]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 13757 ,
+	    "seq:ref": "G" ,
+	    "seq:alt": "A"
+	     , "dp": 1149 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [47,4],
+		    
+		    "DP": 53,
+		    
+		    "GQ": 16,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,16,344]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [185,16],
+		    
+		    "DP": 201,
+		    
+		    "GQ": 60,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,60,2690]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [157,24],
+		    
+		    "DP": 181,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [162,0,2556]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [232,18],
+		    
+		    "DP": 250,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,137,3600]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [139,13],
+		    
+		    "DP": 152,
+		    
+		    "GQ": 15,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,15,2266]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [114,16],
+		    
+		    "DP": 130,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [147,0,1525]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [168,14],
+		    
+		    "DP": 182,
+		    
+		    "GQ": 2,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,2,2230]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 13868 ,
+	    "seq:ref": "A" ,
+	    "seq:alt": "G"
+	     , "dp": 1108 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [60,15],
+		    
+		    "DP": 75,
+		    
+		    "GQ": 80,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [80,0,568]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [146,46],
+		    
+		    "DP": 192,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [289,0,1030]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [146,36],
+		    
+		    "DP": 182,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [203,0,1001]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [172,52],
+		    
+		    "DP": 224,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [222,0,1150]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [106,36],
+		    
+		    "DP": 142,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [181,0,621]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [79,32],
+		    
+		    "DP": 111,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [126,0,467]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [129,38],
+		    
+		    "DP": 167,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [420,0,767]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 13896 ,
+	    "seq:ref": "C" ,
+	    "seq:alt": "A"
+	     , "dp": 830 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [50,12],
+		    
+		    "DP": 62,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [107,0,367]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [107,28],
+		    
+		    "DP": 135,
+		    
+		    "GQ": 40,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [40,0,660]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [120,23],
+		    
+		    "DP": 143,
+		    
+		    "GQ": 37,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [37,0,675]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [144,31],
+		    
+		    "DP": 175,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [172,0,690]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [98,14],
+		    
+		    "DP": 112,
+		    
+		    "GQ": 42,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,42,577]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [65,16],
+		    
+		    "DP": 81,
+		    
+		    "GQ": 34,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [34,0,290]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [102,19],
+		    
+		    "DP": 121,
+		    
+		    "GQ": 41,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [41,0,677]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 14354 ,
+	    "seq:ref": "C" ,
+	    "seq:alt": "A"
+	     , "dp": 764 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [36,7],
+		    
+		    "DP": 43,
+		    
+		    "GQ": 68,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [68,0,75]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [141,17],
+		    
+		    "DP": 158,
+		    
+		    "GQ": 9,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,9,86]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [103,12],
+		    
+		    "DP": 115,
+		    
+		    "GQ": 42,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [42,0,72]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [132,13],
+		    
+		    "DP": 145,
+		    
+		    "GQ": 21,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,21,201]
+		    
+		}
+		
+		
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [62,10],
+		    
+		    "DP": 72,
+		    
+		    "GQ": 38,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [38,0,117]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [108,11],
+		    
+		    "DP": 119,
+		    
+		    "GQ": 9,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,9,86]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 14464 ,
+	    "seq:ref": "A" ,
+	    "seq:alt": "T"
+	     , "dp": 809 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [41,10],
+		    
+		    "DP": 51,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [183,0,569]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [107,48],
+		    
+		    "DP": 155,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [829,0,1388]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [99,42],
+		    
+		    "DP": 141,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [691,0,1103]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [114,36],
+		    
+		    "DP": 150,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [454,0,1544]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [48,35],
+		    
+		    "DP": 83,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [781,0,561]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [64,25],
+		    
+		    "DP": 89,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [409,0,781]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [102,38],
+		    
+		    "DP": 140,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [638,0,1310]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 14673 ,
+	    "seq:ref": "G" ,
+	    "seq:alt": "C"
+	     , "dp": 754 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [28,8],
+		    
+		    "DP": 36,
+		    
+		    "GQ": 34,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [34,0,409]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [117,25],
+		    
+		    "DP": 142,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [125,0,1964]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [87,30],
+		    
+		    "DP": 117,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [214,0,1506]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [130,27],
+		    
+		    "DP": 157,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [193,0,2076]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [77,18],
+		    
+		    "DP": 95,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [114,0,1273]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [49,27],
+		    
+		    "DP": 76,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [200,0,719]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [103,28],
+		    
+		    "DP": 131,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [172,0,1620]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 14699 ,
+	    "seq:ref": "C" ,
+	    "seq:alt": "G"
+	     , "dp": 719 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [35,6],
+		    
+		    "DP": 43,
+		    
+		    "GQ": 51,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,51,720]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [91,37],
+		    
+		    "DP": 128,
+		    
+		    "GQ": 59,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [59,0,1859]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [80,29],
+		    
+		    "DP": 109,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,101,1700]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [113,34],
+		    
+		    "DP": 147,
+		    
+		    "GQ": 14,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,14,1987]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [72,26],
+		    
+		    "DP": 98,
+		    
+		    "GQ": 37,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,37,1319]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [53,25],
+		    
+		    "DP": 78,
+		    
+		    "GQ": 78,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,78,1035]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [84,30],
+		    
+		    "DP": 114,
+		    
+		    "GQ": 44,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [44,0,1326]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 14907 ,
+	    "seq:ref": "A" ,
+	    "seq:alt": "G"
+	     , "dp": 1083 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [27,30],
+		    
+		    "DP": 57,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [603,0,550]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [117,99],
+		    
+		    "DP": 216,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [2024,0,2888]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [91,71],
+		    
+		    "DP": 162,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [1489,0,1990]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [119,86],
+		    
+		    "DP": 205,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [1876,0,2588]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [100,53],
+		    
+		    "DP": 153,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [1001,0,2297]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [59,59],
+		    
+		    "DP": 118,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [1240,0,1241]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [91,67],
+		    
+		    "DP": 158,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [1495,0,2003]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 14930 ,
+	    "seq:ref": "A" ,
+	    "seq:alt": "G"
+	     , "dp": 1092 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [32,36],
+		    
+		    "DP": 68,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [609,0,659]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [123,92],
+		    
+		    "DP": 216,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [1636,0,3225]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [92,78],
+		    
+		    "DP": 170,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [1449,0,2202]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [123,86],
+		    
+		    "DP": 210,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [1748,0,3028]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [85,50],
+		    
+		    "DP": 136,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [802,0,2117]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [62,63],
+		    
+		    "DP": 125,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [1072,0,1437]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [92,71],
+		    
+		    "DP": 164,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [1389,0,2055]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 14933 ,
+	    "seq:ref": "G" ,
+	    "seq:alt": "A"
+	     , "dp": 1089 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [59,9],
+		    
+		    "DP": 68,
+		    
+		    "GQ": 1,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,1,1361]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [192,24],
+		    
+		    "DP": 216,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [125,0,4941]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [160,9],
+		    
+		    "DP": 169,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,142,4118]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [191,21],
+		    
+		    "DP": 212,
+		    
+		    "GQ": 39,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [39,0,4848]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [126,6],
+		    
+		    "DP": 132,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,210,3367]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [113,15],
+		    
+		    "DP": 128,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [124,0,2578]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [154,10],
+		    
+		    "DP": 164,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,158,3934]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 14948 ,
+	    "seq:ref": "G" ,
+	    "seq:alt": "A"
+	     , "dp": 1050 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [56,7],
+		    
+		    "DP": 63,
+		    
+		    "GQ": 79,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [79,0,1134]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [168,24],
+		    
+		    "DP": 192,
+		    
+		    "GQ": 70,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [70,0,3900]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [160,21],
+		    
+		    "DP": 181,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [147,0,3515]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [188,23],
+		    
+		    "DP": 211,
+		    
+		    "GQ": 57,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [57,0,4113]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [115,14],
+		    
+		    "DP": 129,
+		    
+		    "GQ": 32,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [32,0,2406]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [103,18],
+		    
+		    "DP": 121,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [173,0,2016]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [132,21],
+		    
+		    "DP": 153,
+		    
+		    "GQ": 52,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [52,0,2861]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 14976 ,
+	    "seq:ref": "G" ,
+	    "seq:alt": "A"
+	     , "dp": 939 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [50,6],
+		    
+		    "DP": 56,
+		    
+		    "GQ": 12,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [12,0,929]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [152,14],
+		    
+		    "DP": 166,
+		    
+		    "GQ": 81,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,81,3159]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [152,9],
+		    
+		    "DP": 161,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,113,2885]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [174,22],
+		    
+		    "DP": 196,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [127,0,3211]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [100,9],
+		    
+		    "DP": 109,
+		    
+		    "GQ": 97,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,97,1900]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [103,13],
+		    
+		    "DP": 116,
+		    
+		    "GQ": 97,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [97,0,1548]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [122,13],
+		    
+		    "DP": 135,
+		    
+		    "GQ": 55,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,55,2246]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 15118 ,
+	    "seq:ref": "A" ,
+	    "seq:alt": "G"
+	     , "dp": 1004 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [38,8],
+		    
+		    "DP": 46,
+		    
+		    "GQ": 50,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [50,0,575]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [148,50],
+		    
+		    "DP": 198,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [671,0,2598]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [97,32],
+		    
+		    "DP": 129,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [358,0,1911]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [176,53],
+		    
+		    "DP": 230,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [700,0,2989]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [91,19],
+		    
+		    "DP": 113,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [146,0,1741]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [92,31],
+		    
+		    "DP": 126,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [347,0,1543]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [126,30],
+		    
+		    "DP": 158,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [271,0,2193]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 15190 ,
+	    "seq:ref": "G" ,
+	    "seq:alt": "A"
+	     , "dp": 1090 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [42,11],
+		    
+		    "DP": 53,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [177,0,696]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [157,51],
+		    
+		    "DP": 208,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [839,0,3145]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [142,28],
+		    
+		    "DP": 170,
+		    
+		    "GQ": 91,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [91,0,2919]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [160,40],
+		    
+		    "DP": 200,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [499,0,2815]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [109,17],
+		    
+		    "DP": 126,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [167,0,2363]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [111,34],
+		    
+		    "DP": 145,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [554,0,2268]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [141,38],
+		    
+		    "DP": 179,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [277,0,2827]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 15211 ,
+	    "seq:ref": "T" ,
+	    "seq:alt": "G"
+	     , "dp": 992 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [19,35],
+		    
+		    "DP": 54,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [858,0,183]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [63,120],
+		    
+		    "DP": 183,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [2771,0,960]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [50,111],
+		    
+		    "DP": 161,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [2213,0,740]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [58,113],
+		    
+		    "DP": 171,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [2326,0,685]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [39,81],
+		    
+		    "DP": 120,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [1707,0,678]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [38,96],
+		    
+		    "DP": 134,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [2126,0,499]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [61,107],
+		    
+		    "DP": 168,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [2071,0,895]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 15274 ,
+	    "seq:ref": "A" ,
+	    "seq:alt": "G"
+	     , "dp": 636 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [1,14,22],
+		    
+		    "DP": 37,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "1/2",
+		    
+		    "PL": [717,494,467,224,0,170]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [1,45,75],
+		    
+		    "DP": 121,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "1/2",
+		    
+		    "PL": [1922,1334,1265,588,0,441]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [0,31,71],
+		    
+		    "DP": 102,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "1/2",
+		    
+		    "PL": [1960,1563,1515,396,0,222]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [1,59,77],
+		    
+		    "DP": 137,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "1/2",
+		    
+		    "PL": [2009,1376,1298,633,0,486]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [0,18,52],
+		    
+		    "DP": 71,
+		    
+		    "GQ": 62,
+		    
+		    "GT": "1/2",
+		    
+		    "PL": [938,789,771,149,0,62]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [0,29,38],
+		    
+		    "DP": 67,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "1/2",
+		    
+		    "PL": [1141,883,853,258,0,162]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [0,38,60],
+		    
+		    "DP": 98,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "1/2",
+		    
+		    "PL": [1464,1064,1016,399,0,285]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 15447 ,
+	    "seq:ref": "A" ,
+	    "seq:alt": "G"
+	     , "dp": 1213 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [42,4],
+		    
+		    "DP": 46,
+		    
+		    "GQ": 34,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,34,690]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [220,22],
+		    
+		    "DP": 242,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,99,3639]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [167,16],
+		    
+		    "DP": 183,
+		    
+		    "GQ": 42,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,42,2582]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [201,25],
+		    
+		    "DP": 226,
+		    
+		    "GQ": 78,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [78,0,2854]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [121,16],
+		    
+		    "DP": 137,
+		    
+		    "GQ": 39,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [39,0,1877]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [160,13],
+		    
+		    "DP": 173,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,139,2724]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [157,18],
+		    
+		    "DP": 175,
+		    
+		    "GQ": 34,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [34,0,2472]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 15688 ,
+	    "seq:ref": "C" ,
+	    "seq:alt": "T"
+	     , "dp": 904 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [34,3],
+		    
+		    "DP": 37,
+		    
+		    "GQ": 15,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,15,335]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [166,16],
+		    
+		    "DP": 182,
+		    
+		    "GQ": 61,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,61,2190]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [131,16],
+		    
+		    "DP": 147,
+		    
+		    "GQ": 69,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [69,0,1563]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [167,17],
+		    
+		    "DP": 184,
+		    
+		    "GQ": 22,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [22,0,1894]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [88,12],
+		    
+		    "DP": 100,
+		    
+		    "GQ": 15,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,15,1099]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [88,13],
+		    
+		    "DP": 101,
+		    
+		    "GQ": 1,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,1,1126]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [132,16],
+		    
+		    "DP": 148,
+		    
+		    "GQ": 18,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,18,1706]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 16068 ,
+	    "seq:ref": "T" ,
+	    "seq:alt": "C"
+	     , "dp": 398 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [18,15],
+		    
+		    "DP": 33,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [182,0,404]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [51,6],
+		    
+		    "DP": 57,
+		    
+		    "GQ": 31,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,31,815]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [52,16],
+		    
+		    "DP": 68,
+		    
+		    "GQ": 64,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [64,0,1101]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [68,13],
+		    
+		    "DP": 81,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,99,1505]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [41,8],
+		    
+		    "DP": 49,
+		    
+		    "GQ": 51,
+		    
+		    "GT": "0/0",
+		    
+		    "PL": [0,51,1010]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [40,9],
+		    
+		    "DP": 49,
+		    
+		    "GQ": 21,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [21,0,702]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [38,19],
+		    
+		    "DP": 58,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [153,0,760]
+		    
+		}
+		
+		
+	    }
+	},	
+	{
+	    "seq:chr": "1" ,
+	    "seq:pos": 16103 ,
+	    "seq:ref": "T" ,
+	    "seq:alt": "G"
+	     , "dp": 526 ,
+	    "samples" : {
+		
+		
+		
+		
+		"Original": {
+		    
+		    "AD": [21,29],
+		    
+		    "DP": 50,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [504,0,450]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t1": {
+		    
+		    "AD": [55,24],
+		    
+		    "DP": 79,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [209,0,838]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t1": {
+		    
+		    "AD": [49,37],
+		    
+		    "DP": 86,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [456,0,1002]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t1": {
+		    
+		    "AD": [74,32],
+		    
+		    "DP": 106,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [193,0,1519]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s1t2": {
+		    
+		    "AD": [41,19],
+		    
+		    "DP": 60,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [141,0,740]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s2t2": {
+		    
+		    "AD": [38,23],
+		    
+		    "DP": 61,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [257,0,548]
+		    
+		}
+		
+		
+		
+		,
+		
+		"s3t2": {
+		    
+		    "AD": [38,46],
+		    
+		    "DP": 84,
+		    
+		    "GQ": 99,
+		    
+		    "GT": "0/1",
+		    
+		    "PL": [628,0,641]
+		    
+		}
+		
+		
+	    }
+	},    ]
+}
