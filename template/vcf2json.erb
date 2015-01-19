@@ -1,20 +1,20 @@
 =HEADER
 <% require 'json' %>
-[
-  { "HEADER": {
-    "options":  <%= options.to_h.to_json %>,
-    "files":    <%= ARGV %>,
-    "version":  "<%= BIOVCF_VERSION %>"
-  },
-
-=BODY
-
 {
-  "seq:chr": "<%= rec.chrom %>" ,
-  "seq:pos": <%= rec.pos %> ,
-  "seq:ref": "<%= rec.ref %>" ,
-  "seq:alt": "<%= rec.alt[0] %>" ,
-  "dp":      <%= rec.info.dp %> ,
-},
+    "HEADER": {
+	"options": <%= options.to_h.to_json %>,
+	"files": <%= ARGV %>,
+	"version": "<%= BIOVCF_VERSION %>"
+    },
+    "BODY": [
+=BODY
+	{
+	    "seq:chr": "<%= rec.chrom %>",
+	    "seq:pos": <%= rec.pos %>,
+	    "seq:ref": "<%= rec.ref %>",
+	    "seq:alt": "<%= rec.alt[0] %>",
+	    "dp":      <%= rec.info.dp %>
+	},
 =FOOTER
-]
+    ]
+}

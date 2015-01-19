@@ -710,7 +710,7 @@ template could be
   "seq:ref": "<%= rec.ref %>" ,
   "seq:alt": "<%= rec.alt[0] %>" ,
   "seq:maf": <%= rec.info.maf[0] %> ,
-  "dp":      <%= rec.info.dp %> ,
+  "dp":      <%= rec.info.dp %>
 };
 ```
 
@@ -730,7 +730,7 @@ which renders
   "seq:ref": "C" ,
   "seq:alt": "T" ,
   "seq:maf": 0.0151 ,
-  "dp":      86 ,
+  "dp":      86
 };
 ```
 
@@ -782,24 +782,23 @@ can be
 ```Javascript
 =HEADER
 <% require 'json' %>
-[
-  { "HEADER": {
+{ "HEADER": {
     "options":  <%= options.to_h.to_json %>,
     "files":    <%= ARGV %>,
     "version":  "<%= BIOVCF_VERSION %>"
   },
-
+  "BODY":[
 =BODY
-
-{
-  "seq:chr": "<%= rec.chrom %>" ,
-  "seq:pos": <%= rec.pos %> ,
-  "seq:ref": "<%= rec.ref %>" ,
-  "seq:alt": "<%= rec.alt[0] %>" ,
-  "dp":      <%= rec.info.dp %> ,
-},
+    {
+      "seq:chr": "<%= rec.chrom %>" ,
+      "seq:pos": <%= rec.pos %> ,
+      "seq:ref": "<%= rec.ref %>" ,
+      "seq:alt": "<%= rec.alt[0] %>" ,
+      "dp":      <%= rec.info.dp %>
+    },
 =FOOTER
-]
+  ]
+}
 ```
 
 with
@@ -811,27 +810,28 @@ with
 may generate something like
 
 ```Javascript
-[
-  { "HEADER": {
+{ "HEADER": {
     "options":  {"show_help":false,"source":"https://github.com/CuppenResearch/bioruby-vcf","version":"0.8.1-pre3 (Pjotr Prins)","date":"2014-11-26 12:51:36 +0000","thread_lines":40000,"template":"template/vcf2json.erb","skip_header":true},
     "files":    [],
     "version":  "0.8.1-pre3"
   },
-{
-  "seq:chr": "1" ,
-  "seq:pos": 883516 ,
-  "seq:ref": "G" ,
-  "seq:alt": "A" ,
-  "dp":       ,
-},
-{
-  "seq:chr": "1" ,
-  "seq:pos": 891344 ,
-  "seq:ref": "G" ,
-  "seq:alt": "A" ,
-  "dp":       ,
-},
-]
+  "BODY":[
+    {
+      "seq:chr": "1" ,
+      "seq:pos": 883516 ,
+      "seq:ref": "G" ,
+      "seq:alt": "A" ,
+      "dp":
+    },
+    {
+      "seq:chr": "1" ,
+      "seq:pos": 891344 ,
+      "seq:ref": "G" ,
+      "seq:alt": "A" ,
+      "dp": ,
+    },
+  ]
+}
 ```
 
 Note that the template is not smart enough to remove the final comma
