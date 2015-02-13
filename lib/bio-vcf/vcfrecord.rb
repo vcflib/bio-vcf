@@ -16,9 +16,9 @@ module BioVcf
     def [] k
       # split_fields if not @h
       # /#{m}=(?<value>[^;])/.@info
-      kup = k.upcase
+      kupper = k.upcase
       v = if @h
-            @h[kup]
+            @h[kupper]
           else
             @info =~ /#{k}=([^;]+)/i
             value = $1
@@ -27,7 +27,7 @@ module BioVcf
             # value = m[:value]
             if value == nil
               split_fields # no option but to split
-              @h[kup]
+              @h[kupper]
             else
               value
             end
@@ -42,6 +42,11 @@ module BioVcf
       @h[kupper] = v
       @original_key[kupper] = k
     end
+
+    def fields
+      split_fields
+      @h.keys
+    end
     
     def method_missing(m, *args, &block)
       self[m.to_s]
@@ -50,6 +55,7 @@ module BioVcf
   private
  
     def split_fields
+      return @h if @h
       @h = {}
       @original_key = {}
       @info.split(/;/).each do |f| 

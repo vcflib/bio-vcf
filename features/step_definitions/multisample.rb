@@ -46,7 +46,7 @@ Then(/^I expect rec\.info\['ReadPosRankSum'\] to be (\d+)\.(\d+)$/) do |arg1, ar
 end
 
 Then(/^I expect rec\.info\.fields to contain \["(.*?)","(.*?)"\]$/) do |arg1, arg2|
-  expect(@rec1.info.fields).to eq ['AF','AS']
+  expect(@rec1.info.fields).to eq ["AC", "AF", "AN", "BASEQRANKSUM", "DP", "DELS", "FS", "HAPLOTYPESCORE", "MLEAC", "MLEAF", "MQ", "MQ0", "MQRANKSUM", "QD", "READPOSRANKSUM"]
 end
 
 Then(/^I expect rec\.sample\.original\.gt to be "(.*?)"$/) do |arg1|
