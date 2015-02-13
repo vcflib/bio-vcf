@@ -68,8 +68,9 @@ opts = OptionParser.new do |o|
   o.on('--eval-once cmd',String, 'Evaluate command once (usually for header info)') do |cmd|
     options[:eval_once] = true
     options[:eval] = cmd
-    options[:num_threads] = 1
-    options[:thread_lines] = 1
+    # options[:num_threads] = 1
+    # options[:thread_lines] = 1
+    options[:skip_header] = true
   end
   o.on('--seval cmd',String, 'Evaluate command on each sample') do |cmd|
     options[:seval] = cmd
@@ -449,7 +450,7 @@ begin
 
 rescue Exception => e
   # $stderr.print line
-  $stderr.print e.message,"\n"
+  $stderr.print e.message,"\n" if e.message != 'exit'
   raise if options[:verbose]
   exit 1
 end

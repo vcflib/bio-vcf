@@ -269,7 +269,7 @@ Get the version of the VCF file
 Get the column headers
 
 ```ruby
-  bio-vcf -q --skip-header --eval-once 'header.column_names.join(",")' < file.vcf
+  bio-vcf -q --eval-once 'header.column_names.join(",")' < file.vcf
   CHROM,POS,ID,REF,ALT,QUAL,FILTER,INFO,FORMAT,NORMAL,TUMOR
 ```
 
