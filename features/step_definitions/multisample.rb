@@ -45,7 +45,7 @@ Then(/^I expect rec\.info\['ReadPosRankSum'\] to be (\d+)\.(\d+)$/) do |arg1, ar
   expect(@rec1.info['ReadPosRankSum']).to eq 0.815
 end
 
-Then(/^I expect rec\.info\.fields to contain \["(.*?)","(.*?)"\]$/) do |arg1, arg2|
+Then(/^I expect rec\.info\.fields to contain \["(.*?)", "(.*?)", "(.*?)", "(.*?)", "(.*?)", "(.*?)", "(.*?)", "(.*?)", "(.*?)", "(.*?)", "(.*?)", "(.*?)", "(.*?)", "(.*?)", "(.*?)"\]$/) do |arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15|
   expect(@rec1.info.fields).to eq ["AC", "AF", "AN", "BASEQRANKSUM", "DP", "DELS", "FS", "HAPLOTYPESCORE", "MLEAC", "MLEAF", "MQ", "MQ0", "MQRANKSUM", "QD", "READPOSRANKSUM"]
 end
 
