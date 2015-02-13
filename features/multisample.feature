@@ -25,7 +25,10 @@ Feature: Multi-sample VCF
     And I expect rec.info.ac to be 5
     And I expect rec.info.af to be 0.357
     And I expect rec.info.dp to be 1537
+    And I expect rec.info['dp'] to be 1537
     And I expect rec.info.readposranksum to be 0.815
+    And I expect rec.info['ReadPosRankSum'] to be 0.815
+    And I expect rec.info.fields to contain ["AC","AF"]
     And I expect rec.sample['Original'].ad to be [189,25]
     And I expect rec.sample['Original'].gt to be "0/1"
     And I expect rec.sample['s3t2'].ad to be [167,26]

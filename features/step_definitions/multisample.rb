@@ -37,6 +37,18 @@ Then(/^I expect rec\.info\.readposranksum to be (\d+)\.(\d+)$/) do |arg1, arg2|
   expect(@rec1.info.readposranksum).to eq 0.815
 end
 
+Then(/^I expect rec\.info\['dp'\] to be (\d+)$/) do |arg1|
+  expect(@rec1.info['dp']).to eq 1537
+end
+
+Then(/^I expect rec\.info\['ReadPosRankSum'\] to be (\d+)\.(\d+)$/) do |arg1, arg2|
+  expect(@rec1.info['ReadPosRankSum']).to eq 0.815
+end
+
+Then(/^I expect rec\.info\.fields to contain \["(.*?)","(.*?)"\]$/) do |arg1, arg2|
+  expect(@rec1.info.fields).to eq ['AF','AS']
+end
+
 Then(/^I expect rec\.sample\.original\.gt to be "(.*?)"$/) do |arg1|
   expect(@rec1.sample['Original'].gt).to eq "0/1"
 end
