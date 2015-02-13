@@ -1,0 +1,237 @@
+##fileformat=VCFv4.1
+##FILTER=<ID=HaplotypeScoreHigh,Description="HaplotypeScore > 13.0">
+##FILTER=<ID=LowQual,Description="Low quality">
+##FILTER=<ID=LowQualityDepth,Description="QD < 2.0">
+##FILTER=<ID=MQRankSumLow,Description="MQRankSum < -12.5">
+##FILTER=<ID=MappingQuality,Description="MQ < 40.0">
+##FILTER=<ID=ReadPosRankSumLow,Description="ReadPosRankSum < -20.0">
+##FILTER=<ID=SnpCluster,Description="SNPs found in clusters">
+##FILTER=<ID=StrandBias,Description="FS > 200.0">
+##FORMAT=<ID=AD,Number=.,Type=Integer,Description="Allelic depths for the ref and alt alleles in the order listed">
+##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Approximate read depth (reads with MQ=255 or with bad mates are filtered)">
+##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype Quality">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+##FORMAT=<ID=PL,Number=G,Type=Integer,Description="Normalized, Phred-scaled likelihoods for genotypes as defined in the VCF specification">
+##GATKCommandLine=<ID=CombineVariants,Version=3.2-2-gec30cee,Date="Thu Oct 30 13:41:59 CET 2014",Epoch=1414672919266,CommandLineOptions="analysis_type=CombineVariants input_file=[] showFullBamList=false read_buffer_size=null phone_home=AWS gatk_key=null tag=NA read_filter=[] intervals=null excludeIntervals=null interval_set_rule=UNION interval_merging=ALL interval_padding=0 reference_sequence=/hpc/cog_bioinf/GENOMES/Homo_sapiens.GRCh37.GATK.illumina/Homo_sapiens.GRCh37.GATK.illumina.fasta nonDeterministicRandomSeed=false disableDithering=false maxRuntime=-1 maxRuntimeUnits=MINUTES downsampling_type=BY_SAMPLE downsample_to_fraction=null downsample_to_coverage=1000 baq=OFF baqGapOpenPenalty=40.0 refactor_NDN_cigar_string=false fix_misencoded_quality_scores=false allow_potentially_misencoded_quality_scores=false useOriginalQualities=false defaultBaseQualities=-1 performanceLog=null BQSR=null quantize_quals=0 disable_indel_quals=false emit_original_quals=false preserve_qscores_less_than=6 globalQScorePrior=-1.0 validation_strictness=SILENT remove_program_records=false keep_program_records=false sample_rename_mapping_file=null unsafe=null disable_auto_index_creation_and_locking_when_reading_rods=false num_threads=1 num_cpu_threads_per_data_thread=1 num_io_threads=0 monitorThreadEfficiency=false num_bam_file_handles=null read_group_black_list=null pedigree=[] pedigreeString=[] pedigreeValidationType=STRICT allow_intervals_with_unindexed_bam=false generateShadowBCF=false variant_index_type=DYNAMIC_SEEK variant_index_parameter=-1 logging_level=INFO log_to_file=null help=false version=false variant=[(RodBindingCollection [(RodBinding name=variant source=/hpc/cog_bioinf/data/robert/testIAP/testSubsetExome/tmp/testSubsetExome.filtered_snps.vcf)]), (RodBindingCollection [(RodBinding name=variant2 source=/hpc/cog_bioinf/data/robert/testIAP/testSubsetExome/tmp/testSubsetExome.filtered_indels.vcf)])] out=org.broadinstitute.gatk.engine.io.stubs.VariantContextWriterStub no_cmdline_in_header=org.broadinstitute.gatk.engine.io.stubs.VariantContextWriterStub sites_only=org.broadinstitute.gatk.engine.io.stubs.VariantContextWriterStub bcf=org.broadinstitute.gatk.engine.io.stubs.VariantContextWriterStub genotypemergeoption=UNSORTED filteredrecordsmergetype=KEEP_IF_ANY_UNFILTERED multipleallelesmergetype=BY_TYPE rod_priority_list=null printComplexMerges=false filteredAreUncalled=false minimalVCF=false excludeNonVariants=false setKey=set assumeIdenticalSamples=false minimumN=1 suppressCommandLineHeader=false mergeInfoWithMaxAC=false filter_reads_with_N_cigar=false filter_mismatching_base_and_quals=false filter_bases_not_stored=false">
+##GATKCommandLine=<ID=HaplotypeCaller,Version=3.2-2-gec30cee,Date="Thu Oct 30 13:37:05 CET 2014",Epoch=1414672625371,CommandLineOptions="analysis_type=HaplotypeCaller input_file=[/hpc/cog_bioinf/data/robert/testIAP/testSubsetExome/CONTROLP26/mapping/CONTROLP26_dedup.realigned.recalibrated.bam, /hpc/cog_bioinf/data/robert/testIAP/testSubsetExome/CONTROLP25/mapping/CONTROLP25_dedup.realigned.recalibrated.bam] showFullBamList=false read_buffer_size=null phone_home=AWS gatk_key=null tag=NA read_filter=[] intervals=[/hpc/cog_bioinf/data/robert/testIAP/testSubsetExome/tmp/.queue/scatterGather/HaplotypeCaller-1-sg/temp_01_of_12/scatter.intervals] excludeIntervals=null interval_set_rule=UNION interval_merging=ALL interval_padding=0 reference_sequence=/hpc/cog_bioinf/GENOMES/Homo_sapiens.GRCh37.GATK.illumina/Homo_sapiens.GRCh37.GATK.illumina.fasta nonDeterministicRandomSeed=false disableDithering=false maxRuntime=-1 maxRuntimeUnits=MINUTES downsampling_type=BY_SAMPLE downsample_to_fraction=null downsample_to_coverage=250 baq=OFF baqGapOpenPenalty=40.0 refactor_NDN_cigar_string=false fix_misencoded_quality_scores=false allow_potentially_misencoded_quality_scores=false useOriginalQualities=false defaultBaseQualities=-1 performanceLog=null BQSR=null quantize_quals=0 disable_indel_quals=false emit_original_quals=false preserve_qscores_less_than=6 globalQScorePrior=-1.0 validation_strictness=SILENT remove_program_records=false keep_program_records=false sample_rename_mapping_file=null unsafe=null disable_auto_index_creation_and_locking_when_reading_rods=false num_threads=1 num_cpu_threads_per_data_thread=1 num_io_threads=0 monitorThreadEfficiency=false num_bam_file_handles=null read_group_black_list=null pedigree=[] pedigreeString=[] pedigreeValidationType=STRICT allow_intervals_with_unindexed_bam=false generateShadowBCF=false variant_index_type=DYNAMIC_SEEK variant_index_parameter=-1 logging_level=INFO log_to_file=null help=false version=false out=org.broadinstitute.gatk.engine.io.stubs.VariantContextWriterStub no_cmdline_in_header=org.broadinstitute.gatk.engine.io.stubs.VariantContextWriterStub sites_only=org.broadinstitute.gatk.engine.io.stubs.VariantContextWriterStub bcf=org.broadinstitute.gatk.engine.io.stubs.VariantContextWriterStub likelihoodCalculationEngine=PairHMM heterogeneousKmerSizeResolution=COMBO_MIN graphOutput=null bamOutput=null bam_compression=null disable_bam_indexing=null generate_md5=null simplifyBAM=null bamWriterType=CALLED_HAPLOTYPES dbsnp=(RodBinding name=dbsnp source=/hpc/cog_bioinf/common_scripts/GATK_v2.7/bundle/dbsnp_137.b37.vcf) dontTrimActiveRegions=false maxDiscARExtension=25 maxGGAARExtension=300 paddingAroundIndels=150 paddingAroundSNPs=20 comp=[] annotation=[ClippingRankSumTest, DepthPerSampleHC] excludeAnnotation=[SpanningDeletions, TandemRepeatAnnotator] debug=false useFilteredReadsForAnnotations=false emitRefConfidence=NONE annotateNDA=false heterozygosity=0.001 indel_heterozygosity=1.25E-4 standard_min_confidence_threshold_for_calling=30.0 standard_min_confidence_threshold_for_emitting=15.0 max_alternate_alleles=6 input_prior=[] sample_ploidy=2 genotyping_mode=DISCOVERY alleles=(RodBinding name= source=UNBOUND) contamination_fraction_to_filter=0.0 contamination_fraction_per_sample_file=null p_nonref_model=EXACT_INDEPENDENT exactcallslog=null output_mode=EMIT_VARIANTS_ONLY allSitePLs=false kmerSize=[10, 25] dontIncreaseKmerSizesForCycles=false allowNonUniqueKmersInRef=false numPruningSamples=1 recoverDanglingHeads=false doNotRecoverDanglingTails=false consensus=false GVCFGQBands=[5, 20, 60] indelSizeToEliminateInRefModel=10 min_base_quality_score=10 minPruning=2 gcpHMM=10 includeUmappedReads=false useAllelesTrigger=false phredScaledGlobalReadMismappingRate=45 maxNumHaplotypesInPopulation=128 mergeVariantsViaLD=false pair_hmm_implementation=VECTOR_LOGLESS_CACHING keepRG=null justDetermineActiveRegions=false dontGenotype=false errorCorrectKmers=false debugGraphTransformations=false dontUseSoftClippedBases=false captureAssemblyFailureBAM=false allowCyclesInKmerGraphToGeneratePaths=false noFpga=false errorCorrectReads=false kmerLengthForReadErrorCorrection=25 minObservationsForKmerToBeSolid=20 pcr_indel_model=CONSERVATIVE activityProfileOut=null activeRegionOut=null activeRegionIn=null activeRegionExtension=null forceActive=false activeRegionMaxSize=null bandPassSigma=null min_mapping_quality_score=20 filter_reads_with_N_cigar=false filter_mismatching_base_and_quals=false filter_bases_not_stored=false">
+##INFO=<ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes, for each ALT allele, in the same order as listed">
+##INFO=<ID=AF,Number=A,Type=Float,Description="Allele Frequency, for each ALT allele, in the same order as listed">
+##INFO=<ID=AN,Number=1,Type=Integer,Description="Total number of alleles in called genotypes">
+##INFO=<ID=BaseQRankSum,Number=1,Type=Float,Description="Z-score from Wilcoxon rank sum test of Alt Vs. Ref base qualities">
+##INFO=<ID=ClippingRankSum,Number=1,Type=Float,Description="Z-score From Wilcoxon rank sum test of Alt vs. Ref number of hard clipped bases">
+##INFO=<ID=DB,Number=0,Type=Flag,Description="dbSNP Membership">
+##INFO=<ID=DP,Number=1,Type=Integer,Description="Approximate read depth; some reads may have been filtered">
+##INFO=<ID=DS,Number=0,Type=Flag,Description="Were any of the samples downsampled?">
+##INFO=<ID=FS,Number=1,Type=Float,Description="Phred-scaled p-value using Fisher's exact test to detect strand bias">
+##INFO=<ID=HaplotypeScore,Number=1,Type=Float,Description="Consistency of the site with at most two segregating haplotypes">
+##INFO=<ID=InbreedingCoeff,Number=1,Type=Float,Description="Inbreeding coefficient as estimated from the genotype likelihoods per-sample when compared against the Hardy-Weinberg expectation">
+##INFO=<ID=MLEAC,Number=A,Type=Integer,Description="Maximum likelihood expectation (MLE) for the allele counts (not necessarily the same as the AC), for each ALT allele, in the same order as listed">
+##INFO=<ID=MLEAF,Number=A,Type=Float,Description="Maximum likelihood expectation (MLE) for the allele frequency (not necessarily the same as the AF), for each ALT allele, in the same order as listed">
+##INFO=<ID=MQ,Number=1,Type=Float,Description="RMS Mapping Quality">
+##INFO=<ID=MQ0,Number=1,Type=Integer,Description="Total Mapping Quality Zero Reads">
+##INFO=<ID=MQRankSum,Number=1,Type=Float,Description="Z-score From Wilcoxon rank sum test of Alt vs. Ref read mapping qualities">
+##INFO=<ID=QD,Number=1,Type=Float,Description="Variant Confidence/Quality by Depth">
+##INFO=<ID=ReadPosRankSum,Number=1,Type=Float,Description="Z-score from Wilcoxon rank sum test of Alt vs. Ref read position bias">
+##INFO=<ID=set,Number=1,Type=String,Description="Source VCF for the merged record in CombineVariants">
+##contig=<ID=1,length=249250621>
+##contig=<ID=2,length=243199373>
+##contig=<ID=3,length=198022430>
+##contig=<ID=4,length=191154276>
+##contig=<ID=5,length=180915260>
+##contig=<ID=6,length=171115067>
+##contig=<ID=7,length=159138663>
+##contig=<ID=8,length=146364022>
+##contig=<ID=9,length=141213431>
+##contig=<ID=10,length=135534747>
+##contig=<ID=11,length=135006516>
+##contig=<ID=12,length=133851895>
+##contig=<ID=13,length=115169878>
+##contig=<ID=14,length=107349540>
+##contig=<ID=15,length=102531392>
+##contig=<ID=16,length=90354753>
+##contig=<ID=17,length=81195210>
+##contig=<ID=18,length=78077248>
+##contig=<ID=19,length=59128983>
+##contig=<ID=20,length=63025520>
+##contig=<ID=21,length=48129895>
+##contig=<ID=22,length=51304566>
+##contig=<ID=X,length=155270560>
+##contig=<ID=Y,length=59373566>
+##contig=<ID=MT,length=16569>
+##reference=file:///hpc/cog_bioinf/GENOMES/Homo_sapiens.GRCh37.GATK.illumina/Homo_sapiens.GRCh37.GATK.illumina.fasta
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	CONTROLP25	CONTROLP26
+1	22848972	rs61769198	A	C	43.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=21.59;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:69,6,0	./.
+1	33133968	rs2762904	T	C	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+1	60466814	rs626251	T	C	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+1	60466840	rs35944236	TA	T	18.20	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=9.10;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:53,6,0
+1	62516683	rs2498982	G	C	114.46	PASS	AC=2;AF=1.00;AN=2;DB;DP=8;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=28.62;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,4:4:12:141,12,0
+1	66058513	rs1137101	A	G	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+1	95709821	rs259358	T	C	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+1	109806834	rs6698843	C	T	46.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=23.08;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:72,6,0	./.
+1	114354942	rs3789604	T	G	47.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=23.58;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:73,6,0
+1	144873962	rs11341221	CT	C	46.13	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=58.52;MQ0=0;QD=23.07;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:81,6,0	./.
+1	151733335	rs8480	T	G	45.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.59;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:71,6,0	./.
+1	157516779	.	G	T	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+1	197479688	.	C	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+1	228005073	rs200455452	C	T	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+1	228465370	rs867599	T	G	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+1	231488524	rs2437150	C	T	43.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=21.59;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:69,6,0
+1	235505313	rs3841735	A	AT	26.14	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=13.07;set=FilteredInAll	GT:AD:DP:GQ:PL	1/1:0,2:2:6:61,6,0	./.
+1	237951451	rs2256242	A	G	44.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.09;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:70,6,0	./.
+2	27682309	rs61747073	C	T	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+2	32667182	rs60197615	G	C	40.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=20.09;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:66,6,0
+2	37406680	rs10205833	C	G	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+2	112705157	rs3761701	T	C	40.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=20.09;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:66,6,0
+2	113513825	rs6731822	T	C	41.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=20.59;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:67,6,0	./.
+2	152403960	.	C	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+2	207998800	rs2284934	C	T	40.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=20.09;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:66,6,0
+3	8667896	rs355058	T	C	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+3	57368861	.	CT	C	32.13	PASS	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=16.07;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:67,6,0
+3	62478014	.	C	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	1/1:0,2:2:6:49,6,0	./.
+3	75787726	rs1962893	G	A	20	LowQual	AC=2;AF=1.00;AN=2;DB;DP=2;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=20.00;set=FilteredInAll	GT:AD:DP:GQ:PL	1/1:0,1:1:3:45,3,0	./.
+3	75787739	rs141238251	A	T	20	LowQual	AC=2;AF=1.00;AN=2;DB;DP=2;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=20.00;set=FilteredInAll	GT:AD:DP:GQ:PL	1/1:0,1:1:3:45,3,0	./.
+3	101484335	rs2625282	G	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+3	119434527	rs6438544	G	C	44.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=2;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=29.45;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,1:1:6:70,6,0
+3	119434528	.	C	A	44.17	PASS	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.09;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:70,6,0
+3	121168152	.	G	T	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	1/1:0,2:2:6:49,6,0	./.
+3	121822564	.	G	T	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+3	122437321	rs7645033	T	C	55.71	PASS	AC=2;AF=1.00;AN=2;DB;DP=6;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=18.57;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,3:3:9:82,9,0
+3	134225969	rs9827878	T	C	46.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=23.08;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:72,6,0
+3	139244744	.	T	C	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+4	48037926	rs13116684	A	G	42.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=21.09;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:68,6,0
+4	100572396	.	T	C	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+5	32400266	rs1051489	A	G	43.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=21.59;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:69,6,0
+5	64070617	rs140062546	A	AAATTATGAC	55.13	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=27.57;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:90,6,0
+5	74442920	rs6888707	A	G	46.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=23.08;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:72,6,0	./.
+5	89990324	rs1878878	A	G	32.21	PASS	AC=1;AF=0.500;AN=2;BaseQRankSum=0.736;ClippingRankSum=-0.736;DB;DP=6;FS=0.000;MLEAC=1;MLEAF=0.500;MQ=60.00;MQ0=0;MQRankSum=-0.736;QD=10.74;ReadPosRankSum=0.736;set=Intersection	GT:AD:DP:GQ:PL	0/1:1,2:3:26:59,0,26	./.
+5	102894673	rs34468716	T	C	20.21	LowQual	AC=2;AF=0.500;AN=4;BaseQRankSum=-0.736;ClippingRankSum=0.736;DB;DP=6;FS=0.000;MLEAC=3;MLEAF=0.750;MQ=60.00;MQ0=0;MQRankSum=0.736;QD=10.11;ReadPosRankSum=0.736;set=FilteredInAll	GT:AD:DP:GQ:PL	0/0:1,0:1:3:0,3,34	1/1:0,2:2:6:49,6,0
+5	145519821	rs17493851	G	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+5	178139442	rs1132338	T	G	44.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.09;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:70,6,0	./.
+5	178996435	rs11743261	A	G	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+6	335175	rs2671431	A	T	44.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.09;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:70,6,0	./.
+6	12122645	rs6900196	A	G	44.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.09;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:70,6,0
+6	29407970	rs2074469	T	C	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+6	29523676	rs8337	C	G	47.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=23.58;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:73,6,0
+6	47649222	rs8180544	T	G	44.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.09;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:70,6,0
+6	56417282	rs4715630	C	T	44.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.09;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:70,6,0
+6	90448092	rs4140446	C	T	42.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=21.09;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:68,6,0
+6	106992464	rs1799693	A	G	44.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.09;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:70,6,0
+6	121632008	rs9372653	T	A	42.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=21.09;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:68,6,0
+6	138754323	rs2327891	A	G	79.84	PASS	AC=4;AF=1.00;AN=4;DB;DP=6;FS=0.000;MLEAC=4;MLEAF=1.00;MQ=60.00;MQ0=0;QD=26.61;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:70,6,0	1/1:0,1:1:3:35,3,0
+6	159188128	rs2242318	A	G	74.71	PASS	AC=2;AF=1.00;AN=2;DB;DP=6;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=24.90;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,3:3:9:101,9,0
+6	160962177	.	G	T	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+7	6370144	rs1043965	G	A	32.21	PASS	AC=1;AF=0.500;AN=2;BaseQRankSum=-0.736;ClippingRankSum=-0.736;DB;DP=6;FS=0.000;MLEAC=1;MLEAF=0.500;MQ=60.00;MQ0=0;MQRankSum=0.736;QD=10.74;ReadPosRankSum=-0.736;set=Intersection	GT:AD:DP:GQ:PL	./.	0/1:1,2:3:26:59,0,26
+7	12376811	rs2192828	A	C	43.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=21.59;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:69,6,0
+7	15584409	.	G	T	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+7	22202052	.	C	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+7	25266626	.	C	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+7	31617733	rs6945679	T	C	91.46	PASS	AC=2;AF=1.00;AN=2;DB;DP=8;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.87;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,4:4:12:118,12,0
+7	42976789	rs630191	A	G	58.84	PASS	AC=4;AF=1.00;AN=4;DB;DP=6;FS=0.000;MLEAC=4;MLEAF=1.00;MQ=60.00;MQ0=0;QD=19.61;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,1:1:3:35,3,0	1/1:0,2:2:6:49,6,0
+7	92762681	rs1029357	A	G	42.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=21.09;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:68,6,0	./.
+7	100551840	rs78273697	T	A	64.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=32.08;set=filterInvariant-variant2	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:90,6,0
+7	100551842	rs75365561	C	T	64.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=32.08;set=filterInvariant-variant2	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:90,6,0
+7	100551843	rs75524285	T	C	100.84	PASS	AC=4;AF=1.00;AN=4;DB;DP=4;FS=0.000;MLEAC=4;MLEAF=1.00;MQ=60.00;MQ0=0;QD=29.63;set=filterInvariant-variant2	GT:AD:DP:GQ:PL	1/1:.:.:3:36,3,0	1/1:0,2:2:6:90,6,0
+7	100551849	rs77242346	A	T	100.84	PASS	AC=4;AF=1.00;AN=4;DB;DP=6;FS=0.000;MLEAC=4;MLEAF=1.00;MQ=60.00;MQ0=0;QD=33.61;set=filterInvariant-variant2	GT:AD:DP:GQ:PL	1/1:0,1:1:3:36,3,0	1/1:0,2:2:6:90,6,0
+7	100552644	rs2904850	C	A	39.17	PASS	AC=2;AF=0.500;AN=4;BaseQRankSum=-0.736;ClippingRankSum=0.736;DB;DP=6;FS=0.000;MLEAC=3;MLEAF=0.750;MQ=60.00;MQ0=0;MQRankSum=-0.736;QD=19.59;ReadPosRankSum=-0.736;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:68,6,0	0/0:1,0:1:3:0,3,36
+7	100552788	rs73398800	C	T	44.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.09;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:70,6,0	./.
+7	100552867	rs73714266	T	C	44.42	PASS	AC=4;AF=1.00;AN=4;DB;DP=4;FS=0.000;MLEAC=4;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.21;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,1:1:3:35,3,0	1/1:0,1:1:3:34,3,0
+7	142460335	rs201550522	A	G	20	LowQual;MappingQuality	AC=2;AF=1.00;AN=2;DB;DP=2;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=31.00;MQ0=0;QD=20.00;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,1:1:3:45,3,0
+7	142460339	rs200973660	G	A	20	LowQual;MappingQuality	AC=2;AF=1.00;AN=2;DB;DP=2;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=31.00;MQ0=0;QD=20.00;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,1:1:3:45,3,0
+7	151970856	rs10454320	T	A	44.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=42.05;MQ0=0;QD=22.09;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:70,6,0	./.
+7	151970931	rs56850341	G	A	29.18	LowQual;MappingQuality	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=34.12;MQ0=0;QD=14.59;set=FilteredInAll	GT:AD:DP:GQ:PL	1/1:0,2:2:6:55,6,0	./.
+7	154862621	rs6320	T	A	38.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=19.09;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:64,6,0	./.
+8	29023297	.	C	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+9	390512	rs2297075	C	T	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+9	21334694	.	T	C	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+9	79117556	.	C	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+9	86465131	rs58077086	T	C	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=44.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+9	109687403	rs17723637	A	G	46.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=23.08;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:72,6,0	./.
+9	129595895	rs3118994	T	C	43.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=21.59;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:69,6,0
+10	30728101	rs1042058	T	C	38.17	PASS	AC=2;AF=0.500;AN=4;BaseQRankSum=-0.736;ClippingRankSum=-0.736;DB;DP=6;FS=0.000;MLEAC=3;MLEAF=0.750;MQ=60.00;MQ0=0;MQRankSum=-0.736;QD=19.09;ReadPosRankSum=-0.736;set=Intersection	GT:AD:DP:GQ:PL	0/0:1,0:1:3:0,3,35	1/1:0,2:2:6:67,6,0
+10	45958881	rs2291429	A	G	45.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.59;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:71,6,0
+10	70405855	rs3998860	A	G	79.71	PASS	AC=2;AF=1.00;AN=2;DB;DP=6;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=26.57;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,3:3:9:106,9,0	./.
+10	95381773	rs701865	T	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+10	105762591	rs805657	G	A	42.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=21.09;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:68,6,0	./.
+10	116013432	.	G	T	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+10	126691605	rs201760950	C	A	20	LowQual;SnpCluster	AC=2;AF=1.00;AN=2;DB;DP=2;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=40.00;MQ0=0;QD=20.00;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,1:1:3:45,3,0
+10	126691608	rs200173220	C	T	20	LowQual;SnpCluster	AC=2;AF=1.00;AN=2;DB;DP=2;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=40.00;MQ0=0;QD=20.00;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,1:1:3:45,3,0
+10	126691631	rs3198936	T	A	20	LowQual;SnpCluster	AC=2;AF=1.00;AN=2;DB;DP=2;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=40.00;MQ0=0;QD=20.00;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,1:1:3:45,3,0
+10	126691634	rs75794788	T	A	20	LowQual;SnpCluster	AC=2;AF=1.00;AN=2;DB;DP=2;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=40.00;MQ0=0;QD=20.00;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,1:1:3:45,3,0
+11	2929552	rs429886	A	G	46.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=23.08;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:72,6,0
+11	11373635	rs1056963	C	T	40.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=50.60;MQ0=0;QD=20.09;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:66,6,0
+11	55872657	rs28681529	A	C	45.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=40.50;MQ0=0;QD=22.59;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:71,6,0
+11	63883985	rs614397	T	C	44.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.09;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:70,6,0
+11	63885632	rs4379854	A	G	56.71	PASS	AC=2;AF=1.00;AN=2;DB;DP=6;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=18.90;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,3:3:9:83,9,0
+11	74676794	rs514534	G	C	59.84	PASS	AC=4;AF=1.00;AN=4;DB;DP=6;FS=0.000;MLEAC=4;MLEAF=1.00;MQ=60.00;MQ0=0;QD=19.95;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,1:1:3:36,3,0	1/1:0,2:2:6:49,6,0
+11	112041128	rs45579043	TTTTGTCCTG	T	55.13	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=27.57;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:90,6,0
+11	124266912	rs28398895	A	G	46.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=23.08;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:72,6,0
+11	130064131	.	G	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+12	2788879	rs1051375	G	A	43.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=21.59;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:69,6,0	./.
+12	10588581	rs28403159	T	C	44.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=40.00;MQ0=0;QD=22.09;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:70,6,0	./.
+12	11214360	rs73260771	C	T	45.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.59;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:71,6,0	./.
+12	22646247	.	C	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+12	30823971	rs1054426	A	G	41.17	PASS	AC=2;AF=0.500;AN=4;BaseQRankSum=-0.736;ClippingRankSum=0.736;DB;DP=6;FS=0.000;MLEAC=3;MLEAF=0.750;MQ=60.00;MQ0=0;MQRankSum=-0.736;QD=20.59;ReadPosRankSum=0.736;set=Intersection	GT:AD:DP:GQ:PL	0/0:1,0:1:3:0,3,35	1/1:0,2:2:6:70,6,0
+12	53722128	rs7139272	G	A	40.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=20.09;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:66,6,0	./.
+12	55820121	rs6581046	C	T	44.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.09;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:70,6,0	./.
+12	80889165	rs145970310	T	TTTG	55.13	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=27.57;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:90,6,0	./.
+12	82792942	rs10506873	A	G	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+12	96653501	rs4762144	C	T	56.71	PASS	AC=2;AF=1.00;AN=2;DB;DP=6;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=18.90;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,3:3:9:83,9,0
+12	123067501	.	G	T	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+13	32913055	rs206075	A	G	42.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=21.09;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:68,6,0	./.
+13	46170719	rs142875900	CCCAGATACTCTTCCTCCT	C	55.13	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=49.84;MQ0=0;QD=27.57;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:90,6,0	./.
+13	103514737	rs201185418	G	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+13	107145463	rs7995379	G	C	45.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.59;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:71,6,0
+14	21469151	rs2234636	T	C	44.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.09;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:70,6,0
+14	21831112	rs10146717	G	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+14	45623122	.	G	T	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+14	57101682	rs913742	A	G	45.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.59;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:71,6,0
+14	70515779	rs61977411	G	A	55.71	PASS	AC=2;AF=1.00;AN=2;DB;DP=6;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=18.57;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,3:3:9:82,9,0
+14	81610583	rs1991517	G	C	59.84	PASS	AC=4;AF=1.00;AN=4;DB;DP=6;FS=0.000;MLEAC=4;MLEAF=1.00;MQ=60.00;MQ0=0;QD=19.95;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,1:1:3:36,3,0	1/1:0,2:2:6:49,6,0
+14	88651962	rs17762463	C	T	41.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=20.59;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:67,6,0
+14	105407798	rs4465542	T	C	42.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=21.09;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:68,6,0	./.
+15	22368862	rs1835183	G	A	43.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=21.59;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:69,6,0	./.
+15	44184197	rs112105930	C	T	43.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=21.59;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:69,6,0
+15	65903398	rs4366668	G	A	42.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=21.09;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:68,6,0
+15	69728949	rs3825858	A	G	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	1/1:0,2:2:6:49,6,0	./.
+16	3646215	.	C	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+16	11001770	rs34654419	G	T	56.71	PASS	AC=2;AF=1.00;AN=2;DB;DP=6;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=18.90;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,3:3:9:83,9,0
+16	14340388	.	C	A	20.21	LowQual	AC=2;AF=0.500;AN=4;BaseQRankSum=-0.736;ClippingRankSum=0.736;DP=6;FS=0.000;MLEAC=3;MLEAF=0.750;MQ=60.00;MQ0=0;MQRankSum=0.736;QD=10.11;ReadPosRankSum=0.736;set=FilteredInAll	GT:AD:DP:GQ:PL	0/0:1,0:1:3:0,3,37	1/1:0,2:2:6:49,6,0
+16	56436917	.	C	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+16	82033612	rs16956174	T	C	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+16	88712511	.	G	T	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+17	3632836	rs1716	G	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+17	8363486	.	C	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	1/1:0,2:2:6:49,6,0	./.
+17	9515777	rs6503235	G	A	42.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=21.09;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:68,6,0
+18	31324934	rs7232237	A	G	45.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.59;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:71,6,0	./.
+18	56203447	rs3809979	A	G	83.84	PASS	AC=4;AF=1.00;AN=4;DB;DP=6;FS=0.000;MLEAC=4;MLEAF=1.00;MQ=60.00;MQ0=0;QD=27.95;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:72,6,0	1/1:0,1:1:3:37,3,0
+19	3434413	rs2302220	C	G	44.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.09;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:70,6,0
+19	6413578	.	G	T	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+19	11221454	rs2738442	T	C	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+19	21492062	rs547516	G	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=56.14;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+19	22952111	rs34726149	A	G	43.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=21.59;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:69,6,0	./.
+19	33444511	rs80283382	T	C	45.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.59;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:71,6,0	./.
+19	38378539	rs10422056	G	C	41.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=20.59;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:67,6,0
+19	39915637	rs31727	G	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+19	48389425	rs11083907	A	G	43.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=21.59;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:69,6,0
+19	53085659	rs366793	C	T	44.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.09;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:70,6,0
+19	53344051	rs112227284	T	C	44.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.09;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:70,6,0	./.
+19	53912242	rs10426347	G	A	76.71	PASS	AC=2;AF=1.00;AN=2;DB;DP=6;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=25.57;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,3:3:9:103,9,0	./.
+19	55597421	.	A	G	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+19	57931553	rs10417533	C	T	20.21	LowQual	AC=2;AF=0.500;AN=4;BaseQRankSum=-0.736;ClippingRankSum=-0.736;DB;DP=6;FS=0.000;MLEAC=3;MLEAF=0.750;MQ=60.00;MQ0=0;MQRankSum=0.736;QD=10.11;ReadPosRankSum=0.736;set=FilteredInAll	GT:AD:DP:GQ:PL	1/1:0,2:2:6:49,6,0	0/0:1,0:1:3:0,3,33
+20	1356261	rs6074549	G	C	45.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.59;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:71,6,0	./.
+20	29625877	rs7266938	G	A	34.17	PASS	AC=2;AF=0.500;AN=4;BaseQRankSum=0.736;ClippingRankSum=-0.736;DB;DP=6;FS=0.000;MLEAC=3;MLEAF=0.750;MQ=46.65;MQ0=0;MQRankSum=-0.736;QD=17.09;ReadPosRankSum=0.736;set=Intersection	GT:AD:DP:GQ:PL	0/0:1,0:1:3:0,3,33	1/1:0,2:2:6:63,6,0
+20	29628431	rs11152458	C	T	42.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=49.80;MQ0=0;QD=21.09;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:68,6,0
+20	44839078	.	A	T	44.17	PASS	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.09;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:70,6,0
+21	46957794	rs1051266	T	C	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+21	47786817	rs2839228	C	G	47.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=23.58;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:73,6,0
+22	22550510	rs2073448	T	G	45.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.59;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:71,6,0
+22	22569448	rs5750741	T	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	1/1:0,2:2:6:49,6,0	./.
+22	30771554	rs2015035	T	G	46.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=23.08;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:72,6,0	./.
+22	36587845	rs5845253	A	ACT	55.13	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=27.57;set=Intersection	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:90,6,0
+22	40800544	rs2235318	C	T	44.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=22.09;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:70,6,0	./.
+22	41075543	rs133072	A	G	43.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=21.59;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:69,6,0	./.
+22	43936213	.	G	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+22	43936228	.	G	T	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+X	55172537	rs1047054	G	A	43.17	PASS	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=21.59;set=Intersection	GT:AD:DP:GQ:PL	1/1:0,2:2:6:69,6,0	./.
+X	107911706	.	T	C	23.19	LowQual	AC=2;AF=1.00;AN=2;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	./.	1/1:0,2:2:6:49,6,0
+X	134713855	rs2298301	G	A	23.19	LowQual	AC=2;AF=1.00;AN=2;DB;DP=4;FS=0.000;MLEAC=2;MLEAF=1.00;MQ=60.00;MQ0=0;QD=11.60;set=FilteredInAll	GT:AD:DP:GQ:PL	1/1:0,2:2:6:49,6,0	./.
