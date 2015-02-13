@@ -319,7 +319,10 @@ Info fields are referenced by
   bio-vcf --filter 'rec.info.dp>100 and rec.info.readposranksum<=0.815' < file.vcf 
 ```
 
-With subfields defined by rec.format
+(alternatively you can use the indexed rec.info['DP'] and list INFO fields with
+rec.info.fields).
+
+Subfields defined by rec.format:
 
 ```ruby
   bio-vcf --filter 'rec.tumor.ss != 2' < file.vcf 
