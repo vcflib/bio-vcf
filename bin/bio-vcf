@@ -68,6 +68,8 @@ opts = OptionParser.new do |o|
   o.on('--eval-once cmd',String, 'Evaluate command once (usually for header info)') do |cmd|
     options[:eval_once] = true
     options[:eval] = cmd
+    options[:num_threads] = 1
+    options[:thread_lines] = 1
   end
   o.on('--seval cmd',String, 'Evaluate command on each sample') do |cmd|
     options[:seval] = cmd
@@ -231,7 +233,6 @@ def parse_header line, samples, options
   end
   print header.printable_header_line(options[:set_header]),"\n" if options[:set_header]
   VcfRdf::header if options[:rdf]
-  exit(1) if options[:eval_once] 
   return header,line
 end
 
@@ -398,10 +399,15 @@ begin
       print template.header(binding) if template
       header_output_completed = true
     end
-
-
+    
+    if options[:eval_once]
+      print parse_line(line,header,options,bedfilter,samples,template,stats)
+      exit 0
+    end
+    
     # ---- In this section the VCF variant lines are parsed
     lines << line
+    
     if NUM_THREADS == 1
       $stderr.print '.' if line_number % CHUNK_SIZE == 0 and not options[:quiet]
       if lines.size > CHUNK_SIZE

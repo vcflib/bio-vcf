@@ -18,7 +18,7 @@ So, why would you use bio-vcf over other parsers? Because
 3. Bio-vcf has great multi-sample support
 4. Bio-vcf has multiple global filters and sample filters
 5. Bio-vcf can access any VCF format
-6. Bio-vcf can parse the VCF header 
+6. Bio-vcf can parse and query the VCF header (META)
 7. Bio-vcf can do calculations on fields
 8. Bio-vcf allows for genotype processing
 9. Bio-vcf has support for set analysis
@@ -269,7 +269,7 @@ Get the version of the VCF file
 Get the column headers
 
 ```ruby
-  bio-vcf -q --eval-once 'header.column_names.join(",")' < file.vcf
+  bio-vcf -q --skip-header --eval-once 'header.column_names.join(",")' < file.vcf
   CHROM,POS,ID,REF,ALT,QUAL,FILTER,INFO,FORMAT,NORMAL,TUMOR
 ```
 
@@ -278,6 +278,12 @@ Get the sample names
 ```ruby
   bio-vcf -q --eval-once 'header.samples.join(",")' < file.vcf
   NORMAL,TUMOR
+```
+
+Get information from the header (META)
+
+```ruby
+  bio-vcf -q --skip-header --eval-once 'header.meta["GATKCommandLine"]' < gatk_exome.vcf
 ```
 
 The 'fields' array contains unprocessed data (strings).  Print first
