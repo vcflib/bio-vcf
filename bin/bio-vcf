@@ -150,8 +150,8 @@ end
 opts.parse!(ARGV)
 
 BIOVCF_VERSION=version
-BIOVCF_BANNER = "vcf #{version} (biogem Ruby #{RUBY_VERSION}) by Pjotr Prins 2014\n" if !options[:quiet]
-$stderr.print BIOVCF_BANNER
+BIOVCF_BANNER = "vcf #{version} (biogem Ruby #{RUBY_VERSION}) by Pjotr Prins 2015\n"
+$stderr.print BIOVCF_BANNER if !options[:quiet]
 
 if options[:show_help] 
   print opts 
@@ -231,6 +231,7 @@ def parse_header line, samples, options
   end
   print header.printable_header_line(options[:set_header]),"\n" if options[:set_header]
   VcfRdf::header if options[:rdf]
+  exit(1) if options[:eval_once] 
   return header,line
 end
 
@@ -320,7 +321,6 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
       exit 1
     end
     return results.to_s+"\n" if results
-    exit(1) if options[:eval_once]  # <--- can this be reached?
   else
     if options[:rdf]
       # Output Turtle RDF
@@ -398,7 +398,8 @@ begin
       print template.header(binding) if template
       header_output_completed = true
     end
-    
+
+
     # ---- In this section the VCF variant lines are parsed
     lines << line
     if NUM_THREADS == 1
