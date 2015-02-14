@@ -34,7 +34,7 @@ module BioVcf
 
     attr_reader :lines, :field
 
-    def initialize(debug)
+    def initialize(debug = false)
       @debug = debug
       @lines = []
       @field = {}
