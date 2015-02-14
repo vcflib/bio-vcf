@@ -50,7 +50,7 @@ Feature: Command-line interface (CLI)
 
   Scenario: Test eval-once
     Given I have input file(s) named "test/data/input/multisample.vcf"
-    When I execute "./bin/bio-vcf --eval-once header.meta['GATKCommandLine']"
+    When I execute "./bin/bio-vcf --eval-once header.meta[\'GATKCommandLine\']"
     Then I expect the named output to match the named output "eval_once"
 
   Scenario: Test JSON output with header meta data
