@@ -19,7 +19,11 @@ module BioVcf
   module VcfHeaderParser
 
     module RagelKeyValues
-  
+
+      def self.debug msg
+        # nothing
+      end
+      
 =begin
 %%{
 
@@ -45,18 +49,18 @@ module BioVcf
   integer     = ('+'|'-')?digit+;
   float       = ('+'|'-')?digit+'.'digit+;
   assignment  = '=';
-  identifier  = (alpha alnum*); 
+  identifier  = ( alnum (alnum|'.'|'_')* ); 
   str         = (ss|dd)* ;       
   boolean     = '.';
-  key_word    = ( ('Type'|'Description'|'Source'|'Version'|identifier - ('ID'|'Number'|'length')) >mark %{ emit.call(:key_word,data,ts,p) } );
+  key_word    = ( ('Type'|'Description'|'Source'|'Version'|identifier - ('ID'|'Number'|'length'|'assembly')) >mark %{ emit.call(:key_word,data,ts,p) } );
   any_value   = ( str|( integer|float|boolean|identifier >mark %{ emit.call(:value,data,ts,p) } ));
   id_value   = ( identifier >mark %{ emit.call(:value,data,ts,p) } );
   
   number_value = ( ( integer|boolean|'A'|'R'|'G' ) >mark %{ emit.call(:value,data,ts,p) } );
 
-  id_kv     = ( ( ('ID') %kw '=' id_value ) %{ p "ID FOUND" } @!{ error_code="Malformed ID"} );
+  id_kv     = ( ( ('ID'|'assembly') %kw '=' id_value ) %{ debug("ID FOUND") } @!{ error_code="Malformed ID"} );
   number_kv = ( ( ('Number'|'length') %kw '=' number_value ) @!{ error_code="Number"} );
-  key_value = ( id_kv | number_kv | (key_word '=' any_value) ) %{ p "KEY_VALUE found" } >mark @!{ error_code="unknown key-value " };
+  key_value = ( id_kv | number_kv | (key_word '=' any_value) ) %{ debug("KEY_VALUE found") } >mark @!{ error_code="unknown key-value " };
 
   main := ( '##' ('FILTER'|'FORMAT'|'contig'|'INFO'|'ALT') '=') (('<'|',') key_value )* '>';
 }%%
@@ -67,6 +71,7 @@ module BioVcf
 
 def self.run_lexer(buf, options = {})
   do_debug = (options[:debug] == true)
+  $stderr.print "---> ",buf,"\n" if do_debug
   data = buf.unpack("c*") if(buf.is_a?(String))
   eof = data.length
   values = []
@@ -75,7 +80,7 @@ def self.run_lexer(buf, options = {})
   emit = lambda { |type, data, ts, p|
     # Print the type and text of the last read token
     # p ts,p
-    puts "#{type}: #{data[ts...p].pack('c*')}" if do_debug
+    $stderr.print "#{type}: #{data[ts...p].pack('c*')}\n" if do_debug
     values << [type,data[ts...p].pack('c*')]
   }
 
@@ -90,7 +95,7 @@ def self.run_lexer(buf, options = {})
     res = {}
     # p values
     values.each_slice(2) do | a,b |
-      print '*',a,b
+      print '*',a,b if do_debug
       res[a[1]] = b[1]
       # p h[:value] if h[:name]==:identifier or h[:name]==:value or h[:name]==:string
     end
@@ -99,7 +104,7 @@ def self.run_lexer(buf, options = {})
     p values
     raise
   end
-  p res if do_debug
+  $stderr.print(res,"\n") if do_debug
   res
 end
     end
@@ -123,7 +128,7 @@ lines = <<LINES
 LINES
 
 lines.strip.split("\n").each { |s|
-  print s,"\n"
+  # print s,"\n"
   p BioVcf::VcfHeaderParser::RagelKeyValues.run_lexer(s, debug: true)
 }
 

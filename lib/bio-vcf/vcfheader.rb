@@ -2,7 +2,7 @@
 # containing fields. Most fields are of 'key=value' type and appear
 # only once.  These can be retrieved with the find_field method.
 #
-# INFO and FORMAT fields are special as they appear multiple times
+# INFO, FORMAT and contig fields are special as they appear multiple times
 # and contain multiple key values (identified by an ID field).
 # To retrieve these call 'info' and 'format' functions respectively,
 # which return a hash on the contained ID.
@@ -25,8 +25,8 @@ module BioVcf
       nil
     end
 
-    def VcfHeaderParser.parse_field(line)
-      BioVcf::VcfHeaderParser::RagelKeyValues.run_lexer(line, debug: false)
+    def VcfHeaderParser.parse_field(line, debug)
+      BioVcf::VcfHeaderParser::RagelKeyValues.run_lexer(line, debug: debug)
     end
   end
 
@@ -34,7 +34,8 @@ module BioVcf
 
     attr_reader :lines, :field
 
-    def initialize
+    def initialize(debug)
+      @debug = debug
       @lines = []
       @field = {}
       @meta = nil
@@ -126,7 +127,7 @@ module BioVcf
         if value[0]
           str = value[0][0]
           # p str
-          v = VcfHeaderParser.parse_field(line)
+          v = VcfHeaderParser.parse_field(line,@debug)
           id = v['ID']
           res[id] = v
         end
@@ -139,18 +140,22 @@ module BioVcf
       find_fields('FORMAT')
     end
 
+    def contig
+      find_fields('contig')
+    end
+
     def info
       find_fields('INFO')
     end
 
     def meta
       return @meta if @meta
-      res = { 'INFO' => {}, 'FORMAT' => {} }
+      res = { 'INFO' => {}, 'FORMAT' => {}, 'contig' => {} }
       @lines.each do | line |
         value = line.scan(/##(.*?)=(.*)/)
         if value[0]
           k,v = value[0]
-          if k != 'FORMAT' and k != 'INFO'
+          if k != 'FORMAT' and k != 'INFO' and k != 'contig'
             # p [k,v]
             res[k] = v
           end
@@ -158,6 +163,7 @@ module BioVcf
       end
       res['INFO'] = info()
       res['FORMAT'] = format()
+      res['contig'] = contig()
       # p [:res, res]
       @meta = res # cache values
       res

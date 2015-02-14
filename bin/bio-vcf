@@ -140,9 +140,10 @@ opts = OptionParser.new do |o|
     options[:verbose] = true
   end
   
-  # o.on("--debug", "Show debug messages") do |v|
-  #   Bio::Log::CLI.trace('debug')
-  # end
+  o.on("--debug", "Show debug messages") do |v|
+    # Bio::Log::CLI.trace('debug')
+    options[:debug] = true
+  end
 
   o.separator ""
   o.on_tail('-h', '--help', 'display this help and exit') do
@@ -205,7 +206,7 @@ include BioVcf
 
 # Parse the header section of a VCF file (chomping STDIN)
 def parse_header line, samples, options
-  header = VcfHeader.new
+  header = VcfHeader.new(options[:debug])
   header.add(line)
   print line if not options[:skip_header]
   STDIN.each_line do | headerline |
