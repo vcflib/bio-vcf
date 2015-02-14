@@ -294,7 +294,7 @@ def self.run_lexer(buf, options = {})
   emit = lambda { |type, data, ts, p|
     # Print the type and text of the last read token
     # p ts,p
-    $stderr.print "#{type}: #{data[ts...p].pack('c*')}\n" if do_debug
+    $stderr.print "EMITTED: #{type}: #{data[ts...p].pack('c*')}\n" if do_debug
     values << [type,data[ts...p].pack('c*')]
   }
 
@@ -506,7 +506,10 @@ end
     # p values
     values.each_slice(2) do | a,b |
       print '*',a,b if do_debug
-      res[a[1]] = b[1]
+      keyword = a[1]
+      value = b[1]
+      value = value.to_i if ['length'].index(keyword)
+      res[keyword] = value
       # p h[:value] if h[:name]==:identifier or h[:name]==:value or h[:name]==:string
     end
   rescue
@@ -537,9 +540,16 @@ lines = <<LINES
 ##contig=<ID=Y,length=59373566>
 LINES
 
+h = {}
 lines.strip.split("\n").each { |s|
   # print s,"\n"
-  p BioVcf::VcfHeaderParser::RagelKeyValues.run_lexer(s, debug: true)
+  result = BioVcf::VcfHeaderParser::RagelKeyValues.run_lexer(s, debug: true)
+  h[result['ID']] = result
+  p result
 }
+p h
+
+raise "ERROR" if h != {"HaplotypeScoreHigh"=>{"ID"=>"HaplotypeScoreHigh", "Description"=>"HaplotypeScore > 13.0"}, "GT"=>{"ID"=>"GT", "Number"=>"1", "Type"=>"String", "Description"=>"Genotype"}, "DP"=>{"ID"=>"DP", "Number"=>"1", "Type"=>"Integer", "Description"=>"Total read depth", "Extra"=>"Yes?"}, "DP4"=>{"ID"=>"DP4", "Number"=>"4", "Type"=>"Integer", "Description"=>"# high-quality ref-forward bases, ref-reverse, alt-forward and alt-reverse bases"}, "PM"=>{"ID"=>"PM", "Number"=>"0", "Type"=>"Flag", "Description"=>"Variant is Precious(Clinical,Pubmed Cited)"}, "VP"=>{"ID"=>"VP", "Number"=>"1", "Type"=>"String", "Description"=>"Variation Property.  Documentation is at ftp://ftp.ncbi.nlm.nih.gov/snp/specs/dbSNP_BitField_latest.pdf", "Source"=>"dbsnp", "Version"=>"138"}, "GENEINFO"=>{"ID"=>"GENEINFO", "Number"=>"1", "Type"=>"String", "Description"=>"Pairs each of gene symbol:gene id.  The gene symbol and id are delimited by a colon (:), and each pair is delimited by a vertical bar (|)"}, "CLNHGVS"=>{"ID"=>"CLNHGVS", "Number"=>".", "Type"=>"String", "Description"=>"Variant names from HGVS. The order of these variants corresponds to the order of the info in the other clinical  INFO tags."}, "CLNHGVS1"=>{"ID"=>"CLNHGVS1", "Number"=>".", "Type"=>"String", "Description"=>"Variant names from \\\"HGVS\\\". The order of these 'variants' corresponds to the order of the info in the other clinical  INFO tags."}, "XXXY12"=>{"ID"=>"XXXY12"}, "Y"=>{"ID"=>"Y", "length"=>59373566}}
+
 
 end # test
