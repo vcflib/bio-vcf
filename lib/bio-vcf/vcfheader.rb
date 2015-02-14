@@ -140,6 +140,10 @@ module BioVcf
       find_fields('FORMAT')
     end
 
+    def filter
+      find_fields('FILTER')
+    end
+
     def contig
       find_fields('contig')
     end
@@ -148,14 +152,18 @@ module BioVcf
       find_fields('INFO')
     end
 
+    def gatkcommandline
+      find_fields('GATKCommandLine')
+    end
+    
     def meta
       return @meta if @meta
-      res = { 'INFO' => {}, 'FORMAT' => {}, 'contig' => {} }
+      res = { 'INFO' => {}, 'FORMAT' => {}, 'FILTER' => {}, 'contig' => {}, 'GATKCommandLine' => {} }
       @lines.each do | line |
         value = line.scan(/##(.*?)=(.*)/)
         if value[0]
           k,v = value[0]
-          if k != 'FORMAT' and k != 'INFO' and k != 'contig'
+          if k != 'FORMAT' and k != 'INFO' and k != 'FILTER' and k != 'contig' and k != 'GATKCommandLine'
             # p [k,v]
             res[k] = v
           end
@@ -163,7 +171,9 @@ module BioVcf
       end
       res['INFO'] = info()
       res['FORMAT'] = format()
+      res['FILTER'] = filter()
       res['contig'] = contig()
+      res['GATKCommandLine'] = gatkcommandline()
       # p [:res, res]
       @meta = res # cache values
       res

@@ -24,26 +24,29 @@ module BioVcf
 
       def self.debug msg
         # nothing
+	# $stderr.print "DEBUG: ",msg,"\n"
       end
       
 =begin
 
-# line 66 "gen_vcfheaderline_parser.rl"
+# line 75 "gen_vcfheaderline_parser.rl"
 
 =end
 
 
-# line 37 "gen_vcfheaderline_parser.rb"
+# line 38 "gen_vcfheaderline_parser.rb"
 class << self
 	attr_accessor :_simple_lexer_actions
 	private :_simple_lexer_actions, :_simple_lexer_actions=
 end
 self._simple_lexer_actions = [
 	0, 1, 0, 1, 1, 1, 2, 1, 
-	3, 1, 10, 1, 11, 2, 0, 1, 
-	2, 4, 10, 2, 6, 10, 2, 8, 
-	11, 2, 9, 11, 3, 5, 7, 10, 
-	3, 8, 9, 11
+	3, 1, 15, 1, 16, 2, 0, 1, 
+	2, 4, 15, 2, 6, 15, 2, 7, 
+	15, 2, 9, 16, 2, 10, 16, 2, 
+	11, 16, 2, 12, 15, 2, 13, 16, 
+	2, 14, 16, 3, 5, 8, 15, 6, 
+	9, 10, 13, 11, 14, 16
 ]
 
 class << self
@@ -51,15 +54,23 @@ class << self
 	private :_simple_lexer_key_offsets, :_simple_lexer_key_offsets=
 end
 self._simple_lexer_key_offsets = [
-	0, 0, 1, 2, 6, 7, 8, 9, 
-	12, 22, 31, 48, 53, 55, 57, 65, 
-	67, 69, 69, 69, 71, 77, 79, 84, 
-	87, 98, 108, 117, 123, 134, 144, 154, 
-	164, 174, 184, 193, 201, 203, 208, 211, 
-	221, 231, 241, 251, 261, 271, 281, 291, 
-	301, 311, 321, 331, 333, 334, 335, 336, 
-	337, 338, 339, 340, 341, 342, 343, 344, 
-	345, 346, 347, 348
+	0, 0, 1, 2, 7, 8, 9, 10, 
+	13, 26, 35, 49, 51, 53, 58, 60, 
+	62, 62, 62, 64, 70, 72, 77, 80, 
+	91, 101, 111, 121, 131, 141, 151, 161, 
+	171, 181, 191, 201, 211, 221, 231, 241, 
+	251, 261, 270, 275, 277, 279, 279, 281, 
+	283, 283, 293, 303, 313, 322, 327, 329, 
+	331, 331, 333, 335, 335, 345, 354, 360, 
+	371, 381, 391, 401, 411, 421, 430, 438, 
+	440, 445, 448, 458, 468, 478, 488, 498, 
+	508, 517, 524, 526, 528, 533, 535, 537, 
+	537, 537, 549, 559, 569, 579, 589, 599, 
+	609, 619, 629, 639, 649, 659, 669, 671, 
+	672, 673, 674, 675, 676, 677, 678, 679, 
+	680, 681, 682, 683, 684, 685, 686, 687, 
+	688, 689, 690, 691, 692, 693, 694, 695, 
+	696, 697, 698, 699, 700
 ]
 
 class << self
@@ -67,49 +78,93 @@ class << self
 	private :_simple_lexer_trans_keys, :_simple_lexer_trans_keys=
 end
 self._simple_lexer_trans_keys = [
-	35, 35, 65, 70, 73, 99, 76, 84, 
-	61, 44, 60, 62, 73, 78, 97, 108, 
-	48, 57, 65, 90, 98, 122, 46, 61, 
-	95, 48, 57, 65, 90, 97, 122, 32, 
-	34, 39, 44, 46, 60, 62, 9, 13, 
-	43, 45, 48, 57, 65, 90, 97, 122, 
-	32, 34, 39, 9, 13, 34, 92, 34, 
-	92, 32, 34, 39, 44, 60, 62, 9, 
-	13, 39, 92, 39, 92, 48, 57, 44, 
-	46, 60, 62, 48, 57, 48, 57, 44, 
-	60, 62, 48, 57, 44, 60, 62, 44, 
-	46, 60, 62, 95, 48, 57, 65, 90, 
-	97, 122, 46, 61, 68, 95, 48, 57, 
-	65, 90, 97, 122, 46, 61, 95, 48, 
-	57, 65, 90, 97, 122, 48, 57, 65, 
-	90, 97, 122, 44, 46, 60, 62, 95, 
-	48, 57, 65, 90, 97, 122, 46, 61, 
-	95, 117, 48, 57, 65, 90, 97, 122, 
-	46, 61, 95, 109, 48, 57, 65, 90, 
-	97, 122, 46, 61, 95, 98, 48, 57, 
-	65, 90, 97, 122, 46, 61, 95, 101, 
-	48, 57, 65, 90, 97, 122, 46, 61, 
-	95, 114, 48, 57, 65, 90, 97, 122, 
-	46, 61, 95, 48, 57, 65, 90, 97, 
-	122, 43, 45, 46, 65, 71, 82, 48, 
-	57, 48, 57, 44, 60, 62, 48, 57, 
-	44, 60, 62, 46, 61, 95, 115, 48, 
+	35, 35, 65, 70, 71, 73, 99, 76, 
+	84, 61, 44, 60, 62, 67, 68, 73, 
+	78, 86, 97, 108, 48, 57, 65, 90, 
+	98, 122, 46, 61, 95, 48, 57, 65, 
+	90, 97, 122, 34, 39, 44, 46, 60, 
+	62, 43, 45, 48, 57, 65, 90, 97, 
+	122, 34, 92, 34, 92, 34, 39, 44, 
+	60, 62, 39, 92, 39, 92, 48, 57, 
+	44, 46, 60, 62, 48, 57, 48, 57, 
+	44, 60, 62, 48, 57, 44, 60, 62, 
+	44, 46, 60, 62, 95, 48, 57, 65, 
+	90, 97, 122, 46, 61, 95, 111, 48, 
 	57, 65, 90, 97, 122, 46, 61, 95, 
-	115, 48, 57, 65, 90, 97, 122, 46, 
-	61, 95, 101, 48, 57, 65, 90, 97, 
-	122, 46, 61, 95, 109, 48, 57, 65, 
-	90, 97, 122, 46, 61, 95, 98, 48, 
+	109, 48, 57, 65, 90, 97, 122, 46, 
+	61, 95, 109, 48, 57, 65, 90, 97, 
+	122, 46, 61, 95, 97, 48, 57, 65, 
+	90, 98, 122, 46, 61, 95, 110, 48, 
 	57, 65, 90, 97, 122, 46, 61, 95, 
-	108, 48, 57, 65, 90, 97, 122, 46, 
-	61, 95, 121, 48, 57, 65, 90, 97, 
-	122, 46, 61, 95, 101, 48, 57, 65, 
+	100, 48, 57, 65, 90, 97, 122, 46, 
+	61, 76, 95, 48, 57, 65, 90, 97, 
+	122, 46, 61, 95, 105, 48, 57, 65, 
 	90, 97, 122, 46, 61, 95, 110, 48, 
 	57, 65, 90, 97, 122, 46, 61, 95, 
-	103, 48, 57, 65, 90, 97, 122, 46, 
-	61, 95, 116, 48, 57, 65, 90, 97, 
-	122, 46, 61, 95, 104, 48, 57, 65, 
-	90, 97, 122, 73, 79, 76, 84, 69, 
-	82, 82, 77, 65, 78, 70, 79, 111, 
+	101, 48, 57, 65, 90, 97, 122, 46, 
+	61, 79, 95, 48, 57, 65, 90, 97, 
+	122, 46, 61, 95, 112, 48, 57, 65, 
+	90, 97, 122, 46, 61, 95, 116, 48, 
+	57, 65, 90, 97, 122, 46, 61, 95, 
+	105, 48, 57, 65, 90, 97, 122, 46, 
+	61, 95, 111, 48, 57, 65, 90, 97, 
+	122, 46, 61, 95, 110, 48, 57, 65, 
+	90, 97, 122, 46, 61, 95, 115, 48, 
+	57, 65, 90, 97, 122, 46, 61, 95, 
+	48, 57, 65, 90, 97, 122, 34, 39, 
+	44, 60, 62, 34, 92, 34, 92, 39, 
+	92, 39, 92, 46, 61, 95, 97, 48, 
+	57, 65, 90, 98, 122, 46, 61, 95, 
+	116, 48, 57, 65, 90, 97, 122, 46, 
+	61, 95, 101, 48, 57, 65, 90, 97, 
+	122, 46, 61, 95, 48, 57, 65, 90, 
+	97, 122, 34, 39, 44, 60, 62, 34, 
+	92, 34, 92, 39, 92, 39, 92, 46, 
+	61, 68, 95, 48, 57, 65, 90, 97, 
+	122, 46, 61, 95, 48, 57, 65, 90, 
+	97, 122, 48, 57, 65, 90, 97, 122, 
+	44, 46, 60, 62, 95, 48, 57, 65, 
+	90, 97, 122, 46, 61, 95, 117, 48, 
+	57, 65, 90, 97, 122, 46, 61, 95, 
+	109, 48, 57, 65, 90, 97, 122, 46, 
+	61, 95, 98, 48, 57, 65, 90, 97, 
+	122, 46, 61, 95, 101, 48, 57, 65, 
+	90, 97, 122, 46, 61, 95, 114, 48, 
+	57, 65, 90, 97, 122, 46, 61, 95, 
+	48, 57, 65, 90, 97, 122, 43, 45, 
+	46, 65, 71, 82, 48, 57, 48, 57, 
+	44, 60, 62, 48, 57, 44, 60, 62, 
+	46, 61, 95, 101, 48, 57, 65, 90, 
+	97, 122, 46, 61, 95, 114, 48, 57, 
+	65, 90, 97, 122, 46, 61, 95, 115, 
+	48, 57, 65, 90, 97, 122, 46, 61, 
+	95, 105, 48, 57, 65, 90, 97, 122, 
+	46, 61, 95, 111, 48, 57, 65, 90, 
+	97, 122, 46, 61, 95, 110, 48, 57, 
+	65, 90, 97, 122, 46, 61, 95, 48, 
+	57, 65, 90, 97, 122, 34, 39, 44, 
+	60, 62, 48, 57, 34, 92, 34, 92, 
+	34, 39, 44, 60, 62, 39, 92, 39, 
+	92, 44, 60, 62, 95, 45, 46, 48, 
+	57, 65, 90, 97, 122, 46, 61, 95, 
+	115, 48, 57, 65, 90, 97, 122, 46, 
+	61, 95, 115, 48, 57, 65, 90, 97, 
+	122, 46, 61, 95, 101, 48, 57, 65, 
+	90, 97, 122, 46, 61, 95, 109, 48, 
+	57, 65, 90, 97, 122, 46, 61, 95, 
+	98, 48, 57, 65, 90, 97, 122, 46, 
+	61, 95, 108, 48, 57, 65, 90, 97, 
+	122, 46, 61, 95, 121, 48, 57, 65, 
+	90, 97, 122, 46, 61, 95, 101, 48, 
+	57, 65, 90, 97, 122, 46, 61, 95, 
+	110, 48, 57, 65, 90, 97, 122, 46, 
+	61, 95, 103, 48, 57, 65, 90, 97, 
+	122, 46, 61, 95, 116, 48, 57, 65, 
+	90, 97, 122, 46, 61, 95, 104, 48, 
+	57, 65, 90, 97, 122, 73, 79, 76, 
+	84, 69, 82, 82, 77, 65, 65, 84, 
+	75, 67, 111, 109, 109, 97, 110, 100, 
+	76, 105, 110, 101, 78, 70, 79, 111, 
 	110, 116, 105, 103, 0
 ]
 
@@ -118,15 +173,23 @@ class << self
 	private :_simple_lexer_single_lengths, :_simple_lexer_single_lengths=
 end
 self._simple_lexer_single_lengths = [
-	0, 1, 1, 4, 1, 1, 1, 3, 
-	4, 3, 7, 3, 2, 2, 6, 2, 
-	2, 0, 0, 0, 4, 0, 3, 3, 
-	5, 4, 3, 0, 5, 4, 4, 4, 
-	4, 4, 3, 6, 0, 3, 3, 4, 
+	0, 1, 1, 5, 1, 1, 1, 3, 
+	7, 3, 6, 2, 2, 5, 2, 2, 
+	0, 0, 0, 4, 0, 3, 3, 5, 
 	4, 4, 4, 4, 4, 4, 4, 4, 
-	4, 4, 4, 2, 1, 1, 1, 1, 
+	4, 4, 4, 4, 4, 4, 4, 4, 
+	4, 3, 5, 2, 2, 0, 2, 2, 
+	0, 4, 4, 4, 3, 5, 2, 2, 
+	0, 2, 2, 0, 4, 3, 0, 5, 
+	4, 4, 4, 4, 4, 3, 6, 0, 
+	3, 3, 4, 4, 4, 4, 4, 4, 
+	3, 5, 2, 2, 5, 2, 2, 0, 
+	0, 4, 4, 4, 4, 4, 4, 4, 
+	4, 4, 4, 4, 4, 4, 2, 1, 
 	1, 1, 1, 1, 1, 1, 1, 1, 
-	1, 1, 1, 0
+	1, 1, 1, 1, 1, 1, 1, 1, 
+	1, 1, 1, 1, 1, 1, 1, 1, 
+	1, 1, 1, 1, 0
 ]
 
 class << self
@@ -135,14 +198,22 @@ class << self
 end
 self._simple_lexer_range_lengths = [
 	0, 0, 0, 0, 0, 0, 0, 0, 
-	3, 3, 5, 1, 0, 0, 1, 0, 
-	0, 0, 0, 1, 1, 1, 1, 0, 
+	3, 3, 4, 0, 0, 0, 0, 0, 
+	0, 0, 1, 1, 1, 1, 0, 3, 
 	3, 3, 3, 3, 3, 3, 3, 3, 
-	3, 3, 3, 1, 1, 1, 0, 3, 
 	3, 3, 3, 3, 3, 3, 3, 3, 
-	3, 3, 3, 0, 0, 0, 0, 0, 
+	3, 3, 0, 0, 0, 0, 0, 0, 
+	0, 3, 3, 3, 3, 0, 0, 0, 
+	0, 0, 0, 0, 3, 3, 3, 3, 
+	3, 3, 3, 3, 3, 3, 1, 1, 
+	1, 0, 3, 3, 3, 3, 3, 3, 
+	3, 1, 0, 0, 0, 0, 0, 0, 
+	0, 4, 3, 3, 3, 3, 3, 3, 
+	3, 3, 3, 3, 3, 3, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
-	0, 0, 0, 0
+	0, 0, 0, 0, 0, 0, 0, 0, 
+	0, 0, 0, 0, 0, 0, 0, 0, 
+	0, 0, 0, 0, 0
 ]
 
 class << self
@@ -150,63 +221,23 @@ class << self
 	private :_simple_lexer_index_offsets, :_simple_lexer_index_offsets=
 end
 self._simple_lexer_index_offsets = [
-	0, 0, 2, 4, 9, 11, 13, 15, 
-	19, 27, 34, 47, 52, 55, 58, 66, 
-	69, 72, 73, 74, 76, 82, 84, 89, 
-	93, 102, 110, 117, 121, 130, 138, 146, 
-	154, 162, 170, 177, 185, 187, 192, 196, 
-	204, 212, 220, 228, 236, 244, 252, 260, 
-	268, 276, 284, 292, 295, 297, 299, 301, 
-	303, 305, 307, 309, 311, 313, 315, 317, 
-	319, 321, 323, 325
-]
-
-class << self
-	attr_accessor :_simple_lexer_indicies
-	private :_simple_lexer_indicies, :_simple_lexer_indicies=
-end
-self._simple_lexer_indicies = [
-	0, 1, 2, 1, 3, 4, 5, 6, 
-	1, 7, 1, 8, 1, 9, 1, 10, 
-	10, 11, 1, 14, 15, 16, 17, 13, 
-	13, 13, 12, 19, 20, 19, 19, 19, 
-	19, 18, 21, 22, 23, 25, 26, 25, 
-	28, 21, 24, 27, 27, 27, 1, 21, 
-	22, 23, 21, 18, 30, 31, 29, 33, 
-	34, 32, 21, 22, 23, 25, 25, 28, 
-	21, 1, 30, 36, 35, 33, 38, 37, 
-	37, 32, 39, 18, 25, 40, 25, 28, 
-	39, 1, 41, 18, 25, 25, 28, 41, 
-	1, 25, 25, 28, 1, 42, 43, 42, 
-	44, 43, 43, 43, 43, 1, 19, 20, 
-	46, 19, 19, 19, 19, 45, 19, 47, 
-	19, 19, 19, 19, 45, 48, 48, 48, 
-	45, 49, 50, 49, 51, 50, 50, 50, 
-	50, 1, 19, 20, 19, 53, 19, 19, 
-	19, 52, 19, 20, 19, 54, 19, 19, 
-	19, 52, 19, 20, 19, 55, 19, 19, 
-	19, 52, 19, 20, 19, 56, 19, 19, 
-	19, 52, 19, 20, 19, 57, 19, 19, 
-	19, 52, 19, 58, 19, 19, 19, 19, 
-	52, 59, 59, 60, 60, 60, 60, 61, 
-	52, 62, 52, 63, 63, 64, 62, 1, 
-	63, 63, 64, 1, 19, 20, 19, 65, 
-	19, 19, 19, 45, 19, 20, 19, 66, 
-	19, 19, 19, 45, 19, 20, 19, 67, 
-	19, 19, 19, 45, 19, 20, 19, 68, 
-	19, 19, 19, 45, 19, 20, 19, 69, 
-	19, 19, 19, 45, 19, 20, 19, 70, 
-	19, 19, 19, 45, 19, 20, 19, 46, 
-	19, 19, 19, 45, 19, 20, 19, 71, 
-	19, 19, 19, 52, 19, 20, 19, 72, 
-	19, 19, 19, 52, 19, 20, 19, 73, 
-	19, 19, 19, 52, 19, 20, 19, 74, 
-	19, 19, 19, 52, 19, 20, 19, 57, 
-	19, 19, 19, 52, 75, 76, 1, 77, 
-	1, 78, 1, 79, 1, 8, 1, 80, 
-	1, 81, 1, 7, 1, 82, 1, 83, 
-	1, 8, 1, 84, 1, 85, 1, 86, 
-	1, 87, 1, 8, 1, 1, 0
+	0, 0, 2, 4, 10, 12, 14, 16, 
+	20, 31, 38, 49, 52, 55, 61, 64, 
+	67, 68, 69, 71, 77, 79, 84, 88, 
+	97, 105, 113, 121, 129, 137, 145, 153, 
+	161, 169, 177, 185, 193, 201, 209, 217, 
+	225, 233, 240, 246, 249, 252, 253, 256, 
+	259, 260, 268, 276, 284, 291, 297, 300, 
+	303, 304, 307, 310, 311, 319, 326, 330, 
+	339, 347, 355, 363, 371, 379, 386, 394, 
+	396, 401, 405, 413, 421, 429, 437, 445, 
+	453, 460, 467, 470, 473, 479, 482, 485, 
+	486, 487, 496, 504, 512, 520, 528, 536, 
+	544, 552, 560, 568, 576, 584, 592, 595, 
+	597, 599, 601, 603, 605, 607, 609, 611, 
+	613, 615, 617, 619, 621, 623, 625, 627, 
+	629, 631, 633, 635, 637, 639, 641, 643, 
+	645, 647, 649, 651, 653
 ]
 
 class << self
@@ -214,17 +245,88 @@ class << self
 	private :_simple_lexer_trans_targs, :_simple_lexer_trans_targs=
 end
 self._simple_lexer_trans_targs = [
-	2, 0, 3, 4, 51, 59, 62, 5, 
-	6, 7, 8, 67, 0, 9, 25, 29, 
-	39, 46, 0, 9, 10, 11, 12, 15, 
-	19, 8, 23, 24, 67, 13, 14, 18, 
-	13, 14, 18, 16, 17, 16, 17, 20, 
-	21, 22, 8, 24, 67, 0, 26, 27, 
-	28, 8, 28, 67, 0, 30, 31, 32, 
-	33, 34, 35, 36, 38, 37, 37, 8, 
-	67, 40, 41, 42, 43, 44, 45, 47, 
-	48, 49, 50, 52, 56, 53, 54, 55, 
-	57, 58, 60, 61, 63, 64, 65, 66
+	2, 0, 3, 0, 4, 102, 110, 124, 
+	127, 0, 5, 0, 6, 0, 7, 0, 
+	8, 8, 132, 0, 24, 49, 60, 64, 
+	74, 90, 97, 9, 9, 9, 0, 9, 
+	10, 9, 9, 9, 9, 0, 11, 14, 
+	8, 22, 8, 132, 18, 23, 23, 23, 
+	0, 13, 17, 12, 13, 17, 12, 11, 
+	14, 8, 8, 132, 0, 13, 16, 15, 
+	13, 16, 15, 15, 12, 19, 0, 8, 
+	20, 8, 132, 19, 0, 21, 0, 8, 
+	8, 132, 21, 0, 8, 8, 132, 0, 
+	8, 23, 8, 132, 23, 23, 23, 23, 
+	0, 9, 10, 9, 25, 9, 9, 9, 
+	0, 9, 10, 9, 26, 9, 9, 9, 
+	0, 9, 10, 9, 27, 9, 9, 9, 
+	0, 9, 10, 9, 28, 9, 9, 9, 
+	0, 9, 10, 9, 29, 9, 9, 9, 
+	0, 9, 10, 9, 30, 9, 9, 9, 
+	0, 9, 10, 31, 9, 9, 9, 9, 
+	0, 9, 10, 9, 32, 9, 9, 9, 
+	0, 9, 10, 9, 33, 9, 9, 9, 
+	0, 9, 10, 9, 34, 9, 9, 9, 
+	0, 9, 10, 35, 9, 9, 9, 9, 
+	0, 9, 10, 9, 36, 9, 9, 9, 
+	0, 9, 10, 9, 37, 9, 9, 9, 
+	0, 9, 10, 9, 38, 9, 9, 9, 
+	0, 9, 10, 9, 39, 9, 9, 9, 
+	0, 9, 10, 9, 40, 9, 9, 9, 
+	0, 9, 10, 9, 41, 9, 9, 9, 
+	0, 9, 42, 9, 9, 9, 9, 0, 
+	43, 46, 8, 8, 132, 0, 42, 45, 
+	44, 42, 45, 44, 44, 42, 48, 47, 
+	42, 48, 47, 47, 9, 10, 9, 50, 
+	9, 9, 9, 0, 9, 10, 9, 51, 
+	9, 9, 9, 0, 9, 10, 9, 52, 
+	9, 9, 9, 0, 9, 53, 9, 9, 
+	9, 9, 0, 54, 57, 8, 8, 132, 
+	0, 53, 56, 55, 53, 56, 55, 55, 
+	53, 59, 58, 53, 59, 58, 58, 9, 
+	10, 61, 9, 9, 9, 9, 0, 9, 
+	62, 9, 9, 9, 9, 0, 63, 63, 
+	63, 0, 8, 63, 8, 132, 63, 63, 
+	63, 63, 0, 9, 10, 9, 65, 9, 
+	9, 9, 0, 9, 10, 9, 66, 9, 
+	9, 9, 0, 9, 10, 9, 67, 9, 
+	9, 9, 0, 9, 10, 9, 68, 9, 
+	9, 9, 0, 9, 10, 9, 69, 9, 
+	9, 9, 0, 9, 70, 9, 9, 9, 
+	9, 0, 71, 71, 73, 73, 73, 73, 
+	72, 0, 72, 0, 8, 8, 132, 72, 
+	0, 8, 8, 132, 0, 9, 10, 9, 
+	75, 9, 9, 9, 0, 9, 10, 9, 
+	76, 9, 9, 9, 0, 9, 10, 9, 
+	77, 9, 9, 9, 0, 9, 10, 9, 
+	78, 9, 9, 9, 0, 9, 10, 9, 
+	79, 9, 9, 9, 0, 9, 10, 9, 
+	80, 9, 9, 9, 0, 9, 81, 9, 
+	9, 9, 9, 0, 82, 85, 8, 8, 
+	132, 89, 0, 84, 88, 83, 84, 88, 
+	83, 82, 85, 8, 8, 132, 0, 84, 
+	87, 86, 84, 87, 86, 86, 83, 8, 
+	8, 132, 89, 89, 89, 89, 89, 0, 
+	9, 10, 9, 91, 9, 9, 9, 0, 
+	9, 10, 9, 92, 9, 9, 9, 0, 
+	9, 10, 9, 93, 9, 9, 9, 0, 
+	9, 10, 9, 94, 9, 9, 9, 0, 
+	9, 10, 9, 95, 9, 9, 9, 0, 
+	9, 10, 9, 96, 9, 9, 9, 0, 
+	9, 10, 9, 61, 9, 9, 9, 0, 
+	9, 10, 9, 98, 9, 9, 9, 0, 
+	9, 10, 9, 99, 9, 9, 9, 0, 
+	9, 10, 9, 100, 9, 9, 9, 0, 
+	9, 10, 9, 101, 9, 9, 9, 0, 
+	9, 10, 9, 69, 9, 9, 9, 0, 
+	103, 107, 0, 104, 0, 105, 0, 106, 
+	0, 6, 0, 108, 0, 109, 0, 5, 
+	0, 111, 0, 112, 0, 113, 0, 114, 
+	0, 115, 0, 116, 0, 117, 0, 118, 
+	0, 119, 0, 120, 0, 121, 0, 122, 
+	0, 123, 0, 6, 0, 125, 0, 126, 
+	0, 6, 0, 128, 0, 129, 0, 130, 
+	0, 131, 0, 6, 0, 0, 0
 ]
 
 class << self
@@ -233,16 +335,87 @@ class << self
 end
 self._simple_lexer_trans_actions = [
 	0, 0, 0, 0, 0, 0, 0, 0, 
-	0, 0, 0, 0, 32, 1, 1, 1, 
-	1, 1, 11, 0, 7, 0, 0, 0, 
-	0, 9, 0, 1, 9, 1, 13, 1, 
-	0, 3, 0, 1, 1, 0, 0, 0, 
-	0, 0, 16, 0, 16, 22, 0, 5, 
-	1, 28, 0, 28, 25, 0, 0, 0, 
-	0, 0, 5, 1, 1, 1, 0, 19, 
-	19, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
-	0, 0, 0, 0, 0, 0, 0, 0
+	0, 0, 0, 0, 1, 1, 1, 1, 
+	1, 1, 1, 1, 1, 1, 47, 0, 
+	7, 0, 0, 0, 0, 11, 0, 0, 
+	9, 0, 9, 9, 0, 1, 1, 1, 
+	0, 13, 1, 1, 3, 0, 0, 0, 
+	0, 9, 9, 9, 0, 13, 1, 1, 
+	3, 0, 0, 0, 0, 0, 11, 9, 
+	0, 9, 9, 0, 0, 0, 11, 9, 
+	9, 9, 0, 0, 9, 9, 9, 0, 
+	16, 0, 16, 16, 0, 0, 0, 0, 
+	0, 0, 7, 0, 0, 0, 0, 0, 
+	40, 0, 7, 0, 0, 0, 0, 0, 
+	40, 0, 7, 0, 0, 0, 0, 0, 
+	40, 0, 7, 0, 0, 0, 0, 0, 
+	40, 0, 7, 0, 0, 0, 0, 0, 
+	40, 0, 7, 0, 0, 0, 0, 0, 
+	40, 0, 7, 0, 0, 0, 0, 0, 
+	40, 0, 7, 0, 0, 0, 0, 0, 
+	40, 0, 7, 0, 0, 0, 0, 0, 
+	40, 0, 7, 0, 0, 0, 0, 0, 
+	40, 0, 7, 0, 0, 0, 0, 0, 
+	40, 0, 7, 0, 0, 0, 0, 0, 
+	40, 0, 7, 0, 0, 0, 0, 0, 
+	40, 0, 7, 0, 0, 0, 0, 0, 
+	40, 0, 7, 0, 0, 0, 0, 0, 
+	40, 0, 7, 0, 0, 0, 0, 0, 
+	40, 0, 7, 0, 0, 0, 0, 0, 
+	40, 0, 5, 0, 0, 0, 0, 40, 
+	0, 0, 9, 9, 9, 0, 13, 1, 
+	1, 3, 0, 0, 0, 13, 1, 1, 
+	3, 0, 0, 0, 0, 7, 0, 0, 
+	0, 0, 0, 37, 0, 7, 0, 0, 
+	0, 0, 0, 37, 0, 7, 0, 0, 
+	0, 0, 0, 37, 0, 5, 0, 0, 
+	0, 0, 37, 0, 0, 34, 34, 34, 
+	0, 13, 1, 1, 3, 0, 0, 0, 
+	13, 1, 1, 3, 0, 0, 0, 0, 
+	7, 0, 0, 0, 0, 0, 25, 0, 
+	5, 0, 0, 0, 0, 25, 1, 1, 
+	1, 25, 43, 0, 43, 43, 0, 0, 
+	0, 0, 0, 0, 7, 0, 0, 0, 
+	0, 0, 31, 0, 7, 0, 0, 0, 
+	0, 0, 31, 0, 7, 0, 0, 0, 
+	0, 0, 31, 0, 7, 0, 0, 0, 
+	0, 0, 31, 0, 7, 0, 0, 0, 
+	0, 0, 31, 0, 5, 0, 0, 0, 
+	0, 31, 1, 1, 1, 1, 1, 1, 
+	1, 31, 0, 31, 22, 22, 22, 0, 
+	0, 22, 22, 22, 0, 0, 7, 0, 
+	0, 0, 0, 0, 28, 0, 7, 0, 
+	0, 0, 0, 0, 28, 0, 7, 0, 
+	0, 0, 0, 0, 28, 0, 7, 0, 
+	0, 0, 0, 0, 28, 0, 7, 0, 
+	0, 0, 0, 0, 28, 0, 7, 0, 
+	0, 0, 0, 0, 28, 0, 5, 0, 
+	0, 0, 0, 28, 0, 0, 9, 9, 
+	9, 1, 0, 13, 1, 1, 3, 0, 
+	0, 0, 0, 9, 9, 9, 0, 13, 
+	1, 1, 3, 0, 0, 0, 0, 19, 
+	19, 19, 0, 0, 0, 0, 0, 0, 
+	0, 7, 0, 0, 0, 0, 0, 25, 
+	0, 7, 0, 0, 0, 0, 0, 25, 
+	0, 7, 0, 0, 0, 0, 0, 25, 
+	0, 7, 0, 0, 0, 0, 0, 25, 
+	0, 7, 0, 0, 0, 0, 0, 25, 
+	0, 7, 0, 0, 0, 0, 0, 25, 
+	0, 7, 0, 0, 0, 0, 0, 25, 
+	0, 7, 0, 0, 0, 0, 0, 31, 
+	0, 7, 0, 0, 0, 0, 0, 31, 
+	0, 7, 0, 0, 0, 0, 0, 31, 
+	0, 7, 0, 0, 0, 0, 0, 31, 
+	0, 7, 0, 0, 0, 0, 0, 31, 
+	0, 0, 0, 0, 0, 0, 0, 0, 
+	0, 0, 0, 0, 0, 0, 0, 0, 
+	0, 0, 0, 0, 0, 0, 0, 0, 
+	0, 0, 0, 0, 0, 0, 0, 0, 
+	0, 0, 0, 0, 0, 0, 0, 0, 
+	0, 0, 0, 0, 0, 0, 0, 0, 
+	0, 0, 0, 0, 0, 0, 0, 0, 
+	0, 0, 0, 0, 0, 0, 0
 ]
 
 class << self
@@ -251,14 +424,22 @@ class << self
 end
 self._simple_lexer_eof_actions = [
 	0, 0, 0, 0, 0, 0, 0, 0, 
-	32, 11, 0, 11, 11, 11, 0, 11, 
-	11, 11, 11, 11, 0, 11, 0, 0, 
-	0, 22, 22, 22, 0, 25, 25, 25, 
-	25, 25, 25, 25, 25, 0, 0, 22, 
-	22, 22, 22, 22, 22, 22, 25, 25, 
-	25, 25, 25, 0, 0, 0, 0, 0, 
+	47, 11, 0, 11, 11, 0, 11, 11, 
+	11, 11, 11, 0, 11, 0, 0, 0, 
+	40, 40, 40, 40, 40, 40, 40, 40, 
+	40, 40, 40, 40, 40, 40, 40, 40, 
+	40, 40, 0, 40, 40, 40, 40, 40, 
+	40, 37, 37, 37, 37, 0, 37, 37, 
+	37, 37, 37, 37, 25, 25, 25, 0, 
+	31, 31, 31, 31, 31, 31, 31, 31, 
+	0, 0, 28, 28, 28, 28, 28, 28, 
+	28, 0, 28, 28, 0, 28, 28, 28, 
+	28, 0, 25, 25, 25, 25, 25, 25, 
+	25, 31, 31, 31, 31, 31, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
-	0, 0, 0, 0
+	0, 0, 0, 0, 0, 0, 0, 0, 
+	0, 0, 0, 0, 0, 0, 0, 0, 
+	0, 0, 0, 0, 0
 ]
 
 class << self
@@ -268,7 +449,7 @@ self.simple_lexer_start = 1;
 class << self
 	attr_accessor :simple_lexer_first_final
 end
-self.simple_lexer_first_final = 67;
+self.simple_lexer_first_final = 132;
 class << self
 	attr_accessor :simple_lexer_error
 end
@@ -280,7 +461,7 @@ end
 self.simple_lexer_en_main = 1;
 
 
-# line 70 "gen_vcfheaderline_parser.rl"
+# line 79 "gen_vcfheaderline_parser.rl"
 # %% this just fixes syntax highlighting...
 
 def self.run_lexer(buf, options = {})
@@ -301,16 +482,16 @@ def self.run_lexer(buf, options = {})
   error_code = nil
   
   
-# line 305 "gen_vcfheaderline_parser.rb"
+# line 486 "gen_vcfheaderline_parser.rb"
 begin
 	p ||= 0
 	pe ||= data.length
 	cs = simple_lexer_start
 end
 
-# line 90 "gen_vcfheaderline_parser.rl"
+# line 99 "gen_vcfheaderline_parser.rl"
   
-# line 314 "gen_vcfheaderline_parser.rb"
+# line 495 "gen_vcfheaderline_parser.rb"
 begin
 	_klen, _trans, _keys, _acts, _nacts = nil
 	_goto_level = 0
@@ -381,7 +562,6 @@ begin
 	     _trans += _klen
 	  end
 	end while false
-	_trans = _simple_lexer_indicies[_trans]
 	cs = _simple_lexer_trans_targs[_trans]
 	if _simple_lexer_trans_actions[_trans] != 0
 		_acts = _simple_lexer_trans_actions[_trans]
@@ -392,58 +572,78 @@ begin
 			_acts += 1
 			case _simple_lexer_actions[_acts - 1]
 when 0 then
-# line 32 "gen_vcfheaderline_parser.rl"
+# line 33 "gen_vcfheaderline_parser.rl"
 		begin
  ts=p 		end
 when 1 then
-# line 33 "gen_vcfheaderline_parser.rl"
+# line 34 "gen_vcfheaderline_parser.rl"
 		begin
 
     emit.call(:value,data,ts,p)
   		end
 when 2 then
-# line 37 "gen_vcfheaderline_parser.rl"
+# line 38 "gen_vcfheaderline_parser.rl"
 		begin
 
     emit.call(:kw,data,ts,p)
   		end
 when 3 then
-# line 55 "gen_vcfheaderline_parser.rl"
+# line 58 "gen_vcfheaderline_parser.rl"
 		begin
  emit.call(:key_word,data,ts,p) 		end
 when 4 then
-# line 56 "gen_vcfheaderline_parser.rl"
-		begin
- emit.call(:value,data,ts,p) 		end
-when 5 then
-# line 57 "gen_vcfheaderline_parser.rl"
-		begin
- emit.call(:value,data,ts,p) 		end
-when 6 then
 # line 59 "gen_vcfheaderline_parser.rl"
 		begin
  emit.call(:value,data,ts,p) 		end
-when 7 then
-# line 61 "gen_vcfheaderline_parser.rl"
+when 5 then
+# line 60 "gen_vcfheaderline_parser.rl"
 		begin
- debug("ID FOUND") 		end
-when 8 then
-# line 61 "gen_vcfheaderline_parser.rl"
-		begin
- error_code="Malformed ID"		end
-when 9 then
+ emit.call(:value,data,ts,p) 		end
+when 6 then
 # line 62 "gen_vcfheaderline_parser.rl"
 		begin
- error_code="Number"		end
+ emit.call(:value,data,ts,p) 		end
+when 7 then
+# line 65 "gen_vcfheaderline_parser.rl"
+		begin
+ emit.call(:value,data,ts,p) 		end
+when 8 then
+# line 67 "gen_vcfheaderline_parser.rl"
+		begin
+ debug("ID FOUND") 		end
+when 9 then
+# line 67 "gen_vcfheaderline_parser.rl"
+		begin
+ error_code="Malformed ID"		end
 when 10 then
-# line 63 "gen_vcfheaderline_parser.rl"
+# line 68 "gen_vcfheaderline_parser.rl"
+		begin
+ error_code="Version"		end
+when 11 then
+# line 69 "gen_vcfheaderline_parser.rl"
+		begin
+ error_code="Number"		end
+when 12 then
+# line 70 "gen_vcfheaderline_parser.rl"
+		begin
+ debug("DATE FOUND") 		end
+when 13 then
+# line 70 "gen_vcfheaderline_parser.rl"
+		begin
+ error_code="Date"		end
+when 14 then
+# line 71 "gen_vcfheaderline_parser.rl"
+		begin
+ error_code="GATK"		end
+when 15 then
+# line 72 "gen_vcfheaderline_parser.rl"
 		begin
  debug("KEY_VALUE found") 		end
-when 11 then
-# line 63 "gen_vcfheaderline_parser.rl"
+when 16 then
+# line 72 "gen_vcfheaderline_parser.rl"
 		begin
  error_code="unknown key-value " 		end
-# line 447 "gen_vcfheaderline_parser.rb"
+# line 647 "gen_vcfheaderline_parser.rb"
 			end # action switch
 		end
 	end
@@ -471,19 +671,31 @@ when 11 then
 		__nacts -= 1
 		__acts += 1
 		case _simple_lexer_actions[__acts - 1]
-when 8 then
-# line 61 "gen_vcfheaderline_parser.rl"
+when 9 then
+# line 67 "gen_vcfheaderline_parser.rl"
 		begin
  error_code="Malformed ID"		end
-when 9 then
-# line 62 "gen_vcfheaderline_parser.rl"
+when 10 then
+# line 68 "gen_vcfheaderline_parser.rl"
+		begin
+ error_code="Version"		end
+when 11 then
+# line 69 "gen_vcfheaderline_parser.rl"
 		begin
  error_code="Number"		end
-when 11 then
-# line 63 "gen_vcfheaderline_parser.rl"
+when 13 then
+# line 70 "gen_vcfheaderline_parser.rl"
+		begin
+ error_code="Date"		end
+when 14 then
+# line 71 "gen_vcfheaderline_parser.rl"
+		begin
+ error_code="GATK"		end
+when 16 then
+# line 72 "gen_vcfheaderline_parser.rl"
 		begin
  error_code="unknown key-value " 		end
-# line 487 "gen_vcfheaderline_parser.rb"
+# line 699 "gen_vcfheaderline_parser.rb"
 		end # eof action switch
 	end
 	if _trigger_goto
@@ -497,7 +709,7 @@ end
 	end
 	end
 
-# line 91 "gen_vcfheaderline_parser.rl"
+# line 100 "gen_vcfheaderline_parser.rl"
 
   raise "ERROR: "+error_code+" in "+buf if error_code
 
@@ -505,10 +717,10 @@ end
     res = {}
     # p values
     values.each_slice(2) do | a,b |
-      print '*',a,b if do_debug
+      $stderr.print '*',a,b if do_debug
       keyword = a[1]
       value = b[1]
-      value = value.to_i if ['length'].index(keyword)
+      value = value.to_i if ['length','Epoch'].index(keyword)
       res[keyword] = value
       # p h[:value] if h[:name]==:identifier or h[:name]==:value or h[:name]==:string
     end
@@ -525,6 +737,17 @@ end
 end
 
 if __FILE__ == $0
+
+gatkcommandline = <<LINE1
+##GATKCommandLine=<ID=CombineVariants,Version=3.2-2-gec30cee,Date="Thu Oct 30 13:41:59 CET 2014",Epoch=1414672919266,CommandLineOptions="analysis_type=CombineVariants input_file=[] showFullBamList=false read_buffer_size=null phone_home=AWS gatk_key=null tag=NA read_filter=[] intervals=null excludeIntervals=null interval_set_rule=UNION interval_merging=ALL interval_padding=0 reference_sequence=/hpc/cog_bioinf/GENOMES/Homo_sapiens.GRCh37.GATK.illumina/Homo_sapiens.GRCh37.GATK.illumina.fasta nonDeterministicRandomSeed=false disableDithering=false maxRuntime=-1 maxRuntimeUnits=MINUTES downsampling_type=BY_SAMPLE downsample_to_fraction=null downsample_to_coverage=1000 baq=OFF baqGapOpenPenalty=40.0 refactor_NDN_cigar_string=false fix_misencoded_quality_scores=false allow_potentially_misencoded_quality_scores=false useOriginalQualities=false defaultBaseQualities=-1 performanceLog=null BQSR=null quantize_quals=0 disable_indel_quals=false emit_original_quals=false preserve_qscores_less_than=6 globalQScorePrior=-1.0 validation_strictness=SILENT remove_program_records=false keep_program_records=false sample_rename_mapping_file=null unsafe=null disable_auto_index_creation_and_locking_when_reading_rods=false num_threads=1 num_cpu_threads_per_data_thread=1 num_io_threads=0 monitorThreadEfficiency=false num_bam_file_handles=null read_group_black_list=null pedigree=[] pedigreeString=[] pedigreeValidationType=STRICT allow_intervals_with_unindexed_bam=false generateShadowBCF=false variant_index_type=DYNAMIC_SEEK variant_index_parameter=-1 logging_level=INFO log_to_file=null help=false version=false variant=[(RodBindingCollection [(RodBinding name=variant source=/hpc/cog_bioinf/data/robert/testIAP/testSubsetExome/tmp/testSubsetExome.filtered_snps.vcf)]), (RodBindingCollection [(RodBinding name=variant2 source=/hpc/cog_bioinf/data/robert/testIAP/testSubsetExome/tmp/testSubsetExome.filtered_indels.vcf)])] out=org.broadinstitute.gatk.engine.io.stubs.VariantContextWriterStub no_cmdline_in_header=org.broadinstitute.gatk.engine.io.stubs.VariantContextWriterStub sites_only=org.broadinstitute.gatk.engine.io.stubs.VariantContextWriterStub bcf=org.broadinstitute.gatk.engine.io.stubs.VariantContextWriterStub genotypemergeoption=UNSORTED filteredrecordsmergetype=KEEP_IF_ANY_UNFILTERED multipleallelesmergetype=BY_TYPE rod_priority_list=null printComplexMerges=false filteredAreUncalled=false minimalVCF=false excludeNonVariants=false setKey=set assumeIdenticalSamples=false minimumN=1 suppressCommandLineHeader=false mergeInfoWithMaxAC=false filter_reads_with_N_cigar=false filter_mismatching_base_and_quals=false filter_bases_not_stored=false">
+LINE1
+
+h = {}
+s = gatkcommandline.strip
+# print s,"\n"
+result = BioVcf::VcfHeaderParser::RagelKeyValues.run_lexer(s, debug: true)
+# h[result['ID']] = result
+# p result
 
 lines = <<LINES
 ##FILTER=<ID=HaplotypeScoreHigh,Description="HaplotypeScore > 13.0">
