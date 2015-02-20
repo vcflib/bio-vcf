@@ -4,7 +4,7 @@
 # Author:: Pjotr Prins
 # License:: MIT
 #
-# Copyright (C) 2014 Pjotr Prins <pjotr.prins@thebird.nl>
+# Copyright (C) 2014-2015 Pjotr Prins <pjotr.prins@thebird.nl>
 
 USAGE = "Vcf parser"
 
@@ -358,6 +358,7 @@ CHUNK_NUM = (NUM_THREADS && NUM_THREADS>6 ? NUM_THREADS*4 : 24)
 chunks = []
 lines = []
 line_number=0
+output_running = false # a lock for tracking the output fork
 
 if options[:bed]
   bedfilter = BedFilter.new(options[:bed])
@@ -371,6 +372,7 @@ begin
     end
     res
   }
+  # Output generator
   output = lambda { |collection| 
     collection.each do | result |
       result.each { |line| print line }
@@ -425,13 +427,15 @@ begin
             process.call(chunk)
           }
           chunks = []
-          # Output is forked to a separate process too
-          fork do
+          # Output is forked to a separate process
+          while output_running do
+            sleep 0.01
+          end
+          Parallel.map(1..1, :finish => lambda { |item,i,result| output_running=false }) { |num|
             output.call out
             STDOUT.flush
             STDOUT.close
-            exit 0
-          end
+          }
         end
         lines = []
       end
@@ -442,6 +446,9 @@ begin
     process.call(lines).each { |l| print l}
   else
     chunks << lines
+    while output_running do
+      sleep 0.01
+    end
     output.call Parallel.map(chunks, :in_processes => NUM_THREADS) { | chunk |
       process.call(chunk)
     }
