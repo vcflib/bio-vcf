@@ -432,6 +432,7 @@ begin
             sleep 0.01
           end
           Parallel.map(1..1, :finish => lambda { |item,i,result| output_running=false }) { |num|
+            output_running = true
             output.call out
             STDOUT.flush
             STDOUT.close
