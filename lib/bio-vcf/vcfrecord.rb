@@ -162,6 +162,10 @@ module BioVcf
       @qual ||= @fields[5].to_f
     end
 
+    def filter
+      @filter ||= @fields[6]
+    end
+    
     def info
       @info ||= VcfRecordParser.get_info(@fields[7])
     end
@@ -250,19 +254,19 @@ module BioVcf
       end
     end
 
-    def filter expr, ignore_missing_data: true, quiet: false
+    def gfilter expr, ignore_missing_data: true, quiet: false
       begin
         if not respond_to?(:call_cached_filter)
           code =
           """
-          def call_cached_filter(rec,fields)
+          def call_cached_gfilter(rec,fields)
             r = rec
             #{expr}
           end
           """
           self.class.class_eval(code)
         end
-        res = call_cached_filter(self,@fields)
+        res = call_cached_gfilter(self,@fields)
         if res.kind_of?(Array)
           res.join("\t")
         else

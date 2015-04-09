@@ -265,7 +265,7 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
     return if not bed
   end
 
-  return if filter and not rec.filter(filter,ignore_missing_data: ignore_missing,quiet: quiet)
+  return if filter and not rec.gfilter(filter,ignore_missing_data: ignore_missing,quiet: quiet)
   
   if sfilter
     rec.each_sample(options[:sfilter_samples]) do | sample |

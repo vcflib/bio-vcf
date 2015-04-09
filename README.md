@@ -87,11 +87,17 @@ assumptions are made about the actual contents of the VCF file (field
 names are resolved on the fly), so bio-vcf should work with
 all VCF files.
 
-To fetch all entries where all samples have depth larger than 20 use
-a sample filter
+To fetch all entries where all samples have depth larger than 20 and
+filter set to PASS use a sample filter
 
 ```ruby
-  bio-vcf --sfilter 'sample.dp>20' < file.vcf
+  bio-vcf --sfilter 'sample.dp>20 and rec.filter=="PASS"' < file.vcf
+```
+
+or with a regex
+
+```ruby
+  bio-vcf --sfilter 'sample.dp>20 and rec.filter !~ /LowQD/' < file.vcf
 ```
 
 To only filter on some samples number 0 and 3:
