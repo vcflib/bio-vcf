@@ -365,6 +365,7 @@ if options[:bed]
 end 
 
 begin
+  # Linear parser (going through one chunk)
   process = lambda { | lines |
     res = []
     lines.each do | line |
@@ -382,7 +383,7 @@ begin
   # ---- Main loop
   STDIN.each_line do | line |
     line_number += 1
-    # ---- In this section header information is handled
+    # ---- In the following section header information is handled
 
     # ---- Skip embedded headers down the line...
     next if header_output_completed and line =~ /^#/
@@ -408,9 +409,13 @@ begin
       print parse_line(line,header,options,bedfilter,samples,template,stats)
       exit 0
     end
-    
-    # ---- In this section the VCF variant lines are parsed
+
+    # ---- Lines are collected in one buffer and the lines buffer
+    #      is added to the chunks list (for the threads)
     lines << line
+
+    # ---- In the following section the VCF lines are parsed by chunks
+    #      The chunks may go into different threads
     
     if NUM_THREADS == 1
       $stderr.print '.' if line_number % CHUNK_SIZE == 0 and not options[:quiet]
