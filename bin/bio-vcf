@@ -238,7 +238,7 @@ def parse_header line, samples, options
   return header,line
 end
 
-# Parse a VCF line and return the result as a string
+# Parse a VCF line and return the (template) result as a string buffer
 def parse_line line,header,options,bedfilter,samples,template,stats=nil
   fields = VcfLine.parse(line)
   rec = VcfRecord.new(fields,header)
