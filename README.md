@@ -2,9 +2,13 @@
 
 [![Build Status](https://secure.travis-ci.org/pjotrp/bioruby-vcf.png)](http://travis-ci.org/pjotrp/bioruby-vcf) 
 
-News: bio-vcf turns any VCF into JSON with header information, and
-allows you to pipe that JSON directly into any JSON supporting
-language, including Python and Javascript!
+## Updates
+
+* bio-vcf turns any VCF into JSON with header information, and
+  allows you to pipe that JSON directly into any JSON supporting
+  language, including Python and Javascript!
+
+## Bio-vcf
 
 Bio-vcf is a new generation VCF parser, filter and converter. Bio-vcf is not only
 very fast for genome-wide (WGS) data, it also comes with a really nice
@@ -23,7 +27,7 @@ So, why would you use bio-vcf over other parsers? Because
 8. Bio-vcf allows for genotype processing
 9. Bio-vcf has support for set analysis
 10. Bio-vcf has sane error handling
-11. Bio-vcf can convert *any* VCF to *any* output, including tabular data, HTML, LaTeX, RDF, JSON and JSON-LD and even other VCFs by using (erb) templates
+11. Bio-vcf can convert *any* VCF to *any* output, including tabular data, BED, HTML, LaTeX, RDF, JSON and JSON-LD and even other VCFs by using (erb) templates
 
 Bio-vcf has better performance than other tools
 because of lazy parsing, multi-threading, and useful combinations of
