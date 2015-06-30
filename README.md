@@ -4,6 +4,7 @@
 
 ## Updates
 
+* The outputter now writes (properly) in parallel with the parser
 * bio-vcf turns any VCF into JSON with header information, and
   allows you to pipe that JSON directly into any JSON supporting
   language, including Python and Javascript!
