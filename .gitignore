@@ -6,3 +6,6 @@ scripts/timings.sh
 TAGS
 test/data/regression/*.new
 data/
+fedor.txt
+test.vcf
+out.bed
