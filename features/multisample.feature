@@ -79,3 +79,12 @@ Feature: Multi-sample VCF
     And I expect r.original.gts to be ["C","G"]
     And I expect r.original.gts[0] to be "C"
     And I expect r.original.gts[1] to be "G"
+    
+    # INFO fields with matching tails
+    Given multisample vcf line
+    """
+1 10723 . C G 73.85 . AC=4;AF=0.667;CIEND=999;END=111;AN=6;BaseQRankSum=1.300;DP=18;Dels=0.00;FS=3.680;HaplotypeScore=0.0000;MLEAC=4;MLEAF=0.667;MQ=20.49;MQ0=11;MQRankSum=1.754;QD=8.21;ReadPosRankSum=0.000 GT:AD:DP:GQ:PL  0|1 ./. 1/1:2,2:4:6:66,6,0  1/1:4,1:5:3:36,3,0  ./. ./.  0/0:6,0:6:3:0,3,33
+    """
+    When I parse the record
+    Then I expect r.info.end to be 111
+    And I expect r.info.ciend to be 999
