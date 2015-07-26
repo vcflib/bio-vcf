@@ -94,30 +94,31 @@ class PCOWS
   # This is the final cleanup after the reader thread is done. All workers
   # need to complete.
   
-  def wait_for_children_to_complete
+  def wait_for_children_to_complete(func)
     $stderr.print "Final pid=#{pid_list.last[0]}\n"
     # Wait for the running threads to complete
     pid_list.each do |info|
-      (pid,count,threadfn) = info
-      tempfn = threadfn + '.'+RUNNINGEXT
-      if pid_or_file_running?(pid)
+      (pid,count,fn) = info
+      if pid_or_file_running?(pid,fn)
         timeout = 180
         $stderr.print "Waiting up to #{timeout} seconds for pid=#{pid} to complete\n"
         begin
           Timeout.timeout(timeout) do
-            while not File.exist?(threadfn)  # wait for the result to appear
+            while not File.exist?(fn)  # wait for the result to appear
               sleep 0.2
             end
           end
           # Thread file should have gone:
-          raise "FATAL: child process appears to have crashed #{tempfn}" if File.exist?(tempfn)
-          $stderr.print "OK pid=#{pid}\n"
+          raise "FATAL: child process appears to have crashed #{fn}" if not File.exist?(fn)
+          $stderr.print "OK pid=#{pid}, processing #{fn}\n"
+          process_output(func) # process one
         rescue Timeout::Error
           if pid_running?(pid)
+            # FIXME: do we really need to do this?
             Process.kill 9, pid
             Process.wait pid
           end
-          raise "FATAL: child process killed because it stopped responding, pid = #{pid}\n"
+          $stderr.print "FATAL: child process killed because it stopped responding, pid = #{pid}\n"
         end
       end
     end
