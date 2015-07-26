@@ -31,3 +31,23 @@ creating chunks of state that get passed on to a chunk processor named
 'run' which gets a callback 'func'. Every time a chunk gets processed
 the reader checks the size of the thread pool and also checks whether
 output has become available.
+
+The threads communicate simply through a file. Each thread writes to
+STDOUT which has been redirected to a temporary file with extension
+'.part'.  When the thread is complete, the file gets renamed by
+removing the '.part'. Files that lack the '.part' get printed to the
+real STDOUT and deleted on completion. I.e.:
+
+1. STDOUT for a worker is redirected to a tempfile with extension '.part'
+2. Worker thread writes to STDOUT
+3. On completion '.part' gets removed from the filename
+4. The main thread checks the next file to be printed based on filenames
+5. A print thread gets invoked
+6. The print thread removes the file
+
+The only communication between PCOW threads and the main running
+thread is therefore the renaming of the temporary file. This will also
+work on network mounted systems. For performance it can make a
+difference to use a fast disk for temporary files, though the Linux
+file caching will make it likely that buffers are still in RAM.
+
