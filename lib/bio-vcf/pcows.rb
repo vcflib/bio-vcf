@@ -1,27 +1,24 @@
 # Parallel copy-on-write streaming (PCOWS)
 
-module PCOWS
+class PCOWS
 
-  # Convenience function creates a tempdir and yields the name
-  def PCOWS::mktmpdir(name='pcows')
-    yield Dir::mktmpdir(name+'_')
+  def initialize(num_threads,name=__FILE__)
+    @num_threads = num_threads
+    @thread_list = []
+    @name = name
+    @tmpdir =  Dir::mktmpdir(@name+'_')
+    @count = 0
   end
 
-  def PCOWS::mktmpfilename(dir,num,name=__MAIN__)
-    dir+sprintf("/%0.6d-",num)+name
-  end
+  # Feed the func and state to COWS. Note that func is a closure so it
+  # can pick up surrounding scope at invocation in addition to the
+  # data captured in 'state'.
   
-  # Feed the state to COWS. Note that func is a closure
-  # so it can pick up surrounding scope at invocation
-  # in addition to the data captured in 'state'.
-  #
-  # Returns the created pid, count and threadfilen
-  
-  def PCOWS::run(func,state,tmpdir,num_threads)
+  def run(func,state,tmpdir,num_threads)
     pid = nil
     if num_threads and num_threads>1
-      count += 1
-      threadfilen = mktmpfilename(tmpdir,count)
+      @count += 1
+      threadfilen = mktmpfilename(tmpdir,@count)
       pid = fork do
         # ---- This is running a new copy-on-write process
         tempfn = threadfilen+'.part'
@@ -36,13 +33,14 @@ module PCOWS
       # ---- Call in main process
       func.call(state)
     end
-    return pid,count,threadfilen
+    @thread_list << [ pid,@count,threadfilen ]
+    return true
   end
 
   # Make sure no more than num_threads are running at the same time -
   # this is achieved by checking the PID table and the running files
   # in the tmpdir
-  def PCOWS::wait_for_threadpool(thread_list, num_threads)
+  def wait_for_threadpool(thread_list, num_threads)
     while true
       # ---- count running pids
       running = thread_list.reduce(0) do | sum, thread_info |
@@ -123,5 +121,10 @@ module PCOWS
     end
   end  # cleans up tempdir
 
+  protected
+  
+  def mktmpfilename(num)
+    @tmpdir+sprintf("/%0.6d-",num)+@name
+  end
 
 end

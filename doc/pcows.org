@@ -18,9 +18,16 @@ PCOWS got retrofitted.
 
 PCOWS basically reads a file and chunks it on the main thread. Every
 chunk gets fed to a copy-on-write version of the Ruby interpreter
-which contains the full state up to the point of forking. The chunk
-gets processed to a file. A separate thread harvests files (ordered on
-their names in the list) and pipes them to STDOUT as they come in.
+which contains the full state up to the point of forking - this is an
+inexpensive procedure. Each chunk gets processed to a file. The main
+thread tracks these files and issues a separate thread for harvesting
+the ordered files so each gets piped to STDOUT in order.
 
-This means the reader thread is only held up by the number of allowed
-forks running at a time.
+The reader thread tracks This means the reader thread is only held up
+by the number of allowed forks running at a time.
+
+Based on this description the interface can be expressed as a reader
+creating chunks of state that get passed on to a chunk processor named
+'run' which gets a callback 'func'. Every time a chunk gets processed
+the reader checks the size of the thread pool and also checks whether
+output has become available.
