@@ -1,0 +1,26 @@
+* Parallel copy-on-write streaming (PCOWS)
+
+Copy-on-write can be offered by an operating system to provide
+efficient parallelisation for streaming operations typical in biology
+where chunks of data can be processed independently from the same
+starting point. 
+
+PCOWS compares to a regular thread pool with the difference that data
+is not communicated through messages or pipes, but simply through
+memory. The only catch is that PCOWS threads can not easily communicate
+back. The Ruby parallel gem communicates back through pipes but that
+means the main thread can not proceed until all the pipes complete.
+
+PCOWS was first explored in the bio-ruby VCF tool (bio-vcf 0.7 series)
+and then replaced by the parallel gem (bio-vcf 0.8
+series). Performance, unfortunately, deteriorated to the extent that
+PCOWS got retrofitted.
+
+PCOWS basically reads a file and chunks it on the main thread. Every
+chunk gets fed to a copy-on-write version of the Ruby interpreter
+which contains the full state up to the point of forking. The chunk
+gets processed to a file. A separate thread harvests files (ordered on
+their names in the list) and pipes them to STDOUT as they come in.
+
+This means the reader thread is only held up by the number of allowed
+forks running at a time.
