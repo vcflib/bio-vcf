@@ -1,10 +1,12 @@
 # Parallel copy-on-write streaming (PCOWS)
 
+require 'tempfile'
+
 class PCOWS
 
   RUNNINGEXT = 'part'
   
-  def initialize(num_threads,name=__FILE__)
+  def initialize(num_threads,name=File.basename(__FILE__))
     num_threads = 1 if !num_threads # FIXME: set to cpu_num by default
     @num_threads = num_threads
     @pid_list = []
@@ -45,11 +47,11 @@ class PCOWS
   # this is achieved by checking the PID table and the running files
   # in the tmpdir
 
-  def wait_for_threadpool()
+  def wait_for_threadpool_slot()
     while true
       # ---- count running pids
       running = @pid_list.reduce(0) do | sum, info |
-        (pid,count,fn) == info
+        (pid,count,fn) = info
         if pid_or_file_running?(pid,fn)
           sum+1
         else
@@ -66,8 +68,11 @@ class PCOWS
   #      ordered and that no printers are running at the same
   #      time. The printer thread should be doing as little processing
   #      as possible.
+  #
+  #      In this implementation type==:by_line will call func for
+  #      each line. Otherwise it is called once with the filename.
 
-  def process_output(func)
+  def process_output(func,type = :by_line)
     if @output_locked
       (pid,count,fn) = @output_locked
       return if File.exist?(fn)  # still processing
@@ -80,9 +85,13 @@ class PCOWS
       if File.exist?(fn)
         # Yes! We have the next output, create outputter
         pid = fork do
-          File.new(fn).each_line { |buf|
-            func.call(buf)
-          }
+          if type == :by_line
+            File.new(fn).each_line { |buf|
+              func.call(buf)
+            }
+          else
+            func.call(fn)
+          end
           File.unlink(fn)
           exit(0)
         end

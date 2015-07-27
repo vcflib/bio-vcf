@@ -15,6 +15,7 @@ VERSION_FILENAME=File.join(gempath,'VERSION')
 version = File.new(VERSION_FILENAME).read.chomp
 
 require 'bio-vcf'
+require 'bio-vcf/pcows'
 require 'optparse'
 require 'timeout'
 require 'fileutils'
@@ -154,7 +155,7 @@ end
 opts.parse!(ARGV)
 
 BIOVCF_VERSION=version
-BIOVCF_BANNER = "vcf #{version} (biogem Ruby #{RUBY_VERSION}) by Pjotr Prins 2015\n"
+BIOVCF_BANNER = "bio-vcf #{version} (biogem Ruby #{RUBY_VERSION} with pcows) by Pjotr Prins 2015\n"
 $stderr.print BIOVCF_BANNER if !options[:quiet]
 
 if options[:show_help] 
@@ -178,14 +179,7 @@ if options[:template]
   template = Bio::Template.new(fn)
 end
 
-if options[:num_threads] != 1
-  begin
-    require 'parallel'
-  rescue LoadError
-    $stderr.print "Error: Missing 'parallel' module. Install with command 'gem install parallel' if you want multiple threads\n"
-    options[:num_threads] = 1
-  end
-end
+pcows = PCOWS.new(options[:num_threads])
 
 stats = nil
 if options[:statistics]
