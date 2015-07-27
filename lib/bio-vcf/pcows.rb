@@ -91,11 +91,10 @@ class PCOWS
     end
   end
 
-  def wait_for_worker_to_complete(func)
+  def wait_for_worker(func,timeout=180)
     if not info = @pid_list[@last_output]
       (pid,count,fn) = info
       if pid_or_file_running?(pid,fn)
-        timeout = 180
         $stderr.print "Waiting up to #{timeout} seconds for pid=#{pid} to complete\n"
         begin
           Timeout.timeout(timeout) do
@@ -108,7 +107,7 @@ class PCOWS
           $stderr.print "OK pid=#{pid}, processing #{fn}\n"
         rescue Timeout::Error
           if pid_running?(pid)
-            # FIXME: do we really need to do this?
+            # Kill it to speed up exit
             Process.kill 9, pid
             Process.wait pid
           end
@@ -121,11 +120,10 @@ class PCOWS
   # This is the final cleanup after the reader thread is done. All workers
   # need to complete.
   
-  def wait_for_workers_to_complete(func)
-    $stderr.print "Final pid=#{pid_list.last[0]}\n"
-    # Wait for the running threads to complete
+  def wait_for_workers(func)
     pid_list.each do |info|
-      (pid,count,fn) = info
+      # (pid,count,fn) = info
+      wait_for_worker(func)
     end
   end
 
