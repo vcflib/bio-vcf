@@ -109,28 +109,26 @@ class PCOWS
     end
   end
 
-  def wait_for_worker(timeout=180)
-    if not info = @pid_list[@last_output]
-      (pid,count,fn) = info
-      if pid_or_file_running?(pid,fn)
-        $stderr.print "Waiting up to #{timeout} seconds for pid=#{pid} to complete\n"
-        begin
-          Timeout.timeout(timeout) do
-            while not File.exist?(fn)  # wait for the result to appear
-              sleep 0.2
-            end
+  def wait_for_worker(info,timeout=180)
+    (pid,count,fn) = info
+    if pid_or_file_running?(pid,fn)
+      $stderr.print "Waiting up to #{timeout} seconds for pid=#{pid} to complete\n"
+      begin
+        Timeout.timeout(timeout) do
+          while not File.exist?(fn)  # wait for the result to appear
+            sleep 0.2
           end
-          # Thread file should have gone:
-          raise "FATAL: child process appears to have crashed #{fn}" if not File.exist?(fn)
-          $stderr.print "OK pid=#{pid}, processing #{fn}\n"
-        rescue Timeout::Error
-          if pid_running?(pid)
-            # Kill it to speed up exit
-            Process.kill 9, pid
-            Process.wait pid
-          end
-          $stderr.print "FATAL: child process killed because it stopped responding, pid = #{pid}\n"
         end
+        # Thread file should have gone:
+        raise "FATAL: child process appears to have crashed #{fn}" if not File.exist?(fn)
+        $stderr.print "OK pid=#{pid}, processing #{fn}\n"
+      rescue Timeout::Error
+        if pid_running?(pid)
+          # Kill it to speed up exit
+          Process.kill 9, pid
+          Process.wait pid
+        end
+        $stderr.print "FATAL: child process killed because it stopped responding, pid = #{pid}\n"
       end
     end
   end
@@ -139,12 +137,14 @@ class PCOWS
   # need to complete.
   
   def wait_for_workers()
+    return if multi_threaded
     @pid_list.each do |info|
-      wait_for_worker()
+      wait_for_worker(info)
     end
   end
 
   def process_remaining_output()
+    return if multi_threaded
     @pid_list.each do |info|
       process_output()
     end
