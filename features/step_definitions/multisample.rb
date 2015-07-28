@@ -173,3 +173,10 @@ Then(/^I expect r\.original\.gts\[(\d+)\] to be "(.*?)"$/) do |arg1, arg2|
   expect(@rec1.original.gts[arg1.to_i]).to eq arg2
 end
 
+Then(/^I expect r\.info\.end to be (\d+)$/) do |arg1|
+  expect(@rec1.info.end).to eq arg1.to_i
+end
+
+Then(/^I expect r\.info\.ciend to be (\d+)$/) do |arg1|
+  expect(@rec1.info.ciend).to eq arg1.to_i
+end
