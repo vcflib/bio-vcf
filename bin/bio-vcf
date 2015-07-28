@@ -348,18 +348,15 @@ header = nil
 header_output_completed = false
 NUM_THREADS = options[:num_threads]
 CHUNK_SIZE = options[:thread_lines]
-CHUNK_NUM = (NUM_THREADS && NUM_THREADS>6 ? NUM_THREADS*4 : 24) 
-chunks = []
 lines = []
 line_number=0
-output_running = false # a lock for tracking the output fork
 
 if options[:bed]
   bedfilter = BedFilter.new(options[:bed])
 end 
 
 begin
-  # Linear parser (going through one chunk)
+  # Define linear parser function (going through one chunk)
   process = lambda { | lines |
     res = []
     lines.each do | line |
@@ -367,7 +364,7 @@ begin
     end
     res
   }
-  # Output generator
+  # Define output generator function (one chunk)
   output = lambda { |collection| 
     collection.each do | result |
       result.each { |line| print line }
@@ -377,10 +374,12 @@ begin
   # ---- Main loop
   STDIN.each_line do | line |
     line_number += 1
-    # ---- In the following section header information is handled
 
     # ---- Skip embedded headers down the line...
     next if header_output_completed and line =~ /^#/
+
+    # ---- In the following section header information is handled -
+    #      this only happens once.
 
     # ---- Parse the header lines (chomps from STDIN)
     #      and returns header info and the current line
@@ -400,6 +399,8 @@ begin
     end
     
     if options[:eval_once]
+      # this happens if we only want one line evaluated - say to get
+      # the number of samples
       print parse_line(line,header,options,bedfilter,samples,template,stats)
       exit 0
     end
@@ -411,13 +412,6 @@ begin
     # ---- In the following section the VCF lines are parsed by chunks
     #      The chunks may go into different threads
     
-    if NUM_THREADS == 1
-      $stderr.print '.' if line_number % CHUNK_SIZE == 0 and not options[:quiet]
-      if lines.size > CHUNK_SIZE
-        process.call(lines).each { | l | print l }
-        lines = []
-      end
-    else
       if lines.size > CHUNK_SIZE
         chunks << lines
         if chunks.size > CHUNK_NUM
@@ -448,20 +442,10 @@ begin
         end
         lines = []
       end
-    end
   end
   $stderr.print '.' if not options[:quiet]
 
 
-  if NUM_THREADS == 1
-    process.call(lines).each { |l| print l}
-  else
-    chunks << lines
-    out = process_chunks.call(chunks)
-    output.call out
-    STDOUT.flush
-    STDOUT.close
-  end
   print template.footer(binding) if template
   stats.print if stats
 
