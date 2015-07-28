@@ -8,7 +8,7 @@ class PCOWS
   
   def initialize(num_threads,name=File.basename(__FILE__))
     num_threads = 1 if num_threads==nil # FIXME: set to cpu_num by default
-    $stderr.print "Using ",num_threads,"threads \n"
+    # $stderr.print "Using ",num_threads,"threads \n"
     @num_threads = num_threads
     @pid_list = []
     @name = name
@@ -19,7 +19,7 @@ class PCOWS
     @output_locked = nil
   end
 
-  # Feed the worker func and state to COWS. Note that func is a
+  # Feed the worker func and state to COWS. Note that func is a lambda
   # closure so it can pick up surrounding scope at invocation in
   # addition to the data captured in 'state'.
   
