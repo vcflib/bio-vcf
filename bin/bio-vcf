@@ -179,8 +179,6 @@ if options[:template]
   template = Bio::Template.new(fn)
 end
 
-pcows = PCOWS.new(options[:num_threads])
-
 stats = nil
 if options[:statistics]
   options[:num_threads] = nil
@@ -344,6 +342,7 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
   end
 end
 
+pcows = PCOWS.new(options[:num_threads],'bio-vcf')
 header = nil
 header_output_completed = false
 NUM_THREADS = options[:num_threads]
@@ -415,22 +414,14 @@ begin
     if chunk_lines.size > CHUNK_SIZE
       # ---- process one chunk
       $stderr.print '.' if not options[:quiet]
-      out = Parallel.map(chunks, :in_processes => NUM_THREADS) { | chunk |
-        process.call(chunk)
-      }
-      # Output is forked to a separate process
-      Parallel.map(1..1, :finish => lambda { |item,i,result| output_running=false }) { |num|
-        output.call out
-        STDOUT.flush
-        STDOUT.close
-      }
+      pcows.wait_for_worker_slot()
+      pcows.submit_worker(process,chunk_lines)
+      pcows.process_output(output)
 
-      output.call Parallel.map(chunks, :in_processes => NUM_THREADS) { | chunk |
-        process.call(chunk)
-      }
+      chunk_lines = []
     end
-    chunk_lines = []
   end
+  # fixme CLEANUP
   print template.footer(binding) if template
   stats.print if stats
 

@@ -7,11 +7,14 @@ class PCOWS
   RUNNINGEXT = 'part'
   
   def initialize(num_threads,name=File.basename(__FILE__))
-    num_threads = 1 if !num_threads # FIXME: set to cpu_num by default
+    num_threads = 1 if num_threads==nil # FIXME: set to cpu_num by default
+    $stderr.print "Using ",num_threads,"threads \n"
     @num_threads = num_threads
     @pid_list = []
     @name = name
-    @tmpdir =  Dir::mktmpdir(@name+'_')
+    if multi_threaded
+      @tmpdir =  Dir::mktmpdir(@name+'_')
+    end
     @last_output = 0 # counter
     @output_locked = nil
   end
@@ -20,24 +23,25 @@ class PCOWS
   # closure so it can pick up surrounding scope at invocation in
   # addition to the data captured in 'state'.
   
-  def worker(func,state)
+  def submit_worker(func,state)
     pid = nil
-    if @num_threads>1
+    if multi_threaded
       count = @pid_list.size+1
       fn = mktmpfilename(count)
+      $stderr.print "Running thread #{count}\n"
       pid = fork do
         # ---- This is running a new copy-on-write process
         tempfn = fn+'.'+RUNNINGEXT
         STDOUT.reopen(File.open(tempfn, 'w+'))
-        func.call(state)
+        func.call(state).each { | line | puts line }
         STDOUT.flush
         STDOUT.close
-        FileUtils::mv(tempfn,threadfilen)
+        FileUtils::mv(tempfn,fn)
         exit 0
       end
     else
       # ---- Call in main process
-      func.call(state)
+      func.call(state).each { | line | puts line }
     end
     @pid_list << [ pid,count,fn ]
     return true
@@ -47,7 +51,8 @@ class PCOWS
   # this is achieved by checking the PID table and the running files
   # in the tmpdir
 
-  def wait_for_threadpool_slot()
+  def wait_for_worker_slot()
+    return if not multi_threaded
     while true
       # ---- count running pids
       running = @pid_list.reduce(0) do | sum, info |
@@ -73,6 +78,17 @@ class PCOWS
   #      each line. Otherwise it is called once with the filename.
 
   def process_output(func,type = :by_line)
+    return if not multi_threaded
+    output = lambda {
+      if type == :by_line
+        File.new(fn).each_line { |buf|
+          func.call(buf)
+        }
+      else
+        func.call(fn)
+      end
+      File.unlink(fn)
+    }
     if @output_locked
       (pid,count,fn) = @output_locked
       return if File.exist?(fn)  # still processing
@@ -85,14 +101,7 @@ class PCOWS
       if File.exist?(fn)
         # Yes! We have the next output, create outputter
         pid = fork do
-          if type == :by_line
-            File.new(fn).each_line { |buf|
-              func.call(buf)
-            }
-          else
-            func.call(fn)
-          end
-          File.unlink(fn)
+          output.call
           exit(0)
         end
         @output_locked = info
@@ -156,4 +165,7 @@ class PCOWS
     return ! (status.exited? || status.signaled?)
   end
 
+  def multi_threaded
+    @num_threads > 1
+  end
 end
