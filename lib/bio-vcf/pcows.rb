@@ -77,7 +77,7 @@ class PCOWS
   #      In this implementation type==:by_line will call func for
   #      each line. Otherwise it is called once with the filename.
 
-  def process_output(func=nil,type = :by_line)
+  def process_output(func=nil,type = :by_line, blocking=false)
     return if single_threaded
     output = lambda { |fn|
       if type == :by_line
@@ -98,13 +98,18 @@ class PCOWS
     end
     if info = @pid_list[@last_output]
       (pid,count,fn) = info
+      $stderr.print "Processing #{fn}\n"
       if File.exist?(fn)
         # Yes! We have the next output, create outputter
-        pid = fork do
+        if not blocking
+          pid = fork do
+            output.call(fn)
+            exit(0)
+          end
+          @output_locked = info
+        else
           output.call(fn)
-          exit(0)
         end
-        @output_locked = info
       end
     end
   end
@@ -145,8 +150,12 @@ class PCOWS
 
   def process_remaining_output()
     return if single_threaded
-    @pid_list.each do |info|
+    while @output_locked
+      sleep 0.2
       process_output()
+    end
+    @pid_list.each do |info|
+      process_output(nil,:by_line,true)
     end
   end
   

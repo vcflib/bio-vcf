@@ -417,6 +417,7 @@ begin
   end
   pcows.wait_for_workers()
   pcows.process_remaining_output()
+  
   print template.footer(binding) if template
   stats.print if stats
 
