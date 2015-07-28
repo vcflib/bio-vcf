@@ -429,16 +429,11 @@ begin
 -            STDOUT.close
 -          }
 
-    while output_running do
--      sleep 0.01
--    end
 -    output.call Parallel.map(chunks, :in_processes => NUM_THREADS) { | chunk |
 -      process.call(chunk)
 -    }
-          # out = process_chunks.call(chunks)
-          # chunks = [ out ]
-        end
-        lines = []
+    end
+    lines = []
   end
   print template.footer(binding) if template
   stats.print if stats
