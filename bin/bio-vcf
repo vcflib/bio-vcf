@@ -348,7 +348,7 @@ header = nil
 header_output_completed = false
 NUM_THREADS = options[:num_threads]
 CHUNK_SIZE = options[:thread_lines]
-lines = []
+chunk_lines = []
 line_number=0
 
 if options[:bed]
@@ -407,33 +407,29 @@ begin
 
     # ---- Lines are collected in one buffer and the lines buffer
     #      is added to the chunks list (for the threads)
-    lines << line
+    chunk_lines << line
 
     # ---- In the following section the VCF lines are parsed by chunks
     #      The chunks may go into different threads
     
-    if lines.size > CHUNK_SIZE
-          $stderr.print '.' if not options[:quiet]
-  -          out = Parallel.map(chunks, :in_processes => NUM_THREADS) { | chunk |
--            process.call(chunk)
--          }
--          chunks = []
--          # Output is forked to a separate process
--          while output_running do
--            sleep 0.01
--          end
--          output_running = true
--          Parallel.map(1..1, :finish => lambda { |item,i,result| output_running=false }) { |num|
--            output.call out
--            STDOUT.flush
--            STDOUT.close
--          }
+    if chunk_lines.size > CHUNK_SIZE
+      # ---- process one chunk
+      $stderr.print '.' if not options[:quiet]
+      out = Parallel.map(chunks, :in_processes => NUM_THREADS) { | chunk |
+        process.call(chunk)
+      }
+      # Output is forked to a separate process
+      Parallel.map(1..1, :finish => lambda { |item,i,result| output_running=false }) { |num|
+        output.call out
+        STDOUT.flush
+        STDOUT.close
+      }
 
--    output.call Parallel.map(chunks, :in_processes => NUM_THREADS) { | chunk |
--      process.call(chunk)
--    }
+      output.call Parallel.map(chunks, :in_processes => NUM_THREADS) { | chunk |
+        process.call(chunk)
+      }
     end
-    lines = []
+    chunk_lines = []
   end
   print template.footer(binding) if template
   stats.print if stats
