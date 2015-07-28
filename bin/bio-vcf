@@ -350,7 +350,6 @@ NUM_THREADS = options[:num_threads]
 CHUNK_SIZE = options[:thread_lines]
 CHUNK_NUM = (NUM_THREADS && NUM_THREADS>6 ? NUM_THREADS*4 : 24) 
 chunks = []
-chunks << [] # first item is the outputter
 lines = []
 line_number=0
 output_running = false # a lock for tracking the output fork
@@ -371,23 +370,9 @@ begin
   # Output generator
   output = lambda { |collection| 
     collection.each do | result |
-      if result!=nil
-        result.each { |line| print line }
-      end
+      result.each { |line| print line }
     end
   } # end output
-
-  process_chunks = lambda { |chunks|
-    Parallel.map_with_index(chunks, :in_processes => NUM_THREADS) { | chunk,iter |
-      if iter==0
-        output.call chunk
-        STDOUT.flush
-        STDOUT.close
-      else
-        process.call(chunk)
-      end
-    }
-  }
 
   # ---- Main loop
   STDIN.each_line do | line |
@@ -437,14 +422,37 @@ begin
         chunks << lines
         if chunks.size > CHUNK_NUM
           $stderr.print '.' if not options[:quiet]
-          out = process_chunks.call(chunks)
-          chunks = [ out ]
+  -          out = Parallel.map(chunks, :in_processes => NUM_THREADS) { | chunk |
+-            process.call(chunk)
+-          }
+-          chunks = []
+-          # Output is forked to a separate process
+-          while output_running do
+-            sleep 0.01
+-          end
+-          output_running = true
+-          Parallel.map(1..1, :finish => lambda { |item,i,result| output_running=false }) { |num|
+-            output.call out
+-            STDOUT.flush
+-            STDOUT.close
+-          }
+
+    while output_running do
+-      sleep 0.01
+-    end
+-    output.call Parallel.map(chunks, :in_processes => NUM_THREADS) { | chunk |
+-      process.call(chunk)
+-    }
+          # out = process_chunks.call(chunks)
+          # chunks = [ out ]
         end
         lines = []
       end
     end
   end
   $stderr.print '.' if not options[:quiet]
+
+
   if NUM_THREADS == 1
     process.call(lines).each { |l| print l}
   else
