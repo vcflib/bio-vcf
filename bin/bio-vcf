@@ -363,12 +363,6 @@ begin
     end
     res
   }
-  # Define output generator function (one chunk)
-  output = lambda { |collection| 
-    collection.each do | result |
-      result.each { |line| print line }
-    end
-  } # end output
 
   # ---- Main loop
   STDIN.each_line do | line |
@@ -416,12 +410,13 @@ begin
       $stderr.print '.' if not options[:quiet]
       pcows.wait_for_worker_slot()
       pcows.submit_worker(process,chunk_lines)
-      pcows.process_output(output)
+      pcows.process_output()
 
       chunk_lines = []
     end
   end
-  # fixme CLEANUP
+  pcows.wait_for_workers()
+  pcows.process_remaining_output()
   print template.footer(binding) if template
   stats.print if stats
 

@@ -28,7 +28,6 @@ class PCOWS
     if multi_threaded
       count = @pid_list.size+1
       fn = mktmpfilename(count)
-      $stderr.print "Running thread #{count}\n"
       pid = fork do
         # ---- This is running a new copy-on-write process
         tempfn = fn+'.'+RUNNINGEXT
@@ -64,6 +63,7 @@ class PCOWS
         end
       end
       break if running < @num_threads
+      $stderr.print "Waiting for slot\n"
       sleep 0.1
     end
   end
@@ -77,12 +77,12 @@ class PCOWS
   #      In this implementation type==:by_line will call func for
   #      each line. Otherwise it is called once with the filename.
 
-  def process_output(func,type = :by_line)
+  def process_output(func=nil,type = :by_line)
     return if not multi_threaded
-    output = lambda {
+    output = lambda { |fn|
       if type == :by_line
         File.new(fn).each_line { |buf|
-          func.call(buf)
+          print buf
         }
       else
         func.call(fn)
@@ -101,7 +101,7 @@ class PCOWS
       if File.exist?(fn)
         # Yes! We have the next output, create outputter
         pid = fork do
-          output.call
+          output.call(fn)
           exit(0)
         end
         @output_locked = info
@@ -109,7 +109,7 @@ class PCOWS
     end
   end
 
-  def wait_for_worker(func,timeout=180)
+  def wait_for_worker(timeout=180)
     if not info = @pid_list[@last_output]
       (pid,count,fn) = info
       if pid_or_file_running?(pid,fn)
@@ -138,13 +138,18 @@ class PCOWS
   # This is the final cleanup after the reader thread is done. All workers
   # need to complete.
   
-  def wait_for_workers(func)
-    pid_list.each do |info|
-      # (pid,count,fn) = info
-      wait_for_worker(func)
+  def wait_for_workers()
+    @pid_list.each do |info|
+      wait_for_worker()
     end
   end
 
+  def process_remaining_output()
+    @pid_list.each do |info|
+      process_output()
+    end
+  end
+  
   private
   
   def mktmpfilename(num,ext=nil)
