@@ -7,7 +7,7 @@ class PCOWS
   RUNNINGEXT = 'part'
   
   def initialize(num_threads,name=File.basename(__FILE__))
-    num_threads = 1 if num_threads==nil # FIXME: set to cpu_num by default
+    num_threads = cpu_count() if not num_threads # FIXME: set to cpu_num by default
     # $stderr.print "Using ",num_threads,"threads \n"
     @num_threads = num_threads
     @pid_list = []
@@ -157,6 +157,8 @@ class PCOWS
     @pid_list.each do |info|
       process_output(nil,:by_line,true)
     end
+    # final cleanup
+    Dir.unlink(@tmpdir) if @tmpdir
   end
   
   private
@@ -186,4 +188,18 @@ class PCOWS
   def multi_threaded
     @num_threads > 1
   end
+
+  def cpu_count
+    begin
+      return File.read('/proc/cpuinfo').scan(/^processor\s*:/).size if File.exist? '/proc/cpuinfo'
+      # Actually, the JVM does not allow fork...
+      return Java::Java.lang.Runtime.getRuntime.availableProcessors if defined? Java::Java
+    rescue LoadError
+      # Count on MAC
+      return Integer `sysctl -n hw.ncpu 2>/dev/null`
+    end
+    $stderr.print "Could not determine number of CPUs"
+    1
+  end
+
 end
