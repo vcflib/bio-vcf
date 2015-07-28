@@ -412,9 +412,7 @@ begin
     # ---- In the following section the VCF lines are parsed by chunks
     #      The chunks may go into different threads
     
-      if lines.size > CHUNK_SIZE
-        chunks << lines
-        if chunks.size > CHUNK_NUM
+    if lines.size > CHUNK_SIZE
           $stderr.print '.' if not options[:quiet]
   -          out = Parallel.map(chunks, :in_processes => NUM_THREADS) { | chunk |
 -            process.call(chunk)
@@ -441,11 +439,7 @@ begin
           # chunks = [ out ]
         end
         lines = []
-      end
   end
-  $stderr.print '.' if not options[:quiet]
-
-
   print template.footer(binding) if template
   stats.print if stats
 
