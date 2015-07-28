@@ -51,7 +51,7 @@ class PCOWS
   # in the tmpdir
 
   def wait_for_worker_slot()
-    return if not multi_threaded
+    return if single_threaded
     while true
       # ---- count running pids
       running = @pid_list.reduce(0) do | sum, info |
@@ -78,7 +78,7 @@ class PCOWS
   #      each line. Otherwise it is called once with the filename.
 
   def process_output(func=nil,type = :by_line)
-    return if not multi_threaded
+    return if single_threaded
     output = lambda { |fn|
       if type == :by_line
         File.new(fn).each_line { |buf|
@@ -137,14 +137,14 @@ class PCOWS
   # need to complete.
   
   def wait_for_workers()
-    return if multi_threaded
+    return if single_threaded
     @pid_list.each do |info|
       wait_for_worker(info)
     end
   end
 
   def process_remaining_output()
-    return if multi_threaded
+    return if single_threaded
     @pid_list.each do |info|
       process_output()
     end
@@ -170,6 +170,10 @@ class PCOWS
     return ! (status.exited? || status.signaled?)
   end
 
+  def single_threaded
+    @num_threads == 1
+  end
+  
   def multi_threaded
     @num_threads > 1
   end
