@@ -20,7 +20,7 @@ module BioVcf
       v = if @h
             @h[kupper]
           else
-            @info =~ /#{k}=([^;]+)/i
+            @info =~ /[\A;]#{k}=([^;]+)/i
             value = $1
             # p [m,value]
             # m = @info.match(/#{m.to_s.upcase}=(?<value>[^;]+)/) slower!
