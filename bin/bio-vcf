@@ -117,7 +117,7 @@ opts = OptionParser.new do |o|
     options[:skip_header] = true
   end
 
-  o.on("--tag", "Add bio-vcf status tag to header output") do |t|
+  o.on("--add-header-tag", "Add bio-vcf status tag to header output") do |t|
     options[:tag] = true
   end
 
@@ -328,7 +328,7 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
       # Output Turtle RDF
       VcfRdf::record(options[:id],rec,options[:tags])
     elsif options[:template]
-      # Ruby ERB template
+      # Use ERB template
       begin
         template.body(binding)
       rescue Exception => e
@@ -352,7 +352,6 @@ end
 pcows = PCOWS.new(options[:num_threads],'bio-vcf',options[:timeout])
 header = nil
 header_output_completed = false
-NUM_THREADS = options[:num_threads]
 CHUNK_SIZE = options[:thread_lines]
 chunk_lines = []
 line_number=0
@@ -422,6 +421,7 @@ begin
       chunk_lines = []
     end
   end
+  pcows.submit_worker(process,chunk_lines)
   pcows.wait_for_workers()
   pcows.process_remaining_output()
   

@@ -65,7 +65,7 @@ Feature: Command-line interface (CLI)
 
   Scenario: Test deadlock on failed filter with threads
     Given I have input file(s) named "test/data/input/multisample.vcf"
-    When I execute "./bin/bio-vcf --timeout 2 --num-threads 4 --thread-lines 4 --filter 't.info.dp>2'"
+    When I execute "./bin/bio-vcf -q --timeout 2 --num-threads 4 --thread-lines 4 --filter 't.info.dp>2'"
     Then I expect an error and the named output to match the named output "thread4_4_failed_filter" in under 30 seconds
 
 

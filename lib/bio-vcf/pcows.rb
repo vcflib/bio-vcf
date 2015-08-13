@@ -33,15 +33,15 @@ class PCOWS
         # ---- This is running a new copy-on-write process
         tempfn = fn+'.'+RUNNINGEXT
         STDOUT.reopen(File.open(tempfn, 'w+'))
-        func.call(state).each { | line | puts line }
+        func.call(state).each { | line | print line }
         STDOUT.flush
         STDOUT.close
         FileUtils::mv(tempfn,fn)
         exit 0
       end
     else
-      # ---- Call in main process
-      func.call(state).each { | line | puts line }
+      # ---- Call in main process and output immediately
+      func.call(state).each { | line | print line }
     end
     @pid_list << [ pid,count,fn ]
     return true
