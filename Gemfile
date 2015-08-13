@@ -4,6 +4,7 @@ source "http://rubygems.org"
 # Include everything needed to run rake, tests, features, etc.
 group :development do
   # gem "minitest"
+  gem "rake"
   gem "rspec"
   gem "cucumber"
   gem "regressiontest", ">= 0.0.3"
