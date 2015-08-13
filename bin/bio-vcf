@@ -116,7 +116,11 @@ opts = OptionParser.new do |o|
     options[:template] = s
     options[:skip_header] = true
   end
-  
+
+  o.on("--tag", "Add bio-vcf status tag to header output") do |t|
+    options[:tag] = true
+  end
+
   o.on("--timeout [num]", Integer, "Timeout waiting for thread to complete (default #{options[:timeout]})") do |i|
     options[:timeout] = i
   end
@@ -213,7 +217,7 @@ def parse_header line, samples, options
     if not options[:skip_header]
       if headerline =~ /^#CHR/
         # The header before actual data contains the sample names, first inject the BioVcf meta information
-        print header.tag(options),"\n" if not options[:skip_header]
+        print header.tag(options),"\n" if options[:tag] and not options[:skip_header]
         selected = header.column_names
         if samples
           newfields = selected[0..8]
