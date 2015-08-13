@@ -7,8 +7,8 @@ rvm:
 # - 2.1.0
   - 2.2.2
 
-install: 
-  - gem install cucumber rspec regressiontest
+# install: 
+#   - gem install cucumber rspec regressiontest
 
 branches:
   only: 
