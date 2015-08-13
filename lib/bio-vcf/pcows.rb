@@ -6,12 +6,13 @@ class PCOWS
 
   RUNNINGEXT = 'part'
   
-  def initialize(num_threads,name=File.basename(__FILE__))
+  def initialize(num_threads,name=File.basename(__FILE__),timeout=180)
     num_threads = cpu_count() if not num_threads # FIXME: set to cpu_num by default
     # $stderr.print "Using ",num_threads,"threads \n"
     @num_threads = num_threads
     @pid_list = []
     @name = name
+    @timeout = timeout
     if multi_threaded
       @tmpdir =  Dir::mktmpdir(@name+'_')
     end
@@ -52,19 +53,23 @@ class PCOWS
 
   def wait_for_worker_slot()
     return if single_threaded
-    while true
-      # ---- count running pids
-      running = @pid_list.reduce(0) do | sum, info |
-        (pid,count,fn) = info
-        if pid_or_file_running?(pid,fn)
-          sum+1
-        else
-          sum
+    Timeout.timeout(@timeout) do
+    
+      while true
+        # ---- count running pids
+        running = @pid_list.reduce(0) do | sum, info |
+          (pid,count,fn) = info
+          if pid_or_file_running?(pid,fn)
+            sum+1
+          else
+            sum
+          end
         end
+        return if running < @num_threads
+        $stderr.print "Waiting for slot (timeout=#{@timeout})\n"
+        sleep 0.1
+        
       end
-      break if running < @num_threads
-      $stderr.print "Waiting for slot\n"
-      sleep 0.1
     end
   end
 
@@ -114,12 +119,12 @@ class PCOWS
     end
   end
 
-  def wait_for_worker(info,timeout=180)
+  def wait_for_worker(info)
     (pid,count,fn) = info
     if pid_or_file_running?(pid,fn)
-      $stderr.print "Waiting up to #{timeout} seconds for pid=#{pid} to complete\n"
+      $stderr.print "Waiting up to #{@timeout} seconds for pid=#{pid} to complete\n"
       begin
-        Timeout.timeout(timeout) do
+        Timeout.timeout(@timeout) do
           while not File.exist?(fn)  # wait for the result to appear
             sleep 0.2
           end

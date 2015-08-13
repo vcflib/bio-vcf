@@ -27,7 +27,7 @@ require 'fileutils'
 # Bio::Log::CLI.logger('stderr')
 # Bio::Log::CLI.trace('info')
 
-options = { show_help: false, source: 'https://github.com/CuppenResearch/bioruby-vcf', version: version+' (Pjotr Prins)', date: Time.now.to_s, thread_lines: 40_000 }
+options = { show_help: false, source: 'https://github.com/CuppenResearch/bioruby-vcf', version: version+' (Pjotr Prins)', date: Time.now.to_s, thread_lines: 40_000, timeout: 180 }
 opts = OptionParser.new do |o|
   o.banner = "Usage: #{File.basename($0)} [options] filename\ne.g.  #{File.basename($0)} < test/data/input/somaticsniper.vcf"
 
@@ -117,6 +117,9 @@ opts = OptionParser.new do |o|
     options[:skip_header] = true
   end
   
+  o.on("--timeout [num]", Integer, "Timeout waiting for thread to complete (default #{options[:timeout]})") do |i|
+    options[:timeout] = i
+  end
    
   # Uncomment the following when using the bio-logger 
   # o.separator ""
@@ -342,7 +345,7 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
   end
 end
 
-pcows = PCOWS.new(options[:num_threads],'bio-vcf')
+pcows = PCOWS.new(options[:num_threads],'bio-vcf',options[:timeout])
 header = nil
 header_output_completed = false
 NUM_THREADS = options[:num_threads]
