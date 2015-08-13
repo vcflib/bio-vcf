@@ -5,7 +5,8 @@ rvm:
 # - 2.1.0
   - 2.2.2
 
-install: gem install cucumber
+install: 
+  - gem install cucumber rspec
 
 branches:
   only: 
