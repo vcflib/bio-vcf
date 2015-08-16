@@ -9,3 +9,4 @@ data/
 fedor.txt
 test.vcf
 out.bed
+*.gem
