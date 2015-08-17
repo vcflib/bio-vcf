@@ -262,12 +262,6 @@ gem install bio-vcf
 bio-vcf -h
 ```
 
-For multi-core also install the parallel gem
-
-```sh
-gem install parallel
-```
-
 ## Command line interface (CLI)
 
 Get the version of the VCF file
