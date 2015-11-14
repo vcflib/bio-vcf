@@ -1,4 +1,5 @@
 file.vcf
+Gemfile.lock
 notes.txt
 .bundle
 pkg/
