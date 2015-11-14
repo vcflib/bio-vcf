@@ -168,7 +168,8 @@ bio-vcf -i --seval 's.ad[1]'
 1       10303   25      31      28      32      17      23      22
 ```
 
-To calculate alt frequencies from s.ad which is sample (alt dp)/(ref dp + alt dp)
+To calculate percentage non-reference (PNR) alt frequencies from s.ad
+which is sample (alt dp)/(ref dp + alt dp)
 
 ```ruby
 bio-vcf -i --seval 's.ad[1].to_f/(s.ad[0]+s.ad[1])'
