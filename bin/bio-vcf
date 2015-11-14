@@ -221,6 +221,13 @@ def parse_header line, samples, options
       if headerline =~ /^#CHR/
         # The header before actual data contains the sample names, first inject the BioVcf meta information
         print header.tag(options),"\n" if options[:tag] and not options[:skip_header]
+        # Then the additional filter(s)
+        # ##FILTER=<ID=LowQual,Description="Low quality">
+        add_filter = options[:add_filter]
+        if add_filter
+          print "##FILTER=<ID=",add_filter,",Description=\"",options[:filter],"\">\n"
+        end
+        
         selected = header.column_names
         if samples
           newfields = selected[0..8]
