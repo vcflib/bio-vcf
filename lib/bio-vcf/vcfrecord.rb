@@ -287,6 +287,21 @@ module BioVcf
       end
     end
 
+    def add_to_filter_field str
+      filter = @fields[6]
+      if not filter or filter == '.'
+        filter = str
+      else
+        values = filter.split(/;/)
+        if not values.include?(str)
+          filter = filter +';'+str
+        end
+      end
+      filter = '.' if filter == nil or filter == ''
+      @fields[6] = filter
+      filter
+    end
+    
     # Return the sample
     def method_missing(m, *args, &block)  
       name = m.to_s

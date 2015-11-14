@@ -58,6 +58,9 @@ opts = OptionParser.new do |o|
   o.on("--efilter-samples list", Array, "Exclude set - overrides exclude set") do |l|
     options[:efilter_samples] = l
   end
+  o.on('--add-filter name',String, 'Set/add filter field to name') do |name|
+    options[:add_filter] = name
+  end
 
   o.on("--bed bedfile", String, "Filter on BED elements") do |bed|
     options[:bed] = bed
@@ -247,6 +250,7 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
   sfilter = options[:sfilter]
   efilter = options[:efilter]
   ifilter = options[:ifilter]
+  add_filter = options[:add_filter]
   seval = options[:seval]
   ignore_missing = options[:ignore_missing]
   quiet = options[:quiet]
@@ -264,7 +268,14 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
     return if not bed
   end
 
-  return if filter and not rec.gfilter(filter,ignore_missing_data: ignore_missing,quiet: quiet)
+  if filter
+    match = rec.gfilter(filter,ignore_missing_data: ignore_missing,quiet: quiet)
+    if match and add_filter
+      rec.add_to_filter_field(add_filter)
+    else
+      return if not match and not add_filter
+    end
+  end
   
   if sfilter
     rec.each_sample(options[:sfilter_samples]) do | sample |

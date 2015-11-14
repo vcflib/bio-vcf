@@ -29,6 +29,7 @@ So, why would you use bio-vcf over other parsers? Because
 9. Bio-vcf has support for set analysis
 10. Bio-vcf has sane error handling
 11. Bio-vcf can convert *any* VCF to *any* output, including tabular data, BED, HTML, LaTeX, RDF, JSON and JSON-LD and even other VCFs by using (erb) templates
+12. Bio-vcf has soft filters
 
 Bio-vcf has better performance than other tools
 because of lazy parsing, multi-threading, and useful combinations of
@@ -391,6 +392,24 @@ or for all
 ```sh
   bio-vcf --filter "rec.missing_samples?" < file.vcf
 ```
+
+To set a soft filter, i.e. the filter column is updated
+
+```sh
+bio-vcf --add-filter LowQD --filter 'r.tumor.dp<5' < test/data/input/somaticsniper.vcf |bio-vcf --eval '[r.chr,r.pos,r.tumor.dp,r.filter]' --filter 'r.filter.index("LowQD")'
+```
+
+may render something like
+
+```
+1       46527674        4       LowQD
+1       108417572       4       LowQD
+1       155449089       4       LowQD
+1       169847826       4       LowQD
+1       203098164       3       LowQD
+2       39213209        4       LowQD
+```
+
 
 Likewise you can check for record validity
 
