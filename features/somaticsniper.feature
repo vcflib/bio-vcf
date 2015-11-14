@@ -46,6 +46,8 @@ Feature: VCF for Somatic Sniper
     And I expect rec.tumor.amq.to_ary to be [37,37]
     And I expect rec.tumor.mq to be 37
     And I expect rec.tumor.ss to be 2
+    And I expect rec.tumor.ssc to be 33
+    And I expect rec.normal.ssc to be nil
     # The following are additional functions
     And I expect rec.call_diff to be [-4,2,-2,0]
     And I expect rec.call_nuc to be "C"
