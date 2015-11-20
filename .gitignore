@@ -2,6 +2,7 @@ file.vcf
 Gemfile.lock
 notes.txt
 .bundle
+orig/
 pkg/
 scripts/timings.sh
 TAGS
