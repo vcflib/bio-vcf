@@ -918,7 +918,10 @@ Simple statistics are available for REF>ALT changes:
 
 ## Other examples
 
-For more examples see the feature [section](https://github.com/pjotrp/bioruby-vcf/tree/master/features).
+For more exercises and examples see
+[doc](https://github.com/pjotrp/bioruby-vcf/tree/master/doc) directory
+and the the feature
+[section](https://github.com/pjotrp/bioruby-vcf/tree/master/features).
 
 ## API
 
