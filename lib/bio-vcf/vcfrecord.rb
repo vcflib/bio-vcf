@@ -210,6 +210,12 @@ module BioVcf
       list.each { |i| yield VcfSample::Sample.new(self,sample_by_index(i.to_i)) }
     end
 
+    def samples
+      list = []
+      each_sample { |s| list << s }
+      list
+    end
+
     def missing_samples?
       @fields[9..-1].each { |sample|
         return true if VcfSample::empty?(sample)

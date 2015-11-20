@@ -669,6 +669,16 @@ bio-vcf -vi --ifilter 'rec.original.gt!="0/1"' --efilter 'rec.original.gti[0]==0
 1       13757   47      47      4       47      47      4       47
 ```
 
+## Sample counting
+
+Note, the use of lambda allows for sophisticated queries. You may need
+some expert advice here.
+
+To count valid genotype field in samples you can do something like
+
+```ruby
+bio-vcf --eval 'r.samples.count {|s| s.gt!="./."}'
+```
 
 ## Modify VCF files
 
