@@ -103,9 +103,9 @@ class PCOWS
     end
     if info = @pid_list[@last_output]
       (pid,count,fn) = info
-      $stderr.print "Processing #{fn}\n"
       if File.exist?(fn)
         # Yes! We have the next output, create outputter
+        $stderr.print "Processing #{fn}\n"
         if not blocking
           pid = fork do
             output.call(fn)
