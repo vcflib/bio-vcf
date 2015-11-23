@@ -295,7 +295,7 @@ module BioVcf
 
     def add_to_filter_field str
       filter = @fields[6]
-      if not filter or filter == '.'
+      if not filter or filter == '.' or filter == 'PASS'
         filter = str
       else
         values = filter.split(/;/)
