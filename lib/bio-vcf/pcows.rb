@@ -4,7 +4,7 @@ require 'tempfile'
 
 class PCOWS
 
-  RUNNINGEXT = 'part'
+  RUNNINGEXT = 'part' # file extension
   
   def initialize(num_threads,name=File.basename(__FILE__),timeout=180,quiet=false)
     num_threads = cpu_count() if not num_threads # FIXME: set to cpu_num by default
@@ -82,9 +82,7 @@ class PCOWS
   #
   #      In this implementation type==:by_line will call func for
   #      each line. Otherwise it is called once with the filename.
-
-  def process_output(func=nil,type = :by_line, blocking: false)
-    return if single_threaded
+  def process_output(func=nil,type=:by_line, blocking=false)
     return if single_threaded
     output = lambda { |fn|
       if type == :by_line
@@ -98,8 +96,8 @@ class PCOWS
     if @output_locked
       # ---- is the other thread still running?
       (pid,count,fn) = @output_locked
-      return if File.exist?(fn)  # yes, still processing
-      @last_output += 1               # next one in line
+      return if File.exist?(fn)  # yes, thread still processing
+      @last_output += 1          # get next one in line
       @output_locked = nil
     end
     # Walk the pid list to find the next one
