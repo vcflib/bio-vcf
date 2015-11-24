@@ -81,10 +81,8 @@ class PCOWS
   #
   #      In this implementation type==:by_line will call func for
   #      each line. Otherwise it is called once with the filename.
-  #
-  #      Returns true while still processing
 
-  def process_output(func=nil,type = :by_line, blocking=false)
+  def process_output(func=nil,type = :by_line, blocking: false)
     return if single_threaded
     output = lambda { |fn|
       if type == :by_line
@@ -97,12 +95,13 @@ class PCOWS
       File.unlink(fn)
     }
     if @output_locked
+      # ---- is the other thread still running?
       (pid,count,fn) = @output_locked
-      return true if File.exist?(fn)  # still processing
-      # on to the next one
-      @last_output += 1
+      return if File.exist?(fn)  # yes, still processing
+      @last_output += 1               # next one in line
       @output_locked = nil
     end
+    # Walk the pid list to find the next one
     if info = @pid_list[@last_output]
       (pid,count,fn) = info
       if File.exist?(fn)
@@ -119,7 +118,6 @@ class PCOWS
         end
       end
     end
-    false
   end
 
   def wait_for_worker(info)
@@ -159,14 +157,11 @@ class PCOWS
   def process_remaining_output()
     return if single_threaded
     while @output_locked
-      while process_output()
-        sleep 0.2
-      end
+      process_output()
+      sleep 0.2
     end
     @pid_list.each do |info|
-      while process_output(nil,:by_line,true)
-        sleep 0.2
-      end
+      process_output(nil,:by_line,blocking: true)
     end
     # final cleanup
     Dir.unlink(@tmpdir) if @tmpdir
