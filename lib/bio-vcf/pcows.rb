@@ -106,7 +106,7 @@ class PCOWS
       if File.exist?(fn)
         # Yes! We have the next output, create outputter
         $stderr.print "Processing #{fn}\n" if not @quiet
-        if not blocking
+        if blocking==false
           pid = fork do
             output.call(fn)
             $stderr.print "Removing #{fn}\n" if not @quiet
