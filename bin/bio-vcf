@@ -277,10 +277,10 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
 
   if filter
     match = rec.gfilter(filter,ignore_missing_data: ignore_missing,quiet: quiet)
-    if match and add_filter
-      rec.add_to_filter_field(add_filter)
+    if add_filter
+      rec.add_to_filter_field(add_filter) if match
     else
-      return if not match and not add_filter
+      return if not match
     end
   end
   
