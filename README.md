@@ -410,7 +410,6 @@ may render something like
 2       39213209        4       LowQD
 ```
 
-
 Likewise you can check for record validity
 
 ```sh

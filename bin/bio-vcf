@@ -199,6 +199,8 @@ end
 raise "Missing option --ifilter" if options[:ifilter_samples] and not options[:ifilter]
 raise "Missing option --efilter" if options[:efilter_samples] and not options[:efilter]
 raise "Missing option --sfilter" if options[:sfilter_samples] and not options[:sfilter]
+# raise "Soft filter not supported with --ifilter" if options[:add_filter] and options[:ifilter]
+# raise "Soft filter not supported with --efilter" if options[:add_filter] and options[:efilter]
 
 if options[:samples]
   samples = options[:samples].map { |s| s.to_i }
@@ -257,10 +259,11 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
   sfilter = options[:sfilter]
   efilter = options[:efilter]
   ifilter = options[:ifilter]
-  add_filter = options[:add_filter]
+  add_filter = options[:add_filter] # contains a filter name (soft filter)
   seval = options[:seval]
   ignore_missing = options[:ignore_missing]
   quiet = options[:quiet]
+  set_filter_field = nil
 
   if sfilter or efilter or ifilter or seval
     # check for samples
@@ -275,22 +278,29 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
     return if not bed
   end
 
+  filtered = lambda { |match|
+    $stderr.print [add_filter,match]
+    if add_filter
+      set_filter_field = true if match
+      false
+    else
+      not match
+    end
+  }
   if filter
     match = rec.gfilter(filter,ignore_missing_data: ignore_missing,quiet: quiet)
-    if add_filter
-      rec.add_to_filter_field(add_filter) if match
-    else
-      return if not match
-    end
+    return if filtered.call(match)
   end
   
-  if sfilter
+  if sfilter # sample 'or' filter
     rec.each_sample(options[:sfilter_samples]) do | sample |
-      return if not sample.sfilter(sfilter,ignore_missing_data: ignore_missing,quiet: quiet)
+      # return if not sample.sfilter(sfilter,ignore_missing_data: ignore_missing,quiet: quiet)
+      match = sample.sfilter(sfilter,ignore_missing_data: ignore_missing,quiet: quiet)
+      return if filtered.call(match)
     end
   end
 
-  if ifilter
+  if ifilter # include sample filter
     found = false
     rec.each_sample(options[:ifilter_samples]) do | sample |
       if sample.ifilter(ifilter,ignore_missing_data: ignore_missing,quiet: quiet)
@@ -299,12 +309,13 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
       end
     end
     # Skip if there are no matches
-    return if not found
+    return if filtered.call(found)
   end
 
-  if efilter
+  if efilter # exclude sample filter
     rec.each_sample(options[:efilter_samples]) do | sample |
-      return if not sample.efilter(efilter,ignore_missing_data: ignore_missing,quiet: quiet)
+      found = sample.efilter(efilter,ignore_missing_data: ignore_missing,quiet: quiet)
+      return if filtered.call(found)
     end
   end
 
@@ -312,6 +323,9 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
 
   # -----------------------------
   # From here on decide on output
+  
+  rec.add_to_filter_field(add_filter) if set_filter_field
+
   if samples
     # Select certain samples for output
     newfields = fields[0..8]
