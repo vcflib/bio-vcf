@@ -40,7 +40,7 @@ class PCOWS
         exit 0
       end
     else
-      # ---- Call in main process and output immediately
+      # ---- Single threaded: call in main process and output immediately
       func.call(state).each { | line | print line }
     end
     @pid_list << [ pid,count,fn ]
@@ -83,6 +83,7 @@ class PCOWS
   #      each line. Otherwise it is called once with the filename.
 
   def process_output(func=nil,type = :by_line, blocking: false)
+    return if single_threaded
     return if single_threaded
     output = lambda { |fn|
       if type == :by_line
@@ -159,7 +160,7 @@ class PCOWS
 
   def process_remaining_output()
     return if single_threaded
-    $stderr.print "Processing remaining output...\n"
+    $stderr.print "Processing remaining output..."
     while @output_locked
       process_output()
       sleep 0.2
@@ -168,6 +169,7 @@ class PCOWS
       process_output(nil,:by_line,blocking: true)
     end
     # final cleanup
+    $stderr.print "Removing dir #{@tmpdir}\n"
     Dir.unlink(@tmpdir) if @tmpdir
   end
   

@@ -91,7 +91,7 @@ opts = OptionParser.new do |o|
     options[:rdf] = true
     options[:skip_header] = true
   end
-  o.on("--num-threads [num]", Integer, "Multi-core version (default #{options[:num_threads]})") do |i|
+  o.on("--num-threads [num]", Integer, "Multi-core version (default ALL)") do |i|
     options[:num_threads] = i
   end
   o.on("--thread-lines num", Integer, "Fork thread on num lines (default #{options[:thread_lines]})") do |i|
