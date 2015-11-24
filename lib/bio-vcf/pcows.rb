@@ -92,7 +92,6 @@ class PCOWS
       else
         func.call(fn)
       end
-      File.unlink(fn)
     }
     if @output_locked
       # ---- is the other thread still running?
@@ -110,11 +109,15 @@ class PCOWS
         if not blocking
           pid = fork do
             output.call(fn)
+            $stderr.print "Removing #{fn}\n"
+            File.unlink(fn)
             exit(0)
           end
           @output_locked = info
         else
           output.call(fn)
+          $stderr.print "Removing #{fn}\n"
+          File.unlink(fn)
         end
       end
     end
@@ -156,6 +159,7 @@ class PCOWS
 
   def process_remaining_output()
     return if single_threaded
+    $stderr.print "Processing remaining output...\n"
     while @output_locked
       process_output()
       sleep 0.2
