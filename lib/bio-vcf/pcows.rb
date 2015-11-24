@@ -20,9 +20,9 @@ class PCOWS
     @output_locked = nil
   end
 
-  # Feed the worker func and state to COWS. Note that func is a lambda
-  # closure so it can pick up surrounding scope at invocation in
-  # addition to the data captured in 'state'.
+  # Feed the worker 'func and state' to COWS. Note that func is a
+  # lambda closure so it can pick up surrounding scope at invocation
+  # in addition to the data captured in 'state'.
   
   def submit_worker(func,state)
     pid = nil
@@ -81,6 +81,8 @@ class PCOWS
   #
   #      In this implementation type==:by_line will call func for
   #      each line. Otherwise it is called once with the filename.
+  #
+  #      Returns true while still processing
 
   def process_output(func=nil,type = :by_line, blocking=false)
     return if single_threaded
@@ -96,7 +98,7 @@ class PCOWS
     }
     if @output_locked
       (pid,count,fn) = @output_locked
-      return if File.exist?(fn)  # still processing
+      return true if File.exist?(fn)  # still processing
       # on to the next one
       @last_output += 1
       @output_locked = nil
@@ -117,6 +119,7 @@ class PCOWS
         end
       end
     end
+    false
   end
 
   def wait_for_worker(info)
@@ -156,11 +159,14 @@ class PCOWS
   def process_remaining_output()
     return if single_threaded
     while @output_locked
-      sleep 0.2
-      process_output()
+      while process_output()
+        sleep 0.2
+      end
     end
     @pid_list.each do |info|
-      process_output(nil,:by_line,true)
+      while process_output(nil,:by_line,true)
+        sleep 0.2
+      end
     end
     # final cleanup
     Dir.unlink(@tmpdir) if @tmpdir
