@@ -6,7 +6,7 @@ class PCOWS
 
   RUNNINGEXT = 'part'
   
-  def initialize(num_threads,name=File.basename(__FILE__),timeout=180)
+  def initialize(num_threads,name=File.basename(__FILE__),timeout=180,quiet=false)
     num_threads = cpu_count() if not num_threads # FIXME: set to cpu_num by default
     # $stderr.print "Using ",num_threads,"threads \n"
     @num_threads = num_threads
@@ -18,6 +18,7 @@ class PCOWS
     end
     @last_output = 0 # counter
     @output_locked = nil
+    @quiet = quiet
   end
 
   # Feed the worker 'func and state' to COWS. Note that func is a
@@ -66,7 +67,7 @@ class PCOWS
           end
         end
         return if running < @num_threads
-        $stderr.print "Waiting for slot (timeout=#{@timeout})\n"
+        $stderr.print "Waiting for slot (timeout=#{@timeout})\n" if not @quiet
         sleep 0.1
         
       end
@@ -106,18 +107,18 @@ class PCOWS
       (pid,count,fn) = info
       if File.exist?(fn)
         # Yes! We have the next output, create outputter
-        $stderr.print "Processing #{fn}\n"
+        $stderr.print "Processing #{fn}\n" if not @quiet
         if not blocking
           pid = fork do
             output.call(fn)
-            $stderr.print "Removing #{fn}\n"
+            $stderr.print "Removing #{fn}\n" if not @quiet
             File.unlink(fn)
             exit(0)
           end
           @output_locked = info
         else
           output.call(fn)
-          $stderr.print "Removing #{fn}\n"
+          $stderr.print "Removing #{fn}\n" if not @quiet
           File.unlink(fn)
         end
       end
@@ -127,7 +128,7 @@ class PCOWS
   def wait_for_worker(info)
     (pid,count,fn) = info
     if pid_or_file_running?(pid,fn)
-      $stderr.print "Waiting up to #{@timeout} seconds for pid=#{pid} to complete\n"
+      $stderr.print "Waiting up to #{@timeout} seconds for pid=#{pid} to complete\n" if not @quiet
       begin
         Timeout.timeout(@timeout) do
           while not File.exist?(fn)  # wait for the result to appear
@@ -136,7 +137,7 @@ class PCOWS
         end
         # Thread file should have gone:
         raise "FATAL: child process appears to have crashed #{fn}" if not File.exist?(fn)
-        $stderr.print "OK pid=#{pid}, processing #{fn}\n"
+        $stderr.print "OK pid=#{pid}, processing #{fn}\n" if not @quiet
       rescue Timeout::Error
         if pid_running?(pid)
           # Kill it to speed up exit
@@ -160,7 +161,7 @@ class PCOWS
 
   def process_remaining_output()
     return if single_threaded
-    $stderr.print "Processing remaining output..."
+    $stderr.print "Processing remaining output..." if not @quiet
     while @output_locked
       process_output()
       sleep 0.2
@@ -169,7 +170,7 @@ class PCOWS
       process_output(nil,:by_line,blocking: true)
     end
     # final cleanup
-    $stderr.print "Removing dir #{@tmpdir}\n"
+    $stderr.print "Removing dir #{@tmpdir}\n" if not @quiet
     Dir.unlink(@tmpdir) if @tmpdir
   end
   
@@ -210,7 +211,7 @@ class PCOWS
       # Count on MAC
       return Integer `sysctl -n hw.ncpu 2>/dev/null`
     end
-    $stderr.print "Could not determine number of CPUs"
+    $stderr.print "Could not determine number of CPUs" if not @quiet
     1
   end
 

@@ -367,7 +367,8 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
   end
 end
 
-pcows = PCOWS.new(options[:num_threads],'bio-vcf',options[:timeout])
+pcows = PCOWS.new(options[:num_threads],'bio-vcf',options[:timeout],
+                  options[:quiet])
 header = nil
 header_output_completed = false
 CHUNK_SIZE = options[:thread_lines]
