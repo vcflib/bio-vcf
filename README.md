@@ -4,6 +4,8 @@
 
 ## Updates
 
+* v0.9.1 removed a rare threading bug
+* Added support for soft filters (request by Brad Chapman)
 * The outputter now writes (properly) in parallel with the parser
 * bio-vcf turns any VCF into JSON with header information, and
   allows you to pipe that JSON directly into any JSON supporting
