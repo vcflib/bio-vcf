@@ -23,7 +23,7 @@ class PCOWS
       @tmpdir =  Dir::mktmpdir(@name+'_')
     end
     @last_output = 0 # counter
-    @output_locked = nil
+    @output_locked = false
   end
 
   # Feed the worker 'func and state' to COWS. Note that func is a
@@ -106,17 +106,21 @@ class PCOWS
     if @output_locked
       # ---- is the other thread still running?
       (pid,count,fn) = @output_locked
-      return if File.exist?(fn)  # yes, thread still processing
+      $stderr.print "Checking for output_lock on existing #{fn}\n"
+      return if File.exist?(fn)  # continue because thread still processing
       @last_output += 1          # get next one in line
-      @output_locked = nil
+      @output_locked = false
     end
     # Walk the pid list to find the next one
     if info = @pid_list[@last_output]
       (pid,count,fn) = info
+      $stderr.print "Testing for ",[info],"\n"
       if File.exist?(fn)
         # Yes! We have the next output, create outputter
-        $stderr.print "Processing #{fn}\n" if not @quiet
-        if blocking==false
+        @output_locked = info
+        $stderr.print "Set lock on ",[info],"\n"
+        if not blocking
+          $stderr.print "Processing output file #{fn} (unblocked)\n" if not @quiet
           pid = fork do
             output.call(fn)
             if not @debug
@@ -127,8 +131,8 @@ class PCOWS
             end
             exit(0)
           end
-          @output_locked = info
         else
+          $stderr.print "Processing output file #{fn} (w. blocking)\n" if not @quiet
           output.call(fn)
           if not @debug
             $stderr.print "Removing #{fn}\n" if not @quiet
@@ -140,7 +144,7 @@ class PCOWS
       end
     end
   end
-
+  
   def wait_for_worker(info)
     (pid,count,fn) = info
     if pid_or_file_running?(pid,fn)
@@ -153,7 +157,7 @@ class PCOWS
         end
         # Thread file should have gone:
         raise "FATAL: child process appears to have crashed #{fn}" if not File.exist?(fn)
-        $stderr.print "OK pid=#{pid}, processing #{fn}\n" if not @quiet
+        $stderr.print "OK pid=#{pid}, processing computation of #{fn}\n" if not @quiet
       rescue Timeout::Error
         if pid_running?(pid)
           # Kill it to speed up exit
@@ -177,12 +181,13 @@ class PCOWS
 
   def process_remaining_output()
     return if single_threaded
-    $stderr.print "Processing remaining output..." if not @quiet
+    $stderr.print "Processing remaining output...\n" if not @quiet
     while @output_locked
-      process_output()
       sleep 0.2
+      process_output() # keep trying
     end
     @pid_list.each do |info|
+      $stderr.print "Trying: ",[info],"\n"
       process_output(nil,:by_line,true)
     end
     # final cleanup
@@ -191,7 +196,7 @@ class PCOWS
       Dir.unlink(@tmpdir) if @tmpdir
     end
   end
-  
+ 
   private
   
   def mktmpfilename(num,ext=nil)
