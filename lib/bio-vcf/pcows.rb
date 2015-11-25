@@ -108,7 +108,7 @@ class PCOWS
     if @output_locked
       # ---- is the other thread still running?
       (pid,count,fn) = @output_locked
-      $stderr.print "Checking for output_lock on existing #{fn}\n"
+      $stderr.print "Checking for output_lock on existing #{fn}\n" if not @quiet
       return if File.exist?(fn)  # continue because thread still processing
       @last_output += 1          # get next one in line
       @output_locked = false
@@ -116,11 +116,11 @@ class PCOWS
     # Walk the pid list to find the next one
     if info = @pid_list[@last_output]
       (pid,count,fn) = info
-      $stderr.print "Testing for ",[info],"\n"
+      $stderr.print "Testing for ",[info],"\n" if @debug
       if File.exist?(fn)
         # Yes! We have the next output, create outputter
         @output_locked = info
-        $stderr.print "Set lock on ",[info],"\n"
+        $stderr.print "Set lock on ",[info],"\n" if not @quiet
         if not blocking
           $stderr.print "Processing output file #{fn} (unblocked)\n" if not @quiet
           pid = fork do
@@ -189,7 +189,7 @@ class PCOWS
       process_output() # keep trying
     end
     @pid_list.each do |info|
-      $stderr.print "Trying: ",[info],"\n"
+      $stderr.print "Trying: ",[info],"\n" if not @quiet
       process_output(nil,:by_line,true)
     end
     # final cleanup
