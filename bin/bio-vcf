@@ -151,7 +151,7 @@ opts = OptionParser.new do |o|
     options[:verbose] = true
   end
   
-  o.on("--debug", "Show debug messages") do |v|
+  o.on("--debug", "Show debug messages and keep intermediate output") do |v|
     # Bio::Log::CLI.trace('debug')
     options[:debug] = true
   end
@@ -382,7 +382,7 @@ end
 CHUNK_SIZE = options[:thread_lines]
 
 pcows = PCOWS.new(options[:num_threads],CHUNK_SIZE,'bio-vcf',options[:timeout],
-                  options[:quiet])
+                  options[:quiet],options[:debug])
 header = nil
 header_output_completed = false
 chunk_lines = []

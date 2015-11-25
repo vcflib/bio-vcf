@@ -16,6 +16,9 @@ class PCOWS
     @timeout = timeout
     @quiet = quiet
     @debug = debug
+    if @debug
+      $stderr.print "PCOWS running in DEBUG MODE\n"
+    end
     if multi_threaded
       @tmpdir =  Dir::mktmpdir(@name+'_')
     end
@@ -119,15 +122,23 @@ class PCOWS
         if blocking==false
           pid = fork do
             output.call(fn)
-            $stderr.print "Removing #{fn}\n" if not @quiet
-            File.unlink(fn)
+            if not @debug
+              $stderr.print "Removing #{fn}\n" if not @quiet
+              File.unlink(fn)
+            else
+              FileUtils::mv(fn,fn+'.keep')
+            end
             exit(0)
           end
           @output_locked = info
         else
           output.call(fn)
-          $stderr.print "Removing #{fn}\n" if not @quiet
-          File.unlink(fn)
+          if not @debug
+            $stderr.print "Removing #{fn}\n" if not @quiet
+            File.unlink(fn)
+          else
+            FileUtils::mv(fn,fn+'.keep')
+          end
         end
       end
     end
@@ -178,8 +189,10 @@ class PCOWS
       process_output(nil,:by_line,blocking: true)
     end
     # final cleanup
-    $stderr.print "Removing dir #{@tmpdir}\n" if not @quiet
-    Dir.unlink(@tmpdir) if @tmpdir
+    if not @debug
+      $stderr.print "Removing dir #{@tmpdir}\n" if not @quiet
+      Dir.unlink(@tmpdir) if @tmpdir
+    end
   end
   
   private
