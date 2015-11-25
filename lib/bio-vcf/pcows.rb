@@ -65,7 +65,7 @@ class PCOWS
   def wait_for_worker_slot()
     return if single_threaded
     Timeout.timeout(@timeout) do
-    
+      printed_timeout_message = false
       while true
         # ---- count running pids
         running = @pid_list.reduce(0) do | sum, info |
@@ -77,9 +77,11 @@ class PCOWS
           end
         end
         return if running < @num_threads
-        $stderr.print "Waiting for slot (timeout=#{@timeout})\n" if not @quiet
-        sleep 0.1
-        
+        if not printed_timeout_message
+          $stderr.print "Waiting for slot (timeout=#{@timeout})\n" if not @quiet
+          printed_timeout_message = true
+        end
+        sleep 0.1        
       end
     end
   end

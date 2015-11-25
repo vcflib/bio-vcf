@@ -963,13 +963,25 @@ what the command line interface uses (see ./bin/bio-vcf)
 
 ## Trouble shooting
 
+### MRI supports threading
+
 Note that Ruby 2.x is required for Bio-vcf. JRuby works, but only
 in single threaded mode (for now).
 
+### Set TMPDIR when running out of space
+
 The multi-threading creates temporary files using the system TMPDIR.
 This behaviour can be overridden by setting the environment variable.
-Also, for genome-wide sequencing it may be useful to increase
---thread-lines to a value larger than 1_000_000.
+
+### Thread lines
+
+Depending on your input data and the speed filters it may be useful to
+tweak the number of thread lines.
+
+For genome-wide sequencing try increasing --thread-lines to a value
+larger than 1_000_000. On the other hand if the computations are
+intensive (per line) reduce the number of thread-lines (try 1_000).
+If processes get killed that is the one to try.
 
 ## Project home page
 
