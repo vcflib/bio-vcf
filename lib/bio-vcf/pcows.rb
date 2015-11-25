@@ -6,19 +6,21 @@ class PCOWS
 
   RUNNINGEXT = 'part' # file extension
   
-  def initialize(num_threads,name=File.basename(__FILE__),timeout=180,quiet=false)
+  def initialize(num_threads,chunk_size,name=File.basename(__FILE__),timeout=180,quiet=false,debug=false)
     num_threads = cpu_count() if not num_threads # FIXME: set to cpu_num by default
     # $stderr.print "Using ",num_threads,"threads \n"
     @num_threads = num_threads
+    @chunk_size = chunk_size
     @pid_list = []
     @name = name
     @timeout = timeout
+    @quiet = quiet
+    @debug = debug
     if multi_threaded
       @tmpdir =  Dir::mktmpdir(@name+'_')
     end
     @last_output = 0 # counter
     @output_locked = nil
-    @quiet = quiet
   end
 
   # Feed the worker 'func and state' to COWS. Note that func is a
@@ -48,6 +50,11 @@ class PCOWS
     return true
   end
 
+  def submit_final_worker(func,state)
+    @final_worker = true
+    submit_worker(func,state)
+  end
+  
   # Make sure no more than num_threads are running at the same time -
   # this is achieved by checking the PID table and the running files
   # in the tmpdir
@@ -86,9 +93,12 @@ class PCOWS
     return if single_threaded
     output = lambda { |fn|
       if type == :by_line
+        count = 0
         File.new(fn).each_line { |buf|
+          count += 1
           print buf
         }
+        raise "Chunk lines incomplete on output! Found #{count} instead of #{@chunk_size}" if !@final_worker and count != @chunk_size
       else
         func.call(fn)
       end

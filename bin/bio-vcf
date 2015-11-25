@@ -379,11 +379,12 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
   end
 end
 
-pcows = PCOWS.new(options[:num_threads],'bio-vcf',options[:timeout],
+CHUNK_SIZE = options[:thread_lines]
+
+pcows = PCOWS.new(options[:num_threads],CHUNK_SIZE,'bio-vcf',options[:timeout],
                   options[:quiet])
 header = nil
 header_output_completed = false
-CHUNK_SIZE = options[:thread_lines]
 chunk_lines = []
 line_number=0
 
@@ -442,7 +443,7 @@ begin
     # ---- In the following section the VCF lines are parsed by chunks
     #      The chunks may go into different threads
     
-    if chunk_lines.size > CHUNK_SIZE
+    if chunk_lines.size >= CHUNK_SIZE
       # ---- process one chunk
       $stderr.print '.' if not options[:quiet]
       pcows.wait_for_worker_slot()
@@ -452,7 +453,7 @@ begin
       chunk_lines = []
     end
   end
-  pcows.submit_worker(process,chunk_lines)
+  pcows.submit_final_worker(process,chunk_lines)
   pcows.wait_for_workers()
   pcows.process_remaining_output()
   
