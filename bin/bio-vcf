@@ -278,25 +278,24 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
     return if not bed
   end
 
-  filtered = lambda { |match|
-    $stderr.print [add_filter,match]
+  skip = lambda { |&m|
+    matched = m.call
     if add_filter
-      set_filter_field = true if match
-      false
+      set_filter_field = true if matched
+      false  # always continue processing with an add-filter
     else
-      not match
+      not matched
     end
   }
+
   if filter
-    match = rec.gfilter(filter,ignore_missing_data: ignore_missing,quiet: quiet)
-    return if filtered.call(match)
+    return if skip.call { rec.gfilter(filter,ignore_missing_data: ignore_missing,quiet: quiet) }
   end
   
   if sfilter # sample 'or' filter
     rec.each_sample(options[:sfilter_samples]) do | sample |
       # return if not sample.sfilter(sfilter,ignore_missing_data: ignore_missing,quiet: quiet)
-      match = sample.sfilter(sfilter,ignore_missing_data: ignore_missing,quiet: quiet)
-      return if filtered.call(match)
+      return if skip.call { sample.sfilter(sfilter,ignore_missing_data: ignore_missing,quiet: quiet) }
     end
   end
 
@@ -309,13 +308,12 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
       end
     end
     # Skip if there are no matches
-    return if filtered.call(found)
+    return if skip.call {found}
   end
 
   if efilter # exclude sample filter
     rec.each_sample(options[:efilter_samples]) do | sample |
-      found = sample.efilter(efilter,ignore_missing_data: ignore_missing,quiet: quiet)
-      return if filtered.call(found)
+      return if skip.call{ sample.efilter(efilter,ignore_missing_data: ignore_missing,quiet: quiet) }
     end
   end
 
