@@ -183,7 +183,7 @@ class PCOWS
       sleep 0.2
     end
     @pid_list.each do |info|
-      process_output(nil,:by_line,blocking: true)
+      process_output(nil,:by_line,true)
     end
     # final cleanup
     if not @debug
