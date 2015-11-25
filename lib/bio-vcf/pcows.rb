@@ -96,12 +96,9 @@ class PCOWS
     return if single_threaded
     output = lambda { |fn|
       if type == :by_line
-        count = 0
         File.new(fn).each_line { |buf|
-          count += 1
           print buf
         }
-        raise "Chunk lines incomplete on output! Found #{count} instead of #{@chunk_size}" if !@final_worker and count != @chunk_size
       else
         func.call(fn)
       end
