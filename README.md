@@ -661,6 +661,16 @@ example signficance, use
     11      121036021       0       1
 ```
 
+Now you can index other fields, e.g. GL
+
+```ruby
+    ./bin/bio-vcf --seval '[(!s.empty? ? s.gl[s.gtindex]:-1)]' 
+    1       900057  1.0     1.0     0.994   1.0     1.0     -1      0.999   1.0     0.997   -1  0.994    0.989   -1      0.991   -1      0.972   0.992   1.0
+    ```
+
+shows a number of SNPs have been scored with high significance and a
+number are missing, here marked as -1.
+
 These values can also be used in filters and output allele depth, for
 example
 
@@ -692,6 +702,14 @@ To count valid genotype field in samples you can do something like
 ```ruby
 bio-vcf --eval 'r.samples.count {|s| s.gt!="./."}'
 ```
+
+A similar complex count would be
+
+```ruby
+    bio-vcf --eval '[r.chr,r.pos,r.samples.count { |s| (!s.empty? && s.gl[s.gtindex]==1.0) }]'
+```
+
+which tests for perfect SNPs scored (for example).
 
 ## Modify VCF files
 

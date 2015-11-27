@@ -47,6 +47,7 @@ module BioVcf
         v = fetch_values("GT")
         return case v
                when nil then nil
+               when './.' then nil
                when '0/0' then 0
                when '0/1' then 1
                when '1/1' then 2
