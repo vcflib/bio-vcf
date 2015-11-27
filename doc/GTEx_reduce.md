@@ -340,6 +340,10 @@ Filling it in the original filter we are now down to 13%:
 
     ./bin/bio-vcf --filter 'found=r.samples.count { |s| (!s.empty? && s.gl[s.gtindex]==1.0) }.to_f; total=r.samples.count{|s| s.gt!="./."} ; r.info.miss < 0.05 and found/total>0.7 and total-found<30 and r.info.exp_freq_a1 > 0.05 and r.info.exp_freq_a1 < 0.95 and r.info.impinfo > 0.7 and r.info.hw < 1.0' --eval [r.chr,r.pos,r.filter,r.info.EXP_FREQ_A1,r.info.type,r.info.impinfo,r.info.hw] < orig/GTEx-tiny.vcf
 
+and speeding it up a bit with lambda:
+
+    ./bin/bio-vcf --filter '((r.info.miss<0.05 and r.info.exp_freq_a1>0.05 and r.info.exp_freq_a1<0.95 and r.info.impinfo>0.7 and r.info.hw<1.0) ? (lambda { found=r.samples.count { |s| (!s.empty? && s.gl[s.gtindex]==1.0) }.to_f; total=r.samples.count{|s| s.gt!="./."} ; found/total>0.7 and total-found<30 }.call) : false)' < orig/GTEx-tiny.vcf
+
 ### Further digging on IMPINFO
 
 GTEx Science paper suggests
@@ -447,4 +451,10 @@ million (40% of the total).
 Adding the imputation filter (so not allowing a large percentage of
 SNPs being calculated) reduces the file with
 
+    pigz -c -d /mnt/big/GTEXv6_20151023/GTEx_Analysis_20150112_OMNI_2.5M_5M_450Indiv_chr1to22_genot_imput_info04_maf01_HWEp1E6_ConstrVarIDs.vcf.gz |/usr/bin/time -v ./bin/bio-vcf --filter 'found=r.samples.count { |s| (!s.empty? && s.gl[s.gtindex]==1.0) }.to_f; total=r.samples.count{|s| s.gt!="./."} ; r.info.miss < 0.05 and found/total>0.7 and total-found<30 and r.info.exp_freq_a1 > 0.05 and r.info.exp_freq_a1 < 0.95 and r.info.impinfo > 0.7 and r.info.hw < 1.0' --eval [r.chr,r.pos,r.filter,r.info.EXP_FREQ_A1,r.info.type,r.info.impinfo,r.info.hw] > test2.vcf
 
+This command maxed out on 32-cores. It does a greedy count, so I
+reduced the number of thread-lines and rearranged the order a bit by
+postponing sample counts:
+    
+    pigz -c -d /mnt/big/GTEXv6_20151023/GTEx_Analysis_20150112_OMNI_2.5M_5M_450Indiv_chr1to22_genot_imput_info04_maf01_HWEp1E6_ConstrVarIDs.vcf.gz |/usr/bin/time -v ./bin/bio-vcf --thread-lines 10000 --filter '((r.info.miss<0.05 and r.info.exp_freq_a1>0.05 and r.info.exp_freq_a1<0.95 and r.info.impinfo>0.7 and r.info.hw<1.0) ? (lambda { found=r.samples.count { |s| (!s.empty? && s.gl[s.gtindex]==1.0) }.to_f; total=r.samples.count{|s| s.gt!="./."} ; found/total>0.7 and total-found<30 }.call) : false)' 

@@ -711,6 +711,16 @@ A similar complex count would be
 
 which tests for perfect SNPs scored (for example).
 
+## Reorder filter with lambda
+
+Sometime it pay to reorder the filter using a lambda. This is one
+example where the greedy sample counts are done only for those
+samples that match the other criteria:
+
+```ruby
+./bin/bio-vcf --num-threads=1 --filter '(r.info.miss<0.05 and r.info.exp_freq_a1>0.05 and r.info.exp_freq_a1<0.95 and r.info.impinfo>0.7 and r.info.hw<1.0) ? lambda { found=r.samples.count { |s| (!s.empty? && s.gl[s.gtindex]==1.0) }.to_f; total=r.samples.count{|s| s.gt!="./."} ; found/total>0.7 and total-found<30 }.call : false)'
+```
+
 ## Modify VCF files
 
 Add or modify the sample file name in the INFO fields:
@@ -1005,15 +1015,38 @@ in single threaded mode (for now).
 The multi-threading creates temporary files using the system TMPDIR.
 This behaviour can be overridden by setting the environment variable.
 
-### Thread lines
+### Reorder filter on time out
+
+Make sure to minimize expensive calculations by moving them
+backward. An 'and' statement is evaluated from left to right. With
+
+```ruby
+fast_check and slow_check
+```
+
+slow_check only gets executed if fast_check is true.
+
+For more complex filters use lambda inside a conditional
+
+```ruby
+    ( fast_check ? lambda { slow_check }.call : false )
+```
+    
+where slow_check is the slow section of your query. As is shown
+earlier in this document. Don't forget the .call!
+
+### Reduce thread lines on time out
 
 Depending on your input data and the speed filters it may be useful to
 tweak the number of thread lines.
 
-For genome-wide sequencing try increasing --thread-lines to a value
-larger than 1_000_000. On the other hand if the computations are
-intensive (per line) reduce the number of thread-lines (try 1_000).
-If processes get killed that is the one to try.
+On really fast file systems for genome-wide sequencing try increasing
+--thread-lines to a value larger than 100_000. On the other hand if
+the computations are intensive (per line) reduce the number of
+thread-lines (try 10_000 and 1_000).  If processes get killed that is
+the one to try.
+
+Different values may show different core use on a machine.
 
 ## Project home page
 
