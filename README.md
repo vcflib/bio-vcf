@@ -640,7 +640,7 @@ indexed value array
 and 'gts' as a nucleotide string array
 
 ```ruby
-  bio-vcf --seval 's.gts[0]' 
+  bio-vcf --seval 's.gts' 
     1       10665                   C       C               C       C
     1       10694                   G       G
     1       12783   G       G       G       G       G       G       G
@@ -648,6 +648,18 @@ and 'gts' as a nucleotide string array
 ```
 
 where gts represents the indexed genotype on [ref] + [alt].
+
+To convert combined genotypes into numbers, i.e., 0/0 -> 0, 0/1 -> 1,
+1/1 -> 2, is useful for indexed fields giving information on, for
+example signficance, use
+
+```ruby
+    bio-vcf --seval '!s.empty? and s.gtindex'
+    11      58949455        0       1
+    11      65481082        0       1
+    11      94180424        0       1
+    11      121036021       0       1
+```
 
 These values can also be used in filters and output allele depth, for
 example

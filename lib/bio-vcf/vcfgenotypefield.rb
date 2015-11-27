@@ -154,7 +154,7 @@ module BioVcf
     def gti?
       not VcfValue::empty?(fetch_value("GT"))
     end
-
+    
     def gti
       gt.split(/[\/\|]/).map { |g| g.to_i }
     end
