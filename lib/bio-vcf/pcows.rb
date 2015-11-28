@@ -199,7 +199,7 @@ class PCOWS
   def cleanup()
     @pid_list.each do |info|
       (pid,count,fn) = info
-      $stderr.print "Killing child ",[info]," and removing #{fn}\n" 
+      $stderr.print "Killing child ",[info],"\n" 
       Process.kill 9, pid
       Process.wait pid
       File.unlink(fn) if File.exist?(fn)
