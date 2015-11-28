@@ -203,6 +203,8 @@ class PCOWS
       Process.kill 9, pid
       Process.wait pid
       File.unlink(fn) if File.exist?(fn)
+      tempfn = fn+'.'+RUNNINGEXT
+      File.unlink(tempfn) if File.exist?(tempfn)
     end
     cleanup_tmpdir()
   end
