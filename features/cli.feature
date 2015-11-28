@@ -11,12 +11,12 @@ Feature: Command-line interface (CLI)
   Scenario: Test the info filter using dp and threads
     Given I have input file(s) named "test/data/input/multisample.vcf"
     When I execute "./bin/bio-vcf -i --num-threads 4 --filter 'r.info.dp>2'"
-    Then I expect the named output to match the named output "thread4"
+    Then I expect an error and the named output to match the named output "thread4" in under 30 seconds
 
   Scenario: Test the info filter using dp and threads with lines
     Given I have input file(s) named "test/data/input/multisample.vcf"
     When I execute "./bin/bio-vcf -i --num-threads 4 --thread-lines 4 --filter 'r.info.dp>2'"
-    Then I expect the named output to match the named output "thread4_4"
+    Then I expect an error and the named output to match the named output "thread4_4" in under 30 seconds
 
   Scenario: Test the sample filter using dp
     Given I have input file(s) named "test/data/input/multisample.vcf"
