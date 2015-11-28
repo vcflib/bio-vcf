@@ -4,7 +4,8 @@
 
 ## Updates
 
-* v0.9.1 removed a rare threading bug
+* Getting ready for a 1.0 release
+* 0.9.1 removed a rare threading bug and cleanup on error
 * Added support for soft filters (request by Brad Chapman)
 * The outputter now writes (properly) in parallel with the parser
 * bio-vcf turns any VCF into JSON with header information, and
@@ -25,7 +26,7 @@ So, why would you use bio-vcf over other parsers? Because
 3. Bio-vcf has great multi-sample support
 4. Bio-vcf has multiple global filters and sample filters
 5. Bio-vcf can access any VCF format
-6. Bio-vcf can parse and query the VCF header (META)
+6. Bio-vcf can parse and query the VCF header (META data)
 7. Bio-vcf can do calculations on fields
 8. Bio-vcf allows for genotype processing
 9. Bio-vcf has support for set analysis
@@ -33,11 +34,11 @@ So, why would you use bio-vcf over other parsers? Because
 11. Bio-vcf can convert *any* VCF to *any* output, including tabular data, BED, HTML, LaTeX, RDF, JSON and JSON-LD and even other VCFs by using (erb) templates
 12. Bio-vcf has soft filters
 
-Bio-vcf has better performance than other tools
-because of lazy parsing, multi-threading, and useful combinations of
-(fancy) command line filtering (who says Ruby is slow?). Adding
-cores, bio-vcf just does better. The more complicated the filters,
-the larger the gain. First the base line test to show IO performance
+Bio-vcf has better performance than other tools because of lazy
+parsing, multi-threading, and useful combinations of (fancy) command
+line filtering (who says Ruby is slow?). Adding cores, bio-vcf just
+does better. The more complicated the filters, the larger the
+gain. First a base line test to show IO performance
 
 ```sh
   time cat ESP6500SI-V2-SSA137.GRCh38-liftover.*.vcf|wc
@@ -47,7 +48,7 @@ the larger the gain. First the base line test to show IO performance
   sys     0m2.972s
 ```
 
-Next run the 1Gb data with bio-vcf effectively using 5 cores on AMD Opteron(tm) Processor 6174 using Linux
+Next run this 1Gb data with bio-vcf effectively using 5 cores on AMD Opteron(tm) Processor 6174 using Linux
 
 ```sh
   time cat ESP6500SI-V2-SSA137.GRCh38-liftover.*.vcf|./bin/bio-vcf -iv --num-threads 8 --filter 'r.info.cp.to_f>0.3' > /dev/null
@@ -65,10 +66,11 @@ user    12m53.273s
 sys     0m9.913s
 ```
 
-This means that on this machine bio-vcf is 24x faster than SnpSift even for a simple filter.
-In fact, bio-vcf is perfect for complex filters and parsing large data files on powerful machines. Parsing a 650 Mb GATK
-Illumina Hiseq VCF file and evaluating the results into a BED format on
-a 16 core machine takes
+This means that on this machine bio-vcf is 24x faster than SnpSift
+even for a simple filter.  In fact, bio-vcf is perfect for complex
+filters and parsing large data files on powerful machines. Parsing a
+650 Mb GATK Illumina Hiseq VCF file and evaluating the results into a
+BED format on a 16 core machine takes
 
 ```sh
   time bio-vcf --num-threads 16 --filter 'r.chrom.to_i>0 and r.chrom.to_i<21 and r.qual>50' --sfilter '!s.empty? and s.dp>20' --eval '[r.chrom,r.pos,r.pos+1]' < test.large2.vcf > test.out.3
@@ -80,8 +82,11 @@ a 16 core machine takes
 which shows decent core utilisation (10x). Running 
 gzip compressed VCF files of 30+ Gb has similar performance gains.
 
-Use zcat to
-pipe such gzipped (vcf.gz) files into bio-vcf, e.g.
+To view some complex filters on an 80Gb SNP file check out a
+[GTEx exercise](https://github.com/pjotrp/bioruby-vcf/blob/master/doc/GTEx_reduce.md).
+
+Use zcat (or even better pigz which is multi-core itself) to pipe such
+gzipped (vcf.gz) files into bio-vcf, e.g.
 
 ```sh
   zcat huge_file.vcf.gz| bio-vcf --num-threads 36 --filter 'r.chrom.to_i>0 and r.chrom.to_i<21 and r.qual>50'
@@ -89,11 +94,12 @@ pipe such gzipped (vcf.gz) files into bio-vcf, e.g.
     --eval '[r.chrom,r.pos,r.pos+1]' > test.bed
 ```
 
-bio-vcf comes with a sensible parser definition language (interestingly it is 100%
-Ruby), an embedded Ragel parser for INFO and FORMAT header definitions, as well as primitives for set analysis. Few
+bio-vcf comes with a sensible parser definition language
+(interestingly it is 100% Ruby), an embedded Ragel parser for INFO and
+FORMAT header definitions, as well as primitives for set analysis. Few
 assumptions are made about the actual contents of the VCF file (field
-names are resolved on the fly), so bio-vcf should work with
-all VCF files.
+names are resolved on the fly), so bio-vcf should work with all VCF
+files.
 
 To fetch all entries where all samples have depth larger than 20 and
 filter set to PASS use a sample filter
