@@ -199,9 +199,17 @@ class PCOWS
   def cleanup()
     @pid_list.each do |info|
       (pid,count,fn) = info
-      $stderr.print "Killing child ",[info],"\n" 
-      Process.kill 9, pid
-      Process.wait pid
+      if pid_running?(pid)
+        $stderr.print "Killing child ",[info],"\n"
+        begin
+          Process.kill 9, pid
+          Process.wait pid
+        rescue Errno::ENOENT
+          $stdout.puts "#{pidfile} did not exist: Errno::ENOENT" if not @quiet
+        rescue Errno::ESRCH
+          $stdout.puts "The process #{opid} did not exist: Errno::ESRCH" if not @quiet
+        end
+      end
       File.unlink(fn) if File.exist?(fn)
       tempfn = fn+'.'+RUNNINGEXT
       File.unlink(tempfn) if File.exist?(tempfn)

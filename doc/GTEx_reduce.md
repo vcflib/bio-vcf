@@ -483,8 +483,14 @@ Now, to make sure we don't remove fully called SNPs we need to add one
 more test for r.info.type>0 just to ascertain no SNPs marked as fixed
 get thrown away (should be slightly faster too)
 
-    pigz -c -d /mnt/big/GTEXv6_20151023/GTEx_Analysis_20150112_OMNI_2.5M_5M_450Indiv_chr1to22_genot_imput_info04_maf01_HWEp1E6_ConstrVarIDs.vcf.gz |/usr/bin/time -v ./bin/bio-vcf --thread-lines 10_000 --filter '((r.info.miss<0.05 and r.info.exp_freq_a1>0.05 and r.info.exp_freq_a1<0.95 and r.info.impinfo>0.7 and r.info.hw<1.0) ? ((r.info.type>0 and r.info.exp_freq_a1>0.05 and r.info.exp_freq_a1<0.95) or lambda { found=r.samples.count { |s| (!s.empty? && s.gl[s.gtindex]==1.0) }.to_f; total=r.samples.count{|s| s.gt!="./."} ; af=found/450 ; af>0.05 and af < 0.95 and found/total>0.3 }.call) : false)' --eval [r.chr,r.pos,r.filter,r.info.EXP_FREQ_A1] > t4a.txt
+    pigz -c -d /mnt/big/GTEXv6_20151023/GTEx_Analysis_20150112_OMNI_2.5M_5M_450Indiv_chr1to22_genot_imput_info04_maf01_HWEp1E6_ConstrVarIDs.vcf.gz |/usr/bin/time -v ./bin/bio-vcf --timeout 600 --thread-lines 10_000 --filter '((r.info.miss<0.05 and r.info.exp_freq_a1>0.05 and r.info.exp_freq_a1<0.95 and r.info.impinfo>0.7 and r.info.hw<1.0) ? ((r.info.type>0 and r.info.exp_freq_a1>0.05 and r.info.exp_freq_a1<0.95) or lambda { found=r.samples.count { |s| (!s.empty? && s.gl[s.gtindex]==1.0) }.to_f; total=r.samples.count{|s| s.gt!="./."} ; af=found/450 ; af>0.05 and af < 0.95 and found/total>0.3 }.call) : false)' --eval [r.chr,r.pos,r.filter,r.info.EXP_FREQ_A1] > t4a.txt
+        User time (seconds): 100417.43
+        System time (seconds): 1114.03
+        Percent of CPU this job got: 2492%
+        Elapsed (wall clock) time (h:mm:ss or m:ss): 1:07:53
 
 This is an impressive one-liner which, unlike Perl-style one-liners,
 is still readable and does a lot of work normally captured in one-off
-scripts.
+scripts. In the final version we only allow 30% of calls to be imputed.
+
+    pigz -c -d /mnt/big/GTEXv6_20151023/GTEx_Analysis_20150112_OMNI_2.5M_5M_450Indiv_chr1to22_genot_imput_info04_maf01_HWEp1E6_ConstrVarIDs.vcf.gz |/usr/bin/time -v ./bin/bio-vcf --timeout 600 --thread-lines 10_000 --filter 'snp_in_range = (r.info.miss<0.05 and r.info.exp_freq_a1>0.05 and r.info.exp_freq_a1<0.95 and r.info.impinfo>0.7 and r.info.hw<1.0) ; (snp_in_range ? ((r.info.type>0 and snp_in_range) or lambda { found=r.samples.count { |s| !s.empty? && s.gl[s.gtindex]==1.0 }.to_f; total=r.samples.count{|s| s.gt!="./."} ; af=found/450 ; af>0.05 and af < 0.95 and found/total>0.7 }.call) : false)' --eval [r.chr,r.pos,r.filter,r.info.EXP_FREQ_A1] --num-threads 1 > t4b.txt

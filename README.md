@@ -1041,10 +1041,10 @@ For more complex filters use lambda inside a conditional
 where slow_check is the slow section of your query. As is shown
 earlier in this document. Don't forget the .call!
 
-### Reduce thread lines on time out
+### Reduce thread lines on timeout
 
 Depending on your input data and the speed filters it may be useful to
-tweak the number of thread lines.
+tweak the number of thread lines and/or to increase the timeout.
 
 On really fast file systems for genome-wide sequencing try increasing
 --thread-lines to a value larger than 100_000. On the other hand if
@@ -1052,7 +1052,15 @@ the computations are intensive (per line) reduce the number of
 thread-lines (try 10_000 and 1_000).  If processes get killed that is
 the one to try.
 
+For larger files set the timeout to 600, or so. --timeout 600.
+
 Different values may show different core use on a machine.
+
+### Debugging
+
+To debug output use '-v --num-threads=1' for generating useful
+output. Also do not use the -i switch (ignore errors) when there
+are problems.
 
 ### Tmpdir contains (old) bio-vcf directories
 
