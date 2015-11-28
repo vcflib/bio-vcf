@@ -167,6 +167,7 @@ class PCOWS
           Process.wait pid
         end
         $stderr.print "FATAL: child process killed because it stopped responding, pid = #{pid}\n"
+        raise "Bailing out"
       end
     end
   end
@@ -192,13 +193,20 @@ class PCOWS
       $stderr.print "Trying: ",[info],"\n" if not @quiet
       process_output(nil,:by_line,true)
     end
-    # final cleanup
-    if not @debug
-      $stderr.print "Removing dir #{@tmpdir}\n" if not @quiet
-      Dir.unlink(@tmpdir) if @tmpdir
-    end
+    cleanup_tmpdir()
   end
- 
+
+  def cleanup()
+    @pid_list.each do |info|
+      (pid,count,fn) = info
+      $stderr.print "Killing child ",[info],"\n" 
+      Process.kill 9, pid
+      Process.wait pid
+      File.unlink(fn) if File.exist?(fn)
+    end
+    cleanup_tmpdir()
+  end
+  
   private
   
   def mktmpfilename(num,ext=nil)
@@ -240,4 +248,11 @@ class PCOWS
     1
   end
 
+  def cleanup_tmpdir
+    if not @debug
+      $stderr.print "Removing dir #{@tmpdir}\n" if not @quiet
+      Dir.unlink(@tmpdir) if @tmpdir
+    end
+  end
+  
 end

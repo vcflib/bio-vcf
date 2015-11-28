@@ -425,8 +425,8 @@ purpose of eQTL mapping.
 
 ## Final filtering
 
-Using pigz we can see how fast bio-vcf is (effectively bio-vcf uses 10
-cores here)
+Using pigz to unpack the gzip file we can see how fast bio-vcf is
+(effectively bio-vcf uses 10 cores here)
 
     pigz -c -d /mnt/big/GTEXv6_20151023/GTEx_Analysis_20150112_OMNI_2.5M_5M_450Indiv_chr1to22_genot_imput_info04_maf01_HWEp1E6_ConstrVarIDs.vcf.gz |/usr/bin/time -v |
     ./bin/bio-vcf --thread-lines 40000 --filter 'r.info.miss < 0.05 and r.info.exp_freq_a1 > 0.05 and r.info.exp_freq_a1 < 0.95 r.info.certainty>0.9 and r.info.impinfo > 0.7 and r.info.hw < 1.0'  --eval [r.chr,r.pos,r.filter,r.info.EXP_FREQ_A1,r.info.type,r.info.impinfo,r.info.hw,r.info.miss]
@@ -435,7 +435,7 @@ cores here)
     Percent of CPU this job got: 980%
     Elapsed (wall clock) time (h:mm:ss or m:ss): 7:09.99
 
-and speedwise bio-vcf compares favourably to a bare pigz+wc
+and speedwise bio-vcf compares favourably even to a bare pigz+wc
 
     /usr/bin/time -v pigz -c -d /mnt/big/GTEXv6_20151023/GTEx_Analysis_20150112_OMNI_2.5M_5M_450Indiv_chr1to22_genot_imput_info04_maf01_HWEp1E6_ConstrVarIDs.vcf.gz|wc
     User time (seconds): 346.61
@@ -443,10 +443,10 @@ and speedwise bio-vcf compares favourably to a bare pigz+wc
     Percent of CPU this job got: 44%
     Elapsed (wall clock) time (h:mm:ss or m:ss): 19:48.18
 
-which is similar (wc maxing out at 100% CPU). The original VCF
-contains 11.5 million SNPs (88 GB uncompressed VCF) and our filter
-rendered 4676425 SNPs.  The number of SNPs we have now is about 4.5
-million (40% of the total).
+(wc is maxing out at 100% CPU). The original VCF contains 11.5 million
+SNPs (88 GB uncompressed VCF) and our filter rendered 4676425 SNPs.
+The number of SNPs we have now is about 4.5 million (40% of the
+total).
 
 Adding the imputation filter (so not allowing a large percentage of
 SNPs being calculated) reduces the file with
@@ -458,3 +458,24 @@ reduced the number of thread-lines and rearranged the order a bit by
 postponing sample counts:
     
     pigz -c -d /mnt/big/GTEXv6_20151023/GTEx_Analysis_20150112_OMNI_2.5M_5M_450Indiv_chr1to22_genot_imput_info04_maf01_HWEp1E6_ConstrVarIDs.vcf.gz |/usr/bin/time -v ./bin/bio-vcf --thread-lines 10000 --filter '((r.info.miss<0.05 and r.info.exp_freq_a1>0.05 and r.info.exp_freq_a1<0.95 and r.info.impinfo>0.7 and r.info.hw<1.0) ? (lambda { found=r.samples.count { |s| (!s.empty? && s.gl[s.gtindex]==1.0) }.to_f; total=r.samples.count{|s| s.gt!="./."} ; found/total>0.7 and total-found<30 }.call) : false)' 
+        User time (seconds): 125002.18
+        System time (seconds): 1324.05
+        Percent of CPU this job got: 2913%
+        Elapsed (wall clock) time (h:mm:ss or m:ss): 1:12:16
+
+that worked with a whopping 29 core usage taking 1hr and 12 min
+resulting in 3.9 million SNPS. This throws away imputed SNPs which may
+still be of interest. In the following we test AF for real calls and
+throw away imputed SNPs that have more than 30% calculated:
+
+    pigz -c -d /mnt/big/GTEXv6_20151023/GTEx_Analysis_20150112_OMNI_2.5M_5M_450Indiv_chr1to22_genot_imput_info04_maf01_HWEp1E6_ConstrVarIDs.vcf.gz |/usr/bin/time -v ./bin/bio-vcf --thread-lines 10000 --filter '((r.info.miss<0.05 and r.info.exp_freq_a1>0.05 and r.info.exp_freq_a1<0.95 and r.info.impinfo>0.7 and r.info.hw<1.0) ? (lambda { found=r.samples.count { |s| (!s.empty? && s.gl[s.gtindex]==1.0) }.to_f; total=r.samples.count{|s| s.gt!="./."} ; af=found/450 ; af>0.05 and af < 0.95 and found/total>0.3 }.call) : false)' --eval [r.chr,r.pos,r.filter,r.info.EXP_FREQ_A1] > t4.txt
+        User time (seconds): 124262.48
+        System time (seconds): 1236.51
+        Percent of CPU this job got: 2879%
+        Elapsed (wall clock) time (h:mm:ss or m:ss): 1:12:38
+
+Now the number of SNPs have dropped to 1.2 million(!). This is very interesting.
+So, if we calculate the AF using truly called SNPs it drops significantly. Now,
+to make sure we don't remove fully called SNPs we need to add one more test
+for r.info.type>0
+
