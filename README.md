@@ -1054,6 +1054,12 @@ the one to try.
 
 Different values may show different core use on a machine.
 
+### Tmpdir contains (old) bio-vcf directories
+
+Multi-threaded bio-vcf writes into a temporary directory during
+processing. When a process gets interrupted for some reason the
+temporary directory may remain.
+
 ## Project home page
 
 Information on the source tree, documentation, examples, issues and
