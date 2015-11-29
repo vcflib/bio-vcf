@@ -205,9 +205,9 @@ class PCOWS
           Process.kill 9, pid
           Process.wait pid
         rescue Errno::ENOENT
-          $stdout.puts "#{pidfile} did not exist: Errno::ENOENT" if not @quiet
+          $stdout.puts "INFO: #{pidfile} did not exist: Errno::ENOENT" if not @quiet
         rescue Errno::ESRCH
-          $stdout.puts "The process #{opid} did not exist: Errno::ESRCH" if not @quiet
+          $stdout.puts "INFO: The process #{opid} did not exist: Errno::ESRCH" if not @quiet
         end
       end
       File.unlink(fn) if File.exist?(fn)
