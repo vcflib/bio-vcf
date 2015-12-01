@@ -158,7 +158,7 @@ class PCOWS
           end
         end
         # Thread file should have gone:
-        raise "FATAL: child process appears to have crashed #{fn}" if not File.exist?(fn)
+        raise "FATAL: child process #{pid} appears to have crashed #{fn}" if not File.exist?(fn)
         $stderr.print "OK pid=#{pid}, processing computation of #{fn}\n" if not @quiet
       rescue Timeout::Error
         if pid_running?(pid)
@@ -166,7 +166,8 @@ class PCOWS
           Process.kill 9, pid
           Process.wait pid
         end
-        $stderr.print "FATAL: child process killed because it stopped responding, pid = #{pid}\n"
+        $stderr.print info
+        $stderr.print "FATAL: child process killed because it stopped responding, pid = #{pid}, fn = #{fn}, count = #{count}\n"
         raise "Bailing out"
       end
     end
