@@ -113,16 +113,16 @@ class PCOWS
       @last_output += 1          # get next one in line
       @output_locked = false
     end
-    # Walk the pid list to find the next one
+    # Still processing
     if info = @pid_list[@last_output]
       (pid,count,fn) = info
-      $stderr.print "Testing for ",[info],"\n" if @debug
+      $stderr.print "Testing for output file ",[info],"\n" if @debug
       if File.exist?(fn)
         # Yes! We have the next output, create outputter
         @output_locked = info
         $stderr.print "Set lock on ",[info],"\n" if not @quiet
         if not blocking
-          $stderr.print "Processing output file #{fn} (unblocked)\n" if not @quiet
+          $stderr.print "Processing output file #{fn} (non-blocking)\n" if not @quiet
           pid = fork do
             output.call(fn)
             if not @debug
@@ -134,7 +134,7 @@ class PCOWS
             exit(0)
           end
         else
-          $stderr.print "Processing output file #{fn} (w. blocking)\n" if not @quiet
+          $stderr.print "Processing output file #{fn} (block)\n" if not @quiet
           output.call(fn)
           if not @debug
             $stderr.print "Removing #{fn}\n" if not @quiet
@@ -158,12 +158,12 @@ class PCOWS
         Timeout.timeout(@timeout) do
           while not File.exist?(fn)  # wait for the result to appear
             sleep 0.2
-            return if not pid_or_file_running?(pid,fn)
+            return if not pid_or_file_running?(pid,fn) # worker is gone
           end
         end
-        # Thread file should have gone:
+        # Partial file should have been renamed:
         raise "FATAL: child process #{pid} appears to have crashed #{fn}" if not File.exist?(fn)
-        $stderr.print "OK pid=#{pid}, processing computation of #{fn}\n" if not @quiet
+        $stderr.print "OK pid=#{pid}, processing output of #{fn}\n" if not @quiet
       rescue Timeout::Error
         # Kill it to speed up exit
         Process.kill 9, pid
@@ -193,8 +193,12 @@ class PCOWS
       process_output() # keep trying
     end
     @pid_list.each do |info|
-      $stderr.print "Trying: ",[info],"\n" if not @quiet
-      process_output(nil,:by_line,true)
+      (pid,count,fn) = info
+      while pid_or_file_running?(pid,fn) or File.exist?(fn)
+        $stderr.print "Trying: ",[info],"\n" if not @quiet
+        process_output(nil,:by_line,true)
+        sleep 0.2
+      end
     end
     cleanup_tmpdir()
   end
