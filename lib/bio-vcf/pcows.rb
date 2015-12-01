@@ -146,29 +146,31 @@ class PCOWS
       end
     end
   end
-  
+
+  # Wait for a worker slot to appear. When working the pid is writing
+  # a file with extension .part(ial). After completion the file is
+  # renamed without .part and a slot is free.
   def wait_for_worker(info)
     (pid,count,fn) = info
     if pid_or_file_running?(pid,fn)
-      $stderr.print "Waiting up to #{@timeout} seconds for pid=#{pid} to complete\n" if not @quiet
+      $stderr.print "Waiting up to #{@timeout} seconds for pid=#{pid} to complete #{fn}\n" if not @quiet
       begin
         Timeout.timeout(@timeout) do
           while not File.exist?(fn)  # wait for the result to appear
             sleep 0.2
+            return if not pid_or_file_running?(pid,fn)
           end
         end
         # Thread file should have gone:
         raise "FATAL: child process #{pid} appears to have crashed #{fn}" if not File.exist?(fn)
         $stderr.print "OK pid=#{pid}, processing computation of #{fn}\n" if not @quiet
       rescue Timeout::Error
-        if pid_running?(pid)
-          # Kill it to speed up exit
-          Process.kill 9, pid
-          Process.wait pid
-        end
-        $stderr.print info
+        # Kill it to speed up exit
+        Process.kill 9, pid
+        Process.wait pid
         $stderr.print "FATAL: child process killed because it stopped responding, pid = #{pid}, fn = #{fn}, count = #{count}\n"
-        raise "Bailing out"
+        $stderr.print "Bailing out"
+        raise
       end
     end
   end
