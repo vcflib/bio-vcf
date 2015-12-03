@@ -38,14 +38,14 @@ class PCOWS
       pid = fork do
         # ---- This is running a new copy-on-write process
         tempfn = fn+'.'+RUNNINGEXT
-        STDOUT.reopen(f = File.open(tempfn, 'w+'))
+        STDOUT.reopen(File.open(tempfn, 'w+'))
         func.call(state).each { | line | print line }
         STDOUT.flush
         STDOUT.close
-        sleep 0.1
-        f.flush
-        f.close
-        sleep 0.1  # interval to make sure we are done writing,
+        # sleep 0.1
+        # f.flush
+        # f.close
+        sleep 0.2  # interval to make sure we are done writing,
                    # otherwise there may be misses at the end of a
                    # block (maybe the f.close fixed it)
 
