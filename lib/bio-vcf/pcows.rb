@@ -38,11 +38,10 @@ class PCOWS
       pid = fork do
         # ---- This is running a new copy-on-write process
         tempfn = fn+'.'+RUNNINGEXT
-        prev_stdout = $stdout
         STDOUT.reopen(f = File.open(tempfn, 'w+'))
         func.call(state).each { | line | print line }
         STDOUT.flush
-        STDOUT.reopen(prev_stdout)
+        STDOUT.close
         sleep 0.1
         f.flush
         f.close
@@ -53,6 +52,7 @@ class PCOWS
         FileUtils::mv(tempfn,fn)
         exit(0)
       end
+      Process.detach(pid)
     else
       # ---- Single threaded: call in main process and output immediately
       func.call(state).each { | line | print line }
@@ -142,6 +142,7 @@ class PCOWS
             end
             exit(0)
           end
+          Process.detach(pid)
         else
           $stderr.print "Processing output file #{fn} (block)\n" if not @quiet
           output.call(fn)
