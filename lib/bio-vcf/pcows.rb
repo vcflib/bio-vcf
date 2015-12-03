@@ -45,7 +45,7 @@ class PCOWS
         # sleep 0.1
         # f.flush
         # f.close
-        sleep 0.2  # interval to make sure we are done writing,
+        # sleep 0.2  # interval to make sure we are done writing,
                    # otherwise there may be misses at the end of a
                    # block (maybe the f.close fixed it)
 
@@ -134,13 +134,25 @@ class PCOWS
           pid = fork do
             output.call(fn)
             FileUtils::mv(fn,fn+'.keep')
+            # if not @debug
+            #   $stderr.print "Removing #{fn}\n" if not @quiet
+            #   File.unlink(fn)
+            # else
+            #   FileUtils::mv(fn,fn+'.keep')
+            # end
+
             exit(0)
           end
           Process.detach(pid)
         else
           $stderr.print "Processing output file #{fn} (blocking)\n" if not @quiet
           output.call(fn)
-          FileUtils::mv(fn,fn+'.keep')
+          if not @debug
+            $stderr.print "Removing #{fn}\n" if not @quiet
+            File.unlink(fn)
+          else
+            FileUtils::mv(fn,fn+'.keep')
+          end
         end
       else
         sleep 0.2
