@@ -118,6 +118,15 @@ class PCOWS
       (pid,count,fn) = @output_locked
       $stderr.print "Checking for output_lock on existing #{fn}\n" if not @quiet
       return if File.exist?(fn)  # continue because thread still processing
+      # Now we should remove the .keep file
+      if not @debug
+        sleep 0.1 # give a little time
+        keep = fn+'.keep'
+        if File.exist?(keep)
+          $stderr.print "Removing #{keep}\n" if not @quiet
+          File.unlink(keep)
+        end
+      end
       @last_output += 1          # get next one in line
       @output_locked = false
     end
