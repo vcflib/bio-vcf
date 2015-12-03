@@ -120,7 +120,7 @@ class PCOWS
       return if File.exist?(fn)  # continue because thread still processing
       # Now we should remove the .keep file
       if not @debug
-        sleep 0.1 # give a little time
+        sleep 0.1 # give it a little time
         keep = fn+'.keep'
         if File.exist?(keep)
           $stderr.print "Removing #{keep}\n" if not @quiet
