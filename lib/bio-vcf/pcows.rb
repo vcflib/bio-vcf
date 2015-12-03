@@ -38,19 +38,20 @@ class PCOWS
       pid = fork do
         # ---- This is running a new copy-on-write process
         tempfn = fn+'.'+RUNNINGEXT
-        STDOUT.reopen(File.open(tempfn, 'w+'))
+        prev_stdout = $stdout
+        STDOUT.reopen(f = File.open(tempfn, 'w+'))
         func.call(state).each { | line | print line }
         STDOUT.flush
-        STDOUT.close
-        # sleep 0.1
-        # f.flush
-        # f.close
+        STDOUT.reopen(prev_stdout)
+        sleep 0.1
+        f.flush
+        f.close
         sleep 0.2  # interval to make sure we are done writing,
                    # otherwise there may be misses at the end of a
                    # block (maybe the f.close fixed it)
 
         FileUtils::mv(tempfn,fn)
-        exit 0
+        exit(0)
       end
     else
       # ---- Single threaded: call in main process and output immediately
@@ -133,6 +134,7 @@ class PCOWS
           pid = fork do
             output.call(fn)
             if not @debug
+              sleep 0.2
               $stderr.print "Removing #{fn}\n" if not @quiet
               File.unlink(fn)
             else
