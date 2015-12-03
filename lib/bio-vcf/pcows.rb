@@ -38,13 +38,13 @@ class PCOWS
       pid = fork do
         # ---- This is running a new copy-on-write process
         tempfn = fn+'.'+RUNNINGEXT
-        STDOUT.reopen(f = File.open(tempfn, 'w+'))
+        STDOUT.reopen(File.open(tempfn, 'w+'))
         func.call(state).each { | line | print line }
         STDOUT.flush
         STDOUT.close
-        sleep 0.1
-        f.flush
-        f.close
+        # sleep 0.1
+        # f.flush
+        # f.close
         sleep 0.2  # interval to make sure we are done writing,
                    # otherwise there may be misses at the end of a
                    # block (maybe the f.close fixed it)
@@ -133,25 +133,14 @@ class PCOWS
           $stderr.print "Processing output file #{fn} (non-blocking)\n" if not @quiet
           pid = fork do
             output.call(fn)
-            if not @debug
-              sleep 0.2
-              $stderr.print "Removing #{fn}\n" if not @quiet
-              File.unlink(fn)
-            else
-              FileUtils::mv(fn,fn+'.keep')
-            end
+            FileUtils::mv(fn,fn+'.keep')
             exit(0)
           end
           Process.detach(pid)
         else
-          $stderr.print "Processing output file #{fn} (block)\n" if not @quiet
+          $stderr.print "Processing output file #{fn} (blocking)\n" if not @quiet
           output.call(fn)
-          if not @debug
-            $stderr.print "Removing #{fn}\n" if not @quiet
-            File.unlink(fn)
-          else
-            FileUtils::mv(fn,fn+'.keep')
-          end
+          FileUtils::mv(fn,fn+'.keep')
         end
       else
         sleep 0.2
