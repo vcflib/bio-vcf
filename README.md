@@ -5,6 +5,7 @@
 ## Updates
 
 * Getting ready for a 1.0 release
+* Released 0.9.2 as a gem
 * 0.9.1 removed a rare threading bug and cleanup on error
 * Added support for soft filters (request by Brad Chapman)
 * The outputter now writes (properly) in parallel with the parser
@@ -14,10 +15,11 @@
 
 ## Bio-vcf
 
-Bio-vcf is a new generation VCF parser, filter and converter. Bio-vcf is not only
-very fast for genome-wide (WGS) data, it also comes with a really nice
-filtering, evaluation and rewrite language and it can output any type
-of textual data, including VCF header and contents in RDF and JSON.
+Bio-vcf is a new generation VCF parser, filter and converter. Bio-vcf
+is not only very fast for genome-wide (WGS) data, it also comes with a
+really nice filtering, evaluation and rewrite language and it can
+output any type of textual data, including VCF header and contents in
+RDF and JSON.
 
 So, why would you use bio-vcf over other parsers? Because
 
