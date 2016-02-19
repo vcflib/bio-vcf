@@ -129,7 +129,7 @@ class PCOWS
     #      output (if we unlink the file prematurely)
     if info = @pid_list[@last_output]
       (pid,count,fn) = info
-      $stderr.print "Testing for output file ",[info],"\n" if @debug
+      $stderr.print "Testing (#{@last_output}) for output file ",[info],"\n" if @debug
       if File.exist?(fn)
         # Yes! We have the next output, create outputter
         @output_locked = info
@@ -207,7 +207,7 @@ class PCOWS
         sleep 0.2
       end
     end
-    process_output(nil,:by_line,true)
+    process_output(nil,:by_line,true) # process remaining @output_locked
     cleanup_tmpdir()
   end
 
