@@ -207,7 +207,10 @@ class PCOWS
         sleep 0.2
       end
     end
-    process_output(nil,:by_line,true) # process remaining @output_locked
+    while @output_locked
+      sleep 0.1
+      process_output(nil,:by_line,true)
+    end
     cleanup_tmpdir()
   end
 
