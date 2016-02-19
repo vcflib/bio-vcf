@@ -114,23 +114,19 @@ class PCOWS
       end
     }
     if @output_locked
-      # ---- is the other thread still running?
+      # ---- is the other thread still running? We wait until it
+      #      is finished to start the next one
       (pid,count,fn) = @output_locked
       $stderr.print "Checking for output_lock on existing #{fn}\n" if not @quiet
       return if File.exist?(fn)  # continue because thread still processing
       # Now we should remove the .keep file
-      if not @debug
-        sleep 0.1 # give it a little time
-        keep = fn+'.keep'
-        if File.exist?(keep)
-          $stderr.print "Removing #{keep}\n" if not @quiet
-          File.unlink(keep)
-        end
-      end
+      cleanup_keep_file(fn)
       @last_output += 1          # get next one in line
       @output_locked = false
     end
-    # Still processing
+    # ---- process the next output chunk. After completion it
+    #      gets renamed to chunk.keep. This to avoid missing
+    #      output (if we unlink the file prematurely)
     if info = @pid_list[@last_output]
       (pid,count,fn) = info
       $stderr.print "Testing for output file ",[info],"\n" if @debug
@@ -142,26 +138,15 @@ class PCOWS
           $stderr.print "Processing output file #{fn} (non-blocking)\n" if not @quiet
           pid = fork do
             output.call(fn)
+            # after finishing output move it to .keep
             FileUtils::mv(fn,fn+'.keep')
-            # if not @debug
-            #   $stderr.print "Removing #{fn}\n" if not @quiet
-            #   File.unlink(fn)
-            # else
-            #   FileUtils::mv(fn,fn+'.keep')
-            # end
-
             exit(0)
           end
           Process.detach(pid)
         else
           $stderr.print "Processing output file #{fn} (blocking)\n" if not @quiet
           output.call(fn)
-          if not @debug
-            $stderr.print "Removing #{fn}\n" if not @quiet
-            File.unlink(fn)
-          else
-            FileUtils::mv(fn,fn+'.keep')
-          end
+          FileUtils::mv(fn,fn+'.keep')
         end
       else
         sleep 0.2
@@ -185,7 +170,7 @@ class PCOWS
         end
         # Partial file should have been renamed:
         raise "FATAL: child process #{pid} appears to have crashed #{fn}" if not File.exist?(fn)
-        $stderr.print "OK pid=#{pid}, processing output of #{fn}\n" if not @quiet
+        $stderr.print "OK pid=#{pid}, processing starts of #{fn}\n" if not @quiet
       rescue Timeout::Error
         # Kill it to speed up exit
         Process.kill 9, pid
@@ -222,6 +207,7 @@ class PCOWS
         sleep 0.2
       end
     end
+    process_output(nil,:by_line,true)
     cleanup_tmpdir()
   end
 
@@ -240,6 +226,7 @@ class PCOWS
         end
       end
       File.unlink(fn) if File.exist?(fn)
+      cleanup_keep_file(fn,wait: false)
       tempfn = fn+'.'+RUNNINGEXT
       File.unlink(tempfn) if File.exist?(tempfn)
     end
@@ -285,6 +272,22 @@ class PCOWS
     end
     $stderr.print "Could not determine number of CPUs" if not @quiet
     1
+  end
+
+  def cleanup_keep_file(fn, opts = { wait: true })
+    if not @debug
+      keep = fn+'.keep'
+      return if not opts[:wait] and !File.exist?(keep)
+      $stderr.print "Trying to remove #{keep}\n" if not @quiet
+      while true
+        if File.exist?(keep)
+          $stderr.print "Removing #{keep}\n" if not @quiet
+          File.unlink(keep)
+          break # forever loop
+        end
+        sleep 0.1
+      end #forever
+    end
   end
 
   def cleanup_tmpdir
