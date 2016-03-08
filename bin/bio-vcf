@@ -461,8 +461,10 @@ begin
   stats.print if stats
 
 rescue Exception => e
-  $stderr.print "ERROR: "
-  $stderr.print e.message,"\n" if e.message != 'exit'
+  if e.message != 'exit'
+    $stderr.print "ERROR: "
+    $stderr.print e.message,"\n" 
+  end
   pcows.cleanup()
   raise if options[:verbose]
   exit 1
