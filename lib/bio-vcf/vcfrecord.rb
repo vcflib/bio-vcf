@@ -250,6 +250,7 @@ module BioVcf
           $stderr.print "RECORD ERROR!\n"
           $stderr.print [@fields],"\n"
           $stderr.print expr,"\n"
+          $stderr.print "To ignore this error use the -i switch!\n"
         end
         if ignore_missing_data
           $stderr.print e.message if not quiet
@@ -283,6 +284,7 @@ module BioVcf
           $stderr.print "RECORD ERROR!\n"
           $stderr.print [@fields],"\n"
           $stderr.print expr,"\n"
+          $stderr.print "To ignore this error use the -i switch!\n"
         end
         if ignore_missing_data
           $stderr.print e.message if not quiet
