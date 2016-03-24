@@ -68,4 +68,7 @@ Feature: Command-line interface (CLI)
     When I execute "./bin/bio-vcf -q --timeout 4 --num-threads 4 --thread-lines 4 --filter 't.info.dp>2'"
     Then I expect an error and the named output to match the named output "thread4_4_failed_filter" in under 30 seconds
 
-
+  Scenario: Test VCF with no records
+    Given I have input file(s) named "test/data/input/empty.vcf"
+    When I execute "./bin/bio-vcf --timeout=5"
+    Then I expect no errors

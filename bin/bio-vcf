@@ -215,6 +215,7 @@ def parse_header line, samples, options
   print line if not options[:skip_header]
   STDIN.each_line do | headerline |
     if headerline !~ /^#/
+      # If no records in VCF, we never get here
       line = headerline
       break # end of header
     end
@@ -246,6 +247,10 @@ def parse_header line, samples, options
   end
   print header.printable_header_line(options[:set_header]),"\n" if options[:set_header]
   VcfRdf::header if options[:rdf]
+  if line =~ /^#/
+    # We did not read a record
+    line = nil
+  end
   return header,line
 end
 
@@ -415,7 +420,11 @@ begin
     # ---- Parse the header lines (chomps from STDIN)
     #      and returns header info and the current line
     if line =~ /^#/
-      header,line = parse_header(line,samples,options)
+      header, line = parse_header(line,samples,options)
+      if line.nil?
+        # No line after header, to there are no records to process
+        break
+      end
     end
     # p [line_number,line]
     # ---- After the header continue processing
