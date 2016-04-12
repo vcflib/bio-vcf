@@ -52,9 +52,17 @@ db.createUser({user:"admin", pwd:"admin123", roles:[{role:"root", db:"admin"}]})
 
 ## Use client
 
+```python
 mongo
 use admin
 db.createUser({user:"admin", pwd:"admin123", roles:[{role:"root", db:"admin"}]})
+```
+
+or on a different host
+
+```python
+mongo --host 192.168.1.24
+```
 
 ## Tutorial Mongo
 
@@ -203,7 +211,7 @@ db.vcf.find( { "rec.qd": { $gt: 12.0 }}  ).count()
 
 ## Now for some real data
 
-Let's use our PIK3CA data in two 
+Let's use our PIK3CA data in two samples
 
 ```
 cat gene_PIK3CA.vcf |bio-vcf --samples 2,3  --seval s.dp
@@ -263,10 +271,11 @@ db.vcf.find({"rec.ann": /ENST00000263967/i }).count()
 ```sh
 guix package -i python2-pip
 export PYTHONPATH="/home/user/.guix-profile/lib/python2.7/site-packages"
-pip install pymongo
 pip install --install-option="--prefix=$HOME/opt/python" pymongo
 export PYTHONPATH="/home/user/.guix-profile/lib/python2.7/site-packages:$HOME/opt/python/lib/python2.7/site-packages"
 ```
+
+Now start python:
 
 ```python
 from pymongo import MongoClient
@@ -321,4 +330,26 @@ when the bio-vcf template is
    ]
   }
 }
+```
+
+So output looks like
+
+```ruby
+{
+  "rec": {
+            "chr": "3",
+            "pos": 178916581,
+            "ref": "T",
+            "alt": "C",
+            "dp":  2345,
+            "samples": [
+              11,11,21,20,27,10,16,17,19,15,18,20,16,9,18,22,6,2,6,9,8,7,7,10,11,12,4,9,7,9,8,10,7,18,8,7
+,7,4,11,4,8,8,8,14,13,23,13,11,12,3,10,27,31,16,12,1,3,4,15,10,20,8,4,0,25,2,10,9,13,20,17,14,25,15,19,16
+,29,13,10,7,4,5,1,1,2,26,17,16,8,4,5,14,14,6,5,0,5,5,11,10,17,8,5,20,9,16,5,21,14,5,4,3,13,7,0,9,5,12,0,2
+,9,14,2,4,7,1,15,7,14,12,4,14,16,26,7,22,5,4,7,10,11,14,19,25,11,2,28,25,29,30,23,30,35,33,32,27,4,30,25,
+33,32,5,9,19,13,13,16,17,8,1,19,8,6,1,20,1,21,6,8,12,33,22,2,16,9,26,23
+   ]
+  }
+}
+
 ```
