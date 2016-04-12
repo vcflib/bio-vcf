@@ -267,7 +267,7 @@ Note that you need Ruby 2.x or later. The 2.x Ruby series also give
 a performance improvement. Bio-vcf will show the Ruby version when
 typing the command 'bio-vcf -h'.
 
-To intall bio-vcf with gem:
+To install bio-vcf with gem:
 
 ```sh
 gem install bio-vcf
@@ -674,7 +674,7 @@ Now you can index other fields, e.g. GL
 ```ruby
     ./bin/bio-vcf --seval '[(!s.empty? ? s.gl[s.gtindex]:-1)]' 
     1       900057  1.0     1.0     0.994   1.0     1.0     -1      0.999   1.0     0.997   -1  0.994    0.989   -1      0.991   -1      0.972   0.992   1.0
-    ```
+```
 
 shows a number of SNPs have been scored with high significance and a
 number are missing, here marked as -1.
