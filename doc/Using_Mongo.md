@@ -354,3 +354,40 @@ So output looks like
 }
 
 ```
+
+Hint: the answer is 25
+
+```sh
+user@debian:~$ cat gene_PIK3CA.vcf |bio-vcf --sfilter-samples 2,3  --seval s.dp --sfilter "s.dp>7"
+bio-vcf 0.9.2 (biogem Ruby 2.3.0 with pcows) by Pjotr Prins 2015
+Options: {:show_help=>false, :source=>"https://github.com/pjotrp/bioruby-vcf", :version=>"0.9.2 (Pjotr Prins)", :date=>"2016-04-11 12:11:27 +0200", :thread_lines=>40000, :timeout=>180, :sfilter_samples=>["2", "3"], :seval=>"s.dp", :skip_header=>true, :sfilter=>"s.dp>7"}
+3       178916581       21      20
+3       178916644       35      29
+3       178916645       35      39
+3       178916651       36      31
+3       178916931       26      23
+3       178917478       21      19
+3       178919190       21      24
+3       178921407       38      43
+3       178921525       13      18
+3       178921553       14      11
+3       178922274       15      16
+3       178922277       17      17
+3       178922364       19      24
+3       178927401       32      26
+3       178927410       36      31
+3       178927969       13      11
+3       178928098       18      26
+3       178936082       22      24
+3       178936091       24      32
+3       178938747       12      12
+3       178941853       15      15
+3       178947904       25      33
+3       178952072       46      45
+3       178952085       51      45
+3       178952088       47      45
+user@debian:~$ cat gene_PIK3CA.vcf |bio-vcf --sfilter-samples 2,3  --seval s.dp --sfilter "s.dp>7"|wc -l
+bio-vcf 0.9.2 (biogem Ruby 2.3.0 with pcows) by Pjotr Prins 2015
+Options: {:show_help=>false, :source=>"https://github.com/pjotrp/bioruby-vcf", :version=>"0.9.2 (Pjotr Prins)", :date=>"2016-04-11 12:11:42 +0200", :thread_lines=>40000, :timeout=>180, :sfilter_samples=>["2", "3"], :seval=>"s.dp", :skip_header=>true, :sfilter=>"s.dp>7"}
+25
+```
