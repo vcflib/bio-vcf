@@ -245,6 +245,7 @@ cat gene_PIK3CA.vcf |bio-vcf --eval '[r.chr,r.pos,r.info.ann]' --filter 'r.info.
 Let's try and do the same with Mongo
 
 ```
+
 {
   "rec": {
             "chr": "<%= rec.chrom %>",
@@ -252,7 +253,7 @@ Let's try and do the same with Mongo
             "ref": "<%= rec.ref %>",
             "alt": "<%= rec.alt[0] %>",
             "dp":  <%= rec.info.dp %>,
-            "ann":  "<%= rec.info.ann %>"
+            "ann":  '"<%= rec.info.ann %>"'
    }
 }
 ```
