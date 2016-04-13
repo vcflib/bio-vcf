@@ -32,6 +32,8 @@ dbname=test
 4s-httpd -p 8000 $dbname
 ```
 
+Try the web browser and point it to http://localhost:8000/status/
+
 Open a new terminal as user.
 
 
@@ -143,3 +145,11 @@ SELECT DISTINCT ?transcript ?id ?typeLabel ?reference ?begin ?end ?location {
 "http://rdf.ebi.ac.uk/resource/ensembl/84/homo_sapiens/GRCh38/13"
 
 Ensembl uses http://rdf.ebi.ac.uk/resource/ensembl/75/homo_sapiens/grch37/19
+
+
+# Exercise
+
+Today's exercise is to create a graph using bio-vcf and/or a small program using
+RDF triples and define a SPARQL query.
+
+The more interesting the graph/SPARQL the better.
