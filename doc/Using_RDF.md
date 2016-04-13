@@ -10,8 +10,14 @@ Get root
 ```sh
 su
 apt-get install avahi-daemon
-guix package -i sparql-query curl
 apt-get install raptor-utils
+exit
+```
+
+As normal user
+
+```sh
+guix package -i sparql-query curl
 ```
 
 Initialize and start the server
