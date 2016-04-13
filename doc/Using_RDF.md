@@ -5,9 +5,10 @@ a triple store (4store) with VCF data and do some queries on that.
 
 ## Install and start 4store
 
-As root
+Get root
 
 ```sh
+su
 apt-get install avahi-daemon
 guix package -i sparql-query curl
 apt-get install raptor-utils
@@ -91,3 +92,43 @@ cat sparql1.rq |sparql-query "http://localhost:8000/sparql/" -p
 └──────────────────────────────────────────────┘
 ```
 
+## EBI
+
+
+EBI SPARQL Queries
+
+```
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX sio: <http://semanticscience.org/resource/>
+PREFIX faldo: <http://biohackathon.org/resource/faldo#>
+PREFIX ensembl: <http://rdf.ebi.ac.uk/resource/ensembl/>
+PREFIX ensembltranscript: <http://rdf.ebi.ac.uk/resource/ensembl.transcript/>
+PREFIX ensemblexon: <http://rdf.ebi.ac.uk/resource/ensembl.exon/>
+PREFIX ensemblprotein: <http://rdf.ebi.ac.uk/resource/ensembl.protein/>
+PREFIX ensemblterms: <http://rdf.ebi.ac.uk/terms/ensembl/>
+PREFIX identifiers: <http://identifiers.org/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX core: <http://purl.uniprot.org/core/>
+
+SELECT DISTINCT ?transcript ?id ?typeLabel ?reference ?begin ?end ?location { 
+  ?transcript obo:SO_transcribed_from ensembl:ENSG00000121879 ;
+              a ?type;
+              dc:identifier ?id .
+  OPTIONAL {
+    ?transcript faldo:location ?location .
+    ?location faldo:begin [faldo:position ?begin] .
+    ?location faldo:end [faldo:position ?end ] .
+    ?location faldo:reference ensembl:"75/homo_sapiens/grch37/19"     .
+  }
+  OPTIONAL {?type rdfs:label ?typeLabel}
+}
+```
+
+"http://rdf.ebi.ac.uk/resource/ensembl/84/homo_sapiens/GRCh38/13"
+
+Ensembl uses http://rdf.ebi.ac.uk/resource/ensembl/75/homo_sapiens/grch37/19
