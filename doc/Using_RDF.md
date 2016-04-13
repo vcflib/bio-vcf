@@ -25,6 +25,7 @@ Initialize and start the server again as root
 ```
 su
 export PATH=/home/user/.guix-profile/bin:$PATH
+mkdir -p /var/lib/4store
 dbname=test
 4s-backend-setup $dbname
 4s-backend $dbname
