@@ -20,15 +20,19 @@ As normal user
 guix package -i sparql-query curl
 ```
 
-Initialize and start the server
+Initialize and start the server again as root
 
 ```
+su
 export PATH=/home/user/.guix-profile/bin:$PATH
 dbname=test
 4s-backend-setup $dbname
 4s-backend $dbname
 4s-httpd -p 8000 $dbname
 ```
+
+Open a new terminal as user.
+
 
 Generate rdf with bio-vcf template
 
