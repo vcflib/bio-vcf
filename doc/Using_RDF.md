@@ -108,7 +108,7 @@ cat sparql1.rq |sparql-query "http://localhost:8000/sparql/" -p
 ## EBI
 
 
-EBI SPARQL Queries
+EBI SPARQL has some advanced examples of queries, such as
 
 ```
 
