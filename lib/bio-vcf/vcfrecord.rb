@@ -211,7 +211,11 @@ module BioVcf
         begin 
           Integer(i)
         rescue
-          raise "Unknown sample name '#{i}'"
+          idx = samples.index(i)
+          if samples.index?(i) != nil
+            idx
+          else
+            raise "Unknown sample name '#{i}'"
         end
         yield VcfSample::Sample.new(self,sample_by_index(value))
       }
