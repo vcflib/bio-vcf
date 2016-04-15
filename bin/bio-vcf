@@ -311,7 +311,6 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
       return if skip.call { sample.sfilter(sfilter,ignore_missing_data: ignore_missing,quiet: quiet) }
     end
   end
-  exit 1
 
   if ifilter # include sample filter
     found = false

@@ -206,10 +206,14 @@ module BioVcf
     # Walk the samples. list contains an Array of int (the index)
     def each_sample(list = nil)
       list = @header.samples_index_array() if not list
-      p list
       list.each { |i|
-        p Integer(i)
-        yield VcfSample::Sample.new(self,sample_by_index(Integer(i)))
+        value =
+        begin 
+          Integer(i)
+        rescue
+          raise "Unknown sample name '#{i}'"
+        end
+        yield VcfSample::Sample.new(self,sample_by_index(value))
       }
     end
 
