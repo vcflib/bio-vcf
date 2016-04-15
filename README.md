@@ -297,6 +297,13 @@ Get the sample names
   NORMAL,TUMOR
 ```
 
+Alternatively use the command line switch for --names, e.g.
+
+```ruby
+  bio-vcf --names < file.vcf
+  NORMAL,TUMOR
+```
+
 Get information from the header (META)
 
 ```ruby

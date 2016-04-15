@@ -138,6 +138,15 @@ opts = OptionParser.new do |o|
   #   Bio::Log::CLI.trace(s)
   # end
   # 
+  o.on("--names", "Output sample names") do |q|
+    options[:quiet] = true
+    options[:num_threads] = nil
+    options[:eval_once] = true
+    options[:eval] = 'header.samples.join("\t")'
+    # options[:num_threads] = 1
+    # options[:thread_lines] = 1
+    options[:skip_header] = true
+  end
   o.on("--statistics", "Output statistics") do |q|
     options[:statistics] = true
     options[:num_threads] = nil
