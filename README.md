@@ -750,6 +750,17 @@ To remove/select 3 samples:
   bio-vcf --samples 0,1,3 < mytest.vcf
 ```
 
+You can also select samples by name (as long as they do not contain
+spaces)
+
+
+```sh
+  bio-vcf --names < mytest.vcf
+    Original        s1t1    s2t1    s3t1    s1t2    s2t2    s3t2
+  bio-vcf --samples "Original,s1t1,s3t1" < mytest.vcf
+```
+
+
 Filter on a BED file and annotate the gene name in the resulting VCF
 
 ```sh
