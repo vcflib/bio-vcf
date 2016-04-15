@@ -39,6 +39,7 @@ module BioVcf
       @lines = []
       @field = {}
       @meta = nil
+      @cached_filter_index = {}
     end
 
     # Add a new field to the header
@@ -102,6 +103,34 @@ module BioVcf
       index
     end
 
+    # Give a list of samples (by index and/or name) and return 0-based index values
+    # The cache has to be able to hanle multiple lists - that is why it is a hash.
+    def sample_subset_index list
+      cached = @cached_filter_index[list]
+      if cached
+        l = cached
+      else
+        l = []
+        list = samples_index_array() if not list
+        list.each { |i|
+          value = 
+            begin 
+              Integer(i)
+            rescue
+              idx = samples.index(i)
+              if idx != nil
+                idx
+              else
+                raise "Unknown sample name '#{i}'"
+              end
+            end
+          l << value
+        }
+        @cached_filter_index[list] = l
+      end
+      l
+    end
+    
     # Look for a line in the header with the field name and return the
     # value, otherwise return nil
     def find_field name
