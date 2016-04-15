@@ -308,10 +308,10 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
   
   if sfilter # sample 'or' filter
     rec.each_sample(options[:sfilter_samples]) do | sample |
-      # return if not sample.sfilter(sfilter,ignore_missing_data: ignore_missing,quiet: quiet)
       return if skip.call { sample.sfilter(sfilter,ignore_missing_data: ignore_missing,quiet: quiet) }
     end
   end
+  exit 1
 
   if ifilter # include sample filter
     found = false
