@@ -1,22 +1,57 @@
 =HEADER
-<% require 'json' %>
+<% require 'json' 
+   @info = []
+%>
 {
     "HEADER": {
-	"options":  <%= options.to_h.to_json %>,
-	"files":    <%= ARGV %>,
-	"version":  "<%= BIOVCF_VERSION %>"
+	"options": <%= options.to_h.to_json %>,
+	"files": <%= ARGV %>,
+	"version": "<%= BIOVCF_VERSION %>"
     },
-    "COLUMNS": <%= header.column_names.to_json %>,
+	"COLUMNS": <%= header.column_names.to_json %>,
     "META": <%= header.meta.to_json %>,
     "BODY": [
 =BODY
-	{
-	    "seq:chr": "<%= rec.chrom %>" ,
-	    "seq:pos": <%= rec.pos %> ,
-	    "seq:ref": "<%= rec.ref %>" ,
-	    "seq:alt": "<%= rec.alt[0] %>"
-	    <% if rec.info.dp %> , "dp": <%= rec.info.dp %> <% end %>
-	},
+	<% 	
+		chr = rec.chrom
+		pos = rec.pos
+		ref = rec.ref
+		alt = rec.alt[0]
+		
+		if rec.info.dp
+			dp = rec.info.dp
+		else
+			dp = ""
+		end
+		
+		@info << [chr,pos,ref,alt,dp]	
+	%>
 =FOOTER
+	<% 
+	   l = @info.length
+	   @i = 1
+	   @info.each do |array|
+		if( @i < l)
+		%> 
+		   {
+			"seq:chr": "<%= array[0]%>",
+			"seq:pos": <%= array[1] %>,
+			"seq:ref": "<%= array[2] %>",
+			"seq:alt": "<%= array[3] %>"
+			 <% if array[4] != "" %> , "dp":  <%= array[4] %> <% end %>
+		   },<%
+		else
+		%>
+		   {
+			"seq:chr": "<%= array[0]%>",
+			"seq:pos": <%= array[1] %>,
+			"seq:ref": "<%= array[2] %>",
+			"seq:alt": "<%= array[3] %>",
+			<% if array[4] != "" %> , "dp":  <%= array[4] %> <% end %>
+		   }
+		   <%
+		end
+		@i = @i + 1 
+	   end%>
     ]
 }
