@@ -1,12 +1,11 @@
 =HEADER
-<% require 'json' 
-   @first_time = true
-%>
+<% require 'json' %> 
+<% @first_time = true %>
 {
     "HEADER": {
-	"options":  <%= options.to_h.to_json %>,
-	"files":    <%= ARGV %>,
-	"version":  "<%= BIOVCF_VERSION %>"
+	"options": <%= options.to_h.to_json %>,
+	"files": <%= ARGV %>,
+	"version": "<%= BIOVCF_VERSION %>"
     },
     "BODY": [
 =BODY
