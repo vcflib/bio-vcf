@@ -137,11 +137,13 @@ Let's create a template named gatk_template.json
 ```ruby
 
 {
+"rec":{
             "chr": "<%= rec.chrom %>",
             "pos": <%= rec.pos %>,
             "ref": "<%= rec.ref %>",
             "alt": "<%= rec.alt[0] %>",
             "dp":  <%= rec.info.dp %>
+}
 }
 ```
 
@@ -169,7 +171,6 @@ Looks like
 Import into mongo
 
 ```sh
-mongoimport --db gatk --collection vcf --drop --file gatk_exome.json
 mongoimport --db gatk --collection vcf --drop --file gatk_exome.json --jsonArray
 ```
 
