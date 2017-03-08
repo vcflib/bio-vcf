@@ -170,9 +170,16 @@ Looks like
 
 Import into mongo
 
+mongo v. 2.0.6
 ```sh
 mongoimport --db gatk --collection vcf --drop --file gatk_exome.json --jsonArray
 ```
+mongo v. 3.2.3
+```sh
+mongoimport --db gatk --collection vcf --drop --file gatk_exome.json
+```
+
+
 
 ```ruby
 use gatk
