@@ -140,6 +140,33 @@ renders
 <http://biobeat.org/rdf/ns#chrX_134713855_A>
 ```
 
+A working example if you are using the server
+http://guix.genenetwork.org and the correct PREFIX:
+
+```python
+#! /usr/bin/env python
+import requests
+import subprocess
+
+host = "http://guix.genenetwork.org/sparql/"
+query = """
+PREFIX : <http://biobeat.org/rdf/pjotr/ns#>
+SELECT ?id ?chr ?pos ?alt
+WHERE
+{
+  { ?id   :chr      "X" . }
+  UNION
+  { ?id   :chr      "1" . }
+  ?id   :chr    ?chr .
+  ?id   :alt    ?alt .
+  ?id   :pos    ?pos .
+  FILTER (?pos > 107911705) .
+}
+"""
+r = requests.post(host, data={ "query": query, "output": "text" })
+print r.text
+```
+
 ## EBI
 
 
