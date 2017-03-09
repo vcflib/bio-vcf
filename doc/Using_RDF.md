@@ -71,7 +71,7 @@ so it looks like
   :pos 134713855 .
 ```
 
-and test with rapper using [gatk_exome.vcf](./test/data/input/gatk_exome.vcf)
+and test with rapper using [gatk_exome.vcf](https://github.com/pjotrp/bioruby-vcf/blob/master/test/data/input/gatk_exome.vcf)
 
 ```sh
 cat gatk_exome.vcf |bio-vcf -v --template rdf_template.erb
