@@ -125,7 +125,7 @@ SELECT ?s ?p ?o WHERE {
 } LIMIT 10
 """
 
-r = requests.post(host, params={ "query": query, "format": "TSV" })
+r = requests.post(host, data={ "query": query, "output": "text" })
 # print r.url
 
 print r.text
