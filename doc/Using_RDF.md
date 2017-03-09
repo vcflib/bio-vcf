@@ -125,9 +125,8 @@ SELECT ?s ?p ?o WHERE {
 } LIMIT 10
 """
 
-r = requests.post(host + "sparql/", data={ "query": query, "output": "text" })
-if r.status_code != requests.codes.ok:
-    sys.exit(1)
+r = requests.post(host, params={ "query": query, "format": "TSV" })
+# print r.url
 
 print r.text
 ```
