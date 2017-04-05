@@ -1,26 +1,24 @@
-=HEADER
-<% require 'json'  
+ =HEADER
+<% require 'json' 
 @first_time = true 
 %>
-
 {
     "HEADER": {
-	"options": <%= options.to_h.to_json %>,
-	"files": <%= ARGV %>,
-	"version": "<%= BIOVCF_VERSION %>"
+ 	"options": <%= options.to_h.to_json %>,
+ 	"files": <%= ARGV %>,
+ 	"version": "<%= BIOVCF_VERSION %>"
     },
     "BODY": [
-=BODY
-    <% if @first_time   
-		@first_time = false  
-		else %>},  
-	<% end %>{
-	    "seq:chr": "<%= rec.chrom %>" ,
-	    "seq:pos": <%= rec.pos %> ,
-	    "seq:ref": "<%= rec.ref %>" ,
-	    "seq:alt": "<%= rec.alt[0] %>",
+=BODY 
+<%if @first_time  
+@first_time = false else%>
+	},<%end%>	{ 
+ 	    "seq:chr": "<%= rec.chrom %>",
+ 	    "seq:pos": <%= rec.pos %>,
+ 	    "seq:ref": "<%= rec.ref %>",
+  	    "seq:alt": "<%= rec.alt[0] %>",
 	    "dp": <%= rec.info.dp %>	
-=FOOTER
-	}
-    ]
+  =FOOTER
+   	
+	}     ]
 }
