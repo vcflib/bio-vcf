@@ -13,11 +13,11 @@
 <%if @first_time  
 @first_time = false else%>
 	},<%end%>	{ 
- 	    "seq:chr": "<%= rec.chrom %>",
- 	    "seq:pos": <%= rec.pos %>,
- 	    "seq:ref": "<%= rec.ref %>",
-  	    "seq:alt": "<%= rec.alt[0] %>",
-	    "dp": <%= rec.info.dp %>	
+	    "seq:chr": "<%= rec.chrom %>",
+	    "seq:pos": <%= rec.pos %>,
+	    "seq:ref": "<%= rec.ref %>",
+	    "seq:alt": "<%= rec.alt[0] %>",
+	    "dp":      <%= rec.info.dp %>
   =FOOTER
    	
 	}     ]
