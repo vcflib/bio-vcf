@@ -1,28 +1,26 @@
 =HEADER
 <% require 'json' 
-   @first_time = true
+@first_time = true 
 %>
 {
     "HEADER": {
-	"options":  <%= options.to_h.to_json %>,
+  	"options":  <%= options.to_h.to_json %>,
 	"files":    <%= ARGV %>,
-	"version":  "<%= BIOVCF_VERSION %>"
+ 	"version":  "<%= BIOVCF_VERSION %>"
     },
     "COLUMNS": <%= header.column_names.to_json %>,
     "META": <%= header.meta.to_json %>,
     "BODY": [
 =BODY
-    <% if @first_time   
-		@first_time = false  
-		else %>},  
-	<% end %>{
-	    "seq:chr": "<%= rec.chrom %>" ,
-	    "seq:pos": <%= rec.pos %> ,
-	    "seq:ref": "<%= rec.ref %>" ,
-	    "seq:alt": "<%= rec.alt[0] %>"
-	    <% if rec.info.dp %> , "dp": <%= rec.info.dp %> <% end %>
-	
+<%if @first_time  
+@first_time = false else%>
+	},<%end%>	{ 
+  	    "seq:chr": "<%= rec.chrom %>" ,
+  	    "seq:pos": <%= rec.pos %> ,
+  	    "seq:ref": "<%= rec.ref %>" ,
+  	    "seq:alt": "<%= rec.alt[0] %>"
+  	    <% if rec.info.dp %> , "dp": <%= rec.info.dp %> <% end %>
 =FOOTER
-	}
-    ]
+  
+	}     ]
 }
