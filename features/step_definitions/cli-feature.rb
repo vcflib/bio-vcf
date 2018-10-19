@@ -19,3 +19,7 @@ end
 Then(/^I expect an error and the named output to match the named output "(.*?)" in under (\d+) seconds$/) do |arg1,arg2|
   RegressionTest::CliExec::exec(@cmd,arg1,ignore: '(FATAL|Waiting|from|vcf|Options|Final pid)',should_fail: true,timeout:arg2.to_i).should be_truthy
 end
+
+Then(/^I expect no errors$/) do 
+  RegressionTest::CliExec::exec(@cmd, "empty").should be_truthy
+end

@@ -138,6 +138,15 @@ opts = OptionParser.new do |o|
   #   Bio::Log::CLI.trace(s)
   # end
   # 
+  o.on("--names", "Output sample names") do |q|
+    options[:quiet] = true
+    options[:num_threads] = nil
+    options[:eval_once] = true
+    options[:eval] = 'header.samples.join("\t")'
+    # options[:num_threads] = 1
+    # options[:thread_lines] = 1
+    options[:skip_header] = true
+  end
   o.on("--statistics", "Output statistics") do |q|
     options[:statistics] = true
     options[:num_threads] = nil
@@ -215,6 +224,7 @@ def parse_header line, samples, options
   print line if not options[:skip_header]
   STDIN.each_line do | headerline |
     if headerline !~ /^#/
+      # If no records in VCF, we never get here
       line = headerline
       break # end of header
     end
@@ -246,6 +256,10 @@ def parse_header line, samples, options
   end
   print header.printable_header_line(options[:set_header]),"\n" if options[:set_header]
   VcfRdf::header if options[:rdf]
+  if line =~ /^#/
+    # We did not read a record
+    line = nil
+  end
   return header,line
 end
 
@@ -294,7 +308,6 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
   
   if sfilter # sample 'or' filter
     rec.each_sample(options[:sfilter_samples]) do | sample |
-      # return if not sample.sfilter(sfilter,ignore_missing_data: ignore_missing,quiet: quiet)
       return if skip.call { sample.sfilter(sfilter,ignore_missing_data: ignore_missing,quiet: quiet) }
     end
   end
@@ -415,7 +428,11 @@ begin
     # ---- Parse the header lines (chomps from STDIN)
     #      and returns header info and the current line
     if line =~ /^#/
-      header,line = parse_header(line,samples,options)
+      header, line = parse_header(line,samples,options)
+      if line.nil?
+        # No line after header, to there are no records to process
+        break
+      end
     end
     # p [line_number,line]
     # ---- After the header continue processing
@@ -461,8 +478,10 @@ begin
   stats.print if stats
 
 rescue Exception => e
-  $stderr.print "ERROR: "
-  $stderr.print e.message,"\n" if e.message != 'exit'
+  if e.message != 'exit'
+    $stderr.print "ERROR: "
+    $stderr.print e.message,"\n" 
+  end
   pcows.cleanup()
   raise if options[:verbose]
   exit 1

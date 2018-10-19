@@ -199,15 +199,15 @@ module BioVcf
     end
 
     def sample_by_index i
-      # p @fields
       raise "Can not index sample on parameter <#{i}>" if not i.kind_of?(Integer)
       @sample_by_index[i] ||= VcfGenotypeField.new(@fields[i+9],format,@header,ref,alt)
     end
 
     # Walk the samples. list contains an Array of int (the index)
     def each_sample(list = nil)
-      list = @header.samples_index_array() if not list 
-      list.each { |i| yield VcfSample::Sample.new(self,sample_by_index(i.to_i)) }
+      @header.sample_subset_index(list).each { |i|
+        yield VcfSample::Sample.new(self,sample_by_index(i))
+      }
     end
 
     def samples
@@ -250,6 +250,7 @@ module BioVcf
           $stderr.print "RECORD ERROR!\n"
           $stderr.print [@fields],"\n"
           $stderr.print expr,"\n"
+          $stderr.print "To ignore this error use the -i switch!\n"
         end
         if ignore_missing_data
           $stderr.print e.message if not quiet
@@ -283,6 +284,7 @@ module BioVcf
           $stderr.print "RECORD ERROR!\n"
           $stderr.print [@fields],"\n"
           $stderr.print expr,"\n"
+          $stderr.print "To ignore this error use the -i switch!\n"
         end
         if ignore_missing_data
           $stderr.print e.message if not quiet

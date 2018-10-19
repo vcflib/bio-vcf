@@ -3,8 +3,7 @@ sudo: false  # required for the new containers
 language: ruby
 rvm:
 #  - 1.9.3 <- No longer working
-  - 2.1.0
-  - 2.2.3
+  - 2.3.0
 
 # install: 
 #   - gem install cucumber rspec regressiontest

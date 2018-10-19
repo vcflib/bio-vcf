@@ -3,7 +3,7 @@ module BioVcf
 
     # Check whether a sample is empty (on the raw string value)
     def VcfSample::empty? s
-      s==nil or s == './.' or s == '' or s[0..2]=='./.'
+      s==nil or s == './.' or s == '' or s[0..2]=='./.' or s[0..1] == '.:'
     end
 
     class Sample
@@ -40,6 +40,7 @@ module BioVcf
       # Split GT into index values
       def gti
         v = fetch_values("GT")
+        v = './.' if v == '.' #In case that you have a single missing value, make both as missing. 
         v.split(/[\/\|]/).map{ |v| (v=='.' ? nil : v.to_i) }
       end
 
@@ -47,6 +48,7 @@ module BioVcf
         v = fetch_values("GT")
         return case v
                when nil then nil
+               when '.' then nil
                when './.' then nil
                when '0/0' then 0
                when '0/1' then 1

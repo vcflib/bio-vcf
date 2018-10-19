@@ -267,7 +267,7 @@ Note that you need Ruby 2.x or later. The 2.x Ruby series also give
 a performance improvement. Bio-vcf will show the Ruby version when
 typing the command 'bio-vcf -h'.
 
-To intall bio-vcf with gem:
+To install bio-vcf with gem:
 
 ```sh
 gem install bio-vcf
@@ -294,6 +294,13 @@ Get the sample names
 
 ```ruby
   bio-vcf -q --eval-once 'header.samples.join(",")' < file.vcf
+  NORMAL,TUMOR
+```
+
+Alternatively use the command line switch for --names, e.g.
+
+```ruby
+  bio-vcf --names < file.vcf
   NORMAL,TUMOR
 ```
 
@@ -674,7 +681,7 @@ Now you can index other fields, e.g. GL
 ```ruby
     ./bin/bio-vcf --seval '[(!s.empty? ? s.gl[s.gtindex]:-1)]' 
     1       900057  1.0     1.0     0.994   1.0     1.0     -1      0.999   1.0     0.997   -1  0.994    0.989   -1      0.991   -1      0.972   0.992   1.0
-    ```
+```
 
 shows a number of SNPs have been scored with high significance and a
 number are missing, here marked as -1.
@@ -742,6 +749,17 @@ To remove/select 3 samples:
 ```sh
   bio-vcf --samples 0,1,3 < mytest.vcf
 ```
+
+You can also select samples by name (as long as they do not contain
+spaces)
+
+
+```sh
+  bio-vcf --names < mytest.vcf
+    Original        s1t1    s2t1    s3t1    s1t2    s2t2    s3t2
+  bio-vcf --samples "Original,s1t1,s3t1" < mytest.vcf
+```
+
 
 Filter on a BED file and annotate the gene name in the resulting VCF
 
