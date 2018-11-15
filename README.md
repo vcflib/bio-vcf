@@ -1029,6 +1029,23 @@ what the command line interface uses (see ./bin/bio-vcf)
   end
 ```
 
+### VCFFile
+
+The class ```BioVcf::VCFfile``` wraps a file and provides an ```enum``` with the
+method each, that can be used as in iterator. 
+
+```ruby
+vcf_file = "dbsnp.vcf"
+vcf  = BioVcf::VCFfile.new(file:file, is_gz: false )
+it vcf.each
+puts it.peek
+
+vcf_file = "dbsnp.vcf.gz"
+vcf  = BioVcf::VCFfile.new(file:file, is_gz: true )
+it vcf.each
+puts it.peek
+```
+
 ## Trouble shooting
 
 ### MRI supports threading
