@@ -11,7 +11,7 @@ module BioVcf
     end
   end
 
-  # Helper class for a list of (variant) values, such as A,G. 
+  # Helper class for a list of (variant) values, such as A,G.
   # The [] function does the hard work. You can pass in an index (integer)
   # or nucleotide which translates to an index.
   # (see ./features for examples)
@@ -20,7 +20,7 @@ module BioVcf
       @alt = alt
       @list = list.split(/,/).map{|i| i.to_i}
     end
-  
+
     def [] idx
       if idx.kind_of?(Integer)
         # return a value
@@ -67,7 +67,7 @@ module BioVcf
       @alt = alt
       @list = list.split(/,/).map{|i| i.to_i}
     end
-  
+
     def [] idx
       if idx.kind_of?(Integer)
         @list[idx].to_i
@@ -87,15 +87,15 @@ module BioVcf
     end
 
     # Return the max value on the nucleotides in the list (typically rec.alt)
-    def max 
+    def max
       @list.reduce(0){ |memo,v| (v>memo ? v : memo) }
     end
 
-    def min 
+    def min
       @list.reduce(MAXINT){ |memo,v| (v<memo ? v : memo) }
     end
 
-    def sum 
+    def sum
       @list.reduce(0){ |memo,v| v+memo }
     end
   end
@@ -129,14 +129,14 @@ module BioVcf
       !empty?
     end
 
-    def dp4 
-      ilist('DP4') 
+    def dp4
+      ilist('DP4')
     end
-    def ad 
-      ilist('AD') 
+    def ad
+      ilist('AD')
     end
-    def pl 
-      ilist('PL') 
+    def pl
+      ilist('PL')
     end
 
     def bcount
@@ -154,7 +154,7 @@ module BioVcf
     def gti?
       not VcfValue::empty?(fetch_value("GT"))
     end
-    
+
     def gti
       gt.split(/[\/\|]/).map { |g| g.to_i }
     end
@@ -178,11 +178,11 @@ module BioVcf
       else
         v = values[fetch(m.to_s.upcase)]
         return nil if VcfValue::empty?(v)
-        v = v.to_i if v =~ /^\d+$/
-        v = v.to_f if v =~ /^\d+\.\d+$/
+        return v.to_i if v =~ /^\d+$/
+        return v.to_f if v =~ /^\d+\.\d+$/
         v
       end
-    end  
+    end
 
   private
 
@@ -200,7 +200,7 @@ module BioVcf
     def ilist name
       v = fetch_value(name)
       return nil if not v
-      v.split(',').map{|i| i.to_i} 
+      v.split(',').map{|i| i.to_i}
     end
 
   end
@@ -222,11 +222,11 @@ module BioVcf
         @samples[name] ||= VcfGenotypeField.new(@fields[@sample_index[name]],@format,@header,@ref,@alt)
       rescue TypeError
         $stderr.print "Unknown field name <#{name}> in record, did you mean r.info.#{name}?\n"
-        raise 
+        raise
       end
     end
 
-    def method_missing(m, *args, &block) 
+    def method_missing(m, *args, &block)
       name = m.to_s
       if name =~ /\?$/
         # test for valid sample
@@ -234,7 +234,7 @@ module BioVcf
       else
         @samples[name] ||= VcfGenotypeField.new(@fields[@sample_index[name]],@format,@header,@ref,@alt)
       end
-    end  
+    end
 
   end
 end

@@ -34,7 +34,7 @@ Then(/^I expect the diff for threshold (\d+) to be \[(\d+),(\d+),(\d+),(\d+)\]$/
 end
 
 Then(/^the relative diff to be \[(\d+),(\d+),(\d+),(\d+)\.(\d+)\]$/) do |arg1, arg2, arg3, arg4, arg5|
-  res = [arg1.to_f,arg2.to_i,arg3.to_i,(arg4+'.'+arg5).to_f]
+  res = [arg1.to_f,arg2.to_i,arg3.to_i,(arg4.to_s+'.'+arg5.to_s).to_f]
   expect(Variant.relative_threshold_diff(@t,@normal,@tumor)).to eq res
 end
 

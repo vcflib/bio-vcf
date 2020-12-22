@@ -124,7 +124,7 @@ Then(/^I expect rec.call_normal_count to be (\d+)$/) do |arg1|
 end
 
 Then(/^I expect rec.call_tumor_relative_count to be (\d+)\.(\d+)$/) do |arg1, arg2|
-  expect(@rec.call_tumor_relative_count).to eq (arg1+'.'+arg2).to_f
+  expect(@rec.call_tumor_relative_count).to eq (arg1.to_s+'.'+arg2.to_s).to_f
 end
 
 

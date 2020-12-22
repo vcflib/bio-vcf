@@ -253,16 +253,15 @@ example of a VCF statement you need to work on.
 
 ## Installation
 
-Note that you need Ruby 2.x or later. The 2.x Ruby series also give
-a performance improvement. Bio-vcf will show the Ruby version when
-typing the command 'bio-vcf -h'.
+The bio-vcf has no other dependencies but Ruby.
 
-To install bio-vcf with gem:
+To install bio-vcf with Ruby gems:
 
 ```sh
 gem install bio-vcf
 bio-vcf -h
 ```
+
 
 ## Command line interface (CLI)
 
@@ -1022,7 +1021,7 @@ what the command line interface uses (see ./bin/bio-vcf)
 ### VCFFile
 
 The class ```BioVcf::VCFfile``` wraps a file and provides an ```enum``` with the
-method each, that can be used as in iterator. 
+method each, that can be used as in iterator.
 
 ```ruby
 vcf_file = "dbsnp.vcf"
@@ -1082,6 +1081,15 @@ the one to try.
 For larger files set the timeout to 600, or so. --timeout 600.
 
 Different values may show different core use on a machine.
+
+### Development
+
+To run the tests from source
+
+```sh
+bundle install --path vendor/bundle
+bundle exec rake
+```
 
 ### Debugging
 
