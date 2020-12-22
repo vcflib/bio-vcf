@@ -1,6 +1,6 @@
 # bio-vcf
 
-[![Build Status](https://secure.travis-ci.org/vcflib/bio-vcf.png)](http://travis-ci.org/vcflib/bio-vcf)
+[![Build Status](https://secure.travis-ci.org/vcflib/bio-vcf.png)](http://travis-ci.org/vcflib/bio-vcf) [![rubygem](https://img.shields.io/gem/v/bio-vcf.svg?style=flat)](http://rubygems.org/gems/bio-vcf "Install with Rubygems")
 
 
 ## Bio-vcf
