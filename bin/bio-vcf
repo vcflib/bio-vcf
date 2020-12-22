@@ -20,10 +20,10 @@ require 'optparse'
 require 'timeout'
 require 'fileutils'
 
-# Uncomment when using the bio-logger 
+# Uncomment when using the bio-logger
 # require 'bio-logger'
 # log = Bio::Log::LoggerPlus.new 'vcf'
-# log.outputters = Bio::Log::Outputter.stderr 
+# log.outputters = Bio::Log::Outputter.stderr
 # Bio::Log::CLI.logger('stderr')
 # Bio::Log::CLI.trace('info')
 
@@ -31,7 +31,7 @@ options = { show_help: false, source: 'https://github.com/pjotrp/bioruby-vcf', v
 opts = OptionParser.new do |o|
   o.banner = "Usage: #{File.basename($0)} [options] filename\ne.g.  #{File.basename($0)} < test/data/input/somaticsniper.vcf"
 
-  o.on('-i','--ignore-missing', 'Ignore missing data') do 
+  o.on('-i','--ignore-missing', 'Ignore missing data') do
     options[:ignore_missing] = true
   end
   o.on('--filter cmd',String, 'Evaluate filter on each record') do |cmd|
@@ -103,8 +103,8 @@ opts = OptionParser.new do |o|
   o.on_tail("--tags list", String, "Add tags") do |s|
     options[:tags] = s
   end
- 
-  o.on("--skip-header", "Do not output VCF header info") do 
+
+  o.on("--skip-header", "Do not output VCF header info") do
     options[:skip_header] = true
   end
 
@@ -127,8 +127,8 @@ opts = OptionParser.new do |o|
   o.on("--timeout [num]", Integer, "Timeout waiting for thread to complete (default #{options[:timeout]})") do |i|
     options[:timeout] = i
   end
-   
-  # Uncomment the following when using the bio-logger 
+
+  # Uncomment the following when using the bio-logger
   # o.separator ""
   # o.on("--logger filename",String,"Log to file (default stderr)") do | name |
   #   Bio::Log::CLI.logger(name)
@@ -137,7 +137,7 @@ opts = OptionParser.new do |o|
   # o.on("--trace options",String,"Set log level (default INFO, see bio-logger)") do | s |
   #   Bio::Log::CLI.trace(s)
   # end
-  # 
+  #
   o.on("--names", "Output sample names") do |q|
     options[:quiet] = true
     options[:num_threads] = nil
@@ -155,11 +155,11 @@ opts = OptionParser.new do |o|
     # Bio::Log::CLI.trace('error')
     options[:quiet] = true
   end
-   
+
   o.on("-v", "--verbose", "Run verbosely") do |v|
     options[:verbose] = true
   end
-  
+
   o.on("--debug", "Show debug messages and keep intermediate output") do |v|
     # Bio::Log::CLI.trace('debug')
     options[:debug] = true
@@ -177,8 +177,8 @@ BIOVCF_VERSION=version
 BIOVCF_BANNER = "bio-vcf #{version} (biogem Ruby #{RUBY_VERSION} with pcows) by Pjotr Prins 2015\n"
 $stderr.print BIOVCF_BANNER if !options[:quiet]
 
-if options[:show_help] 
-  print opts 
+if options[:show_help]
+  print opts
   print USAGE
   exit 1
 end
@@ -239,12 +239,12 @@ def parse_header line, samples, options
         if add_filter
           print "##FILTER=<ID=",add_filter,",Description=\"",options[:filter],"\">\n"
         end
-        
+
         selected = header.column_names
         if samples
           newfields = selected[0..8]
           samples.each do |s|
-            newfields << selected[s+9] 
+            newfields << selected[s+9]
           end
           selected = newfields
         end
@@ -305,7 +305,7 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
   if filter
     return if skip.call { rec.gfilter(filter,ignore_missing_data: ignore_missing,quiet: quiet) }
   end
-  
+
   if sfilter # sample 'or' filter
     rec.each_sample(options[:sfilter_samples]) do | sample |
       return if skip.call { sample.sfilter(sfilter,ignore_missing_data: ignore_missing,quiet: quiet) }
@@ -334,21 +334,21 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
 
   # -----------------------------
   # From here on decide on output
-  
+
   rec.add_to_filter_field(add_filter) if set_filter_field
 
   if samples
     # Select certain samples for output
     newfields = fields[0..8]
     samples.each do |s|
-      newfields << fields[s+9] 
+      newfields << fields[s+9]
     end
     fields = newfields
   end
   if options[:eval] or seval
     begin
       results = nil # result string
-      if options[:eval] 
+      if options[:eval]
         res = rec.eval(options[:eval],ignore_missing_data: ignore_missing,quiet: quiet)
         results = res if res
       end
@@ -377,11 +377,11 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
       rescue Exception => e
         $stderr.print e,": ",fields,"\n"
         $stderr.print e.backtrace.inspect if options[:verbose]
-        raise 
+        raise
       end
     elsif options[:rewrite]
       # Default behaviour prints VCF line, but rewrite info
-      eval(options[:rewrite]) 
+      eval(options[:rewrite])
       (fields[0..6]+[rec.info.to_s]+fields[8..-1]).join("\t")+"\n"
     elsif stats
       # do nothing
@@ -403,7 +403,7 @@ line_number=0
 
 if options[:bed]
   bedfilter = BedFilter.new(options[:bed])
-end 
+end
 
 begin
   # Define linear parser function (going through one chunk)
@@ -445,7 +445,7 @@ begin
       print template.header(binding) if template
       header_output_completed = true
     end
-    
+
     if options[:eval_once]
       # this happens if we only want one line evaluated - say to get
       # the number of samples
@@ -459,7 +459,7 @@ begin
 
     # ---- In the following section the VCF lines are parsed by chunks
     #      The chunks may go into different threads
-    
+
     if chunk_lines.size >= CHUNK_SIZE
       # ---- process one chunk
       $stderr.print '.' if not options[:quiet]
@@ -473,17 +473,16 @@ begin
   pcows.submit_final_worker(process,chunk_lines)
   pcows.wait_for_workers()
   pcows.process_remaining_output()
-  
+
   print template.footer(binding) if template
   stats.print if stats
 
 rescue Exception => e
   if e.message != 'exit'
     $stderr.print "ERROR: "
-    $stderr.print e.message,"\n" 
+    $stderr.print e.message,"\n"
   end
   pcows.cleanup()
   raise if options[:verbose]
   exit 1
 end
-
