@@ -4,7 +4,7 @@
 # Author:: Pjotr Prins
 # License:: MIT
 #
-# Copyright (C) 2014-2015 Pjotr Prins <pjotr.prins@thebird.nl>
+# Copyright (C) 2014-2020 Pjotr Prins <pjotr.prins@thebird.nl>
 
 USAGE = "Vcf parser"
 
@@ -174,7 +174,7 @@ end
 opts.parse!(ARGV)
 
 BIOVCF_VERSION=version
-BIOVCF_BANNER = "bio-vcf #{version} (biogem Ruby #{RUBY_VERSION} with pcows) by Pjotr Prins 2015\n"
+BIOVCF_BANNER = "bio-vcf #{version} (biogem Ruby #{RUBY_VERSION} with pcows) by Pjotr Prins 2015-2020\n"
 $stderr.print BIOVCF_BANNER if !options[:quiet]
 
 if options[:show_help]

@@ -1,17 +1,7 @@
 # bio-vcf
 
-[![Build Status](https://secure.travis-ci.org/pjotrp/bioruby-vcf.png)](http://travis-ci.org/pjotrp/bioruby-vcf) 
+[![Build Status](https://secure.travis-ci.org/vcflib/bio-vcf.png)](http://travis-ci.org/vcflib/bio-vcf)
 
-## Updates
-
-* Getting ready for a 1.0 release
-* Released 0.9.2 as a gem
-* 0.9.1 removed a rare threading bug and cleanup on error
-* Added support for soft filters (request by Brad Chapman)
-* The outputter now writes (properly) in parallel with the parser
-* bio-vcf turns any VCF into JSON with header information, and
-  allows you to pipe that JSON directly into any JSON supporting
-  language, including Python and Javascript!
 
 ## Bio-vcf
 
@@ -81,18 +71,18 @@ BED format on a 16 core machine takes
   sys     0m5.039s
 ```
 
-which shows decent core utilisation (10x). Running 
+which shows decent core utilisation (10x). Running
 gzip compressed VCF files of 30+ Gb has similar performance gains.
 
 To view some complex filters on an 80Gb SNP file check out a
-[GTEx exercise](https://github.com/pjotrp/bioruby-vcf/blob/master/doc/GTEx_reduce.md).
+[GTEx exercise](https://github.com/vcflib/bio-vcf/blob/master/doc/GTEx_reduce.md).
 
 Use zcat (or even better pigz which is multi-core itself) to pipe such
 gzipped (vcf.gz) files into bio-vcf, e.g.
 
 ```sh
   zcat huge_file.vcf.gz| bio-vcf --num-threads 36 --filter 'r.chrom.to_i>0 and r.chrom.to_i<21 and r.qual>50'
-    --sfilter '!s.empty? and s.dp>20' 
+    --sfilter '!s.empty? and s.dp>20'
     --eval '[r.chrom,r.pos,r.pos+1]' > test.bed
 ```
 
@@ -126,7 +116,7 @@ Where 's.dp' is the shorter name for 'sample.dp'.
 
 It is also possible to specify sample names, or info fields:
 
-For example, to filter somatic data 
+For example, to filter somatic data
 
 ```ruby
   bio-vcf --filter 'rec.info.dp>5 and rec.alt.size==1 and rec.tumor.bq[rec.alt]>30 and rec.tumor.mq>20' < file.vcf
@@ -254,7 +244,7 @@ The VCF format is commonly used for variant calling between NGS
 samples. The fast parser needs to carry some state, recorded for each
 file in VcfHeader, which contains the VCF file header. Individual
 lines (variant calls) first go through a raw parser returning an array
-of fields. Further (lazy) parsing is handled through VcfRecord. 
+of fields. Further (lazy) parsing is handled through VcfRecord.
 
 At this point the filter is pretty generic with multi-sample support.
 If something is not working, check out the feature descriptions and
@@ -314,39 +304,39 @@ The 'fields' array contains unprocessed data (strings).  Print first
 five raw fields
 
 ```ruby
-  bio-vcf --eval 'fields[0..4]' < file.vcf 
+  bio-vcf --eval 'fields[0..4]' < file.vcf
 ```
 
 Add a filter to display the fields on chromosome 12
 
 ```ruby
-  bio-vcf --filter 'fields[0]=="12"' --eval 'fields[0..4]' < file.vcf 
+  bio-vcf --filter 'fields[0]=="12"' --eval 'fields[0..4]' < file.vcf
 ```
 
 It gets better when we start using processed data, represented by an
 object named 'rec'. Position is a value, so we can filter a range
 
 ```ruby
-  bio-vcf --filter 'rec.chrom=="12" and rec.pos>96_641_270 and rec.pos<96_641_276' < file.vcf 
+  bio-vcf --filter 'rec.chrom=="12" and rec.pos>96_641_270 and rec.pos<96_641_276' < file.vcf
 ```
 
 The shorter name for 'rec.chrom' is 'r.chrom', so you may write
 
 ```ruby
-  bio-vcf --filter 'r.chrom=="12" and r.pos>96_641_270 and r.pos<96_641_276' < file.vcf 
+  bio-vcf --filter 'r.chrom=="12" and r.pos>96_641_270 and r.pos<96_641_276' < file.vcf
 ```
 
 To ignore and continue parsing on missing data use the
 --ignore-missing (-i) and or --quiet (-q) switches
 
 ```ruby
-  bio-vcf -i --filter 'r.chrom=="12" and r.pos>96_641_270 and r.pos<96_641_276' < file.vcf 
+  bio-vcf -i --filter 'r.chrom=="12" and r.pos>96_641_270 and r.pos<96_641_276' < file.vcf
 ```
 
 Info fields are referenced by
 
 ```ruby
-  bio-vcf --filter 'rec.info.dp>100 and rec.info.readposranksum<=0.815' < file.vcf 
+  bio-vcf --filter 'rec.info.dp>100 and rec.info.readposranksum<=0.815' < file.vcf
 ```
 
 (alternatively you can use the indexed rec.info['DP'] and list INFO fields with
@@ -355,14 +345,14 @@ rec.info.fields).
 Subfields defined by rec.format:
 
 ```ruby
-  bio-vcf --filter 'rec.tumor.ss != 2' < file.vcf 
+  bio-vcf --filter 'rec.tumor.ss != 2' < file.vcf
 ```
 
 Output
 
 ```ruby
-  bio-vcf --filter 'rec.tumor.gq>30' 
-    --eval '[rec.ref,rec.alt,rec.tumor.bcount,rec.tumor.gq,rec.normal.gq]' 
+  bio-vcf --filter 'rec.tumor.gq>30'
+    --eval '[rec.ref,rec.alt,rec.tumor.bcount,rec.tumor.gq,rec.normal.gq]'
     < file.vcf
 ```
 
@@ -376,26 +366,26 @@ Show the count of the bases that were scored as somatic
 Actually, we have a convenience implementation for bcount, so this is the same
 
 ```ruby
-  bio-vcf --eval 'rec.alt+"\t"+rec.tumor.bcount[rec.alt].to_s+"\t"+rec.tumor.gq.to_s' 
+  bio-vcf --eval 'rec.alt+"\t"+rec.tumor.bcount[rec.alt].to_s+"\t"+rec.tumor.gq.to_s'
     < file.vcf
 ```
 
 Filter on the somatic results that were scored at least 4 times
- 
+
 ```ruby
-  bio-vcf --filter 'rec.alt.size==1 and rec.tumor.bcount[rec.alt]>4' < test.vcf 
+  bio-vcf --filter 'rec.alt.size==1 and rec.tumor.bcount[rec.alt]>4' < test.vcf
 ```
 
 Similar for base quality scores
 
 ```ruby
-  bio-vcf --filter 'rec.alt.size==1 and rec.tumor.amq[rec.alt]>30' < test.vcf 
+  bio-vcf --filter 'rec.alt.size==1 and rec.tumor.amq[rec.alt]>30' < test.vcf
 ```
 
 Filter out on sample values
 
 ```ruby
-  bio-vcf --sfilter 's.dp>20' < test.vcf 
+  bio-vcf --sfilter 's.dp>20' < test.vcf
 ```
 
 To filter missing on samples:
@@ -477,17 +467,17 @@ Even shorter r is an alias for rec
 Note: special functions are not yet implemented! Look below
 for genotype processing which has indexing in 'gti'.
 
-Sometime you want to use a special function in a filter. For 
-example percentage variant reads can be defined as [a,c,g,t] 
-with frequencies against sample read depth (dp) as 
-[0,0.03,0.47,0.50]. Filtering would with a special function, 
+Sometime you want to use a special function in a filter. For
+example percentage variant reads can be defined as [a,c,g,t]
+with frequencies against sample read depth (dp) as
+[0,0.03,0.47,0.50]. Filtering would with a special function,
 which we named freq
 
 ```sh
   bio-vcf --sfilter "s.freq(2)>0.30" < file.vcf
 ```
 
-which is equal to 
+which is equal to
 
 ```sh
   bio-vcf --sfilter "s.freq.g>0.30" < file.vcf
@@ -507,7 +497,7 @@ ref should always be identical across samples.
 
 ## DbSNP
 
-One clinical variant DbSNP example 
+One clinical variant DbSNP example
 
 ```sh
     bio-vcf --eval '[rec.id,rec.chr,rec.pos,rec.alt,rec.info.sao,rec.info.CLNDBN]' < clinvar_20140303.vcf
@@ -532,16 +522,16 @@ renders
 
 bio-vcf allows for set analysis. With the complement filter, for
 example, samples are selected that evaluate to true, all others should
-evaluate to false. For this we create three filters, one for all 
+evaluate to false. For this we create three filters, one for all
 samples that are included (the --ifilter or -if), for all samples that
 are excluded (the --efilter or -ef) and for any sample (the --sfilter
 or -sf). So i=include (OR filter), e=exclude and s=any sample (AND
-filter). 
+filter).
 
 The equivalent of the union filter is by using the --sfilter, so
 
 ```sh
-  bio-vcf --sfilter 's.dp>20' 
+  bio-vcf --sfilter 's.dp>20'
 ```
 
 Filters DP on all samples and is true if all samples match the
@@ -549,7 +539,7 @@ criterium (AND). To filter on a subset you can add a
 selector
 
 ```sh
-  bio-vcf --sfilter-samples 0,1,4 --sfilter 's.dp>20' 
+  bio-vcf --sfilter-samples 0,1,4 --sfilter 's.dp>20'
 ```
 
 For set analysis there are the additional ifilter (include) and
@@ -569,7 +559,7 @@ values
 
 The equivalent of the complement filter is by specifying what samples
 to include, here with a regex and define filters on the included
- and excluded samples (the ones not in ifilter-samples) and the 
+ and excluded samples (the ones not in ifilter-samples) and the
 
 ```sh
   ./bin/bio-vcf -i --sfilter 's.dp>20' --ifilter-samples 2,4 --ifilter 's.gt==r.s1t1.gt'
@@ -590,7 +580,7 @@ To print out the GT's add --seval
 To set an additional filter on the excluded samples:
 
 ```sh
-  bio-vcf -i --ifilter-samples 0,1,4 --ifilter 's.gt==rec.s1t1.gt and s.gq>10' --seval s.gq --efilter 's.gq==99' 
+  bio-vcf -i --ifilter-samples 0,1,4 --ifilter 's.gt==rec.s1t1.gt and s.gq>10' --seval s.gq --efilter 's.gq==99'
 ```
 
 Etc. etc. Any combination of sfilter, ifilter and efilter is possible.
@@ -603,15 +593,15 @@ In the near future it is also possible to select samples on a regex (here
 select all samples where the name starts with s3)
 
 ```sh
-  bio-vcf --isample-regex '/^s3/' --ifilter 's.dp>20' 
+  bio-vcf --isample-regex '/^s3/' --ifilter 's.dp>20'
 ```
 
 ```sh
-  bio-vcf --include /s3.+/ --sfilter 'dp>20'  --ifilter 'gt==s3t1.gt' --efilter 'gt!=s3t1.gt' 
+  bio-vcf --include /s3.+/ --sfilter 'dp>20'  --ifilter 'gt==s3t1.gt' --efilter 'gt!=s3t1.gt'
 --set-intersect  include=true
-  bio-vcf --include /s3.+/ --sample-regex /^t2/ --sfilter 'dp>20'  --ifilter 'gt==s3t1.gt'  
+  bio-vcf --include /s3.+/ --sample-regex /^t2/ --sfilter 'dp>20'  --ifilter 'gt==s3t1.gt'
 --set-catesian   one in include=true, rest=false
-  bio-vcf --unique-sample (any) --include /s3.+/ --sfilter 'dp>20' --ifilter 'gt!="0/0"'  
+  bio-vcf --unique-sample (any) --include /s3.+/ --sfilter 'dp>20' --ifilter 'gt!="0/0"'
 ```
 
 With the filter commands you can use --ignore-missing to skip errors.
@@ -634,7 +624,7 @@ results in a string value
 to access components of the genotype field we can use standard Ruby
 
 ```ruby
-  bio-vcf --seval 's.gt.split(/\//)[0]' 
+  bio-vcf --seval 's.gt.split(/\//)[0]'
     1       10665   .     .     0     0     .     0     0
     1       10694   .     .     1     1     .     .     .
     1       12783   0     0     0     0     0     0     0
@@ -645,7 +635,7 @@ or special functions, such as 'gti' which gives the genotype as an
 indexed value array
 
 ```ruby
-  bio-vcf --seval 's.gti[0]' 
+  bio-vcf --seval 's.gti[0]'
     1       10665                   0       0               0       0
     1       10694                   1       1
     1       12783   0       0       0       0       0       0       0
@@ -655,7 +645,7 @@ indexed value array
 and 'gts' as a nucleotide string array
 
 ```ruby
-  bio-vcf --seval 's.gts' 
+  bio-vcf --seval 's.gts'
     1       10665                   C       C               C       C
     1       10694                   G       G
     1       12783   G       G       G       G       G       G       G
@@ -679,7 +669,7 @@ example signficance, use
 Now you can index other fields, e.g. GL
 
 ```ruby
-    ./bin/bio-vcf --seval '[(!s.empty? ? s.gl[s.gtindex]:-1)]' 
+    ./bin/bio-vcf --seval '[(!s.empty? ? s.gl[s.gtindex]:-1)]'
     1       900057  1.0     1.0     0.994   1.0     1.0     -1      0.999   1.0     0.997   -1  0.994    0.989   -1      0.991   -1      0.972   0.992   1.0
 ```
 
@@ -811,7 +801,7 @@ To have more output options bio-vcf can use an [ERB
 template](http://www.stuartellis.eu/articles/erb/) for every match. This is a
 very flexible option that can output textual formats such as JSON, YAML, HTML
 and RDF. Examples are provided in
-[./templates](https://github.com/pjotrp/bioruby-vcf/templates/). A JSON
+[./templates](https://github.com/vcflib/bio-vcf/templates/). A JSON
 template could be
 
 ```Javascript
@@ -825,7 +815,7 @@ template could be
 };
 ```
 
-To get JSON, run with something like (combining 
+To get JSON, run with something like (combining
 with a filter)
 
 ```sh
@@ -851,11 +841,11 @@ Likewise for RDF output:
   bio-vcf --template template/vcf2rdf.erb --filter 'r.info.sao==1' < dbsnp.vcf
 ```
 
-renders the ERB template 
+renders the ERB template
 
 ```ruby
 <%
-  id = Turtle::mangle_identifier(['ch'+rec.chrom,rec.pos,rec.alt.join('')].join('_')) 
+  id = Turtle::mangle_identifier(['ch'+rec.chrom,rec.pos,rec.alt.join('')].join('_'))
 %>
 :<%= id %>
   :query_id    "<%= id %>",
@@ -868,7 +858,7 @@ renders the ERB template
   db:vcf       true .
 ```
 
-into 
+into
 
 ```
 :ch13_33703698_A
@@ -956,9 +946,9 @@ To get and put the full information from the header, simple use
 vcf.meta.to_json.  See ./template/vcf2json_full_header.erb for an
 example. This meta information can also be used to output info fields
 and sample values on the fly! For an example, see the template at
-[./template/vcf2json_use_meta.erb](https://github.com/pjotrp/bioruby-vcf/tree/master/template/vcf2json_use_meta.erb)
+[./template/vcf2json_use_meta.erb](https://github.com/vcflib/bio-vcf/tree/master/template/vcf2json_use_meta.erb)
 and the generated output at
-[./test/data/regression/vcf2json_use_meta.ref](https://github.com/pjotrp/bioruby-vcf/tree/master/test/data/regression/vcf2json_use_meta.ref).
+[./test/data/regression/vcf2json_use_meta.ref](https://github.com/vcflib/bio-vcf/tree/master/test/data/regression/vcf2json_use_meta.ref).
 
 This way, it is possible to write templates that can convert the content of
 *any* VCF file without prior knowledge to JSON, RDF, etc.
@@ -975,7 +965,7 @@ Simple statistics are available for REF>ALT changes:
       G>A             59      45%
       C>T             30      23%
       A>G              5       4%
-      C>G              5       4% 
+      C>G              5       4%
       C>A              5       4%
       G>T              4       3%
       T>C              4       3%
@@ -996,9 +986,9 @@ Simple statistics are available for REF>ALT changes:
 ## Other examples
 
 For more exercises and examples see
-[doc](https://github.com/pjotrp/bioruby-vcf/tree/master/doc) directory
+[doc](https://github.com/vcflib/bio-vcf/tree/master/doc) directory
 and the the feature
-[section](https://github.com/pjotrp/bioruby-vcf/tree/master/features).
+[section](https://github.com/vcflib/bio-vcf/tree/master/features).
 
 ## API
 
@@ -1074,7 +1064,7 @@ For more complex filters use lambda inside a conditional
 ```ruby
     ( fast_check ? lambda { slow_check }.call : false )
 ```
-    
+
 where slow_check is the slow section of your query. As is shown
 earlier in this document. Don't forget the .call!
 
@@ -1110,12 +1100,12 @@ temporary directory may remain.
 Information on the source tree, documentation, examples, issues and
 how to contribute, see
 
-  http://github.com/pjotrp/bioruby-vcf
+  http://github.com/vcflib/bio-vcf
 
 ## Cite
 
 If you use this software, please cite one of
-  
+
 * [BioRuby: bioinformatics software for the Ruby programming language](http://dx.doi.org/10.1093/bioinformatics/btq475)
 * [Biogem: an effective tool-based approach for scaling up open source software development in bioinformatics](http://dx.doi.org/10.1093/bioinformatics/bts080)
 
@@ -1125,5 +1115,4 @@ This Biogem is published at (http://biogems.info/index.html#bio-vcf)
 
 ## Copyright
 
-Copyright (c) 2014 Pjotr Prins. See LICENSE.txt for further details.
-
+Copyright (c) 2014-2020 Pjotr Prins. See LICENSE.txt for further details.

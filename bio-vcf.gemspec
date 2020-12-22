@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.files += Dir['[A-Z]*'] + Dir['test/**/*'] + Dir['features/**/*'] +
              Dir['template/**/*']
   
-  s.homepage = "http://github.com/pjotrp/bioruby-vcf"
+  s.homepage = "http://github.com/vcflib/bio-vcf"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.required_ruby_version = Gem::Requirement.new(">= 2.0.0")
