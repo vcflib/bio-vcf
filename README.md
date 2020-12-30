@@ -22,7 +22,12 @@ Quick index:
 ## Bio-vcf
 
 Bio-vcf provides a domain specific language (DSL) for processing the
-VCF format.
+VCF format. Record named fields can be queried with regular
+expressions, e.g.
+
+```ruby
+sample.dp>20 and rec.filter !~ /LowQD/ and rec.tumor.bcount[rec.alt]>4
+```
 
 Bio-vcf is a new generation VCF parser, filter and converter. Bio-vcf
 is not only very fast for genome-wide (WGS) data, it also comes with a
@@ -45,6 +50,10 @@ So, why would you use bio-vcf over other parsers? Because
 11. Bio-vcf can convert *any* VCF to *any* output, including tabular data, BED, HTML, LaTeX, RDF, JSON and JSON-LD and even other VCFs by using (erb) templates
 12. Bio-vcf has soft filters
 
+Some examples are documented for [reducing GTeX](doc/GTEx_reduce.md),
+[comparing GATK](doc/GATK_comparison.md), [comparing
+VCFs](doc/Compare_VCFs.md), JSON [loading Mongo
+database](doc/Using_Mongo.md), and [generating RDF](doc/Using_RDF.md).
 
 ## Options
 
