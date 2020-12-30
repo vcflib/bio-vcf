@@ -45,6 +45,55 @@ So, why would you use bio-vcf over other parsers? Because
 11. Bio-vcf can convert *any* VCF to *any* output, including tabular data, BED, HTML, LaTeX, RDF, JSON and JSON-LD and even other VCFs by using (erb) templates
 12. Bio-vcf has soft filters
 
+
+## Options
+
+In true Unix fashion files can be piped in or passed on the command
+line:
+
+    bio-vcf --help
+
+```
+bio-vcf (biogem with pcows) by Pjotr Prins 2015-2020
+
+Usage: bio-vcf [options] filename
+e.g.  bio-vcf < test/data/input/somaticsniper.vcf
+    -i, --ignore-missing             Ignore missing data
+        --filter cmd                 Evaluate filter on each record
+        --sfilter cmd                Evaluate filter on each sample
+        --sfilter-samples list       Filter on selected samples (e.g., 0,1
+        --ifilter, --if cmd          Include filter
+        --ifilter-samples list       Include set - implicitely defines exclude set
+        --efilter, --ef cmd          Exclude filter
+        --efilter-samples list       Exclude set - overrides exclude set
+        --add-filter name            Set/add filter field to name
+        --bed bedfile                Filter on BED elements
+    -e, --eval cmd                   Evaluate command on each record
+        --eval-once cmd              Evaluate command once (usually for header info)
+        --seval cmd                  Evaluate command on each sample
+        --rewrite eval               Rewrite INFO
+        --samples list               Output selected samples
+        --rdf                        Generate Turtle RDF (also check out --template!)
+        --num-threads [num]          Multi-core version (default ALL)
+        --thread-lines num           Fork thread on num lines (default 40000)
+        --skip-header                Do not output VCF header info
+        --set-header list            Set a special tab delimited output header (#samples expands to sample names)
+    -t, --template erb               Use ERB template for output
+        --add-header-tag             Add bio-vcf status tag to header output
+        --timeout [num]              Timeout waiting for thread to complete (default 180)
+        --names                      Output sample names
+        --statistics                 Output statistics
+    -q, --quiet                      Run quietly
+    -v, --verbose                    Run verbosely
+        --debug                      Show debug messages and keep intermediate output
+
+        --id name                    Identifier
+        --tags list                  Add tags
+    -h, --help                       display this help and exit
+```
+
+## Performance
+
 Bio-vcf has better performance than other tools because of lazy
 parsing, multi-threading, and useful combinations of (fancy) command
 line filtering. Adding cores, bio-vcf just
