@@ -2,8 +2,27 @@
 
 [![Build Status](https://secure.travis-ci.org/vcflib/bio-vcf.png)](http://travis-ci.org/vcflib/bio-vcf) [![rubygem](https://img.shields.io/gem/v/bio-vcf.svg?style=flat)](http://rubygems.org/gems/bio-vcf "Install with Rubygems") [![AnacondaBadge](https://anaconda.org/bioconda/bio-vcf/badges/installer/conda.svg)](https://anaconda.org/bioconda/bio-vcf) [![DL](https://anaconda.org/bioconda/bio-vcf/badges/downloads.svg)](https://anaconda.org/bioconda/bio-vcf) [![BrewBadge](https://img.shields.io/badge/%F0%9F%8D%BAbrew-bio-vcf-brightgreen.svg)](https://github.com/brewsci/homebrew-bio) [![GuixBadge](https://img.shields.io/badge/gnuguix-bio-vcf-brightgreen.svg)](https://www.gnu.org/software/guix/packages/B/) [![DebianBadge](https://badges.debian.net/badges/debian/testing/bio-vcf/version.svg)](https://packages.debian.org/testing/bio-vcf)
 
+Quick index:
+
+- [INSTALL](#Install)
+- [Command line interface (CLI)](#command-line-interface-cli)
+  + [Set analysis](#set-analysis)
+  + [Genotype processing](#genotype-processing)
+  + [Sample counting](#sample-counting)
+  + [Filter with lambda](#reorder-filter-with-lambda)
+  + [Modify VCF files](#modify-vcf-files)
+  + [RDF output](#rdf-output)
+- [Templates](#templates)
+- [Metadata](#metadata)
+- [Statistics](#statistics)
+- [API](#api)
+- [Cite](#cite)
+
 
 ## Bio-vcf
+
+Bio-vcf provides a domain specific language (DSL) for processing the
+VCF format.
 
 Bio-vcf is a new generation VCF parser, filter and converter. Bio-vcf
 is not only very fast for genome-wide (WGS) data, it also comes with a
@@ -28,7 +47,7 @@ So, why would you use bio-vcf over other parsers? Because
 
 Bio-vcf has better performance than other tools because of lazy
 parsing, multi-threading, and useful combinations of (fancy) command
-line filtering (who says Ruby is slow?). Adding cores, bio-vcf just
+line filtering. Adding cores, bio-vcf just
 does better. The more complicated the filters, the larger the
 gain. First a base line test to show IO performance
 
@@ -86,8 +105,7 @@ gzipped (vcf.gz) files into bio-vcf, e.g.
     --eval '[r.chrom,r.pos,r.pos+1]' > test.bed
 ```
 
-bio-vcf comes with a sensible parser definition language
-(interestingly it is 100% Ruby), an embedded Ragel parser for INFO and
+bio-vcf comes with a sensible parser definition language, an embedded Ragel parser for INFO and
 FORMAT header definitions, as well as primitives for set analysis. Few
 assumptions are made about the actual contents of the VCF file (field
 names are resolved on the fly), so bio-vcf should work with all VCF
@@ -251,17 +269,58 @@ If something is not working, check out the feature descriptions and
 the source code. It is not hard to add features. Otherwise, send a short
 example of a VCF statement you need to work on.
 
-## Installation
+## Install
 
-The bio-vcf has no other dependencies but Ruby.
+Requirements:
 
-To install bio-vcf with Ruby gems:
+* ruby
+
+To install bio-vcf with Ruby gems, install Ruby first, e.g. on Debian
+(as root)
+
+```sh
+apt-get install ruby
+```
+
+Installing ruby includes the `gem` command to install bio-vcf:
 
 ```sh
 gem install bio-vcf
+export PATH=/usr/local/bin:$PATH
 bio-vcf -h
 ```
 
+displays the help
+
+```
+bio-vcf x.x (biogem Ruby with pcows) by Pjotr Prins 2015-2020
+Usage: bio-vcf [options] filename
+e.g.  bio-vcf < test/data/input/somaticsniper.vcf
+    -i, --ignore-missing             Ignore missing data
+        --filter cmd                 Evaluate filter on each record
+(etc.)
+```
+
+To install without root you may install a gem locally with
+
+```sh
+gem install --install-dir ~/bio-vcf bio-vcf
+```
+
+and run it with something like
+
+```sh
+~/bio-vcf/gems/bio-vcf-0.9.4/bin/bio-vcf -h
+```
+
+Finally, it is possible to checkout the git repository and simply
+run the tool with
+
+```sh
+git clone https://github.com/vcflib/bio-vcf.git
+cd bio-vcf
+ruby ./bin/bio-vcf -h
+```
 
 ## Command line interface (CLI)
 

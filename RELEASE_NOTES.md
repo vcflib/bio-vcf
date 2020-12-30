@@ -1,8 +1,13 @@
-## ChangeLog v0.9.4 (2020????)
+## ChangeLog v0.9.5 (2020????)
+
++ Improved README and installation instructions
+
+## ChangeLog v0.9.4 (20201222)
 
 This is an important maintenance release of bio-vcf:
 
-+ Rename bioruby-vcf to bio-vcf and migrate project to [vcflib](https://github.com/vcflib/bio-vcf).
++ Rename bioruby-vcf to bio-vcf and migrate project to [vcflib](https://github.com/vcflib/bio-vcf)
++ Fixed tests to match recent Ruby updates
 
 ## Older release notes
 
