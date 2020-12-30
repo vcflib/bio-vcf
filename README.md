@@ -1,6 +1,7 @@
 # bio-vcf
 
-[![Build Status](https://secure.travis-ci.org/vcflib/bio-vcf.png)](http://travis-ci.org/vcflib/bio-vcf) [![rubygem](https://img.shields.io/gem/v/bio-vcf.svg?style=flat)](http://rubygems.org/gems/bio-vcf "Install with Rubygems") [![AnacondaBadge](https://anaconda.org/bioconda/bio-vcf/badges/installer/conda.svg)](https://anaconda.org/bioconda/bio-vcf) [![DL](https://anaconda.org/bioconda/bio-vcf/badges/downloads.svg)](https://anaconda.org/bioconda/bio-vcf) [![BrewBadge](https://img.shields.io/badge/%F0%9F%8D%BAbrew-bio-vcf-brightgreen.svg)](https://github.com/brewsci/homebrew-bio) [![GuixBadge](https://img.shields.io/badge/gnuguix-bio-vcf-brightgreen.svg)](https://www.gnu.org/software/guix/packages/B/) [![DebianBadge](https://badges.debian.net/badges/debian/testing/bio-vcf/version.svg)](https://packages.debian.org/testing/bio-vcf)
+[![Build Status](https://secure.travis-ci.org/vcflib/bio-vcf.png)](http://travis-ci.org/vcflib/bio-vcf) [![rubygem](https://img.shields.io/gem/v/bio-vcf.svg?style=flat)](http://rubygems.org/gems/bio-vcf "Install with Rubygems") [![AnacondaBadge](https://anaconda.org/bioconda/bio-vcf/badges/installer/conda.svg)](https://anaconda.org/bioconda/bio-vcf) [![DL](https://anaconda.org/bioconda/bio-vcf/badges/downloads.svg)](https://anaconda.org/bioconda/bio-vcf)
+[![DebianBadge](https://badges.debian.net/badges/debian/testing/bio-vcf/version.svg)](https://packages.debian.org/testing/bio-vcf)
 
 Quick index:
 
