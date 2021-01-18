@@ -1,16 +1,21 @@
 # encoding: utf-8
 
-require 'rubygems'
+# require 'rubygems'
 require 'rake'
+# require 'cucumber/rake/task'
 
-require 'cucumber/rake/task'
-Cucumber::Rake::Task.new(:features) do |t|
+# Cucumber::Rake::Task.new(:features) do |t|
   # t.cucumber_opts = "--bundler false"
+# end
+
+desc 'Run cucumber' # without bundler
+task :features do
+  sh 'cucumber features'
 end
 
 task :default => :features
 
-task :test => [ :features ] 
+task :test => [ :features ]
 
 require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|

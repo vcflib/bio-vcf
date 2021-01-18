@@ -1,6 +1,8 @@
-## ChangeLog v0.9.5 (2020????)
+## ChangeLog v0.9.5 (20210118)
 
 + Improved README and installation instructions
++ Added guix.scm build and instructions (no need for bundler)
++ Moved regressiontest into tree
 
 ## ChangeLog v0.9.4 (20201222)
 
