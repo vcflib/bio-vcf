@@ -7,7 +7,6 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Pjotr Prins"]
-  # s.date = "2015-12-28"
   s.description = "Smart lazy multi-threaded parser for VCF format with useful filtering and output rewriting (JSON, RDF etc.)"
   s.email = "pjotr.public01@thebird.nl"
   s.executables = ["bio-vcf"]
