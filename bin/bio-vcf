@@ -200,7 +200,7 @@ if options[:template]
   fn = options[:template]
   raise "No template #{fn}!" if not File.exist?(fn)
   # template = ERB.new(File.read(fn))
-  template = Bio::Template.new(fn)
+  template = Bio::Template.new(fn,options[:json])
 end
 
 stats = nil

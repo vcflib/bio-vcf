@@ -44,14 +44,15 @@ So, why would you use bio-vcf over other parsers? Because
 4. Bio-vcf has multiple global filters and sample filters
 5. Bio-vcf can access any VCF format
 6. Bio-vcf can parse and query the VCF header (META data) and output as JSON
+
+![JSON Output](./doc/json.png "JSON Header output")
+
 7. Bio-vcf can do calculations on fields
 8. Bio-vcf allows for genotype processing
 9. Bio-vcf has support for set analysis
 10. Bio-vcf has sane error handling
 11. Bio-vcf can convert *any* VCF to *any* output, including tabular data, BED, HTML, LaTeX, RDF, JSON and JSON-LD and even other VCFs by using (erb) templates
 12. Bio-vcf has soft filters
-
-![JSON Output](./doc/json.png "JSON Header output")
 
 Some examples are documented for [reducing GTeX](doc/GTEx_reduce.md),
 [comparing GATK](doc/GATK_comparison.md), [comparing
@@ -425,6 +426,10 @@ or get a single field
 ```ruby
   bio-vcf --eval-once 'header.meta["GATKCommandLine"]' --json < gatk_exome.vcf
 ```
+
+Note that bio-vcf only outputs the HEADER as JSON with the --json
+switch.  To get JSON output for the full VCF records use the
+far more powerful --template option instead (see below).
 
 The 'fields' array contains unprocessed data (strings).  Print first
 five raw fields
@@ -938,17 +943,17 @@ template could be
   "seq:alt": "<%= rec.alt[0] %>" ,
   "seq:maf": <%= rec.info.maf[0] %> ,
   "dp":      <%= rec.info.dp %>
-};
+}
 ```
 
 To get JSON, run with something like (combining
-with a filter)
+with a filter) and using the excellent [jq tool](https://shapeshed.com/jq-json/)
 
 ```sh
-  bio-vcf --template template/vcf2json.erb --filter 'r.info.sao==1' < dbsnp.vcf
+  bio-vcf --json --template template/vcf2json.erb --filter 'r.info.sao==1' < dbsnp.vcf |jq
 ```
 
-which renders
+which renders a pure JSON output
 
 ```Javascript
 {
@@ -958,8 +963,13 @@ which renders
   "seq:alt": "T" ,
   "seq:maf": 0.0151 ,
   "dp":      86
-};
+}
 ```
+
+Note that bio-vcf uses the template mechanism for full JSON output
+because, in general, we only want to use a subset of the data for
+further processing.  It makes little sense to create a full JSON dump.
+The --json switch only makes sure we write a comma ',' between records.
 
 Likewise for RDF output:
 
@@ -984,7 +994,7 @@ renders the ERB template
   db:vcf       true .
 ```
 
-into
+into something like these RDF triples
 
 ```
 :ch13_33703698_A
@@ -998,7 +1008,9 @@ into
   db:vcf       true .
 ```
 
-Note the calculated field value for maf. Be creative! You can write templates for csv, HTML, XML, LaTeX, RDF, JSON, YAML, JSON-LD, etc. etc.!
+Note the calculated field value for maf. Be creative! You can write
+templates for csv, HTML, XML, LaTeX, RDF, JSON, YAML, JSON-LD,
+etc. etc.!
 
 ### Metadata
 
