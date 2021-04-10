@@ -87,11 +87,11 @@ opts = OptionParser.new do |o|
   o.on("--samples list", Array, "Output selected samples") do |l|
     options[:samples] = l
   end
-  o.on("--json", "Try to coerce header into JSON (also check out --template!)") do |b|
+  o.on("--json", "Try to coerce header into JSON (for records check out --template!)") do |b|
     options[:json] = true
     options[:skip_header] = true
   end
-  o.on("--rdf", "Try to coerce header into Turtle RDF (also check out --template!)") do |b|
+  o.on("--rdf", "Try to coerce header into Turtle RDF (requires RDF --template!)") do |b|
     require 'bio-vcf/vcfrdf'
     options[:rdf] = true
     options[:skip_header] = true
@@ -274,6 +274,7 @@ def parse_header line, samples, options
 end
 
 # Parse a VCF line and return the (template) result as a string buffer
+# This is the main work horse that parses through every VCF record:
 def parse_line line,header,options,bedfilter,samples,template,stats=nil
   fields = VcfLine.parse(line)
   rec = VcfRecord.new(fields,header)
