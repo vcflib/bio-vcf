@@ -1,3 +1,7 @@
+## ChangeLog v0.9.6 (?)
+
++ Added JSON VCF header output with --json switch
+
 ## ChangeLog v0.9.5 (20210118)
 
 + Improved README and installation instructions

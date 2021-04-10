@@ -4,7 +4,7 @@
 # Author:: Pjotr Prins
 # License:: MIT
 #
-# Copyright (C) 2014-2020 Pjotr Prins <pjotr.prins@thebird.nl>
+# Copyright (C) 2014-2021 Pjotr Prins <pjotr.prins@thebird.nl>
 
 USAGE = "Vcf parser"
 
@@ -19,6 +19,7 @@ require 'bio-vcf/pcows'
 require 'optparse'
 require 'timeout'
 require 'fileutils'
+require 'json'
 
 # Uncomment when using the bio-logger
 # require 'bio-logger'
@@ -86,7 +87,11 @@ opts = OptionParser.new do |o|
   o.on("--samples list", Array, "Output selected samples") do |l|
     options[:samples] = l
   end
-  o.on("--rdf", "Generate Turtle RDF (also check out --template!)") do |b|
+  o.on("--json", "Try to coerce header into JSON (also check out --template!)") do |b|
+    options[:json] = true
+    options[:skip_header] = true
+  end
+  o.on("--rdf", "Try to coerce header into Turtle RDF (also check out --template!)") do |b|
     require 'bio-vcf/vcfrdf'
     options[:rdf] = true
     options[:skip_header] = true
@@ -174,7 +179,7 @@ end
 opts.parse!(ARGV)
 
 BIOVCF_VERSION=version
-BIOVCF_BANNER = "bio-vcf #{version} (biogem Ruby #{RUBY_VERSION} with pcows) by Pjotr Prins 2015-2020\n"
+BIOVCF_BANNER = "bio-vcf #{version} (biogem Ruby #{RUBY_VERSION} with pcows) by Pjotr Prins 2015-2021\n"
 $stderr.print BIOVCF_BANNER if !options[:quiet]
 
 if options[:show_help]
@@ -184,7 +189,7 @@ if options[:show_help]
 end
 
 if RUBY_VERSION =~ /^1/
-  $stderr.print "WARNING: bio-vcf runs on Ruby 2.x only\n"
+  $stderr.print "WARNING: bio-vcf does not run on Ruby 1.x\n"
 end
 
 $stderr.print "Options: ",options,"\n" if !options[:quiet]
@@ -221,7 +226,8 @@ include BioVcf
 def parse_header line, samples, options
   header = VcfHeader.new(options[:debug])
   header.add(line)
-  print line if not options[:skip_header]
+  do_parse_header = !options[:skip_header]
+  print line if do_parse_header
   STDIN.each_line do | headerline |
     if headerline !~ /^#/
       # If no records in VCF, we never get here
@@ -229,10 +235,14 @@ def parse_header line, samples, options
       break # end of header
     end
     header.add(headerline)
-    if not options[:skip_header]
+    if do_parse_header
       if headerline =~ /^#CHR/
-        # The header before actual data contains the sample names, first inject the BioVcf meta information
-        print header.tag(options),"\n" if options[:tag] and not options[:skip_header]
+        # Parse the column names line #CHROM POS ID REF ALT QUAL...
+        # and forms the selected header.column_names
+        #
+        # The header before actual data contains the sample names,
+        # thereforefirst inject the BioVcf meta information
+        print header.tag(options),"\n" if options[:tag]
         # Then the additional filter(s)
         # ##FILTER=<ID=LowQual,Description="Low quality">
         add_filter = options[:add_filter]
@@ -365,7 +375,14 @@ def parse_line line,header,options,bedfilter,samples,template,stats=nil
       raise if options[:verbose]
       exit 1
     end
-    return results.to_s+"\n" if results
+    if results
+      str = if options[:json]
+              results.to_json
+            else
+              results.to_s
+            end
+      return str+"\n"
+    end
   else
     if options[:rdf]
       # Output Turtle RDF
@@ -448,7 +465,7 @@ begin
 
     if options[:eval_once]
       # this happens if we only want one line evaluated - say to get
-      # the number of samples
+      # the number of samples, or parse an item in the header
       print parse_line(line,header,options,bedfilter,samples,template,stats)
       exit 0
     end

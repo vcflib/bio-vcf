@@ -43,7 +43,7 @@ So, why would you use bio-vcf over other parsers? Because
 3. Bio-vcf has great multi-sample support
 4. Bio-vcf has multiple global filters and sample filters
 5. Bio-vcf can access any VCF format
-6. Bio-vcf can parse and query the VCF header (META data)
+6. Bio-vcf can parse and query the VCF header (META data) and output as JSON
 7. Bio-vcf can do calculations on fields
 8. Bio-vcf allows for genotype processing
 9. Bio-vcf has support for set analysis
@@ -64,8 +64,7 @@ line:
     bio-vcf --help
 
 ```
-bio-vcf (biogem with pcows) by Pjotr Prins 2015-2020
-
+bio-vcf 0.9.6 (biogem Ruby 2.7.2 with pcows) by Pjotr Prins 2015-2020
 Usage: bio-vcf [options] filename
 e.g.  bio-vcf < test/data/input/somaticsniper.vcf
     -i, --ignore-missing             Ignore missing data
@@ -83,7 +82,8 @@ e.g.  bio-vcf < test/data/input/somaticsniper.vcf
         --seval cmd                  Evaluate command on each sample
         --rewrite eval               Rewrite INFO
         --samples list               Output selected samples
-        --rdf                        Generate Turtle RDF (also check out --template!)
+        --json                       Try to coerce header into JSON (also check out --template!)
+        --rdf                        Try to coerce header into Turtle RDF (also check out --template!)
         --num-threads [num]          Multi-core version (default ALL)
         --thread-lines num           Fork thread on num lines (default 40000)
         --skip-header                Do not output VCF header info
@@ -411,10 +411,16 @@ Alternatively use the command line switch for --names, e.g.
   NORMAL,TUMOR
 ```
 
-Get information from the header (META)
+Get information from the header (META) and print it as JSON
 
 ```ruby
-  bio-vcf -q --skip-header --eval-once 'header.meta["GATKCommandLine"]' < gatk_exome.vcf
+  bio-vcf --eval-once 'header.meta' --json < gatk_exome.vcf
+```
+
+or get a single field
+
+```ruby
+  bio-vcf --eval-once 'header.meta["GATKCommandLine"]' --json < gatk_exome.vcf
 ```
 
 The 'fields' array contains unprocessed data (strings).  Print first
