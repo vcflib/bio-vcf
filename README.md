@@ -51,6 +51,8 @@ So, why would you use bio-vcf over other parsers? Because
 11. Bio-vcf can convert *any* VCF to *any* output, including tabular data, BED, HTML, LaTeX, RDF, JSON and JSON-LD and even other VCFs by using (erb) templates
 12. Bio-vcf has soft filters
 
+![JSON Output](./doc/json.png "JSON Header output")
+
 Some examples are documented for [reducing GTeX](doc/GTEx_reduce.md),
 [comparing GATK](doc/GATK_comparison.md), [comparing
 VCFs](doc/Compare_VCFs.md), JSON [loading Mongo
@@ -411,7 +413,8 @@ Alternatively use the command line switch for --names, e.g.
   NORMAL,TUMOR
 ```
 
-Get information from the header (META) and print it as JSON
+Get information from the header (META) and print it as JSON (see image
+at top of this text)
 
 ```ruby
   bio-vcf --eval-once 'header.meta' --json < gatk_exome.vcf
