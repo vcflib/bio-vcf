@@ -28,7 +28,7 @@ require 'json'
 # Bio::Log::CLI.logger('stderr')
 # Bio::Log::CLI.trace('info')
 
-options = { show_help: false, source: 'https://github.com/pjotrp/bioruby-vcf', version: version+' (Pjotr Prins)', date: Time.now.to_s, thread_lines: 40_000, timeout: 180 }
+options = { show_help: false, source: 'https://github.com/vcflib/bio-vcf', version: version+' (Pjotr Prins)', date: Time.now.to_s, thread_lines: 40_000, timeout: 180 }
 opts = OptionParser.new do |o|
   o.banner = "Usage: #{File.basename($0)} [options] filename\ne.g.  #{File.basename($0)} < test/data/input/somaticsniper.vcf"
 

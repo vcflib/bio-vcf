@@ -1,0 +1,20 @@
+=HEADER
+<% require 'json' %>
+{
+    "HEADER": {
+	"options": <%= options.to_h.to_json %>,
+	"files": <%= ARGV %>,
+	"version": "<%= BIOVCF_VERSION %>"
+    },
+    "BODY": [
+=BODY
+	{
+	    "chr": "<%= rec.chrom %>",
+	    "pos": <%= rec.pos %>,
+	    "ref": "<%= rec.ref %>",
+	    "alt": <%= rec.alt %>,
+	    "dp":  <%= rec.info.dp %>
+	},
+=FOOTER
+    ]
+}
