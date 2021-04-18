@@ -9,12 +9,30 @@
     "BODY": [
 =BODY
 	{
-	    "chr": "<%= rec.chrom %>",
-	    "pos": <%= rec.pos %>,
-	    "ref": "<%= rec.ref %>",
-	    "alt": <%= rec.alt %>,
-	    "dp":  <%= rec.info.dp %>
-	},
+	    "CHR": "<%= rec.chrom %>",
+	    "POS": <%= rec.pos %>,
+	    "REF": "<%= rec.ref %>",
+	    "ALT": <%= rec.alt %>,
+	    "QUAL": <%= rec.qual %>,
+
+	    "DP":  <%= rec.info.dp %>,
+	    "AF":  <%= rec.info.af %>,
+	    "AN":  <%= rec.info.an %>,
+	    "MQ":  <%= rec.info.mq %>,
+	    "QD":  <%= rec.info.qd %>,
+	    "BaseQRankSum":  <%= rec.info.baseqranksum %>,
+	    "HaplotypeScore":  <%= rec.info.HaplotypeScore %>,
+
+            "samples" : { <% rec.each_sample do |s| %>
+               "<%= s.name %>": {
+                 "GT": "<%= s.gt %>",
+                 "AD": <%= s.ad %>,
+                 "DP": <%= s.dp %>
+               } <%= (s.is_last? ? "" : ",") %>
+               <% end %>
+            }
+
+	}
 =FOOTER
     ]
 }

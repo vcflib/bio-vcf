@@ -1,6 +1,6 @@
 module BioVcf
 
-  class VcfRecordInfo 
+  class VcfRecordInfo
     def initialize s
       @info = s
     end
@@ -34,9 +34,9 @@ module BioVcf
           end
       ConvertStringToValue::convert(v)
     end
-    
+
     # Set INFO fields (used by --rewrite)
-    def []= k, v   
+    def []= k, v
       split_fields if not @h
       kupper = k.upcase
       @h[kupper] = v
@@ -47,19 +47,19 @@ module BioVcf
       split_fields
       @h.keys
     end
-    
+
     def method_missing(m, *args, &block)
       self[m.to_s]
-    end  
+    end
 
   private
- 
+
     def split_fields
       return @h if @h
       @h = {}
       @original_key = {}
-      @info.split(/;/).each do |f| 
-        k,v = f.split(/=/) 
+      @info.split(/;/).each do |f|
+        k,v = f.split(/=/)
         kupper = k.upcase
         @h[kupper] = v
         @original_key[kupper] = k
@@ -142,7 +142,7 @@ module BioVcf
       @pos ||= @fields[1].to_i
     end
 
-    def ids 
+    def ids
       @ids ||= @fields[2].split(';')
     end
 
@@ -165,7 +165,7 @@ module BioVcf
     def filter
       @filter ||= @fields[6]
     end
-    
+
     def info
       @info ||= VcfRecordParser.get_info(@fields[7])
     end
@@ -176,7 +176,7 @@ module BioVcf
 
     # Return the first (single) sample (used in one sample VCF)
     def first
-      @first ||= VcfGenotypeField.new(@fields[9],format,@header,ref,alt)
+      @first ||= VcfGenotypeField.new(0,@fields[9],format,@header,ref,alt)
     end
 
     # Return the normal sample (used in two sample VCF)
@@ -186,11 +186,11 @@ module BioVcf
 
     # Return the tumor sample (used in two sample VCF)
     def tumor
-      @tumor ||= VcfGenotypeField.new(@fields[10],format,@header,ref,alt)
+      @tumor ||= VcfGenotypeField.new(1,@fields[10],format,@header,ref,alt)
     end
-   
-    # Return the sample as a named hash 
-    def sample 
+
+    # Return the sample as a named hash
+    def sample
       @sample ||= VcfGenotypeFields.new(@fields,format,@header,ref,alt)
     end
 
@@ -200,13 +200,13 @@ module BioVcf
 
     def sample_by_index i
       raise "Can not index sample on parameter <#{i}>" if not i.kind_of?(Integer)
-      @sample_by_index[i] ||= VcfGenotypeField.new(@fields[i+9],format,@header,ref,alt)
+      @sample_by_index[i] ||= VcfGenotypeField.new(i,@fields[i+9],format,@header,ref,alt)
     end
 
     # Walk the samples. list contains an Array of int (the index)
     def each_sample(list = nil)
       @header.sample_subset_index(list).each { |i|
-        yield VcfSample::Sample.new(self,sample_by_index(i))
+        yield VcfSample::Sample.new(i,self,sample_by_index(i))
       }
     end
 
@@ -309,9 +309,9 @@ module BioVcf
       @fields[6] = filter
       filter
     end
-    
+
     # Return the sample
-    def method_missing(m, *args, &block)  
+    def method_missing(m, *args, &block)
       name = m.to_s
       if name =~ /\?$/
         # Query for empty sample name
@@ -320,7 +320,7 @@ module BioVcf
       else
         sample[name]
       end
-    end  
+    end
 
   end
 end

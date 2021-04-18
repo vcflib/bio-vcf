@@ -16,7 +16,7 @@ module BioVcf
     def VcfHeaderParser.get_column_names(lines)
       lines.each do | line |
         if line =~ /^#[^#]/
-          # the first line that starts with a single hash 
+          # the first line that starts with a single hash
           names = line.split
           names[0].sub!(/^#/,'')
           return names
@@ -95,6 +95,7 @@ module BioVcf
       @num_samples ||= ( samples == nil ? 0 : samples.size )
     end
 
+    # Returns the field number for a sample (starting with 9)
     def sample_index
       return @sample_index if @sample_index
       index = {}
@@ -113,8 +114,8 @@ module BioVcf
         l = []
         list = samples_index_array() if not list
         list.each { |i|
-          value = 
-            begin 
+          value =
+            begin
               Integer(i)
             rescue
               idx = samples.index(i)
@@ -130,7 +131,7 @@ module BioVcf
       end
       l
     end
-    
+
     # Look for a line in the header with the field name and return the
     # value, otherwise return nil
     def find_field name
@@ -165,7 +166,7 @@ module BioVcf
       res
     end
 
-    def format 
+    def format
       find_fields('FORMAT')
     end
 
@@ -184,7 +185,7 @@ module BioVcf
     def gatkcommandline
       find_fields('GATKCommandLine')
     end
-    
+
     def meta
       return @meta if @meta
       res = { 'INFO' => {}, 'FORMAT' => {}, 'FILTER' => {}, 'contig' => {}, 'GATKCommandLine' => {} }
@@ -207,7 +208,7 @@ module BioVcf
       @meta = res # cache values
       res
     end
-    
+
     def method_missing(m, *args, &block)
       name = m.to_s
       value = find_field(name)

@@ -1233,11 +1233,11 @@ bundle exec rake
 Note: we develop in a GNU Guix environment, see the header of
 [guix.scm](guix.scm) which does not use bundler.
 
-### Debugging
+### Development/debugging
 
-To debug output use '-v --num-threads=1' for generating useful
-output. Also do not use the -i switch (ignore errors) when there
-are problems.
+To debug output use the combination '-v --num-threads=1' for
+generating useful output. Also do not use the -i switch (ignore
+errors) when there are problems.
 
 ### Could not find rake-10.4.2 in any of the sources
 

@@ -104,8 +104,9 @@ module BioVcf
 
     attr_reader :format, :values, :header
 
-    def initialize s, format, header, ref, alt
+    def initialize sample_num, s, format, header, ref, alt
       @is_empty = VcfSample::empty?(s)
+      @sample_num = sample_num
       @original_s = s
       @format = format
       @header = header
@@ -115,6 +116,10 @@ module BioVcf
 
     def to_s
       @original_s
+    end
+
+    def name
+      @header.samples[@sample_num]
     end
 
     def values
@@ -188,7 +193,7 @@ module BioVcf
 
     # Fetch a value and throw an error if it does not exist
     def fetch name
-      raise "ERROR: Field with name #{name} does not exist!" if !@format[name]
+      raise "ERROR: Field with name <#{name}> does not exist!" if !@format[name]
       @format[name]
     end
 
@@ -219,7 +224,12 @@ module BioVcf
 
     def [] name
       begin
-        @samples[name] ||= VcfGenotypeField.new(@fields[@sample_index[name]],@format,@header,@ref,@alt)
+        if name.is_a? String
+          field_num = @sample_index[name]
+        else
+          field_num = name + 9 # assume integer
+        end
+        @samples[name] ||= VcfGenotypeField.new(field_num-9,@fields[field_num],@format,@header,@ref,@alt)
       rescue TypeError
         $stderr.print "Unknown field name <#{name}> in record, did you mean r.info.#{name}?\n"
         raise
@@ -232,7 +242,8 @@ module BioVcf
         # test for valid sample
         return !VcfSample::empty?(@fields[@sample_index[name.chop]])
       else
-        @samples[name] ||= VcfGenotypeField.new(@fields[@sample_index[name]],@format,@header,@ref,@alt)
+        num = @sample_index[name]-9
+        @samples[name] ||= VcfGenotypeField.new(num,@fields[@sample_index[name]],@format,@header,@ref,@alt)
       end
     end
 

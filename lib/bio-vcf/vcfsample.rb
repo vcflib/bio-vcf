@@ -9,8 +9,9 @@ module BioVcf
     class Sample
       # Initialized sample with rec and genotypefield
       #
-      # #<BioVcf::VcfGenotypeField:0x00000001a0c188 @values=["0/0", "151,8", "159", "99", "0,195,2282"], @format={"GT"=>0, "AD"=>1, "DP"=>2, "GQ"=>3, "PL"=>4}, 
-      def initialize rec,genotypefield
+      # #<BioVcf::VcfGenotypeField:0x00000001a0c188 @values=["0/0", "151,8", "159", "99", "0,195,2282"], @format={"GT"=>0, "AD"=>1, "DP"=>2, "GQ"=>3, "PL"=>4},
+      def initialize num,rec,genotypefield
+        @num = num
         @rec = rec
         @sample = genotypefield
         @format = @sample.format
@@ -19,6 +20,15 @@ module BioVcf
 
       def empty?
        cache_empty ||= VcfSample::empty?(@sample.to_s)
+      end
+
+      def is_last?
+        # $stderr.print(@num,@rec.header.num_samples)
+        @num == @rec.header.num_samples-1
+      end
+
+      def name
+        @sample.name
       end
 
       def eval expr, ignore_missing_data: false, quiet: false, do_cache: true
@@ -40,7 +50,7 @@ module BioVcf
       # Split GT into index values
       def gti
         v = fetch_values("GT")
-        v = './.' if v == '.' #In case that you have a single missing value, make both as missing. 
+        v = './.' if v == '.' #In case that you have a single missing value, make both as missing.
         v.split(/[\/\|]/).map{ |v| (v=='.' ? nil : v.to_i) }
       end
 
@@ -55,9 +65,9 @@ module BioVcf
                when '1/1' then 2
                else
                  raise "Unknown genotype #{v}"
-               end                 
+               end
       end
-      
+
       # Split GT into into a nucleode sequence
       def gts
         gti.map { |i| (i ? @rec.get_gt(i) : nil) }
@@ -69,13 +79,13 @@ module BioVcf
 
       def [] name
         if @format[name]
-          v = fetch_values(name) 
+          v = fetch_values(name)
           return nil if VcfValue::empty?(v)
           return ConvertStringToValue::convert(v)
         end
         nil
       end
-      
+
       def method_missing(m, *args, &block)
         name = m.to_s.upcase
         # p [:here,name,m ,@values]
@@ -86,7 +96,7 @@ module BioVcf
         else
           if @format[name]
             cache_method(m) {
-              v = fetch_values(name) 
+              v = fetch_values(name)
               return nil if VcfValue::empty?(v)
               ConvertStringToValue::convert(v)
             }
@@ -95,7 +105,7 @@ module BioVcf
             super(m, *args, &block)
           end
         end
-      end  
+      end
 
   private
 
@@ -109,18 +119,18 @@ module BioVcf
         begin
           if do_cache
             if not respond_to?(cached_method)
-              code = 
+              code =
               """
               def #{cached_method}(rec,sample)
                 r = rec
-                s = sample 
+                s = sample
                 #{expr}
               end
               """
               self.class.class_eval(code)
             end
             self.send(cached_method,@rec,self)
-          else 
+          else
             # This is used for testing mostly
             print "WARNING: NOT CACHING #{method}\n"
             self.class.class_eval { undef :call_cached_eval } if respond_to?(:call_cached_eval)
