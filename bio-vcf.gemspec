@@ -11,13 +11,13 @@ Gem::Specification.new do |s|
   s.email = "pjotr.public01@thebird.nl"
   s.executables = ["bio-vcf"]
   s.extra_rdoc_files = [
-    "LICENSE.txt",
+    "LICENSE",
     "README.md"
   ]
   s.files = [
     ".travis.yml",
     "Gemfile",
-    "LICENSE.txt",
+    "LICENSE",
     "README.md",
     "Rakefile",
     "VERSION",

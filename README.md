@@ -17,7 +17,8 @@ Quick index:
 - [Metadata](#metadata)
 - [Statistics](#statistics)
 - [API](#api)
-- [Cite](#cite)
+- [LICENCE](#LICENSE)
+- [Cite](#CREDIT)
 
 
 ## Bio-vcf
@@ -1256,9 +1257,37 @@ how to contribute, see
 
   http://github.com/vcflib/bio-vcf
 
-## Cite
+## LICENSE
 
-If you use this software, please cite one of
+This software is distributed under the free software [MIT LICENSE](./LICENSE).
+
+## CREDIT
+
+Citations are the bread and butter of Science.  If you are using this
+software in your research and want to support our future work, please
+cite the following publication:
+
+Vcflib and tools for processing the VCF variant call format;
+Erik Garrison, Zev N. Kronenberg, Eric T. Dawson, Brent S. Pedersen, Pjotr Prins;
+doi: https://doi.org/10.1101/2021.05.21.445151
+
+## Bibtex reference
+
+```bibtex
+@article {Garrison2021.05.21.445151,
+	author = {Garrison, Erik and Kronenberg, Zev N. and Dawson, Eric T. and Pedersen, Brent S. and Prins, Pjotr},
+	title = {Vcflib and tools for processing the VCF variant call format},
+	elocation-id = {2021.05.21.445151},
+	year = {2021},
+	doi = {10.1101/2021.05.21.445151},
+	publisher = {Cold Spring Harbor Laboratory},
+	URL = {https://www.biorxiv.org/content/early/2021/05/23/2021.05.21.445151},
+	eprint = {https://www.biorxiv.org/content/early/2021/05/23/2021.05.21.445151.full.pdf},
+	journal = {bioRxiv}
+}
+```
+
+If you use this software, or cite one of
 
 * [BioRuby: bioinformatics software for the Ruby programming language](http://dx.doi.org/10.1093/bioinformatics/btq475)
 * [Biogem: an effective tool-based approach for scaling up open source software development in bioinformatics](http://dx.doi.org/10.1093/bioinformatics/bts080)
@@ -1269,4 +1298,4 @@ This Biogem is published at (http://biogems.info/index.html#bio-vcf)
 
 ## Copyright
 
-Copyright (c) 2014-2020 Pjotr Prins. See LICENSE.txt for further details.
+Copyright (c) 2014-2021 Pjotr Prins. See [LICENSE](./LICENSE) for further details.
